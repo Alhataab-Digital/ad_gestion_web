@@ -112,6 +112,19 @@ class CaisseController extends Controller
     {
         //
     }
+    public function attribution()
+    {
+            $user_id=Auth::user()->id;
+            $agence_id=Auth::user()->agence_id;
+
+            $caisse_destinations=Caisse::where('user_id','!=',$user_id)->where('agence_id',$agence_id)->get();
+        return view('caisse.attribution', compact('caisse_destinations',));
+    }
+
+    public function attribution_valider()
+    {
+        return view('caisse.attribution');
+    }
 
     public function operation()
     {

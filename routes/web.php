@@ -134,8 +134,8 @@ Route::middleware('auth')->controller(CaisseController::class)->group(function()
     Route::get('/caisse/attribution','attribution')->name('caisse.attribution');
     Route::get('/caisse/encaissement','encaissement')->name('caisse.encaissement');
 
-    Route::post('/caisse/attribution_valider','attribution_valider')->name('caisse.attribution_valider');
-    Route::get('/caisse/{id}/encaissement_valider','encaissement_valider')->name('caisse.encaissement_valider');
+    Route::post('/caisse/attribution_valider','attribution_valider')->name('caisse.attribution.valider');
+    Route::get('/caisse/{id}/encaissement_valider','encaissement_valider')->name('caisse.encaissement.valider');
 
     Route::post('/caisse/{id}/fermeture','fermeture')->name('caisse.fermeture');
 

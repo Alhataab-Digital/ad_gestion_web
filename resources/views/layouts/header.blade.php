@@ -11,27 +11,27 @@
     </div><!-- End Logo -->
 
     <div class="search-bar">
+        <div style="text-transform: uppercase"> {{ Auth::user()->agence->nom }} :
+        {{ Auth::user()->agence->region->nom }}
+        </div>
         @if(isset(Auth::user()->agence->nom))
         @if(App\Models\Caisse::where('user_id',Auth::user()->id)->where('etat',1)->first(['id']) )
         <div> Date operation :<strong>{{ App\Models\Caisse::where('user_id',Auth::user()->id)->first(['date_comptable'])->date_comptable}}</strong></div>
-        @endif
-        @endif
+
       {{-- <form class="search-form d-flex align-items-center" method="POST" action="#">
         <input type="text" name="query" placeholder="Search" title="Enter search keyword">
         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
       </form> --}}
     </div><!-- End Search Bar -->
-    <div class="search-bar">
-        @if(isset(Auth::user()->agence->nom))
-        @if(App\Models\Caisse::where('user_id',Auth::user()->id)->where('etat',1)->first(['id']) )
-
-        <div style="text-transform: uppercase"> {{ Auth::user()->agence->nom }} :
-            {{ Auth::user()->agence->region->nom }}
-        </div>
+    <div class="">
         <div>{{ App\Models\Caisse::where('user_id',Auth::user()->id)->first(['libelle'])->libelle; }} :
             <strong>{{ number_format(App\Models\Caisse::where('user_id',Auth::user()->id)->first(['compte'])->compte,2,","," ") }} {{ Auth::user()->agence->devise->unite; }}</strong>
         </div>
-
+        @if(App\Models\Caisse::where('user_id',Auth::user()->id)->where('etat',1)->where('compte_dividende_societe','!=','0')->first(['id']) )
+        <div>Dividende Societe :
+            <strong>{{ number_format(App\Models\Caisse::where('user_id',Auth::user()->id)->first(['compte_dividende_societe'])->compte_dividende_societe,2,","," ") }} {{ Auth::user()->agence->devise->unite; }}</strong>
+        </div>
+        @endif
 
         @endif
         @endif
