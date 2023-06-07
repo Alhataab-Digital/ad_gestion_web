@@ -11,11 +11,12 @@
     </div><!-- End Logo -->
 
     <div class="search-bar">
+        @if(isset(Auth::user()->agence->nom))
+        @if(App\Models\Caisse::where('user_id',Auth::user()->id)->where('etat',1)->first(['id']) )
+
         <div style="text-transform: uppercase"> {{ Auth::user()->agence->nom }} :
         {{ Auth::user()->agence->region->nom }}
         </div>
-        @if(isset(Auth::user()->agence->nom))
-        @if(App\Models\Caisse::where('user_id',Auth::user()->id)->where('etat',1)->first(['id']) )
         <div> Date operation :<strong>{{ App\Models\Caisse::where('user_id',Auth::user()->id)->first(['date_comptable'])->date_comptable}}</strong></div>
 
       {{-- <form class="search-form d-flex align-items-center" method="POST" action="#">

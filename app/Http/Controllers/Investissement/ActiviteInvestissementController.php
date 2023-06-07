@@ -114,9 +114,18 @@ class ActiviteInvestissementController extends Controller
                 $compte_caisse= Caisse::where('user_id',$id)->first(['compte'])->compte;
                 $capital_investisseur=Investisseur::where('etat','1')->selectRaw('sum(compte_investisseur) as total')->first('total');
                 $date_comptable= Caisse::where('user_id',$id)->first(['date_comptable'])->date_comptable;
-                if($capital_investisseur< $data['montant_decaisser'])  {
+
+                if($capital_investisseur->total < $data['montant_decaisser'])  {
+
+                    return redirect('/activite_investissement/create',)->with('danger','Le montant capital inferieur au montant investis ');
 
                 } else{
+
+                    if($data['montant_decaisser'] > $compte_caisse)  {
+
+                        return redirect('/activite_investissement/create',)->with('danger','Le montant caisse insuffisant ');
+
+                    } else{
                     /**
                      * insertion des données dans la table user
                      */
@@ -131,9 +140,10 @@ class ActiviteInvestissementController extends Controller
                         'date_comptable'=>$date_comptable,
                     ]);
 
-                $activite_id=ActiviteInvestissement::where('user_id',$id)->latest('id')->first();
+                    $activite_id=ActiviteInvestissement::where('user_id',$id)->latest('id')->first();
 
                     return redirect('/'.$activite_id->id.'/activite_investissement/repartition');
+                    }
                 }
 
 
@@ -206,7 +216,12 @@ class ActiviteInvestissementController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $activite_investissement=ActiviteInvestissement::find($id);
+
+        $activite_investissement->delete();
+
+        return redirect('/activite_investissement/create',)->with('danger','Le activité supprimer ');
+
     }
 
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('montant_operation');
             $table->string('commentaire');
             $table->string('caisse_id');
-            $table->string('caisse_destination_id')->nullable();
+            $table->string('caisse_destination_id');
             $table->string('date_comptable');
             $table->string('date_comptable_reception')->nullable();
             $table->string('user_id');

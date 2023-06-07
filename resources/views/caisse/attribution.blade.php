@@ -22,6 +22,24 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">ATTRIBUTION CAISSE</h5>
+              <P>
+
+                @if ($message=Session::get('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle me-1"></i>
+                    {{ $message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+                @if ($message=Session::get('danger'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-octagon me-1"></i>
+                    {{ $message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+
+              </P>
               <!-- General Form Elements -->
               <form  method="post" action="{{ route('caisse.attribution.valider') }}">
                 @csrf
@@ -39,7 +57,7 @@
                 <div class="row mb-3">
                   <label for="inputText" class="col-sm-2 col-form-label">Montant attribuer</label>
                   <div class="col-sm-10">
-                    <input type="text" name="montant" class="form-control" required>
+                    <input type="text" name="montant_operation" class="form-control" required>
                   </div>
                 </div>
                 <div class="row mb-3">

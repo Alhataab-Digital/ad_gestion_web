@@ -16,6 +16,7 @@ use App\Models\OperationTransfert;
 use App\Models\OperationInvestisseur;
 use App\Models\ActiviteInvestissement;
 use App\Models\MouvementCaisse;
+use App\Models\OperationInterCaisse;
 
 
 class CaisseController extends Controller
@@ -121,9 +122,155 @@ class CaisseController extends Controller
         return view('caisse.attribution', compact('caisse_destinations',));
     }
 
-    public function attribution_valider()
+    public function attribution_valider( Request $request)
     {
-        return view('caisse.attribution');
+            $user_id=Auth::user()->id;
+            $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
+            $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
+            $montant_caisse=Caisse::where('user_id',$user_id)->first();
+
+
+
+        /**
+        * validation des champs de saisie
+        */
+            $request->validate([
+                'montant_operation'=>'required',
+                'caisse_destination'=>'required',
+                'commentaire'=>'required',
+            ]);
+            /**
+             * donnee a ajouté dans la table
+             */
+
+            $data=$request->all();
+            if($montant_caisse->compte <$data['montant_operation']){
+                return redirect('/caisse/attribution')->with('danger','montant caisse insuffisant pour effectuer cette operation');
+            }else{
+                 /**
+             * insertion des données dans la table user
+             */
+            OperationInterCaisse::create([
+                'montant_operation'=>$data['montant_operation'],
+                'commentaire'=>$data['commentaire'],
+                'caisse_destination_id'=>$data['caisse_destination'],
+                'caisse_id'=>$caisse_id,
+                'user_id'=>$user_id,
+                'date_comptable'=>$date_comptable,
+            ]);
+            return redirect('/caisse/attribution')->with('success','operation crée avec succès');
+            }
+
+    }
+
+    public function encaissement()
+    {
+            $user_id=Auth::user()->id;
+            $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
+            $operations=OperationInterCaisse::where('caisse_destination_id',$caisse_id)->where('etat',NULL)->get();
+
+        return view('caisse.encaissement', compact('operations',));
+    }
+
+    public function encaissement_valider( $id)
+    {
+        $operation=OperationInterCaisse::find($id);
+
+        if($operation->etat=="valider"){
+            return redirect('/caisse/encaissement')->with('danger',"Montant déjà encaissé");
+        }else{
+                    $user_id=Auth::user()->id;
+                    $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
+                    $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
+                    $caisse_destination=Caisse::where('user_id',$user_id)->first();
+                    $montant_operation=$operation->montant_operation;
+                /**
+                 * on verifie si la de emmetrice est ouverte
+                 */
+
+                if(Caisse::where('id',$operation->caisse_id)->where('etat',1)->first()){
+                    /**
+                     * on verifier si le montant de la caisse emttrice est suffissant
+                     */
+                    if(Caisse::where('id',$operation->caisse_id)->where('compte','>=',$operation->montant_operation)->first()){
+                        /**
+                         * on verifie si la caisse receptionniste est ouverte
+                         */
+                        if(Caisse::where('id',$caisse_id)->where('etat',1)->first()){
+                            /**
+                             * mise jour de l'operation
+                             */
+                            $operation->update([
+                                'date_comptable_reception'=> $user_id,
+                                'user_destination_id'=> $date_comptable,
+                                'etat'=>'valider',
+                            ]);
+
+                        /**
+                         * mise a jour de la caisse provenance
+                        */
+                        $compte_caisse_provenance= Caisse::where('id',$operation->caisse_id)->first(['compte'])->compte;
+                        $compte=$compte_caisse_provenance-$operation->montant_operation;
+
+
+                        $caisse=Caisse::find($operation->caisse_id);
+
+                        $user_provenance=$operation->user_id;
+
+                        MouvementCaisse::create([
+                            'caisse_id'=>$operation->caisse_id,
+                            'user_id'=>$user_provenance,
+                            'description'=>'Attribution à la caisse'. $caisse_destination->libelle,
+                            'sortie'=>$montant_operation,
+                            'solde'=>$compte,
+                            'date_comptable'=>$date_comptable,
+
+                        ]);
+
+                        $caisse->update([
+                            'compte'=>$compte,
+                        ]);
+
+                        /**
+                         * mise a jour de la caisse destination
+                        */
+                        $compte_caisse_destination= Caisse::where('id',$caisse_id)->first(['compte'])->compte;
+                        $compte=$compte_caisse_destination+$operation->montant_operation;
+                        $caisse_provenance=Caisse::where('id',$operation->caisse_id)->first();
+
+                        $caisse=Caisse::find($caisse_id);
+
+                        MouvementCaisse::create([
+                            'caisse_id'=>$caisse_id,
+                            'user_id'=>$user_id,
+                            'description'=>'Attribution de la caisse'. $caisse_provenance->libelle,
+                            'entree'=>$montant_operation,
+                            'solde'=>$compte,
+                            'date_comptable'=>$date_comptable,
+
+                        ]);
+
+                        $caisse->update([
+                            'compte'=>$compte,
+                        ]);
+
+                        return redirect('/caisse/encaissement')->with('success',"Operation effectuée avec succès ");
+
+
+                        }else{
+                            return redirect('/caisse/encaissement')->with('danger',"La caisse qui doit receptionner le montant n'est pas ouverte ");
+                        }
+
+                    }else{
+                        return redirect('/caisse/encaissement')->with('danger',"Le montant de la caisse qui a attribuée est insuffisant ");
+                    }
+
+                }else{
+                    return redirect('/caisse/encaissement')->with('danger',"La caisse qui a attribuée le montant n'est pas ouverte ");
+                }
+        }
+
+
     }
 
     public function operation()

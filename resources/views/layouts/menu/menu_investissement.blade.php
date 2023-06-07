@@ -164,7 +164,7 @@
         </a>
       </li>
       <li>
-        <a href="{{route('operation')}}">
+        <a href="{{route('caisse.encaissement')}}">
           <i class="bi bi-circle"></i><span>Encaissement</span>
         </a>
       </li>
