@@ -14,7 +14,7 @@ class DetailActiviteInvestissement extends Model
         'activite_investissement_id',
         'investisseur_id',
         'montant_investis',
-        'benefice',
+        'taux',
     ];
 
 

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('montant_min');
             $table->string('montant_max');
             $table->string('compte')->default('0');
+            $table->date('compte_dividende_societe')->nullable();
             $table->date('date_comptable')->nullable();
             $table->string('devise_id')->default('0');
             $table->string('user_id')->default('0');

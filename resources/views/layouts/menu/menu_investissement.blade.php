@@ -114,6 +114,11 @@
         </a>
       </li>
       <li>
+        <a href="{{ route('d_retrait') }}">
+          <i class="bi bi-circle"></i><span> Retrait dividende </span>
+        </a>
+      </li>
+      <li>
         <a href="{{ route('investisseur.consultation') }}">
           <i class="bi bi-circle"></i><span> Consulter compte  </span>
         </a>
@@ -154,13 +159,18 @@
     </a>
     <ul id="tables-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
       <li>
+        <a href="{{route('caisse.attribution')}}">
+          <i class="bi bi-circle"></i><span>Operation attribution caisse</span>
+        </a>
+      </li>
+      <li>
         <a href="{{route('operation')}}">
-          <i class="bi bi-circle"></i><span>Approvisionnement caisse</span>
+          <i class="bi bi-circle"></i><span>Encaissement</span>
         </a>
       </li>
       <li>
         <a href="tables-data.html">
-          <i class="bi bi-circle"></i><span>Attribution caisse</span>
+          <i class="bi bi-circle"></i><span>Operation charge</span>
         </a>
       </li>
       {{-- <li>
@@ -175,56 +185,13 @@
       </li> --}}
     </ul>
   </li><!-- End Tables Nav -->
-
-  {{-- <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-bar-chart"></i><span>Rapport</span><i class="bi bi-chevron-down ms-auto"></i>
-    </a>
-    <ul id="charts-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
-
-      <li>
-        <a href="charts-apexcharts.html">
-          <i class="bi bi-circle"></i><span>Situation stock</span>
-        </a>
-      </li>
-      <li>
-        <a href="charts-echarts.html">
-          <i class="bi bi-circle"></i><span>Situation compte depot</span>
-        </a>
-      </li>
-      <li>
-        <a href="">
-          <i class="bi bi-circle"></i><span>Rapport vente</span>
-        </a>
-      </li>
-      <li>
-        <a href="">
-          <i class="bi bi-circle"></i><span>Rapport achat</span>
-        </a>
-      </li>
-      <li>
-        <a href="icons-boxicons.html">
-          <i class="bi bi-circle"></i><span>Rapport caisse</span>
-        </a>
-      </li>
-      <li>
-        <a href="{{ route('client') }}">
-          <i class="bi bi-circle"></i><span>Rapport client</span>
-        </a>
-      </li>
-    </ul>
-  </li><!-- End Charts Nav --> --}}
-
-
   <li class="nav-heading">Tiers</li>
-
   <!--li class="nav-item">
     <a class="nav-link collapsed" href="{{ route('client') }}">
       <i class="bi bi-people"></i>
       <span>Client</span>
     </a>
   </li--><!-- End client Page Nav -->
-
   <li class="nav-item">
     <a class="nav-link collapsed" href="{{ route('profile') }}">
       <i class="bi bi-person-square"></i>

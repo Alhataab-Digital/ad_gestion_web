@@ -25,8 +25,13 @@
         @if(isset(Auth::user()->agence->nom))
         @if(App\Models\Caisse::where('user_id',Auth::user()->id)->where('etat',1)->first(['id']) )
 
-        <div style="text-transform: uppercase"> {{ Auth::user()->agence->nom }} : {{ Auth::user()->agence->region->nom }}</div>
-        <div>{{ App\Models\Caisse::where('user_id',Auth::user()->id)->first(['libelle'])->libelle; }} : <strong>{{ number_format(App\Models\Caisse::where('user_id',Auth::user()->id)->first(['compte'])->compte,2,","," ") }} {{ Auth::user()->agence->devise->unite; }}</strong></div>
+        <div style="text-transform: uppercase"> {{ Auth::user()->agence->nom }} :
+            {{ Auth::user()->agence->region->nom }}
+        </div>
+        <div>{{ App\Models\Caisse::where('user_id',Auth::user()->id)->first(['libelle'])->libelle; }} :
+            <strong>{{ number_format(App\Models\Caisse::where('user_id',Auth::user()->id)->first(['compte'])->compte,2,","," ") }} {{ Auth::user()->agence->devise->unite; }}</strong>
+        </div>
+
 
         @endif
         @endif

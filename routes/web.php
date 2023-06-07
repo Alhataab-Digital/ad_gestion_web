@@ -32,7 +32,9 @@ use App\Http\Controllers\Cash\RetraitController;
 use App\Http\Controllers\Investissement\InvestisseurController;
 use App\Http\Controllers\Investissement\VersementInvestisseurController;
 use App\Http\Controllers\Investissement\RetraitInvestisseurController;
+use App\Http\Controllers\Investissement\RetraitDividendeController;
 use App\Http\Controllers\Investissement\ActiviteInvestissementController;
+use App\Http\Controllers\Investissement\DetailActiviteInvestissementController;
 use App\Http\Controllers\Investissement\TypeActiviteInvestissementController;
 
 
@@ -127,6 +129,14 @@ Route::middleware('auth')->controller(CaisseController::class)->group(function()
 
     Route::get('/caisse/operation','operation')->name('caisse.operation');
     Route::post('/caisse/{id}/ouverture','ouverture')->name('caisse.ouverture');
+    Route::post('/caisse/{id}/fermeture','fermeture')->name('caisse.fermeture');
+
+    Route::get('/caisse/attribution','attribution')->name('caisse.attribution');
+    Route::get('/caisse/encaissement','encaissement')->name('caisse.encaissement');
+
+    Route::post('/caisse/attribution_valider','attribution_valider')->name('caisse.attribution_valider');
+    Route::get('/caisse/{id}/encaissement_valider','encaissement_valider')->name('caisse.encaissement_valider');
+
     Route::post('/caisse/{id}/fermeture','fermeture')->name('caisse.fermeture');
 
     Route::get('/caisse/rapport','rapport_caisse')->name('caisse.rapport');
@@ -320,6 +330,19 @@ Route::middleware('auth')->controller(RetraitInvestisseurController::class)->gro
 
 });
 
+Route::middleware('auth')->controller(RetraitDividendeController::class)->group(function(){
+
+    Route::get('/d_retrait','index')->name('d_retrait');
+    Route::post('/d_retrait/versement','retrait')->name('d_retrait.retrait');
+    Route::post('/d_retrait/{id}/operation','operation')->name('d_retrait.operation');
+    Route::post('/creer/{id}/d_retrait','store')->name('d_retrait.store');
+    Route::get('/d_retrait/{id}/show','show')->name('d_retrait.show');
+    Route::get('/d_retrait/{id}/edit','edit')->name('d_retrait.edit');
+    Route::post('/d_retrait/{id}/update','update')->name('d_retrait.update');
+    Route::get('/d_retrait/{id}/print','print')->name('d_retrait.print');
+
+});
+
 Route::middleware('auth')->controller(TypeActiviteInvestissementController::class)->group(function(){
 
     Route::get('/type_activite_investissement','index')->name('type_activite_investissement');
@@ -338,13 +361,27 @@ Route::middleware('auth')->controller(ActiviteInvestissementController::class)->
     Route::get('/activite_investissement/valider','valider')->name('activite_investissement.valider');
     Route::get('/activite_investissement/terminer','terminer')->name('activite_investissement.terminer');
     Route::get('/{id}/activite_investissement/repartition','repartition')->name('activite_investissement.repartition');
-    Route::post('/{id}/activite_investissement/repartie','repartie')->name('activite_investissement.repartie');
+    Route::post('/activite_investissement/repartie','repartie')->name('activite_investissement.repartie');
     Route::get('/activite_investissement/create','create')->name('activite_investissement.create');
     Route::post('/activite_investissement/store','store')->name('activite_investissement.store');
     Route::get('/activite_investissement/{id}/show','show')->name('activite_investissement.show');
     Route::get('/activite_investissement/{id}/edit','edit')->name('activite_investissement.edit');
     Route::post('/activite_investissement/{id}/update','update')->name('activite_investissement.update');
+    Route::get('/activite_investissement/{id}/destroy','destroy')->name('activite_investissement.delete');
     Route::get('/activite_investissement/{id}/print','print')->name('activite_investissement.print');
+
+});
+
+Route::middleware('auth')->controller(DetailActiviteInvestissementController::class)->group(function(){
+
+    Route::get('/detail_activite_investissement','index')->name('detail_activite_investissement');
+    Route::get('/detail_activite_investissement/create','create')->name('detail_activite_investissement.create');
+    Route::post('/detail_activite_investissement/store','store')->name('detail_activite_investissement.store');
+    Route::get('/detail_activite_investissement/{id}/show','show')->name('detail_activite_investissement.show');
+    Route::get('/detail_activite_investissement/{id}/edit','edit')->name('detail_activite_investissement.edit');
+    Route::post('/detail_activite_investissement/{id}/update','update')->name('detail_activite_investissement.update');
+    Route::get('/detail_activite_investissement/{id}/destroy','destroy')->name('detail_activite_investissement.delete');
+    Route::get('/detail_activite_investissement/{id}/print','print')->name('detail_activite_investissement.print');
 
 });
 

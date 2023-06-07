@@ -91,9 +91,10 @@ class ActiviteInvestissementController extends Controller
         */
        $request->validate([
         'type_activite'=>'required',
-        // 'montant_decaisser'=>'required',
+        'montant_decaisser'=>'required',
         'commentaire'=>'required',
     ]);
+
     /**
      * donnee a ajouté dans la table
      */
@@ -110,49 +111,31 @@ class ActiviteInvestissementController extends Controller
 
 
 
-            $compte_caisse= Caisse::where('user_id',$id)->first(['compte'])->compte;
-            $date_comptable= Caisse::where('user_id',$id)->first(['date_comptable'])->date_comptable;
+                $compte_caisse= Caisse::where('user_id',$id)->first(['compte'])->compte;
+                $capital_investisseur=Investisseur::where('etat','1')->selectRaw('sum(compte_investisseur) as total')->first('total');
+                $date_comptable= Caisse::where('user_id',$id)->first(['date_comptable'])->date_comptable;
+                if($capital_investisseur< $data['montant_decaisser'])  {
 
-            /**
-             * insertion des données dans la table user
-             */
+                } else{
+                    /**
+                     * insertion des données dans la table user
+                     */
                     ActiviteInvestissement::create([
                         'type_activite_id'=>$data['type_activite'],
-                        // 'capital_activite'=>$compte_caisse,
-                        // 'montant_decaisse'=>$data['montant_decaisser'],
+                        'capital_activite'=>$capital_investisseur->total,
+                        'montant_decaisse'=>$data['montant_decaisser'],
                         'commentaire'=>$data['commentaire'],
                         'user_id'=>$id,
                         'caisse_id'=>$caisse_id,
                         'agence_id'=>$agence_id,
                         'date_comptable'=>$date_comptable,
                     ]);
-                // /**
-                //  * mise a jour de la caisse
-                //  */
 
-                // $compte=$compte_caisse-$montant_operation;
-
-                // $caisse=Caisse::find($caisse_id);
-
-                // $user_id=Auth::user()->id;
-
-                // MouvementCaisse::create([
-                //     'caisse_id'=>$caisse->id,
-                //     'user_id'=>$user_id,
-                //     'description'=>'Budget decaisser pour investissement',
-                //     'sortie'=>$montant_operation,
-                //     'solde'=>$compte,
-                //     'date_comptable'=>$date_comptable,
-
-                // ]);
-
-
-                // $caisse->update([
-                //     'compte'=>$compte,
-                // ]);
                 $activite_id=ActiviteInvestissement::where('user_id',$id)->latest('id')->first();
 
                     return redirect('/'.$activite_id->id.'/activite_investissement/repartition');
+                }
+
 
         }
         return view('devise.message');
@@ -189,6 +172,7 @@ class ActiviteInvestissementController extends Controller
                 $agence_id=Auth::user()->agence_id;
                 $agence=Agence::find( $agence_id);
             $activite=ActiviteInvestissement::find($id);
+
             return view('investissement.benefice_investissement', compact('activite','caisse'));
 
     }
@@ -228,96 +212,94 @@ class ActiviteInvestissementController extends Controller
 
     public function repartition($id)
     {
+
         $activite_investissement=ActiviteInvestissement::find($id);
 
+        $investisseurs=Investisseur::where('compte_investisseur','>','0')->where('etat','1')->get();
 
-
-            /**
-         * total benefice activite
-         */
-        $total_benefice_activite=$activite_investissement->montant_benefice;
-
-        /**
-         * partage dividende activite entre investisseur et entreprise
-         */
-        $dividende_entreprise=$dividende_investisseur=round($total_benefice_activite/2);
-        $capital_activite_encours=ActiviteInvestissement::where('etat_activite','en cours')->where('date_comptable','<=',$activite_investissement->date_comptable)->sum('capital_activite');
-        /**
-         * total investissement
-         */
-        $vi_investisseur=OperationInvestisseur::where('sens_operation','entree')->where('date_comptable','<=',$activite_investissement->date_comptable)->sum('montant_operation');
-        /**
-         * liste investisseur
-         */
-        // $investisseurs= OperationInvestisseur::where('etat','1')->where('compte_investisseur','!=','0')->where('date_creation','<=',$activite_investissement->date_comptable)->get();
-        $investisseurs=OperationInvestisseur::where('sens_operation','entree')->where('date_comptable','<=',$activite_investissement->date_comptable)->get();
-
-        // foreach($investisseurs as $investisseur){
-
-        //     $taux=(($investisseur->montant_operation));
-
-        //     dd($taux);
-
-        // }
         return view('investissement.activite_investissement_repartition', compact(
         'investisseurs',
-        'vi_investisseur',
         'activite_investissement',
-        'capital_activite_encours',
     ));
 
 
 
     }
 
-    public function repartie(Request $request, string $id)
+    public function repartie(Request $request)
     {
-        // dd($request->montant);
-        // dd($request->benefice);
-        // dd($request->dividende_e);
-        // dd($request->dividende_i);
-        // dd(
-        // $request->investisseur,
-        // $request->compte,
-        // $request->dividende);
-        // dd($request->compte);
-        // dd($request->dividende);
-        $activite_investissement=ActiviteInvestissement::find($id);
+        $id=Auth::user()->id;
+        $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
+
+            $compte_caisse= Caisse::where('user_id',$id)->first(['compte'])->compte;
+            $compte_dividende_societe= Caisse::where('user_id',$id)->first(['compte_dividende_societe'])->compte_dividende_societe;
+            $date_comptable= Caisse::where('user_id',$id)->first(['date_comptable'])->date_comptable;
+
+        $activite_investissement=ActiviteInvestissement::find($request->activite_id);
 
         if($activite_investissement->etat_activite=='valider'){
 
-            $investisseur_id   =$request->investisseur;
-            $activite       =$request->activite;
-            $montant_investis  = $request->compte;
-            $dividende_gagner  =$request->dividende;
+            $dividende_entreprise=($request->montant_benefice/2);
+            $dividende_investisseur=($request->montant_benefice/2);
 
-
-            BeneficeActivite::create([
-                'couts_activite'        =>$request->montant,
-                'benefice_activite'     =>$request->benefice,
-                'benefice_entreprise'   =>$request->dividende_e,
-                'benefice_investisseur' =>$request->dividende_i,
-                'activite_id'           =>$request->activite_id,
-                'date_operation'        =>date("Y-m-d"),
-
-            ]);
-            for($i=0;$i<count($investisseur_id); $i++)
+            for($i=0;$i<count($request->investisseur_id); $i++)
             {
 
-                $data=[
+                 $investisseurs=Investisseur::where('id',$request->investisseur_id[$i])->get();
 
-                    'activite_id'       =>$activite[0],
-                    'investisseur_id'   =>$investisseur_id[$i],
-                    'montant_investis'  =>$montant_investis[$i],
-                    'dividende_gagner'  =>$dividende_gagner[$i],
-                ];
-                RepartitionDividende::create($data);
+                foreach( $investisseurs as  $investisseur){
 
+                    $investisseur_id   =$request->investisseur_id[$i];
+                    $montant_investis  = $request->montant_investis[$i]+$investisseur->compte_investisseur;
+                    $dividende_gagner  =(($request->taux[$i])*$dividende_investisseur)+$investisseur->compte_dividende;
+
+                //     dd(
+                // $investisseur_id,
+                // $montant_investis,
+                // $dividende_investisseur,
+                // $dividende_gagner,
+                // $request->taux,);
+
+                        $data=[
+                            'compte_dividende'   =>$dividende_gagner,
+                            'compte_investisseur'  =>$montant_investis,
+                        ];
+
+                        Investisseur::where('id',$request->investisseur_id[$i])->update($data);
+
+                }
             }
 
             $activite_investissement->update([
                 'etat_activite'=>'terminer',
             ]);
+             /**
+                 * mise a jour de la caisse
+                */
+                $montant_operation=$request->dividende_entreprise+$request->montant_activite;
+
+                $compte=$compte_caisse+$request->montant_activite;
+
+                $compte_dividende_entreprise=$compte_dividende_societe+$dividende_entreprise;
+
+                $caisse=Caisse::find($caisse_id);
+
+                $user_id=Auth::user()->id;
+
+                MouvementCaisse::create([
+                    'caisse_id'=>$caisse->id,
+                    'user_id'=>$user_id,
+                    'description'=>'Cloture de l\'activite N° '. $activite_investissement->id,
+                    'entree'=>$montant_operation,
+                    'solde'=>$compte,
+                    'date_comptable'=>$date_comptable,
+
+                ]);
+
+                $caisse->update([
+                    'compte'=>$compte,
+                    'compte_dividende_societe'=>$compte_dividende_entreprise,
+                ]);
 
             return redirect('/activite_investissement/valider');
          } else{

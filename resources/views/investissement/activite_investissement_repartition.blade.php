@@ -6,7 +6,7 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>REPARTISSION DIVIDENTE SUR L'ACTIVITE {{ $activite_investissement->type_activite->type_activite }}</h1>
+      <h1>ACTIVITE INVESTISSEMENT POUR {{ $activite_investissement->type_activite->type_activite }}</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="">Accueil</a></li>
@@ -16,7 +16,7 @@
       </nav>
     </div><!-- End Page Title -->
     <section class="section">
-    <form method="post" action="{{ route('activite_investissement.repartie',$activite_investissement->id) }}">
+    <form method="post" action="{{ route('detail_activite_investissement.store') }}">
         @csrf
         <div class="row">
 
@@ -28,7 +28,10 @@
                   <div class="card-body">
                     <h5 class="card-title">
                        <div class="col-sm-12">
-                                <button type="submit" class="btn btn-success">Confirmer</button>
+                                <button type="submit" class="btn btn-success">Valider</button>
+                                <a href="{{ route('activite_investissement.delete',$activite_investissement->id) }}">
+                                    <button type="button" class="btn btn-danger">Supprimer</button>
+                                </a>
                                 <a href="{{ route('activite_investissement.valider') }}">
                                     <button type="button" class="btn btn-secondary">Quitter</button>
                                 </a>
@@ -55,17 +58,20 @@
                         <table>
                             <tr>
                                 <th>Capital activité</th>
-                                <th>Montant activite</th>
+                                {{-- <th>Montant benefice</th> --}}
                             </tr>
                             <tr>
-                              <td>
-                                <input type="hidden" name="activite_id" id="" value="{{ $activite_investissement->id }}">
-                                <input type="hidden" name="activite[]" id="" value="{{ $activite_investissement->id }}">
-                                <input type="text" name="montant" id="" value="{{ $activite_investissement->capital_activite }}">
-                            </td>
-                               <td>
-                                <input type="text" name="benefice" id="" value="{{ $activite_investissement->montant_decaisse }}">
-                               </td>
+                                <td>
+                                    <input class="form-control" type="text" name="montant_activite" id="" value="{{ $activite_investissement->montant_decaisse }}" readonly>
+                                </td>
+                                <td>
+                                    <input type="hidden" name="activite_id" id="" value="{{ $activite_investissement->id }}">
+                                    <input type="hidden" name="montant" id="" value="{{ $activite_investissement->capital_activite }}">
+                                </td>
+
+                               {{-- <td>
+                                <input type="text" name="montant_benefice" id="" required>
+                               </td> --}}
 
 
                         </table>
@@ -79,7 +85,8 @@
                         @endif --}}
                           <th scope="col">nom investisseur</th>
                           <th scope="col">Montant investis </th>
-                          <th scope="col">Taux par investisseur en % </th>
+                          <th scope="col">Montant restant </th>
+                          <th scope="col">Taux </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -90,22 +97,17 @@
                             <td>{{ $investisseur->id }}</td>
                             @endif --}}
                             <td scope="row">
-                                <select name="investisseur[]" id="">
-                                    <option value="{{ $investisseur->id }}">{{ $investisseur->investisseur->nom }}</option>
+                                <select class="form-select" name="investisseur_id[]" id="">
+                                    <option value="{{ $investisseur->id }}">{{ $investisseur->nom }}</option>
                                 </select></td>
                             <td scope="row">
-                                <input type="text" name="dividende[]" id="" value="{{ $investisseur->investisseur->compte_investisseur }}">
+                                <input class="form-control" type="text" name="montant_investis[]" id="" value="{{ round(($activite_investissement->montant_decaisse*$investisseur->compte_investisseur)/$activite_investissement->capital_activite) }}">
+                                <input class="form-control" type="hidden" name="montant_restant[]" id="" value="{{round($investisseur->compte_investisseur-($activite_investissement->montant_decaisse*$investisseur->compte_investisseur)/$activite_investissement->capital_activite) }}">
                             </td>
-                            @if($activite_investissement->capital_activite!=0)
                             <td scope="row">
-                                <input type="text"  id="" value="{{ (($investisseur->investisseur->compte_investisseur)/$activite_investissement->capital_activite)*100 }}">
+                                <input class="form-control" type="text"   id="" value="{{ round(($investisseur->compte_investisseur*100)/$activite_investissement->capital_activite) }} % " >
+                                <input class="form-control" type="hidden"  name="taux[]" id="" value="{{ round(($investisseur->compte_investisseur*100)/$activite_investissement->capital_activite) }} " >
                             </td>
-                            @endif
-                            @if($activite_investissement->capital_activite==0)
-                            <td scope="row">
-                                <input type="text"  id="" value="">
-                            </td>
-                            @endif
                         </tr>
 
                         @endforeach

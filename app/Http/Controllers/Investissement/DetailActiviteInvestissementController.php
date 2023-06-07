@@ -79,6 +79,7 @@ class DetailActiviteInvestissementController extends Controller
                     $investisseur_id   =$request->investisseur_id;
                     $activite       =$request->activite_id;
                     $montant_investis  = $request->montant_investis;
+                    $taux  = $request->taux;
                     $montant_restant  =$request->montant_restant;
                     // dd($activite );
                     for($i=0;$i<count($investisseur_id); $i++)
@@ -89,6 +90,7 @@ class DetailActiviteInvestissementController extends Controller
                             'activite_investissement_id'   =>$activite,
                             'investisseur_id'              =>$investisseur_id[$i],
                             'montant_investis'             =>$montant_investis[$i],
+                            'taux'                         =>$taux[$i],
                         ];
 
                         DetailActiviteInvestissement::create($data);
@@ -166,7 +168,7 @@ class DetailActiviteInvestissementController extends Controller
          * liste investisseur
          */
         // $investisseurs= OperationInvestisseur::where('etat','1')->where('compte_investisseur','!=','0')->where('date_creation','<=',$activite_investissement->date_comptable)->get();
-        $investisseurs=Investisseur::where('etat','1')->where('compte_investisseur','!=','0')->get();
+        $detail_activite_investissements=DetailActiviteInvestissement::where('activite_investissement_id',$id)->get();
 
         // foreach($investisseurs as $investisseur){
 
@@ -176,7 +178,7 @@ class DetailActiviteInvestissementController extends Controller
 
         // }
         return view('investissement.detail_activite_investissement', compact('activite_investissement',
-        'caisse','investisseurs',
+        'caisse','detail_activite_investissements',
     ));
     }
 

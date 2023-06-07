@@ -16,7 +16,7 @@
       </nav>
     </div><!-- End Page Title -->
     <section class="section">
-    <form method="post" action="{{ route('detail_activite_investissement.store') }}">
+    <form method="post" action="{{ route('activite_investissement.repartie') }}">
         @csrf
         <div class="row">
 
@@ -28,14 +28,8 @@
                   <div class="card-body">
                     <h5 class="card-title">
                        <div class="col-sm-12">
-                                <button type="submit" class="btn btn-success">Valider</button>
+                                <button type="submit" class="btn btn-danger">Cloturer l'activité</button>
 
-                                <a href="{{ route('activite_investissement.delete',$activite_investissement->id) }}">
-                                    <button type="button" class="btn btn-danger">Supprimer</button>
-                                </a>
-                                {{-- <a href="{{ route('activite_investissement.update',$activite_investissement->id) }}">
-                                    <button type="button" class="btn btn-info">Modifier</button>
-                                </a> --}}
                                 <a href="{{ route('activite_investissement') }}">
                                     <button type="button" class="btn btn-secondary">Quitter</button>
                                 </a>
@@ -68,6 +62,9 @@
                                 <td>
                                     <input class="form-control" type="text" name="montant_activite" id="" value="{{ $activite_investissement->montant_decaisse }}">
                                 </td>
+                                <td>
+                                    <input class="form-control" type="text" name="montant_benefice" id="" required>
+                                </td>
                               <td>
                                 <input class="form-control"  type="hidden" name="activite_id" id="" value="{{ $activite_investissement->id }}">
                                 <input class="form-control" type="hidden" name="montant" id="" value="{{ $activite_investissement->capital_activite }}">
@@ -81,29 +78,25 @@
                     <table class="table table-borderless datatable">
                       <thead class="bg-primary text-white">
                         <tr>
-                        {{-- @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1" || Auth::user()->role_id=="2")
-                          <th scope="col">code</th>
-                        @endif --}}
+
                           <th scope="col">nom investisseur</th>
                           <th scope="col">Montant investis </th>
+                          <th scope="col">Taux </th>
                         </tr>
                       </thead>
                       <tbody>
-                        @foreach ($investisseurs as $investisseur )
+                        @foreach ($detail_activite_investissements as $detail_activite_investissement )
 
                         <tr>
-                            {{-- @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1" || Auth::user()->role_id=="2")
-                            <td>{{ $investisseur->id }}</td>
-                            @endif --}}
                             <td scope="row">
                                 <select class="form-select" name="investisseur_id[]" id="">
-                                    <option value="{{ $investisseur->id }}">{{ $investisseur->nom }}</option>
+                                    <option value="{{ $detail_activite_investissement->investisseur->id }}">{{ $detail_activite_investissement->investisseur->nom }}</option>
                                 </select></td>
                                 <td scope="row">
-                                    <input class="form-control" type="text" name="montant_investis[]" id="" value="{{round( ($investisseur->compte_investisseur*$activite_investissement->montant_decaisse)/$activite_investissement->capital_activite) }}" readonly>
+                                    <input class="form-control" type="text" name="montant_investis[]" id="" value="{{round( $detail_activite_investissement->montant_investis) }}" readonly>
                                 </td>
                                 <td scope="row">
-                                    <input class="form-control" type="hidden" name="montant_restant[]" id="" value="{{ round($investisseur->compte_investisseur-(($investisseur->compte_investisseur*$activite_investissement->montant_decaisse)/$activite_investissement->capital_activite)) }}" readonly>
+                                    <input class="form-control" type="text" name="taux[]" id="" value="{{ $detail_activite_investissement->taux/100 }} " readonly>
                                 </td>
 
                         </tr>

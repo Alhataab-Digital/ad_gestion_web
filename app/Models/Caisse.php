@@ -15,6 +15,7 @@ class Caisse extends Model
         'montant_min',
         'montant_max',
         'compte',
+        'compte_dividende_societe',
         'date_comptable',
         'devise_id',
         'user_id',

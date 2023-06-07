@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('activite_investissement_id');
             $table->string('investisseur_id');
             $table->string('montant_investis');
-            $table->string('benefice')->nullable();
+            $table->string('taux')->nullable();
             $table->timestamps();
         });
     }

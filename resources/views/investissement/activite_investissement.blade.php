@@ -69,12 +69,12 @@
                         </select>
                         </div>
                     </div>
-                    {{-- <div class="row mb-3">
+                    <div class="row mb-3">
                     <label for="inputText" class="col-sm-2 col-form-label">Budget decaisser</label>
                     <div class="col-sm-10">
                         <input type="text" name="montant_decaisser" class="form-control">
                     </div>
-                    </div> --}}
+                    </div>
                     <div class="row mb-3">
                     <label for="inputPassword" class="col-sm-2 col-form-label">commentaire </label>
                     <div class="col-sm-10">
