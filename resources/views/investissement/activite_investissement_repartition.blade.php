@@ -65,8 +65,8 @@
                                     <input class="form-control" type="text" name="montant_activite" id="" value="{{ $activite_investissement->montant_decaisse }}" readonly>
                                 </td>
                                 <td>
-                                    <input type="hidden" name="activite_id" id="" value="{{ $activite_investissement->id }}">
-                                    <input type="hidden" name="montant" id="" value="{{ $activite_investissement->capital_activite }}">
+                                    <input type="hidden" name="activite_id" id="" value="{{ $activite_investissement->id }}" readonly>
+                                    <input type="hidden" name="montant" id="" value="{{ $activite_investissement->capital_activite }}" readonly>
                                 </td>
 
                                {{-- <td>
@@ -101,11 +101,11 @@
                                     <option value="{{ $investisseur->id }}">{{ $investisseur->nom.' '.$investisseur->prenom }}</option>
                                 </select></td>
                             <td scope="row">
-                                <input class="form-control" type="text" name="montant_investis[]" id="" value="{{ round(($activite_investissement->montant_decaisse*$investisseur->compte_investisseur)/$activite_investissement->capital_activite) }}">
-                                <input class="form-control" type="hidden" name="montant_restant[]" id="" value="{{round($investisseur->compte_investisseur-($activite_investissement->montant_decaisse*$investisseur->compte_investisseur)/$activite_investissement->capital_activite) }}">
+                                <input class="form-control" type="text" name="montant_investis[]" id="" value="{{ round(($activite_investissement->montant_decaisse*$investisseur->compte_investisseur)/$activite_investissement->capital_activite) }}" readonly>
+                                <input class="form-control" type="hidden" name="montant_restant[]" id="" value="{{round($investisseur->compte_investisseur-($activite_investissement->montant_decaisse*$investisseur->compte_investisseur)/$activite_investissement->capital_activite) }}" >
                             </td>
                             <td scope="row">
-                                <input class="form-control" type="text"   id="" value="{{ round(($investisseur->compte_investisseur*100)/$activite_investissement->capital_activite) }} % " >
+                                <input class="form-control" type="text"   id="" value="{{ round(($investisseur->compte_investisseur*100)/$activite_investissement->capital_activite) }} % " readonly>
                                 <input class="form-control" type="hidden"  name="taux[]" id="" value="{{ round(($investisseur->compte_investisseur*100)/$activite_investissement->capital_activite) }} " >
                             </td>
                         </tr>

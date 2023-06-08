@@ -85,8 +85,8 @@
               <thead class="bg-primary ">
                 <tr>
                   {{-- <th scope="col">#</th> --}}
-                  <th scope="col">dividende</th>
-                  <th scope="col">Tel dividende</th>
+                  <th scope="col">Investisseur</th>
+                  <th scope="col">Tel investisseur</th>
                   <th scope="col">agent caisse</th>
                   <th scope="col">sens</th>
                   <th scope="col">reglement </th>

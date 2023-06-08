@@ -57,17 +57,18 @@
                             <tr>
                                 {{-- <th>Capital activité</th> --}}
                                 <th>Montant activite</th>
+                                <th>Saisie Benefice total</th>
                             </tr>
                             <tr>
                                 <td>
-                                    <input class="form-control" type="text" name="montant_activite" id="" value="{{ $activite_investissement->montant_decaisse }}">
+                                    <input class="form-control" type="text" name="montant_activite" id="" value="{{ $activite_investissement->montant_decaisse }}" readonly>
                                 </td>
                                 <td>
                                     <input class="form-control" type="text" name="montant_benefice" id="" required>
                                 </td>
                               <td>
-                                <input class="form-control"  type="hidden" name="activite_id" id="" value="{{ $activite_investissement->id }}">
-                                <input class="form-control" type="hidden" name="montant" id="" value="{{ $activite_investissement->capital_activite }}">
+                                <input class="form-control"  type="hidden" name="activite_id" id="" value="{{ $activite_investissement->id }}" readonly>
+                                <input class="form-control" type="hidden" name="montant" id="" value="{{ $activite_investissement->capital_activite }}" readonly>
                             </td>
 
 
@@ -90,7 +91,7 @@
                         <tr>
                             <td scope="row">
                                 <select class="form-select" name="investisseur_id[]" id="">
-                                    <option value="{{ $detail_activite_investissement->investisseur->id }}">{{ $detail_activite_investissement->investisseur->nom }}</option>
+                                    <option value="{{ $detail_activite_investissement->investisseur->id }}">{{ $detail_activite_investissement->investisseur->nom .' '.$detail_activite_investissement->investisseur->prenom }}</option>
                                 </select></td>
                                 <td scope="row">
                                     <input class="form-control" type="text" name="montant_investis[]" id="" value="{{round( $detail_activite_investissement->montant_investis) }}" readonly>
