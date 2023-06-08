@@ -29,9 +29,9 @@
             <strong>{{ number_format(App\Models\Caisse::where('user_id',Auth::user()->id)->first(['compte'])->compte,2,","," ") }} {{ Auth::user()->agence->devise->unite; }}</strong>
         </div>
         @if(App\Models\Caisse::where('user_id',Auth::user()->id)->where('etat',1)->where('compte_dividende_societe','!=','0')->first(['id']) )
-        <div>Dividende Societe :
+        {{-- <div>Dividende Societe :
             <strong>{{ number_format(App\Models\Caisse::where('user_id',Auth::user()->id)->first(['compte_dividende_societe'])->compte_dividende_societe,2,","," ") }} {{ Auth::user()->agence->devise->unite; }}</strong>
-        </div>
+        </div> --}}
         @endif
 
         @endif

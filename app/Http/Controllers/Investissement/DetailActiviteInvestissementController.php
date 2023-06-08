@@ -56,7 +56,7 @@ class DetailActiviteInvestissementController extends Controller
         // dd($request->investisseur_id);
         $id=Auth::user()->id;
 
-        if(isset(Caisse::where('user_id',$id)->first(['id'])->id)){
+        if(Caisse::where('user_id',$id)->first(['id'])->id){
 
                 $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
                 $caisse=Caisse::find($caisse_id);
@@ -68,7 +68,7 @@ class DetailActiviteInvestissementController extends Controller
                 $compte_caisse= Caisse::where('user_id',$id)->first(['compte'])->compte;
                 $date_comptable= Caisse::where('user_id',$id)->first(['date_comptable'])->date_comptable;
                 $montant_operation=$request->montant_activite;
-            if($compte_caisse<$montant_operation){
+            if( $compte_caisse < $montant_operation){
                 return redirect('activite_investissement/create',)->with('danger','Le montant prevus pour l\'activite est superieur au montant capital !');
             }else{
 
@@ -114,7 +114,7 @@ class DetailActiviteInvestissementController extends Controller
                  * mise a jour de la caisse
                 */
 
-                    $compte=$compte_caisse-$montant_operation;
+                    $compte=($compte_caisse)-($montant_operation);
 
                     $caisse=Caisse::find($caisse_id);
 

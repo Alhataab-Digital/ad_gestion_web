@@ -6,7 +6,7 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>ACTIVITE INVESTISSEMENT POUR {{ $activite_investissement->type_activite->type_activite }}</h1>
+      <h1>Activité N° {{ $activite_investissement->id }} : {{ $activite_investissement->type_activite->type_activite }}</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="">Accueil</a></li>
@@ -98,7 +98,7 @@
                             @endif --}}
                             <td scope="row">
                                 <select class="form-select" name="investisseur_id[]" id="">
-                                    <option value="{{ $investisseur->id }}">{{ $investisseur->nom }}</option>
+                                    <option value="{{ $investisseur->id }}">{{ $investisseur->nom.' '.$investisseur->prenom }}</option>
                                 </select></td>
                             <td scope="row">
                                 <input class="form-control" type="text" name="montant_investis[]" id="" value="{{ round(($activite_investissement->montant_decaisse*$investisseur->compte_investisseur)/$activite_investissement->capital_activite) }}">

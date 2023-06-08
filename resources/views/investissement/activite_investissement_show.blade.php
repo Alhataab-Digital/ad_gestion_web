@@ -6,7 +6,7 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>REPARTISSION DIVIDENTE SUR L'ACTIVITE {{ $activite_investissement->type_activite->type_activite }}</h1>
+      <h1>Activité N° {{ $activite_investissement->id }} : {{ $activite_investissement->type_activite->type_activite }}</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="">Accueil</a></li>
@@ -16,15 +16,13 @@
       </nav>
     </div><!-- End Page Title -->
     <section class="section">
-    <form method="post" action="{{ route('activite_investissement.repartie',$activite_investissement->id) }}">
+    <form method="post" >
         @csrf
         <div class="row">
 
             <div class="col-lg-12">
 
                 <div class="card recent-sales overflow-auto">
-
-
                   <div class="card-body">
                     <h5 class="card-title">
                        <div class="col-sm-12">
@@ -39,22 +37,22 @@
                             <tr>
                                 <th>Montant activite</th>
                                 <th>Benefice activite</th>
-                                <th>Dividende Entreprise</th>
-                                <th>Dividende Investisseur</th>
+                                <th>Dividende societe</th>
+                                <th>Dividende investisseurs</th>
                             </tr>
                             <tr>
                               <td>
-                               <input type="text" name="montant" id="" value="{{ $benefice_activite->couts_activite }}">
+                               <input type="text" class="form-control" name="montant" id="" value="{{ number_format($activite_investissement->montant_decaisse,2,","," ") }}">
                             </td>
-                               <td>
-                                <input type="text" name="benefice" id="" value="{{ $benefice_activite->benefice_activite }}">
+                            <td>
+                                <input type="text" class="form-control" name="benefice" id="" value="{{ number_format($activite_investissement->montant_benefice,2,","," ") }}">
                                </td>
                                <td>
-                                <input type="text" name="dividende_e" id="" value="{{ $benefice_activite->benefice_entreprise}}">
-                                </td>
-                                <td>
-                                    <input type="text" name="dividende_i" id="" value="{{ $benefice_activite->benefice_investisseur}}">
-                                </td>
+                                <input type="text" class="form-control" name="benefice" id="" value="{{ number_format(($activite_investissement->montant_benefice)/2 ,2,","," ") }}">
+                               </td>
+                               <td>
+                                <input type="text" class="form-control" name="benefice" id="" value="{{ number_format(($activite_investissement->montant_benefice)/2,2,","," ") }}">
+                               </td>
 
                         </table>
                     </h5>
@@ -71,22 +69,25 @@
                         </tr>
                       </thead>
                       <tbody>
-                        @foreach ($dividendes as $dividende )
+                        @foreach ($detail_activite_investissements as $detail_activite_investissement )
 
                         <tr>
                             {{-- @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1" || Auth::user()->role_id=="2")
                             <td>{{ $investisseur->id }}</td>
                             @endif --}}
                             <td scope="row">
-                                <select name="investisseur[]" id="">
-                                    <option value="">{{ $dividende->investisseur->nom }}</option>
+                                <select class="form-select" name="investisseur[]" id="">
+                                    <option value="">{{ $detail_activite_investissement->investisseur->nom.' '.$detail_activite_investissement->investisseur->prenom }}</option>
                                 </select></td>
                             <td scope="row">
-                                <input type="text"  id="" value="{{ number_format($dividende->montant_investis,2,","," ")}}">
+                                <input class="form-control" type="text"  id="" value="{{ number_format($detail_activite_investissement->montant_investis,2,","," ")}}">
                             </td>
                             <td scope="row">
-                                <input type="text"  id="" value="{{  number_format(($dividende->dividende_gagner),2,","," ") }}">
+                                <input class="form-control" type="text"  id="" value="{{  number_format(((($detail_activite_investissement->taux)/100)*($activite_investissement->montant_benefice/2)),2,","," ") }}">
                             </td>
+                            {{-- <td scope="row">
+                                <input type="text"  id="" value="{{  number_format(($detail_activite_investissement->taux),2,","," ") }}">
+                            </td> --}}
 
                         </tr>
 

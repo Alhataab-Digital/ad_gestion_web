@@ -15,6 +15,7 @@ use App\Models\Investisseur;
 use App\Models\TypeActiviteInvestissement;
 use App\Models\MouvementCaisse;
 use App\Models\ActiviteInvestissement;
+use App\Models\DetailActiviteInvestissement;
 use App\Models\BeneficeActivite;
 use App\Models\RepartitionDividende;
 use App\Models\OperationInvestisseur;
@@ -91,7 +92,7 @@ class ActiviteInvestissementController extends Controller
         */
        $request->validate([
         'type_activite'=>'required',
-        'montant_decaisser'=>'required',
+        'montant_decaisse'=>'required',
         'commentaire'=>'required',
     ]);
 
@@ -115,13 +116,13 @@ class ActiviteInvestissementController extends Controller
                 $capital_investisseur=Investisseur::where('etat','1')->selectRaw('sum(compte_investisseur) as total')->first('total');
                 $date_comptable= Caisse::where('user_id',$id)->first(['date_comptable'])->date_comptable;
 
-                if($capital_investisseur->total < $data['montant_decaisser'])  {
+                if($capital_investisseur->total < $data['montant_decaisse'])  {
 
-                    return redirect('/activite_investissement/create',)->with('danger','Le montant capital inferieur au montant investis ');
+                    return redirect('/activite_investissement/create',)->with('danger','Le montant de l\'activité est supperieur au capital investis ');
 
                 } else{
 
-                    if($data['montant_decaisser'] > $compte_caisse)  {
+                    if($data['montant_decaisse'] > $compte_caisse)  {
 
                         return redirect('/activite_investissement/create',)->with('danger','Le montant caisse insuffisant ');
 
@@ -132,7 +133,7 @@ class ActiviteInvestissementController extends Controller
                     ActiviteInvestissement::create([
                         'type_activite_id'=>$data['type_activite'],
                         'capital_activite'=>$capital_investisseur->total,
-                        'montant_decaisse'=>$data['montant_decaisser'],
+                        'montant_decaisse'=>$data['montant_decaisse'],
                         'commentaire'=>$data['commentaire'],
                         'user_id'=>$id,
                         'caisse_id'=>$caisse_id,
@@ -157,17 +158,13 @@ class ActiviteInvestissementController extends Controller
     public function show(string $id)
     {
         //
-        $user_id=Auth::user()->id;
-            $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
-                $caisse=Caisse::find($caisse_id);
-                $agence_id=Auth::user()->agence_id;
-                $agence=Agence::find( $agence_id);
-            $activite_investissement=ActiviteInvestissement::find($id);
-            $benefice_activite=BeneficeActivite::where('activite_id',$activite_investissement->id)->first();
-            $dividendes=RepartitionDividende::where('activite_id',$activite_investissement->id)->get();
-            return view('investissement.activite_investissement_show', compact('activite_investissement',
-            'caisse','benefice_activite',
-            'dividendes'
+        $activite_investissement=ActiviteInvestissement::find($id);
+
+        $detail_activite_investissements=DetailActiviteInvestissement::where('activite_investissement_id',$activite_investissement->id)->get();
+
+            return view('investissement.activite_investissement_show', compact(
+                'detail_activite_investissements',
+                'activite_investissement',
         ));
     }
 
@@ -287,13 +284,14 @@ class ActiviteInvestissementController extends Controller
 
             $activite_investissement->update([
                 'etat_activite'=>'terminer',
+                'montant_benefice'=>$request->montant_benefice,
             ]);
              /**
                  * mise a jour de la caisse
                 */
-                $montant_operation=$request->dividende_entreprise+$request->montant_activite;
+                $montant_operation=$request->montant_benefice+$request->montant_activite;
 
-                $compte=$compte_caisse+$request->montant_activite;
+                $compte=$compte_caisse+$montant_operation;
 
                 $compte_dividende_entreprise=$compte_dividende_societe+$dividende_entreprise;
 
