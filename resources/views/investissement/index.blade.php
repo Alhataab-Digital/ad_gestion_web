@@ -36,6 +36,7 @@
                       <th scope="col">Email</th>
                       <th scope="col">Telephone</th>
                       <th scope="col">Montant investis</th>
+                      <th scope="col">Dividende</th>
                       <th scope="col">Date creation</th>
                       <th scope="col">heritier</th>
                       <th scope="col">status</th>
@@ -54,6 +55,7 @@
                         <td>{{ $investisseur->telephone }}</td>
                         @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1" || Auth::user()->role_id=="2")
                         <td>{{ $investisseur->compte_investisseur }}</td>
+                        <td>{{ $investisseur->compte_dividende }}</td>
                         <td>{{ $investisseur->date_creation }}</td>
                         @endif
                         <td>{{ $investisseur->heritier }}</td>

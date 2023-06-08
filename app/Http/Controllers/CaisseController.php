@@ -119,7 +119,11 @@ class CaisseController extends Controller
             $agence_id=Auth::user()->agence_id;
 
             $caisse_destinations=Caisse::where('user_id','!=',$user_id)->where('agence_id',$agence_id)->get();
-        return view('caisse.attribution', compact('caisse_destinations',));
+
+            $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
+            $operations=OperationInterCaisse::where('caisse_id',$caisse_id)->where('etat',NULL)->get();
+
+        return view('caisse.attribution', compact('caisse_destinations','operations'));
     }
 
     public function attribution_valider( Request $request)
@@ -188,15 +192,18 @@ class CaisseController extends Controller
                  * on verifie si la de emmetrice est ouverte
                  */
 
-                if(Caisse::where('id',$operation->caisse_id)->where('etat',1)->first()){
+                if(isset(Caisse::where('id',$operation->caisse_id)->where('etat',1)->first(['id'])->id)){
                     /**
                      * on verifier si le montant de la caisse emttrice est suffissant
                      */
-                    if(Caisse::where('id',$operation->caisse_id)->where('compte','>=',$operation->montant_operation)->first()){
+
+                    $compte_caisse_emettrice=Caisse::where('id',$operation->caisse_id)->first();
+
+                    if($compte_caisse_emettrice->compte >= $montant_operation){
                         /**
                          * on verifie si la caisse receptionniste est ouverte
                          */
-                        if(Caisse::where('id',$caisse_id)->where('etat',1)->first()){
+                        if(isset(Caisse::where('id',$caisse_id)->where('etat',1)->first(['id'])->id)){
                             /**
                              * mise jour de l'operation
                              */

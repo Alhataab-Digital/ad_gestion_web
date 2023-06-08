@@ -17,7 +17,7 @@
 
     <section class="section">
       <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-6">
 
           <div class="card">
             <div class="card-body">
@@ -43,8 +43,8 @@
               <!-- General Form Elements -->
               <form  method="post" action="{{ route('caisse.attribution.valider') }}">
                 @csrf
-                <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label">Caisse Destination</label>
+                <div class=" mb-6">
+                    <label class="col-sm-6 col-form-label">Caisse Destination</label>
                     <div class="col-sm-10">
                       <select class="form-select" name="caisse_destination" required>
                         <option selected>choisir</option>
@@ -54,19 +54,20 @@
                       </select>
                     </div>
                 </div>
-                <div class="row mb-3">
-                  <label for="inputText" class="col-sm-2 col-form-label">Montant attribuer</label>
+                <div class="col-sm-10">
+                  <label for="inputText" class="col-sm-6 col-form-label">Montant attribuer</label>
                   <div class="col-sm-10">
                     <input type="text" name="montant_operation" class="form-control" required>
                   </div>
                 </div>
-                <div class="row mb-3">
-                  <label for="inputPassword" class="col-sm-2 col-form-label">commentaire </label>
+                <div class="col-sm-10">
+                  <label for="inputPassword" class="col-sm-6 col-form-label">commentaire </label>
                   <div class="col-sm-10">
                     <textarea class="form-control" style="height: 100px" name="commentaire"></textarea>
                   </div>
                 </div>
-                <div class="row mb-3">
+                <br>
+                <div class="col-sm-10">
                   {{-- <label class="col-sm-2 col-form-label">Submit Button</label> --}}
                   <div class="col-sm-10">
                     <button type="submit" class="btn btn-primary">Valider</button>
@@ -79,6 +80,60 @@
 
         </div>
 
+        <div class="col-lg-6">
+
+            <!-- Special title treatmen -->
+            <div class="card text-center">
+
+                <div class="card-header">
+                <ul class="nav nav-pills card-header-pills">
+                    <li class="nav-item">
+                      <h4 style="text-decoration:uppercase;">Stock devise</h4>
+                    <!--a class="nav-link active" href="#">Active</a-->
+                    </li>
+                </ul>
+                </div>
+
+                <div class="card-body">
+
+                    <!-- Table with stripped rows -->
+              <table class="table datatable">
+                <thead class="bg-primary">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Commentaire </th>
+                    <th scope="col">Montant</th>
+                    {{-- <th scope="col">Destination</th> --}}
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                    @foreach ($operations as $operation )
+                  <tr>
+                    <th scope="row">{{ $operation->id}}</th>
+                    <td>{{ $operation->commentaire}}</td>
+                    <td>{{ $operation->montant_operation}}</td>
+                    {{-- <td>{{ $operation->caisse->libelle}}</td> --}}
+                    {{-- <td>{{ $operation->user->nom}}</td> --}}
+                    <td>
+                        <a href="{{ route('caisse.encaissement.valider',$operation->id) }}">
+                            <button type="button" class="btn btn-success"><i class="ri ri-arrow-down-line"></i></button>
+                        </a>
+                    </td>
+                  </tr>
+                  @endforeach
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+                <h5 ></h5>
+                    <p class="card-text"></p>
+                </div>
+
+            </div><!-- End Special title treatmen -->
+
+            </div>
+        </div>
 
       </div>
     </section>
