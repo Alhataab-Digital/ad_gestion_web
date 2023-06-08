@@ -36,6 +36,7 @@ use App\Http\Controllers\Investissement\RetraitDividendeController;
 use App\Http\Controllers\Investissement\ActiviteInvestissementController;
 use App\Http\Controllers\Investissement\DetailActiviteInvestissementController;
 use App\Http\Controllers\Investissement\TypeActiviteInvestissementController;
+use App\Http\Controllers\Investissement\NatureOperationChargeController;
 
 
 
@@ -382,6 +383,19 @@ Route::middleware('auth')->controller(DetailActiviteInvestissementController::cl
     Route::post('/detail_activite_investissement/{id}/update','update')->name('detail_activite_investissement.update');
     Route::get('/detail_activite_investissement/{id}/destroy','destroy')->name('detail_activite_investissement.delete');
     Route::get('/detail_activite_investissement/{id}/print','print')->name('detail_activite_investissement.print');
+
+});
+
+Route::middleware('auth')->controller(NatureOperationChargeController::class)->group(function(){
+
+    Route::get('/nature_operation_charge','index')->name('nature_operation_charge');
+    Route::get('/nature_operation_charge/create','create')->name('nature_operation_charge.create');
+    Route::post('/nature_operation_charge/store','store')->name('nature_operation_charge.store');
+    Route::get('/nature_operation_charge/{id}/show','show')->name('nature_operation_charge.show');
+    Route::get('/nature_operation_charge/{id}/edit','edit')->name('nature_operation_charge.edit');
+    Route::post('/nature_operation_charge/{id}/update','update')->name('nature_operation_charge.update');
+    Route::get('/nature_operation_charge/{id}/destroy','destroy')->name('nature_operation_charge.delete');
+    Route::get('/nature_operation_charge/{id}/print','print')->name('nature_operation_charge.print');
 
 });
 

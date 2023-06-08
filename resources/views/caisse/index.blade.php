@@ -100,6 +100,7 @@
                     <th scope="col">Libelle </th>
                     <th scope="col">montant min</th>
                     <th scope="col">montant max</th>
+                    <th scope="col">montant caisse</th>
                     <th scope="col">Agence</th>
                     <th scope="col">Action</th>
                   </tr>
@@ -115,6 +116,7 @@
                     <td>{{ $caisse->libelle}}</td>
                     <td>{{ $caisse->montant_min}}</td>
                     <td>{{ $caisse->montant_max}}</td>
+                    <td>{{ $caisse->compte}}</td>
 
                     <td>{{ $caisse->agence->nom}}</td>
                     <td>

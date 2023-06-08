@@ -15,10 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('montant_operation');
             $table->string('sens_operation');
-            $table->string('client_id')->nullable();
-            $table->string('devise_id');
-            $table->string('taux');
-            $table->string('reglement_id');
+            $table->string('nature_operation_charge_id');
+            $table->string('commentaire')->nullable();
+            $table->string('fichier')->nullable();
             $table->string('date_comptable');
             $table->string('caisse_id');
             $table->string('user_id');

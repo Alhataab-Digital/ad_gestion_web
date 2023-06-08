@@ -35,6 +35,11 @@
         </a>
       </li>
       <li>
+        <a href="{{ route('nature_operation_charge') }}">
+          <i class="bi bi-circle"></i><span>Nature opération charge</span>
+        </a>
+      </li>
+      <li>
         <a href="{{ route('agence') }}">
           <i class="bi bi-circle"></i><span>Agences</span>
         </a>
@@ -113,11 +118,11 @@
           <i class="bi bi-circle"></i><span> Retrait  </span>
         </a>
       </li>
-      <li>
+      {{-- <li>
         <a href="{{ route('d_retrait') }}">
           <i class="bi bi-circle"></i><span> Retrait dividende </span>
         </a>
-      </li>
+      </li> --}}
       <li>
         <a href="{{ route('investisseur.consultation') }}">
           <i class="bi bi-circle"></i><span> Consulter compte  </span>
@@ -169,20 +174,15 @@
         </a>
       </li>
       <li>
-        <a href="tables-data.html">
+        <a href="{{ route('operation') }}">
           <i class="bi bi-circle"></i><span>Operation charge</span>
         </a>
       </li>
-      {{-- <li>
-        <a href="tables-data.html">
-          <i class="bi bi-circle"></i><span>Versement caisse</span>
+      <li>
+        <a href="{{ route('d_retrait') }}">
+          <i class="bi bi-circle"></i><span> Operation de paiement dividende </span>
         </a>
       </li>
-      <li>
-        <a href="tables-data.html">
-          <i class="bi bi-circle"></i><span>Retrait caisse</span>
-        </a>
-      </li> --}}
     </ul>
   </li><!-- End Tables Nav -->
   <li class="nav-heading">Tiers</li>

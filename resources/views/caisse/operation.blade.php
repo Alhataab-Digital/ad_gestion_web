@@ -79,8 +79,9 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                  <button type="submit" class="btn btn-primary">Fermer</button>
+                                  <button type="submit" class="btn btn-danger">Valider</button>
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Quitter</button>
+
                                 </div>
                             </form><!-- Vertical Form -->
                               </div>
@@ -116,12 +117,12 @@
                                 <div class="modal-body" >
                                    <div class="col-12">
                                         <label for="inputEmail4" class="form-label">Date d'ouverture</label>
-                                        <input type="date" name="date" class="form-control" id="inputEmail4">
+                                        <input type="date" name="date" value="{{ date('Y-m-d') }}" class="form-control" id="inputEmail4">
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                  <button type="submit" class="btn btn-primary">Save changes</button>
+                                <div class="modal-footer"> <button type="submit" class="btn btn-success">Valider</button>
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Quitter</button>
+
                                 </div>
                             </form><!-- Vertical Form -->
                               </div>

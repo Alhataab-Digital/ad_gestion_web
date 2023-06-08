@@ -5,12 +5,12 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Form Elements</h1>
+      <h1>OPERATION DES CHARGES</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Forms</li>
-          <li class="breadcrumb-item active">Elements</li>
+          <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
+          <li class="breadcrumb-item">Autres operation</li>
+          <li class="breadcrumb-item active">Operation de charge</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -21,69 +21,63 @@
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">General Form Elements</h5>
+              <h5 class="card-title">Formulaire de saisie</h5>
+              <P>
 
-              <!-- General Form Elements -->
-              <form>
-                <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label">Type operation</label>
-                    <div class="col-sm-10">
-                      <select class="form-select" aria-label="Default select example">
-                        <option selected>choisir</option>
-                        <option value="1">Operation caisse</option>
-                        <option value="2">Operation d'achat</option>
-                        <option value="2">Operation de vente</option>
-                        <option value="2">Operation de banque</option>
-                        <option value="2">Operation divers</option>
-
-                      </select>
-                    </div>
+                @if ($message=Session::get('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  <i class="bi bi-check-circle me-1"></i>
+                  {{ $message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
+                @endif
+                @if ($message=Session::get('danger'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <i class="bi bi-exclamation-octagon me-1"></i>
+                  {{ $message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+
+
+            </P>
+              <!-- General Form Elements -->
+              <form method="post" action="{{ route('operation.store') }}">
+                @csrf
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">Nature operation</label>
                     <div class="col-sm-10">
-                      <select class="form-select" aria-label="Default select example">
-                        <option value="1">Paiement d'electricité</option>
-                        <option value="2">Paiement d'eaux</option>
-                        <option value="4">Paiment de salaire</option>
-                        <option value="5">Versement caisse</option>
-                        <option value="6">Retrait caisse</option>
-                      </select>
+                        <select class="form-select" aria-label="Default select example" name="nature_operation_id">
+                            <option selected>choisir</option>
+                                @foreach ($nature_operations as $nature_operation )
+                                    <option value="{{ $nature_operation->id }}">{{ $nature_operation->nature_operation_charge }}</option>
+                                @endforeach
+                          </select>
                     </div>
                   </div>
                 <div class="row mb-3">
-                  <label for="inputText" class="col-sm-2 col-form-label">nature operation</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control">
-                  </div>
-                </div>
-
-                <div class="row mb-3">
                   <label for="inputNumber" class="col-sm-2 col-form-label">Montant</label>
                   <div class="col-sm-10">
-                    <input type="number" class="form-control">
+                    <input type="number" name="montant_operation" class="form-control">
                   </div>
                 </div>
-                <div class="row mb-3">
+                {{-- <div class="row mb-3">
                   <label for="inputNumber" class="col-sm-2 col-form-label">piece jointe</label>
                   <div class="col-sm-10">
                     <input class="form-control" type="file" id="formFile">
                   </div>
-                </div>
+                </div> --}}
                 <div class="row mb-3">
                   <label for="inputPassword" class="col-sm-2 col-form-label">commentaire </label>
                   <div class="col-sm-10">
-                    <textarea class="form-control" style="height: 100px"></textarea>
+                    <textarea class="form-control" style="height: 100px" name="commentaire"></textarea>
                   </div>
                 </div>
-
-
-
 
                 <div class="row mb-3">
                   {{-- <label class="col-sm-2 col-form-label">Submit Button</label> --}}
                   <div class="col-sm-10">
-                    <button type="submit" class="btn btn-primary">Submit Form</button>
+                    <button type="submit" class="btn btn-primary">Valider</button>
                   </div>
                 </div>
 
