@@ -43,7 +43,7 @@
                             </tr>
                             <tr>
                               <td>
-                               <input type="text" class="form-control" name="montant" id="" value="{{ number_format($activite_investissement->montant_decaisse,2,","," ") }}">
+                               <input type="text" class="form-control" name="montant" id="" value="{{ number_format(($activite_investissement->montant_decaisse+$activite_investissement->montant_benefice),2,","," ") }}">
                             </td>
                             <td>
                                 <input type="text" class="form-control" name="benefice" id="" value="{{ number_format($activite_investissement->total_depense,2,","," ") }}">
@@ -60,6 +60,31 @@
 
                         </table>
                     </h5>
+                    <table class="table table-borderless bg-danger text-white"  >
+                        <thead class=" ">
+                            <tr>
+                                <th>Secteur de depense</th>
+                                <th>Montant depensé</th>
+
+                            </tr>
+                        </thead>
+                        <tbody class=" text-white" id="show_item" id="tab">
+                            @foreach ($operation_depenses as $operation_depense )
+
+                            <tr>
+                                <td scope="row">
+                                    <select class="form-select" name="investisseur[]" id=""  readonly>
+                                        <option value="">{{ $operation_depense->secteur_depense->secteur_depense }}</option>
+                                    </select></td>
+                                <td scope="row">
+                                    <input class="form-control" type="text"  id="" value="{{ number_format($operation_depense->montant_depense,2,","," ")}}" readonly>
+                                </td>
+
+                            </tr>
+
+                            @endforeach
+                        </tbody>
+                    </table>
                     <hr>
                  <table class="table table-borderless datatable">
                       <thead class="bg-primary text-white">

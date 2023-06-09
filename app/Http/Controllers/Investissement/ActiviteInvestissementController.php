@@ -162,10 +162,12 @@ class ActiviteInvestissementController extends Controller
         $activite_investissement=ActiviteInvestissement::find($id);
 
         $detail_activite_investissements=DetailActiviteInvestissement::where('activite_investissement_id',$activite_investissement->id)->get();
+        $operation_depenses=OperationDepenseActivite::where('activite_investissement_id',$activite_investissement->id)->get();
 
             return view('investissement.activite_investissement_show', compact(
                 'detail_activite_investissements',
                 'activite_investissement',
+                'operation_depenses'
         ));
     }
 
