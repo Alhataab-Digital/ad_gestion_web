@@ -56,25 +56,61 @@
                         <table>
                             <tr>
                                 {{-- <th>Capital activité</th> --}}
-                                <th>Montant activite</th>
-                                <th>Saisie Benefice total</th>
+                                {{-- <th>Montant activite</th> --}}
+                                <th>Montant total activite</th>
+                                <th>Montant total depense</th>
+                                <th>Montant total benefice</th>
                             </tr>
                             <tr>
                                 <td>
-                                    <input class="form-control" type="text" name="montant_activite" id="" value="{{ $activite_investissement->montant_decaisse }}" readonly>
+                                    <input class="form-control" type="text" name="total_activite" id="total_activite" required>
                                 </td>
                                 <td>
-                                    <input class="form-control" type="text" name="montant_benefice" id="" required>
+                                    <input class="form-control" type="text" onkeyup="prixU()" name="total_depense" id="total_depense"  readonly>
                                 </td>
-                              <td>
-                                <input class="form-control"  type="hidden" name="activite_id" id="" value="{{ $activite_investissement->id }}" readonly>
-                                <input class="form-control" type="hidden" name="montant" id="" value="{{ $activite_investissement->capital_activite }}" readonly>
-                            </td>
-
-
-
+                                <td>
+                                    <input class="form-control" type="text" onkeyup="prixU()" name="montant_benefice" id="montant_benefice"  readonly>
+                                </td>
+                                <td>
+                                    <input class="form-control" type="hidden" name="montant_activite" id="montant_activite" value="{{ $activite_investissement->montant_decaisse }}" readonly>
+                                </td>
+                                <td>
+                                    <input class="form-control"  type="hidden" name="activite_id" id="" value="{{ $activite_investissement->id }}" readonly>
+                                    <input class="form-control" type="hidden" name="montant" id="" value="{{ $activite_investissement->capital_activite }}" readonly>
+                                </td>
+                            </tr>
+                            <br>
                         </table>
                     </h5>
+                    <table class="table table-borderless bg-danger text-white"  >
+                        <thead class=" ">
+                            <tr>
+                                <th>Secteur de depense</th>
+                                <th>Montant depensé</th>
+                                <th scope="col">
+                                    <button type="button" class="btn btn-success add_item_btn" ><i class="bi bi-plus-circle"></i> </button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class=" text-white" id="show_item" id="tab">
+                            <tr>
+                                <th scope="row">
+                                    <select class="form-select" name="secteur_id[]"  required onchange="prixU();" >
+                                        <option selected disabled value="">Choose...</option>
+                                        @foreach ($secteur_depenses as $secteur_depense)
+                                        <option value="{{ $secteur_depense->id }}">{{ $secteur_depense->secteur_depense }}</option>
+                                        @endforeach
+                                    </select>
+                                </th>
+                                <th scope="row">
+                                    <input class="form-control" onchange="prixU();" type="text" name="montant_depense[]"  id="montant_depense" required>
+                                </th>
+                                <td>
+                                    <button type="button" class="btn btn-danger remove_item_btn" ><i class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                     <hr>
                     <table class="table table-borderless datatable">
                       <thead class="bg-primary text-white">
@@ -119,5 +155,65 @@
     </section>
 
   </main><!-- End #main -->
+  <script src="{{asset('assets/js/jquery.js')}}"></script>
+  <script type="text/javascript">
 
+      $(document).ready(function(){
+
+          $(".add_item_btn").click(function(e){
+              e.preventDefault();
+              $("#show_item").prepend(`
+                <tr>
+                    <th scope="row">
+                        <select class="form-select" name="secteur_id[]"  onchange="prixU();" required  >
+                            <option selected disabled value="">Choose...</option>
+                                @foreach ($secteur_depenses as $secteur_depense)
+                            <option value="{{ $secteur_depense->id }}">{{ $secteur_depense->secteur_depense }}</option>
+                                @endforeach
+                        </select>
+                    </th>
+                    <th scope="row">
+                        <input class="form-control" onchange="prixU();" type="text" name="montant_depense[]" id="montant_depense" require >
+                    </th>
+                    <td>
+                            <button type="button" class="btn btn-danger remove_item_btn" ><i class="bi bi-trash"></i></button>
+
+                    </td>
+                </tr>
+              `);
+
+            });
+        });
+
+      $(document).on('click','.remove_item_btn', function(e){
+          e.preventDefault();
+          let row_item = $(this).parent().parent();
+          $(row_item).remove();
+      });
+
+
+          function prixU(){
+            var montant_activite=document.getElementById('montant_activite');
+            var montant_benefice=document.getElementById('montant_benefice');
+            var total_activite=document.getElementById('total_activite');
+            var montant=document.getElementById('montant_depense').value;
+
+                  var mt=0;
+                      var montant_secteur=document.getElementsByName('montant_depense[]');
+
+                      for(let index=0;index<montant_secteur.length; index++){
+                          var montant=montant_secteur[index].value;
+                          mt=+(mt)+ +(montant);
+
+                      }
+                      document.getElementById('total_depense').value= mt;
+
+                      benefice=Number(total_activite.value)-(Number(montant_activite.value)+Number(mt));
+
+                      document.getElementById('montant_benefice').value=benefice;
+
+
+              }
+
+  </script>
   @endsection

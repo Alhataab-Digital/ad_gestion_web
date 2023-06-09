@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('type_activite_id');
             $table->string('capital_activite');
             $table->string('montant_decaisse');
+            $table->string('total_depense')->nullable();
             $table->string('montant_benefice')->nullable();
             $table->string('commentaire')->nullable();
             $table->string('user_id');

@@ -19,6 +19,7 @@ use App\Models\DetailActiviteInvestissement;
 use App\Models\BeneficeActivite;
 use App\Models\RepartitionDividende;
 use App\Models\OperationInvestisseur;
+use App\Models\SecteurDepense;
 
 class DetailActiviteInvestissementController extends Controller
 {
@@ -177,8 +178,9 @@ class DetailActiviteInvestissementController extends Controller
         //     dd('taux',$taux);
 
         // }
+        $secteur_depenses=SecteurDepense::all();
         return view('investissement.detail_activite_investissement', compact('activite_investissement',
-        'caisse','detail_activite_investissements',
+        'caisse','detail_activite_investissements','secteur_depenses'
     ));
     }
 

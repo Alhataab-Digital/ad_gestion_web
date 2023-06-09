@@ -15,6 +15,7 @@ class ActiviteInvestissement extends Model
         'type_activite_id',
         'capital_activite',
         'montant_decaisse',
+        'total_depense',
         'montant_benefice',
         'commentaire',
         'user_id',

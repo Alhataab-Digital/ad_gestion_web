@@ -19,6 +19,7 @@ use App\Models\DetailActiviteInvestissement;
 use App\Models\BeneficeActivite;
 use App\Models\RepartitionDividende;
 use App\Models\OperationInvestisseur;
+use App\Models\OperationDepenseActivite;
 
 class ActiviteInvestissementController extends Controller
 {
@@ -229,6 +230,7 @@ class ActiviteInvestissementController extends Controller
 
         $investisseurs=Investisseur::where('compte_investisseur','>','0')->where('etat','1')->get();
 
+
         return view('investissement.activite_investissement_repartition', compact(
         'investisseurs',
         'activite_investissement',
@@ -253,6 +255,7 @@ class ActiviteInvestissementController extends Controller
 
             $dividende_entreprise=($request->montant_benefice/2);
             $dividende_investisseur=($request->montant_benefice/2);
+            $total_depense=$request->total_depense;
 
             for($i=0;$i<count($request->investisseur_id); $i++)
             {
@@ -282,9 +285,22 @@ class ActiviteInvestissementController extends Controller
                 }
             }
 
+            for($k=0;$k<count($request->secteur_id); $k++)
+            {
+
+                $data=[
+                    'activite_investissement_id'   =>$activite_investissement->id,
+                    'secteur_depense_id'               =>$request->secteur_id[$k],
+                    'montant_depense'       =>$request->montant_depense[$k],
+                ];
+                OperationDepenseActivite::create($data);
+
+            }
+
             $activite_investissement->update([
                 'etat_activite'=>'terminer',
                 'montant_benefice'=>$request->montant_benefice,
+                'total_depense'=>$request->total_depense,
             ]);
              /**
                  * mise a jour de la caisse

@@ -36,6 +36,7 @@
                         <table>
                             <tr>
                                 <th>Montant activite</th>
+                                <th>depense activite</th>
                                 <th>Benefice activite</th>
                                 <th>Dividende societe</th>
                                 <th>Dividende investisseurs</th>
@@ -45,6 +46,9 @@
                                <input type="text" class="form-control" name="montant" id="" value="{{ number_format($activite_investissement->montant_decaisse,2,","," ") }}">
                             </td>
                             <td>
+                                <input type="text" class="form-control" name="benefice" id="" value="{{ number_format($activite_investissement->total_depense,2,","," ") }}">
+                               </td>
+                               <td>
                                 <input type="text" class="form-control" name="benefice" id="" value="{{ number_format($activite_investissement->montant_benefice,2,","," ") }}">
                                </td>
                                <td>
