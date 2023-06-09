@@ -229,7 +229,7 @@ class RetraitDividendeController extends Controller
         // return view('investissement.operation_versement_detail',compact('operation'));
 
         $pdf=PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
-        ->loadView('print.recu_dividende_investisseur',compact('operation'));
+        ->loadView('print.recu_dividende',compact('operation'));
 
         return $pdf->download('recu_dividende.pdf');
     }

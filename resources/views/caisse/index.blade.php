@@ -101,6 +101,7 @@
                     <th scope="col">montant min</th>
                     <th scope="col">montant max</th>
                     <th scope="col">montant caisse</th>
+                    <th scope="col">montant dividende</th>
                     <th scope="col">Agence</th>
                     <th scope="col">Action</th>
                   </tr>
@@ -117,6 +118,7 @@
                     <td>{{ $caisse->montant_min}}</td>
                     <td>{{ $caisse->montant_max}}</td>
                     <td>{{ $caisse->compte}}</td>
+                    <td>{{ $caisse->compte_dividende_societe}}</td>
 
                     <td>{{ $caisse->agence->nom}}</td>
                     <td>

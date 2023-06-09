@@ -35,6 +35,11 @@
         </a>
       </li>
       <li>
+        <a href="{{ route('secteur_depense') }}">
+          <i class="bi bi-circle"></i><span>Secteur depense activite</span>
+        </a>
+      </li>
+      <li>
         <a href="{{ route('nature_operation_charge') }}">
           <i class="bi bi-circle"></i><span>Nature opération charge</span>
         </a>

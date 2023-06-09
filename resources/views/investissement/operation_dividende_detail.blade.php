@@ -21,7 +21,7 @@ hello
 
         <div class="col-lg-6">
 
-            <div class="card bg-danger text-white">
+            <div class="card bg-primary text-white">
                 <div class="card-body">
                     <h5 class="card-title text-white">Retrait </h5>
                         <p>
@@ -83,10 +83,10 @@ hello
                             <input type="text" value="{{ $operation->created_at }}" class="form-control" placeholder="Zip">
                         </div>
                         <div class="text-center">
-                            <a href="{{ route('i_retrait.print',$operation->id) }}">
+                            <a href="{{ route('d_retrait.print',$operation->id) }}">
                             <div class="btn btn-primary"> Imprimer</div>
                             </a>
-                            <a href="{{ route('i_retrait') }}">
+                            <a href="{{ route('d_retrait') }}">
                                 <div class="btn btn-secondary"> Quitter</div>
                                 </a>
                           </div>

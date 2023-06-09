@@ -109,7 +109,7 @@
 
                   <td>{{ $operation->date_comptable}}</td>
                   <td>
-                      <a href="{{ route('i_retrait.show',$operation->id) }}">
+                      <a href="{{ route('d_retrait.show',$operation->id) }}">
                           <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
                       </a>
                       {{-- <a href="">

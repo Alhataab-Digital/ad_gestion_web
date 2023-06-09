@@ -37,6 +37,7 @@ use App\Http\Controllers\Investissement\ActiviteInvestissementController;
 use App\Http\Controllers\Investissement\DetailActiviteInvestissementController;
 use App\Http\Controllers\Investissement\TypeActiviteInvestissementController;
 use App\Http\Controllers\Investissement\NatureOperationChargeController;
+use App\Http\Controllers\Investissement\SecteurDepenseController;
 
 
 
@@ -396,6 +397,19 @@ Route::middleware('auth')->controller(NatureOperationChargeController::class)->g
     Route::post('/nature_operation_charge/{id}/update','update')->name('nature_operation_charge.update');
     Route::get('/nature_operation_charge/{id}/destroy','destroy')->name('nature_operation_charge.delete');
     Route::get('/nature_operation_charge/{id}/print','print')->name('nature_operation_charge.print');
+
+});
+
+Route::middleware('auth')->controller(SecteurDepenseController::class)->group(function(){
+
+    Route::get('/secteur_depense','index')->name('secteur_depense');
+    Route::get('/secteur_depense/create','create')->name('secteur_depense.create');
+    Route::post('/secteur_depense/store','store')->name('secteur_depense.store');
+    Route::get('/secteur_depense/{id}/show','show')->name('secteur_depense.show');
+    Route::get('/secteur_depense/{id}/edit','edit')->name('secteur_depense.edit');
+    Route::post('/secteur_depense/{id}/update','update')->name('secteur_depense.update');
+    Route::get('/secteur_depense/{id}/destroy','destroy')->name('secteur_depense.delete');
+    Route::get('/secteur_depense/{id}/print','print')->name('secteur_depense.print');
 
 });
 
