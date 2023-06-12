@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('entrepot_stocks', function (Blueprint $table) {
             $table->id();
             $table->string('nom_entrepot');
-            $table->string('adresse_entrepot');
-            $table->string('capacite_entrepot');
+            $table->string('adresse_entrepot')->nullable();
+            $table->string('capacite_entrepot')->nullable();
+            $table->string('id_agence');
             $table->timestamps();
         });
     }

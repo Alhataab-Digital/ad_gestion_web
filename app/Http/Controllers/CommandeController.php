@@ -94,6 +94,12 @@ class CommandeController extends Controller
     public function destroy(string $id)
     {
         //
+        $commande=Commande::find($id);
+
+            $commande->update([
+                'etat' =>'annuler',
+            ]);
+            return redirect('/commande');
     }
 
     public function select_produit(Request $request){

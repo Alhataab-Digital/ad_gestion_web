@@ -71,7 +71,7 @@
             </a>
           </li>
           <li>
-            <a href="charts-apexcharts.html">
+            <a href="{{ route('entrepot') }}">
               <i class="bi bi-circle"></i><span>Entrepôt de stock</span>
             </a>
           </li>
@@ -184,7 +184,7 @@
         </a>
       </li>
       <li>
-        <a href="charts-echarts.html">
+        <a href="{{ route('livrer') }}">
           <i class="bi bi-circle"></i><span>Bon de livraisson</span>
         </a>
       </li>

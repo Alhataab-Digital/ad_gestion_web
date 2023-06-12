@@ -1,10 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Auth\UserController;
+
 use App\Http\Controllers\SocieteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
@@ -46,11 +48,15 @@ use App\Http\Controllers\Hotel\TypeServiceController;
 
 
 
+use App\Http\Controllers\Stock\EntrepotController;
+
+
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\DetailCommandeController;
 use App\Http\Controllers\LivrerController;
 use App\Http\Controllers\DetailLivrerController;
 use App\Http\Controllers\DevisController;
+use App\Http\Controllers\DetailDevisController;
 use App\Http\Controllers\FactureController;
 
 /*
@@ -452,6 +458,17 @@ Route::middleware('auth')->controller(TypeServiceController::class)->group(funct
 | controller de e-commerce
 |
 */
+Route::middleware('auth')->controller(EntrepotController::class)->group(function(){
+
+    Route::get('/entrepot','index')->name('entrepot');
+    Route::post('/creer/entrepot','store')->name('entrepot.store');
+    Route::get('/entrepot/{id}/show','show')->name('entrepot.show');
+    Route::get('/entrepot/{id}/edit','edit')->name('entrepot.edit');
+    Route::post('/entrepot/{id}/update','update')->name('entrepot.update');
+    Route::get('/entrepot/{id}/print','print')->name('entrepot.print');
+
+});
+
 Route::middleware('auth')->controller(CommandeController::class)->group(function(){
 
     Route::get('/commande','index')->name('commande');
@@ -461,6 +478,7 @@ Route::middleware('auth')->controller(CommandeController::class)->group(function
     Route::get('/commande/{id}/edit','edit')->name('commande.edit');
     Route::post('/commande/select','select_produit')->name('produit.select');
     Route::post('/commande/{id}/update','update')->name('commande.update');
+    Route::get('/commande/{id}/delete','destroy')->name('commande.delete');
     Route::get('/commande/{id}/print','print')->name('commande.print');
 
 });
@@ -484,6 +502,40 @@ Route::middleware('auth')->controller(DevisController::class)->group(function(){
     Route::get('/devis/{id}/edit','edit')->name('devis.edit');
     Route::post('/devis/{id}/update','update')->name('devis.update');
     Route::get('/devis/{id}/print','print')->name('devis.print');
+
+});
+
+Route::middleware('auth')->controller(DetailDevisController::class)->group(function(){
+
+    Route::get('/detail_devis','index')->name('detail_devis');
+    Route::post('/creer/detail_devis','store')->name('detail_devis.store');
+    Route::get('/detail_devis/{id}/show','show')->name('detail_devis.show');
+    Route::get('/detail_devis/{id}/edit','edit')->name('detail_devis.edit');
+    Route::post('/detail_devis/{id}/update','update')->name('detail_devis.update');
+    Route::get('/detail_devis/{id}/print','print')->name('detail_devis.print');
+
+});
+
+Route::middleware('auth')->controller(LivrerController::class)->group(function(){
+
+    Route::get('/livrer','index')->name('livrer');
+    Route::post('/creer/livrer','store')->name('livrer.store');
+    Route::get('/livrer/{id}/show','show')->name('livrer.show');
+    Route::get('/livrer/{id}/edit','edit')->name('livrer.edit');
+    Route::post('/livrer/{id}/update','update')->name('livrer.update');
+    Route::post('/livrer/{id}/delete','destroy')->name('livrer.delete');
+    Route::get('/livrer/{id}/print','print')->name('livrer.print');
+
+});
+
+Route::middleware('auth')->controller(DetailLivrerController::class)->group(function(){
+
+    Route::get('/detail_livrer','index')->name('detail_livrer');
+    Route::post('/creer/detail_livrer','store')->name('detail_livrer.store');
+    Route::get('/detail_livrer/{id}/show','show')->name('detail_livrer.show');
+    Route::get('/detail_livrer/{id}/edit','edit')->name('detail_livrer.edit');
+    Route::post('/detail_livrer/{id}/update','update')->name('detail_livrer.update');
+    Route::get('/detail_livrer/{id}/print','print')->name('detail_livrer.print');
 
 });
 

@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('livrers', function (Blueprint $table) {
             $table->id();
+            $table->string('commande_id')->nullable();
             $table->string('fournisseur_id')->nullable();
+            $table->string('entrepot_id')->nullable();
             $table->string('user_id');
             $table->string('montant_total')->default('0');
             $table->string('agence_id');

@@ -12,5 +12,6 @@ class EntrepotStock extends Model
         'nom_entrepot',
         'adresse_entrepot',
         'capacite_entrepot',
+        'agence_id'
     ];
 }

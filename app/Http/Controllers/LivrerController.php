@@ -3,6 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use App\Models\Caisse;
+use App\Models\Societe;
+use App\Models\Devise;
+use App\Models\TypeReglement;
+use App\Models\Fournisseur;
+use App\Models\Produit;
+use App\Models\Commande;
+use App\Models\DetailCommande;
+use App\Models\Livrer;
+use App\Models\DetailLivrer;
+use App\Models\EntrepotStock;
 
 class LivrerController extends Controller
 {
@@ -12,6 +26,11 @@ class LivrerController extends Controller
     public function index()
     {
         //
+        $livraisons=Livrer::all();
+        $livraisons_cs=Livrer::where('etat',Null)->get();
+        $livraisons_lv=Livrer::where('etat','valider')->get();
+        $livraisons_an=Livrer::where('etat','annuler')->get();
+        return view('e-commerce.livraison',compact('livraisons','livraisons_cs','livraisons_lv','livraisons_an'));
     }
 
     /**
@@ -27,7 +46,47 @@ class LivrerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+               //
+        // dd(
+
+        // $request->commande_id,
+        // $request->produit,
+        // $request->qte,
+        // $request->prix ,
+        // $request->total,
+        // $request->montant_ht,
+        // $request->fournisseur
+
+        // );
+        $commande=Livrer::where('commande_id',$request->commande_id)->first();
+
+    if(isset($commande)){
+
+        $livraison=Livrer::where('commande_id',$request->commande_id)->latest('id')->first();
+
+        return redirect('livrer/'.$livraison->id.'/edit');
+    }else{
+        $id=Auth::user()->id;
+        $agence_id=Auth::user()->agence_id;
+
+        Livrer::create([
+            'commande_id'  => $request->commande_id,
+            'fournisseur_id'  => $request->fournisseur,
+            'user_id'      => $id,
+            'agence_id'    => $agence_id,
+        ]);
+
+        // $commande=Commande::find($request->commande_id);
+
+        //     $commande->update([
+        //         'etat' =>'livrer',
+        //     ]);
+
+        $livraison=Livrer::where('user_id',$id)->where('agence_id',$agence_id)->latest('id')->first();
+
+        return redirect('livrer/'.$livraison->id.'/edit');
+    }
+
     }
 
     /**
@@ -36,6 +95,12 @@ class LivrerController extends Controller
     public function show(string $id)
     {
         //
+        $livraison=Livrer::find($id);
+        $detail_livraisons=DetailLivrer::where('livrer_id',$id)->get();
+        $total_ht=DetailLivrer::where('livrer_id',$id)->selectRaw('sum(quantite_livree*prix_unitaire_livre) as total')->first('total');
+
+        return view('e-commerce.livraison_show',compact('livraison','detail_livraisons','total_ht'));
+
     }
 
     /**
@@ -44,6 +109,12 @@ class LivrerController extends Controller
     public function edit(string $id)
     {
         //
+        $livraison=Livrer::find($id);
+        $entrepots=EntrepotStock::where("agence_id",$livraison->agence_id)->get();
+        $commande=Commande::where('id',$livraison->commande_id)->first();
+        $detail_commandes=DetailCommande::where('commande_id',$livraison->commande_id)->get();
+        $total_ht=DetailCommande::where('commande_id',$livraison->commande_id)->selectRaw('sum(quantite_commandee*prix_unitaire_commande) as total')->first('total');
+        return view('e-commerce.livraison_encours', compact('commande','detail_commandes','total_ht','livraison','entrepots'));
     }
 
     /**
