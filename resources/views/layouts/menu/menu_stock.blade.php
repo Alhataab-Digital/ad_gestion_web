@@ -66,7 +66,7 @@
         </a>
         <ul id="stock-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="charts-chartjs.html">
+            <a href="{{ route('livrer') }}">
               <i class="bi bi-circle"></i><span>Approvissionnement stock</span>
             </a>
           </li>
@@ -184,7 +184,7 @@
         </a>
       </li>
       <li>
-        <a href="{{ route('livrer') }}">
+        <a href="">
           <i class="bi bi-circle"></i><span>Bon de livraisson</span>
         </a>
       </li>
