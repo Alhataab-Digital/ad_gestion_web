@@ -35,7 +35,7 @@
               <form method="post" action="">
                 @csrf
                 <!-- Browser Default Validation -->
-                <div class="col-md-3">
+                {{-- <div class="col-md-3">
                     <input class="form-control"  type="hidden" name="livraison_id" value="{{ $livraison->id }}"  >
                     <label for="" class="form-label">Fournisseur</label>
                     <select class="form-select" id="" name="fournisseur" required>
@@ -43,7 +43,7 @@
 
                     </select>
 
-                  </div>
+                  </div> --}}
                   <div class="col mb-3">
                     <label for="inputText" class="col-sm-2 col-form-label">Entrepot</label>
                     <div class="col-sm-3">
