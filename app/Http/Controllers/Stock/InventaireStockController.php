@@ -4,6 +4,16 @@ namespace App\Http\Controllers\Stock;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use App\Models\Utilisateur;
+use App\Models\Agence;
+use App\Models\Caisse;
+use App\Models\CaisseUser;
+use App\Models\DeviseAgence;
+use App\Models\EntrepotStock;
+use App\Models\StockProduit;
 
 class InventaireStockController extends Controller
 {
@@ -13,6 +23,11 @@ class InventaireStockController extends Controller
     public function index()
     {
         //
+        $agence_id=Auth::user()->agence_id;
+        $entrepots=EntrepotStock::all();
+        $inventaire_stocks=StockProduit::where('entrepot_id',Null)->where('agence_id',$agence_id)->get();
+
+        return view('e-commerce.inventaire_stock',compact('entrepots','inventaire_stocks'));
     }
 
     /**
@@ -29,6 +44,12 @@ class InventaireStockController extends Controller
     public function store(Request $request)
     {
         //
+        $agence_id=Auth::user()->agence_id;
+        $entrepots=EntrepotStock::all();
+        $inventaire_stocks=StockProduit::where('entrepot_id',$request->entrepot)->where('agence_id',$agence_id)->get();
+        return view('e-commerce.inventaire_stock',compact('entrepots','inventaire_stocks'));
+
+
     }
 
     /**

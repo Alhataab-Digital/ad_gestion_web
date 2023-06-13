@@ -81,7 +81,7 @@
             </a>
           </li>
           <li>
-            <a href="charts-echarts.html">
+            <a href="{{ route('inventaire_stock') }}">
               <i class="bi bi-circle"></i><span>Inventaire stock</span>
             </a>
           </li>

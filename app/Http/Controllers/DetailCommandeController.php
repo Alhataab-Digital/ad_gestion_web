@@ -53,7 +53,7 @@ class DetailCommandeController extends Controller
             {
 
                 $data=[
-                    'commande_id'              =>$request->commande_id[0],
+                    'commande_id'              =>$request->commande_id,
                     'produit_id'               =>$request->produit[$i],
                     'quantite_commandee'       =>$request->qte[$i],
                     'prix_unitaire_commande'  =>$request->prix[$i],
@@ -121,5 +121,6 @@ class DetailCommandeController extends Controller
     public function destroy(string $id)
     {
         //
+
     }
 }

@@ -49,6 +49,7 @@ use App\Http\Controllers\Hotel\TypeServiceController;
 
 
 use App\Http\Controllers\Stock\EntrepotController;
+use App\Http\Controllers\Stock\InventaireStockController;
 
 
 use App\Http\Controllers\CommandeController;
@@ -547,5 +548,17 @@ Route::middleware('auth')->controller(FactureController::class)->group(function(
     Route::get('/facture/{id}/edit','edit')->name('facture.edit');
     Route::post('/facture/{id}/update','update')->name('facture.update');
     Route::get('/facture/{id}/print','print')->name('facture.print');
+
+});
+
+
+Route::middleware('auth')->controller(InventaireStockController::class)->group(function(){
+
+    Route::get('/inventaire_stock','index')->name('inventaire_stock');
+    Route::post('/creer/inventaire_stock','store')->name('inventaire_stock.store');
+    Route::get('/inventaire_stock/{id}/show','show')->name('inventaire_stock.show');
+    Route::get('/inventaire_stock/{id}/edit','edit')->name('inventaire_stock.edit');
+    Route::post('/inventaire_stock/{id}/update','update')->name('inventaire_stock.update');
+    Route::get('/inventaire_stock/{id}/print','print')->name('inventaire_stock.print');
 
 });
