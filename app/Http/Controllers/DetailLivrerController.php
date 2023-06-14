@@ -87,7 +87,7 @@ class DetailLivrerController extends Controller
                         'agence_id'             =>$agence_id,
                         'quantite_en_stock'     =>$request->qte[$i],
                     ];
-                    StockProduit::where('produit_id',$request->produit_id[$i])->where('entrepot_id',$request->entrepot)->where('agence_id',$agence_id)->create($data);
+                    StockProduit::create($data);
                 }
             }
 

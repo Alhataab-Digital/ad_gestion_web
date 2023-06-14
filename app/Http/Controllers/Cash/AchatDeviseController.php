@@ -13,6 +13,7 @@ use App\Models\Devise;
 use App\Models\TypeReglement;
 use App\Models\Stock;
 use App\Models\Operation;
+use App\Models\OperationDevise;
 use App\Models\Agence;
 use App\Models\DeviseAgence;
 use App\Models\MouvementCaisse;
@@ -31,7 +32,7 @@ class AchatDeviseController extends Controller
             $caisse=Caisse::find($caisse_id);
             $agence_id=Auth::user()->agence_id;
             $agence=Agence::find( $agence_id);
-            $operations=Operation::where('user_id',$id)->where('client_id','!=', Null )->get();
+            $operations=OperationDevise::where('user_id',$id)->where('client_id','!=', Null )->where('sens_operation', 'sortie' )->get();
             return view('devise.achat_devise', compact('caisse','operations','agence'));
         }
         return view('devise.message');
@@ -84,7 +85,7 @@ class AchatDeviseController extends Controller
         /**
          * enregistrement de l'operation
          */
-        Operation::create([
+        OperationDevise::create([
             'montant_operation'=>$montant_operation,
             'sens_operation'=>'sortie',
             'client_id'=>$request->f_id,
@@ -152,7 +153,7 @@ class AchatDeviseController extends Controller
                 ]);
 
                 $id=Auth::user()->id;
-                $operation=Operation::where('user_id',$id)->latest('id')->first();
+                $operation=OperationDevise::where('user_id',$id)->latest('id')->first();
                 return redirect()->route('achat_devise.show',$operation)->with('success','operation effectuee avec succès');
 
             }else {
@@ -166,7 +167,7 @@ class AchatDeviseController extends Controller
                     'caisse_id'=>$caisse_id,
                 ]);
                 $id=Auth::user()->id;
-                $operation=Operation::where('user_id',$id)->latest('id')->first();
+                $operation=OperationDevise::where('user_id',$id)->latest('id')->first();
                 return redirect()->route('achat_devise.show',$operation)->with('success','operation effectuee avec succès');
 
 
@@ -188,7 +189,7 @@ class AchatDeviseController extends Controller
     public function show(string $id)
     {
         $agence_id=Auth::user()->agence_id;
-        $operation= Operation::find($id);
+        $operation= OperationDevise::find($id);
         $agence=Agence::find( $agence_id);
         return view('devise.show_achat_devise', compact('operation','agence'));
     }
@@ -291,7 +292,7 @@ class AchatDeviseController extends Controller
     public function print($id)
     {
        $agence_id=Auth::user()->agence_id;
-        $operation= Operation::find($id);
+        $operation= OperationDevise::find($id);
         $agence=Agence::find( $agence_id);
         $pdf=PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
         ->loadView('print.recu_achat_devise',compact('operation','agence' ));

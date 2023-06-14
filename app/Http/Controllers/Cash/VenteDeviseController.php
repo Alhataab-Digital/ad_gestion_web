@@ -13,6 +13,7 @@ use App\Models\Devise;
 use App\Models\TypeReglement;
 use App\Models\Stock;
 use App\Models\Operation;
+use App\Models\OperationDevise;
 use App\Models\Agence;
 use App\Models\DeviseAgence;
 use App\Models\MouvementCaisse;
@@ -32,7 +33,7 @@ class VenteDeviseController extends Controller
             $caisse=Caisse::find($caisse_id);
             $agence_id=Auth::user()->agence_id;
             $agence=Agence::find( $agence_id);
-            $operations=Operation::where('user_id',$id)->where('client_id','!=', Null )->get();
+            $operations=OperationDevise::where('user_id',$id)->where('client_id','!=', Null )->where('sens_operation', 'entree' )->get();
             return view('devise.vente_devise', compact('caisse','operations','agence'));
         }
         return view('devise.message');
@@ -104,7 +105,7 @@ class VenteDeviseController extends Controller
             /**
              * enregistrement de l'operation
              */
-            Operation::create([
+            OperationDevise::create([
                 'montant_operation'=>$montant_operation,
                 'sens_operation'=>'entree',
                 'client_id'=>$request->c_id,
@@ -152,7 +153,7 @@ class VenteDeviseController extends Controller
                 ]);
 
                 $id=Auth::user()->id;
-                $operation=Operation::where('user_id',$id)->latest('id')->first();;
+                $operation=OperationDevise::where('user_id',$id)->latest('id')->first();;
                 return redirect()->route('vente_devise.show',$operation)->with('success','operation effectuee avec succès');
 
         }
@@ -174,7 +175,7 @@ class VenteDeviseController extends Controller
      */
     public function show(string $id)
     {
-        $operation= Operation::find($id);
+        $operation= OperationDevise::find($id);
         $agence_id=Auth::user()->agence_id;
         $agence=Agence::find( $agence_id);
         return view('devise.show_vente_devise', compact('operation','agence'));
@@ -278,7 +279,7 @@ class VenteDeviseController extends Controller
     public function print()
     {
         $id=Auth::user()->id;
-        $operation=Operation::where('user_id',$id)->latest('id')->first();
+        $operation=OperationDevise::where('user_id',$id)->latest('id')->first();
 
         $pdf=PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
         ->loadView('print.recu_vente_devise',compact('operation' ));
