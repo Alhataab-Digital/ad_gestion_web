@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-use App\Models\client;
+use App\Models\Client;
 use App\Models\Caisse;
 use App\Models\Devise;
 use App\Models\TypeReglement;
@@ -229,10 +229,10 @@ class AchatDeviseController extends Controller
         /**
          * si le telephone existe afficher le client
          */
-        if(isset(client::where('telephone' ,$tel)->first(['id'])->id)){
+        if(isset(Client::where('telephone' ,$tel)->first(['id'])->id)){
 
             $agence_id=Auth::user()->agence_id;
-            $client_id=client::where('telephone' ,$tel)->first(['id'])->id;
+            $client_id=Client::where('telephone' ,$tel)->first(['id'])->id;
             $client=client::find($client_id);
             $devise_agences=DeviseAgence::where('agence_id',$agence_id)->get();
             $reglements= TypeReglement::all();
@@ -250,7 +250,7 @@ class AchatDeviseController extends Controller
              */
             $agence_id=Auth::user()->agence_id;
             $devise_agences=DeviseAgence::where('agence_id',$agence_id)->get();
-            $client_id=client::where('telephone' ,$tel)->first(['id'])->id;
+            $client_id=Client::where('telephone' ,$tel)->first(['id'])->id;
             $client=client::find($client_id);
             $devises= Devise::all();
             $reglements= TypeReglement::all();

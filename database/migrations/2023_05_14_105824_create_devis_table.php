@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('devis', function (Blueprint $table) {
             $table->id();
-            $table->string('client_id');
+            $table->string('client_id')->nullable();
             $table->string('user_id');
-            $table->string('montant_total');
+            $table->string('montant_total')->default('0');
             $table->string('agence_id');
+            $table->string('etat')->nullable();
             $table->timestamps();
         });
     }

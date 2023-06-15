@@ -498,10 +498,12 @@ Route::middleware('auth')->controller(DetailCommandeController::class)->group(fu
 Route::middleware('auth')->controller(DevisController::class)->group(function(){
 
     Route::get('/devis','index')->name('devis');
+    Route::get('/creer/devis','create')->name('devis.create');
     Route::post('/creer/devis','store')->name('devis.store');
     Route::get('/devis/{id}/show','show')->name('devis.show');
     Route::get('/devis/{id}/edit','edit')->name('devis.edit');
     Route::post('/devis/{id}/update','update')->name('devis.update');
+    Route::get('/devis/{id}/delete','destroy')->name('devis.delete');
     Route::get('/devis/{id}/print','print')->name('devis.print');
 
 });
