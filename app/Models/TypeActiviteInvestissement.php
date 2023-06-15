@@ -10,6 +10,7 @@ class TypeActiviteInvestissement extends Model
     use HasFactory;
     protected $fillable = [
         'type_activite',
+        'agence_id',
     ];
 
 }

@@ -29,7 +29,7 @@ class HomeController extends Controller
         $societe_id=Auth::user()->societe_id;
         $agence_id=Auth::user()->agence_id;
         $devises=Devise::where('societe_id',$societe_id)->get();
-        $count_investisseur=Investisseur::count();
+        $count_investisseur=Investisseur::where('agence_id',$agence_id)->count();
         $count_user=Utilisateur::where('societe_id',$societe_id)->count();
         $count_activite=ActiviteInvestissement::where('agence_id',$agence_id)->count();
         return view('home', compact('societe','devises','count_investisseur','count_user','count_activite'));

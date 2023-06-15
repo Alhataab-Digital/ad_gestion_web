@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('type_activite_investissements', function (Blueprint $table) {
             $table->id();
             $table->string('type_activite');
+            $table->string('agence_id');
             $table->timestamps();
         });
     }

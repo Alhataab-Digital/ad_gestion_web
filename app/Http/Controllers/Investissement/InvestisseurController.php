@@ -20,7 +20,9 @@ class InvestisseurController extends Controller
     public function index()
     {
         //
-        $investisseurs=Investisseur::all();
+
+        $agence_id=Auth::user()->agence_id;
+        $investisseurs=Investisseur::where('agence_id',$agence_id)->get();
         return view('investissement.index', compact('investisseurs') );
     }
 
@@ -52,6 +54,7 @@ class InvestisseurController extends Controller
              */
             $code=mt_rand(10000, 99999);
             $date_creation=date("Y-m-d");
+            $agence_id=Auth::user()->agence_id;
             $data=$request->all();
             //dd($data);
             /**
@@ -64,6 +67,7 @@ class InvestisseurController extends Controller
                 'email'=>$data['email'],
                 'telephone'=>$data['telephone'],
                 'heritier'=>$data['heritier'],
+                'agence_id'=>$agence_id,
                 'date_creation'=>$date_creation,
             ]);
             return redirect('/investisseur')->with('success','investisseur ajouté avec succès');

@@ -22,8 +22,9 @@ class TypeActiviteInvestissementController extends Controller
     public function index()
     {
         //
-            $type_activites=TypeActiviteInvestissement::all();
-        return view('investissement.type_activité',compact('type_activites'));
+       $agence_id=Auth::user()->agence_id;
+            $type_activites=TypeActiviteInvestissement::where('agence_id',$agence_id)->get();
+        return view('investissement.type_activite',compact('type_activites'));
 
     }
 
@@ -51,12 +52,14 @@ class TypeActiviteInvestissementController extends Controller
         */
 
        $data=$request->all();
+       $agence_id=Auth::user()->agence_id;
        //dd($data);
        /**
         * insertion des données dans la table user
         */
         TypeActiviteInvestissement::create([
-           'type_activite'=>$data['type_activite'],
+            'type_activite'=>$data['type_activite'],
+            'agence_id'=>$agence_id,
        ]);
        return redirect('/type_activite_investissement')->with('success',"Type d'investissement ajouté avec succès");
     }

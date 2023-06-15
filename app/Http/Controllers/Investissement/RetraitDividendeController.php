@@ -196,13 +196,14 @@ class RetraitDividendeController extends Controller
             $data=$request->validate([
                 'code'=>'required',
             ]);
-            $id=$request->code;
 
-            $investisseur=Investisseur::where('code',$id)->first();
+            $code=$data['code'];
+
+            $investisseur=Investisseur::where('code',$code)->first();
             if($investisseur==NULL){
                 return back()->with('danger','Code inexistant');
             }else{
-                $code=$data['code'];
+
 
                 if(Investisseur::where('code',$code)->first(['etat'])->etat==0){
                     return redirect('/d_retrait')->with('danger',"votre compte n'est pas activer");

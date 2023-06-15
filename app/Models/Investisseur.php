@@ -18,6 +18,7 @@ class Investisseur extends Model
         'compte_investisseur',
         'compte_dividende',
         'etat',
+        'agence_id',
         'date_creation',
     ];
 

@@ -34,7 +34,7 @@ class ActiviteInvestissementController extends Controller
                 $caisse=Caisse::find($caisse_id);
                 $agence_id=Auth::user()->agence_id;
                 $agence=Agence::find( $agence_id);
-        $activites=ActiviteInvestissement::where('etat_activite','en cours')->get();
+        $activites=ActiviteInvestissement::where('etat_activite','en cours')->where('agence_id',$agence_id)->get();
         return view('investissement.activite_investissement_liste',compact('activites','caisse'));
 
     }
@@ -46,7 +46,7 @@ class ActiviteInvestissementController extends Controller
                 $caisse=Caisse::find($caisse_id);
                 $agence_id=Auth::user()->agence_id;
                 $agence=Agence::find( $agence_id);
-        $activites=ActiviteInvestissement::where('etat_activite','valider')->get();
+        $activites=ActiviteInvestissement::where('etat_activite','valider')->where('agence_id',$agence_id)->get();
         return view('investissement.activite_investissement_valider',compact('activites','caisse'));
 
     }
@@ -59,7 +59,7 @@ class ActiviteInvestissementController extends Controller
                 $caisse=Caisse::find($caisse_id);
                 $agence_id=Auth::user()->agence_id;
                 $agence=Agence::find( $agence_id);
-        $activites=ActiviteInvestissement::where('etat_activite','terminer')->get();
+        $activites=ActiviteInvestissement::where('etat_activite','terminer')->where('agence_id',$agence_id)->get();
         return view('investissement.activite_investissement_terminer',compact('activites','caisse'));
 
     }
@@ -76,7 +76,7 @@ class ActiviteInvestissementController extends Controller
                 $caisse=Caisse::find($caisse_id);
                 $agence_id=Auth::user()->agence_id;
                 $agence=Agence::find( $agence_id);
-            $type_activites=TypeActiviteInvestissement::all();
+            $type_activites=TypeActiviteInvestissement::where('agence_id',$agence_id)->get();
             return view('investissement.activite_investissement', compact('type_activites','caisse'));
         }
         return view('devise.message');
@@ -111,10 +111,8 @@ class ActiviteInvestissementController extends Controller
                 $agence_id=Auth::user()->agence_id;
                 $agence=Agence::find( $agence_id);
 
-
-
                 $compte_caisse= Caisse::where('user_id',$id)->first(['compte'])->compte;
-                $capital_investisseur=Investisseur::where('etat','1')->selectRaw('sum(compte_investisseur) as total')->first('total');
+                $capital_investisseur=Investisseur::where('etat','1')->where('agence_id',$agence_id)->selectRaw('sum(compte_investisseur) as total')->first('total');
                 $date_comptable= Caisse::where('user_id',$id)->first(['date_comptable'])->date_comptable;
 
                 if($capital_investisseur->total < $data['montant_decaisse'])  {
@@ -230,8 +228,8 @@ class ActiviteInvestissementController extends Controller
 
         $activite_investissement=ActiviteInvestissement::find($id);
 
-        $investisseurs=Investisseur::where('compte_investisseur','>','0')->where('etat','1')->get();
-
+        $agence_id=Auth::user()->agence_id;
+        $investisseurs=Investisseur::where('compte_investisseur','>','0')->where('etat','1')->where('agence_id',$agence_id)->where('etat','1')->get();
 
         return view('investissement.activite_investissement_repartition', compact(
         'investisseurs',
@@ -282,7 +280,7 @@ class ActiviteInvestissementController extends Controller
                             'compte_investisseur'  =>$montant_investis,
                         ];
 
-                        Investisseur::where('id',$request->investisseur_id[$i])->update($data);
+                        Investisseur::where('id', $investisseur_id)->update($data);
 
                 }
             }

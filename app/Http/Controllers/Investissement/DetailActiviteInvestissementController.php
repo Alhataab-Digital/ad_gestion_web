@@ -165,19 +165,9 @@ class DetailActiviteInvestissementController extends Controller
             $agence=Agence::find( $agence_id);
 
         $activite_investissement=ActiviteInvestissement::find($id);
-        /**
-         * liste investisseur
-         */
-        // $investisseurs= OperationInvestisseur::where('etat','1')->where('compte_investisseur','!=','0')->where('date_creation','<=',$activite_investissement->date_comptable)->get();
-        $detail_activite_investissements=DetailActiviteInvestissement::where('activite_investissement_id',$id)->get();
 
-        // foreach($investisseurs as $investisseur){
+         $detail_activite_investissements=DetailActiviteInvestissement::where('activite_investissement_id',$id)->get();
 
-        //     $taux=(($investisseur->compte_investisseur));
-
-        //     dd('taux',$taux);
-
-        // }
         $secteur_depenses=SecteurDepense::all();
         return view('investissement.detail_activite_investissement', compact('activite_investissement',
         'caisse','detail_activite_investissements','secteur_depenses'
