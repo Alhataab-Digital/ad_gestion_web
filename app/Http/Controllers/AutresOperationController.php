@@ -26,8 +26,12 @@ class AutresOperationController extends Controller
      */
     public function index()
     {
-        $nature_operations=NatureOperationCharge::all();
-        return view('operation.index', compact('nature_operations'));
+        $user_id=Auth::user()->id;
+        if(isset(Caisse::where('user_id',$user_id)->first(['id'])->id)){
+            $nature_operations=NatureOperationCharge::all();
+            return view('operation.index', compact('nature_operations'));
+        }
+        return view('investissement.message');
     }
 
     /**

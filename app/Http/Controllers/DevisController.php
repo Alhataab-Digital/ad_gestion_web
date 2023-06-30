@@ -14,6 +14,7 @@ use App\Models\Client;
 use App\Models\Produit;
 use App\Models\Devis;
 use App\Models\Detaildevis;
+use App\Models\StockProduit;
 
 class DevisController extends Controller
 {
@@ -78,9 +79,10 @@ class DevisController extends Controller
         //
         $devis=Devis::find($id);
         $agence_id=Auth::user()->agence_id;
+        $produit_stocks=StockProduit::where('agence_id',$agence_id)->get();
         $produits=Produit::where('agence_id',$agence_id)->get();
         $clients=Client::all();
-        return view('e-commerce.nouveau_devis', compact('produits','clients','devis'));
+        return view('e-commerce.nouveau_devis', compact('produits','clients','devis','produit_stocks'));
     }
 
     /**

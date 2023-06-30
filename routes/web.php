@@ -40,6 +40,7 @@ use App\Http\Controllers\Investissement\DetailActiviteInvestissementController;
 use App\Http\Controllers\Investissement\TypeActiviteInvestissementController;
 use App\Http\Controllers\Investissement\NatureOperationChargeController;
 use App\Http\Controllers\Investissement\SecteurDepenseController;
+use App\Http\Controllers\Investissement\PortailInvestisseurController;
 
 
 
@@ -59,6 +60,7 @@ use App\Http\Controllers\DetailLivrerController;
 use App\Http\Controllers\DevisController;
 use App\Http\Controllers\DetailDevisController;
 use App\Http\Controllers\FactureController;
+use App\Http\Controllers\DetailFactureController;
 
 /*
 |--------------------------------------------------------------------------
@@ -420,6 +422,18 @@ Route::middleware('auth')->controller(SecteurDepenseController::class)->group(fu
 
 });
 
+
+Route::controller(PortailInvestisseurController::class)->group(function(){
+
+    Route::get('/portail','index')->name('portail');
+    Route::post('/portail/connect','connect')->name('portail.connect');
+    Route::get('/profile/{id}/investisseur','profile_investisseur')->name('profile.investisseur');
+    Route::post('/portail/inscription','store')->name('portail.store');
+    Route::post('/portail/recuperation','recuperation')->name('portail.recuperation');
+    Route::get('/inscrire','inscrire')->name('inscrire');
+
+});
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -550,6 +564,17 @@ Route::middleware('auth')->controller(FactureController::class)->group(function(
     Route::get('/facture/{id}/edit','edit')->name('facture.edit');
     Route::post('/facture/{id}/update','update')->name('facture.update');
     Route::get('/facture/{id}/print','print')->name('facture.print');
+
+});
+
+Route::middleware('auth')->controller(DetailFactureController::class)->group(function(){
+
+    Route::get('/detail_facture','index')->name('detail_facture');
+    Route::post('/creer/detail_facture','store')->name('detail_facture.store');
+    Route::get('/detail_facture/{id}/show','show')->name('detail_facture.show');
+    Route::get('/detail_facture/{id}/edit','edit')->name('detail_facture.edit');
+    Route::post('/detail_facture/{id}/update','update')->name('detail_facture.update');
+    Route::get('/detail_facture/{id}/print','print')->name('detail_facture.print');
 
 });
 

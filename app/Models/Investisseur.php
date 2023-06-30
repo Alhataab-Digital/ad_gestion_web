@@ -14,6 +14,7 @@ class Investisseur extends Model
         'prenom',
         'telephone',
         'email',
+        'password',
         'heritier',
         'compte_investisseur',
         'compte_dividende',

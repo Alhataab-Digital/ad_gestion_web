@@ -30,38 +30,44 @@ class ActiviteInvestissementController extends Controller
     {
         //
         $id=Auth::user()->id;
-        $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
+        if(isset(Caisse::where('user_id',$id)->first(['id'])->id)){
+            $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
                 $caisse=Caisse::find($caisse_id);
                 $agence_id=Auth::user()->agence_id;
                 $agence=Agence::find( $agence_id);
         $activites=ActiviteInvestissement::where('etat_activite','en cours')->where('agence_id',$agence_id)->get();
         return view('investissement.activite_investissement_liste',compact('activites','caisse'));
-
+        }
+        return view('investissement.message');
     }
     public function valider()
     {
         //
         $id=Auth::user()->id;
+        if(isset(Caisse::where('user_id',$id)->first(['id'])->id)){
         $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
                 $caisse=Caisse::find($caisse_id);
                 $agence_id=Auth::user()->agence_id;
                 $agence=Agence::find( $agence_id);
         $activites=ActiviteInvestissement::where('etat_activite','valider')->where('agence_id',$agence_id)->get();
         return view('investissement.activite_investissement_valider',compact('activites','caisse'));
-
+        }
+        return view('investissement.message');
     }
 
     public function terminer()
     {
         //
         $id=Auth::user()->id;
+        if(isset(Caisse::where('user_id',$id)->first(['id'])->id)){
         $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
                 $caisse=Caisse::find($caisse_id);
                 $agence_id=Auth::user()->agence_id;
                 $agence=Agence::find( $agence_id);
         $activites=ActiviteInvestissement::where('etat_activite','terminer')->where('agence_id',$agence_id)->get();
         return view('investissement.activite_investissement_terminer',compact('activites','caisse'));
-
+        }
+        return view('investissement.message');
     }
 
     /**

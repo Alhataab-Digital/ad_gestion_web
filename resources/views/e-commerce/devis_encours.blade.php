@@ -32,7 +32,7 @@
 
                 </h5>
 
-              <form method="post" action="{{ route('devis.store') }}">
+              <form method="post" action="{{ route('facture.store') }}">
                 @csrf
                 <!-- Browser Default Validation -->
                 <div class="col-md-3">
@@ -89,7 +89,7 @@
                                     <input class="form-control" type="text" name="prix[]" value="{{ $detail_devis->prix_unitaire_demande }}" id="prix_v" readonly>
                                 </th>
                                 <th scope="row">
-                                    <input class="form-control"  type="text" name="total[]" value="{{ $detail_devis->quantite_demandee*$detail_devis->prix_unitaire_demandee}}" id="total" readonly>
+                                    <input class="form-control"  type="text" name="total[]" value="{{ $detail_devis->quantite_demandee*$detail_devis->prix_unitaire_demande}}" id="total" readonly>
                                 </th>
 
                             </tr>

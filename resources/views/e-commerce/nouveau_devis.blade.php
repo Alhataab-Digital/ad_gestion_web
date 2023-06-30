@@ -77,14 +77,18 @@
                           </thead>
                           <tbody class=" text-white" id="show_item" id="tab">
                               <tr>
-                                  <th scope="row">
-                                      <select class="form-select" name="produit[]" id="produit" required onchange="prixU()" >
-                                          <option selected disabled value="">Choose...</option>
-                                          @foreach ($produits as $produit)
-                                          <option data-prix="{{ $produit->prix_unitaire_vente }}" value="{{ $produit->id }}">{{ $produit->nom_produit }}</option>
-                                          @endforeach
-                                      </select>
-                                  </th>
+                                <th scope="row">
+                                    <select class="form-select" name="produit[]" id="produit" required onchange="prixU()" >
+                                        <option selected disabled value="">Choose...</option>
+                                        @foreach ($produits as $produit)
+                                           @foreach ($produit_stocks as $produit_stock)
+                                            @if ($produit->id==$produit_stock->produit_id)
+                                            <option data-prix="{{ $produit->prix_unitaire_vente }}" value="{{ $produit->id }}">{{ $produit->nom_produit }}</option>
+                                             @endif
+                                           @endforeach
+                                        @endforeach
+                                    </select>
+                                </th>
                                   <th scope="row">
                                       <input class="form-control" onchange="prixU();" type="text" name="qte[]" value="1" id="qte_v" >
                                   </th>
@@ -146,9 +150,13 @@
                     <th scope="row">
                         <select class="form-select" name="produit[]" id="produit" required onchange="prixU()" >
                             <option selected disabled value="">Choose...</option>
-                               @foreach ($produits as $produit)
-                            <option data-prix="{{ $produit->prix_unitaire_vente }}" value="{{ $produit->id }}">{{ $produit->nom_produit }}</option>
-                                @endforeach
+                            @foreach ($produits as $produit)
+                               @foreach ($produit_stocks as $produit_stock)
+                                @if ($produit->id==$produit_stock->produit_id)
+                                <option data-prix="{{ $produit->prix_unitaire_vente }}" value="{{ $produit->id }}">{{ $produit->nom_produit }}</option>
+                                 @endif
+                               @endforeach
+                            @endforeach
                         </select>
                     </th>
                     <th scope="row">

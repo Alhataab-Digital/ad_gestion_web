@@ -117,13 +117,15 @@ class CaisseController extends Controller
     {
             $user_id=Auth::user()->id;
             $agence_id=Auth::user()->agence_id;
-
+            if(isset(Caisse::where('user_id',$user_id)->first(['id'])->id)){
             $caisse_destinations=Caisse::where('user_id','!=',$user_id)->where('agence_id',$agence_id)->get();
 
             $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
             $operations=OperationInterCaisse::where('caisse_id',$caisse_id)->where('etat',NULL)->get();
 
         return view('caisse.attribution', compact('caisse_destinations','operations'));
+        }
+        return view('investissement.message');
     }
 
     public function attribution_valider( Request $request)
@@ -170,10 +172,15 @@ class CaisseController extends Controller
     public function encaissement()
     {
             $user_id=Auth::user()->id;
+        if(isset(Caisse::where('user_id',$user_id)->first(['id'])->id)){
             $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
             $operations=OperationInterCaisse::where('caisse_destination_id',$caisse_id)->where('etat',NULL)->get();
 
         return view('caisse.encaissement', compact('operations',));
+
+        }
+        return view('investissement.message');
+
     }
 
     public function encaissement_valider( $id)

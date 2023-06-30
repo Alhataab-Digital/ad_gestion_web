@@ -60,7 +60,7 @@ class RegisterController extends Controller
                 'terms'=>$data['terms'],
                 'gestion_id'=>$data['gestion'],
             ]);
-            return redirect('/registre')->with('success','Utilisateur ajouté avec succès');
+            return redirect('/registre')->with('success','Utilisateur ajouté avec succès connectez vous avec votre mail et votre mot de passe');
     }
 
     /**

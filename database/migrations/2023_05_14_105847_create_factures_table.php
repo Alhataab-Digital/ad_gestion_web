@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('factures', function (Blueprint $table) {
             $table->id();
-            $table->string('client_id');
+            $table->string('devis_id')->nullable();
+            $table->string('client_id')->nullable();
+            $table->string('entrepot_id')->nullable();
             $table->string('user_id');
-            $table->string('montant_total');
+            $table->string('montant_total')->default('0');
             $table->string('agence_id');
+            $table->string('etat')->nullable();
             $table->timestamps();
         });
     }
