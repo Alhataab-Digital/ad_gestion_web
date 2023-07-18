@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Auth\Authenticatable as BasicAuthenticatable;
+use Laravel\Sanctum\HasApiTokens;
 use App\Models\TypeGestion;
 use App\Models\Societe;
 use App\Models\Role;
@@ -13,6 +14,7 @@ use App\Models\Permission;
 use App\Models\Agence;
 class Utilisateur extends Model implements Authenticatable
 {
+    use HasApiTokens;
     use HasFactory;
     use BasicAuthenticatable;
 

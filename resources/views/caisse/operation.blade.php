@@ -140,7 +140,7 @@
             </div><!-- End Card with an image on left -->
 
             </div>
-@if(Auth::user()->gestion->gestion=="Gestion Change")
+@if(Auth::user()->gestion->gestion=="Change")
             <div class="col-lg-6">
 
             <!-- Special title treatmen -->

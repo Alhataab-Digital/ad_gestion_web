@@ -10,7 +10,7 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/logo_ad.jpeg" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
@@ -49,8 +49,8 @@
 
               <div class="d-flex justify-content-center py-4">
                 <a href="index.html" class="logo d-flex align-items-center w-auto">
-                  <img src="assets/img/logo.png" alt="">
-                  <span class="d-none d-lg-block">AD GESTION</span>
+                  <img src="assets/img/logo_ad.jpeg" alt="">
+                  <span class="d-none d-lg-block"> GESTION</span>
                 </a>
               </div><!-- End Logo -->
 
@@ -112,13 +112,15 @@
 
                 </div>
               </div>
-
+              <div class="copyright">
+                &copy; 2023 <strong><span>AD GESTION V4.0</span></strong>.
+              </div>
               <div class="credits">
                 <!-- All the links in the footer should remain intact. -->
                 <!-- You can delete the links only if you purchased the pro version. -->
                 <!-- Licensing information: https://bootstrapmade.com/license/ -->
                 <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-                Notre site web <a href="https://www.alhataab.com/">Alhataab Digital</a>
+                Site web <a href="https://www.alhataab.com/">www.alhataab.com</a>
               </div>
 
             </div>

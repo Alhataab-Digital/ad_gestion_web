@@ -88,7 +88,7 @@
             </div><!-- End Customers Card -->
 
 
-            <div class="col-lg-12">
+            {{-- <div class="col-lg-12">
 
                 <div class="card">
                   <div class="card-body">
@@ -124,7 +124,7 @@
                     <!-- End Tooltips Examples -->
 
                   </div>
-                </div>
+                </div> --}}
 
               </div>
 

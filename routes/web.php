@@ -41,6 +41,8 @@ use App\Http\Controllers\Investissement\TypeActiviteInvestissementController;
 use App\Http\Controllers\Investissement\NatureOperationChargeController;
 use App\Http\Controllers\Investissement\SecteurDepenseController;
 use App\Http\Controllers\Investissement\PortailInvestisseurController;
+use App\Http\Controllers\Investissement\AchatVoitureController;
+use App\Http\Controllers\Investissement\VenteVoitureController;
 
 
 
@@ -431,6 +433,32 @@ Route::controller(PortailInvestisseurController::class)->group(function(){
     Route::post('/portail/inscription','store')->name('portail.store');
     Route::post('/portail/recuperation','recuperation')->name('portail.recuperation');
     Route::get('/inscrire','inscrire')->name('inscrire');
+
+});
+
+Route::middleware('auth')->controller(AchatVoitureController::class)->group(function(){
+
+
+    Route::get('/achat_voiture','index')->name('achat_voiture');
+    Route::get('/achat_voiture/{id}/detail','show')->name('achat_voiture.show');
+    Route::get('/achat_voiture/{id}/edit','edit')->name('achat_voiture.edit');
+    Route::get('/achat_voiture/{id}/print','print')->name('achat_voiture.print');
+    Route::post('/achat_voiture/{id}/update','update')->name('achat_voiture.update');
+    Route::post('/achat_voiture/client','client')->name('achat_voiture.client');
+    Route::post('/creer/achat_voiture','store')->name('achat_voiture.store');
+
+});
+
+Route::middleware('auth')->controller(VenteVoitureController::class)->group(function(){
+
+
+    Route::get('/vente_voiture','index')->name('vente_voiture');
+    Route::get('/vente_voiture/{id}/detail','show')->name('vente_voiture.show');
+    Route::get('/vente_voiture/{id}/edit','edit')->name('vente_voiture.edit');
+    Route::get('/vente_voiture/{id}/print','print')->name('vente_voiture.print');
+    Route::post('/vente_voiture/{id}/update','update')->name('vente_voiture.update');
+    Route::post('/vente_voiture/client','client')->name('vente_voiture.client');
+    Route::post('/creer/vente_voiture','store')->name('vente_voiture.store');
 
 });
 

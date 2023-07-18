@@ -2,7 +2,7 @@
 
 @section('content')
 
-@if(isset(Auth::user()->gestion->gestion) AND Auth::user()->gestion->gestion=='Gestion Change')
+@if(isset(Auth::user()->gestion->gestion) AND Auth::user()->gestion->gestion=='Change')
 
         @if(Auth::user()->societe_id=="0")
 
@@ -17,7 +17,7 @@
 
 @endif
 
-@if(isset(Auth::user()->gestion->gestion) AND Auth::user()->gestion->gestion=='Gestion Investissement')
+@if(isset(Auth::user()->gestion->gestion) AND Auth::user()->gestion->gestion=='Investissement')
 
         @if(Auth::user()->societe_id=="0")
             @if(isset($societe->admin_id) AND $societe->admin_id==Auth::user()->id)
@@ -30,7 +30,7 @@
         @endif
 @endif
 
-@if(isset(Auth::user()->gestion->gestion) AND Auth::user()->gestion->gestion=='Gestion Hotel')
+@if(isset(Auth::user()->gestion->gestion) AND Auth::user()->gestion->gestion=='Hotel')
 
         @if(Auth::user()->societe_id=="0")
             @if(isset($societe->admin_id) AND $societe->admin_id==Auth::user()->id)
@@ -44,7 +44,7 @@
 
 @endif
 
-@if(isset(Auth::user()->gestion->gestion) AND Auth::user()->gestion->gestion=='Gestion Parc Auto')
+@if(isset(Auth::user()->gestion->gestion) AND Auth::user()->gestion->gestion=='Parc Auto')
 
         @if(Auth::user()->societe_id=="0")
             @if(isset($societe->admin_id) AND $societe->admin_id==Auth::user()->id)
@@ -58,7 +58,7 @@
 
 @endif
 
-@if(isset(Auth::user()->gestion->gestion) AND Auth::user()->gestion->gestion=='Gestion Stock')
+@if(isset(Auth::user()->gestion->gestion) AND Auth::user()->gestion->gestion=='Stock')
 
         @if(Auth::user()->societe_id=="0")
 
@@ -73,7 +73,7 @@
 
 @endif
 
-@if(isset(Auth::user()->gestion->gestion) AND Auth::user()->gestion->gestion=='Gestion Scolaire')
+@if(isset(Auth::user()->gestion->gestion) AND Auth::user()->gestion->gestion=='Scolaire')
 
         @if(Auth::user()->societe_id=="0")
 

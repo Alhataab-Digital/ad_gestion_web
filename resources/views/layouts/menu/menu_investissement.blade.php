@@ -89,14 +89,13 @@
     </ul>
 </li><!-- End Forms Nav -->
 @endif
-@if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1" || Auth::user()->role_id=="2" || Auth::user()->role_id=="3" || Auth::user()->role_id=="4")
 
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-journal-text"></i><span>Gestion investisseur</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="forms-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
-
+    @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1" || Auth::user()->role_id=="2")
       <li>
         <a href="{{ route('investisseur.create') }}">
           <i class="bi bi-circle"></i><span>Nouveau investisseur</span>
@@ -107,35 +106,44 @@
           <i class="bi bi-circle"></i><span>Liste des investisseur </span>
         </a>
       </li>
+      @endif
+      @if(Auth::user()->role_id=="3")
       <li>
         <a href="{{ route('investisseur.code') }}">
           <i class="bi bi-circle"></i><span>Activation/ inactivation </span>
         </a>
       </li>
+      @endif
+      @if(Auth::user()->role_id=="3" || Auth::user()->role_id=="4")
       <li>
         <a href="{{ route('i_versement') }}">
           <i class="bi bi-circle"></i><span> Versement  </span>
         </a>
       </li>
-
       <li>
         <a href="{{ route('i_retrait') }}">
           <i class="bi bi-circle"></i><span> Retrait  </span>
         </a>
       </li>
-      {{-- <li>
+      @endif
+      @if(Auth::user()->role_id=="4")
+      <li>
         <a href="{{ route('d_retrait') }}">
           <i class="bi bi-circle"></i><span> Retrait dividende </span>
         </a>
-      </li> --}}
+      </li>
+      @endif
+      @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1" || Auth::user()->role_id=="2" || Auth::user()->role_id=="3")
       <li>
         <a href="{{ route('investisseur.consultation') }}">
           <i class="bi bi-circle"></i><span> Consulter compte  </span>
         </a>
       </li>
+      @endif
     </ul>
 </li><!-- End Forms Nav -->
-@endif
+
+@if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1" || Auth::user()->role_id=="2")
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#activite-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-layout-text-window-reverse"></i><span>Activites d'investissement</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -162,10 +170,11 @@
         </a>
       </li>
     </ul>
-  </li><!-- End Tables Nav -->
+</li><!-- End Tables Nav -->
+@endif
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-layout-text-window-reverse"></i><span>Autres opération</span><i class="bi bi-chevron-down ms-auto"></i>
+      <i class="bi bi-layout-text-window-reverse"></i><span>Autres opération caisse</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="tables-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
       <li>
@@ -184,32 +193,42 @@
         </a>
       </li>
       <li>
+        <a href="{{ route('achat_voiture') }}">
+          <i class="bi bi-circle"></i><span>Achat de voiture</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ route('vente_voiture') }}">
+          <i class="bi bi-circle"></i><span>vente de voiture</span>
+        </a>
+      </li>
+      <li>
         <a href="{{ route('d_retrait') }}">
           <i class="bi bi-circle"></i><span> Operation de paiement dividende </span>
         </a>
       </li>
     </ul>
   </li><!-- End Tables Nav -->
-  <li class="nav-heading">Tiers</li>
+  {{-- <li class="nav-heading">Tiers</li> --}}
   <!--li class="nav-item">
     <a class="nav-link collapsed" href="{{ route('client') }}">
       <i class="bi bi-people"></i>
       <span>Client</span>
     </a>
   </li--><!-- End client Page Nav -->
-  <li class="nav-item">
+  {{-- <li class="nav-item">
     <a class="nav-link collapsed" href="{{ route('profile') }}">
       <i class="bi bi-person-square"></i>
       <span>Profile</span>
     </a>
-  </li><!-- End Contact Page Nav -->
+  </li><!-- End Contact Page Nav --> --}}
 
 @endif
 
-
+<li class="nav-heading"><br></li>
   <li class="nav-item">
     <a class="nav-link collapsed" href="{{ route('logout') }}">
       <i class="bi bi-file-earmark"></i>
       <span>Déconnexion</span>
     </a>
-  </li><!-- End Blank Page Nav -->
+</li><!-- End Blank Page Nav -->

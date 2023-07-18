@@ -35,9 +35,11 @@
                       <th scope="col">Prenom</th>
                       <th scope="col">Email</th>
                       <th scope="col">Telephone</th>
+                      @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1" || Auth::user()->role_id=="2")
                       <th scope="col">Montant investis</th>
                       <th scope="col">Dividende</th>
                       <th scope="col">Date creation</th>
+                      @endif
                       <th scope="col">heritier</th>
                       <th scope="col">status</th>
                     </tr>

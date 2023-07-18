@@ -34,17 +34,17 @@ class LoginController extends Controller
     public function store(Request $request)
     {
 
+
         $request->validate([
             'email'=>'required',
-            'password'=>'required',
+            'password'=>'required|min:4',
         ]);
 
         $connection=$request->only('email','password');
 
                 if(Auth::attempt($connection)){
-
-
                     $users=Utilisateur::where('email',$request->email)->get();
+                if(Auth::check()){
                     foreach($users as $user){
                         if($user->etat !=0){
                         return redirect('/home');
@@ -52,9 +52,11 @@ class LoginController extends Controller
                         return redirect('/')->with('danger','Compte inactif');
 
                     }
-
+                }
+                return redirect('/')->with('danger',"Session expirée");
                 }
                 return redirect('/')->with('danger','Login ou mots de passe invalide');
+
 
     }
 

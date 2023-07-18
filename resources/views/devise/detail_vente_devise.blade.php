@@ -55,7 +55,7 @@
               </div>
               <div class="col-6" id="taux">
                 <label for="inputAddress2" class="form-label">Taux vente</label>
-                <input onchange="calcul()" type="text" name="taux_v" id="taux_v" class="form-control"  >
+                <input onchange="calcul()" type="text" name="taux_v" id="taux_v" class="form-control" readonly >
               </div>
               <div class="col-6" id="stock">
                 <label for="inputAddress2" class="form-label">Montant stock</label>
@@ -68,7 +68,7 @@
               </div>
               <div class="col-md-6" >
                 <label for="inputZip" class="form-label">Montant vente</label>
-                <input  onkeyup="calcul()" type="text" name="ttc" class="form-control" id="ttc" >
+                <input  onkeyup="calcul()" type="text" name="ttc" class="form-control" id="ttc" readonly>
               </div>
               <div class="col-md-12">
                 <label for="inputState" class="form-label">Reglement</label>
@@ -115,7 +115,7 @@
                       //$("#taux").html(' <input type="text" name="taux" class="form-control" >');
                       $.each(response.devises,function(fournisseur,val){
                   // alert(val);
-                      $("#taux").append('<label for="inputAddress2" class="form-label">Taux</label> <input onchange="calcul()" type="text" name="taux" id="taux_v" class="form-control"  value="'+val.taux+'">');
+                      $("#taux").append('<label for="inputAddress2" class="form-label">Taux</label> <input onchange="calcul()" type="text" name="taux" id="taux_v" class="form-control"  value="'+val.taux+'" readonly>');
 
                     })
                   }
