@@ -1,7 +1,7 @@
 <!-- ======= Footer ======= -->
 <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; 2023 <strong><span>AD GESTION V4.0</span></strong>.
+      &copy; 2023 <strong><span>AD GESTION Version 4</span></strong>.
     </div>
     <div class="credits">
       <!-- All the links in the footer should remain intact. -->

@@ -13,5 +13,6 @@ class Fournisseur extends Model
         'telephone',
         'adresse',
         'piece_identite',
+        'societe_id',
     ];
 }

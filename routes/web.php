@@ -41,8 +41,10 @@ use App\Http\Controllers\Investissement\TypeActiviteInvestissementController;
 use App\Http\Controllers\Investissement\NatureOperationChargeController;
 use App\Http\Controllers\Investissement\SecteurDepenseController;
 use App\Http\Controllers\Investissement\PortailInvestisseurController;
-use App\Http\Controllers\Investissement\AchatVoitureController;
-use App\Http\Controllers\Investissement\VenteVoitureController;
+use App\Http\Controllers\Investissement\AchatVehiculeController;
+use App\Http\Controllers\Investissement\VenteVehiculeController;
+use App\Http\Controllers\Investissement\ActiviteVehiculeController;
+use App\Http\Controllers\Investissement\DetailActiviteVehiculeController;
 
 
 
@@ -436,29 +438,62 @@ Route::controller(PortailInvestisseurController::class)->group(function(){
 
 });
 
-Route::middleware('auth')->controller(AchatVoitureController::class)->group(function(){
+Route::middleware('auth')->controller(AchatVehiculeController::class)->group(function(){
 
 
-    Route::get('/achat_voiture','index')->name('achat_voiture');
-    Route::get('/achat_voiture/{id}/detail','show')->name('achat_voiture.show');
-    Route::get('/achat_voiture/{id}/edit','edit')->name('achat_voiture.edit');
-    Route::get('/achat_voiture/{id}/print','print')->name('achat_voiture.print');
-    Route::post('/achat_voiture/{id}/update','update')->name('achat_voiture.update');
-    Route::post('/achat_voiture/client','client')->name('achat_voiture.client');
-    Route::post('/creer/achat_voiture','store')->name('achat_voiture.store');
+    Route::get('/achat_vehicule','index')->name('achat_vehicule');
+    Route::get('/achat_vehicule/{id}/detail','show')->name('achat_vehicule.show');
+    Route::get('/achat_vehicule/{id}/edit','edit')->name('achat_vehicule.edit');
+    Route::get('/achat_vehicule/{id}/print','print')->name('achat_vehicule.print');
+    Route::post('/achat_vehicule/{id}/update','update')->name('achat_vehicule.update');
+    Route::post('/achat_vehicule/fournisseur','fournisseur')->name('achat_vehicule.fournisseur');
+    Route::post('/creer/achat_vehicule','store')->name('achat_vehicule.store');
 
 });
 
-Route::middleware('auth')->controller(VenteVoitureController::class)->group(function(){
+Route::middleware('auth')->controller(VenteVehiculeController::class)->group(function(){
 
 
-    Route::get('/vente_voiture','index')->name('vente_voiture');
-    Route::get('/vente_voiture/{id}/detail','show')->name('vente_voiture.show');
-    Route::get('/vente_voiture/{id}/edit','edit')->name('vente_voiture.edit');
-    Route::get('/vente_voiture/{id}/print','print')->name('vente_voiture.print');
-    Route::post('/vente_voiture/{id}/update','update')->name('vente_voiture.update');
-    Route::post('/vente_voiture/client','client')->name('vente_voiture.client');
-    Route::post('/creer/vente_voiture','store')->name('vente_voiture.store');
+    Route::get('/vente_vehicule','index')->name('vente_vehicule');
+    Route::get('/vente_vehicule/{id}/detail','show')->name('vente_vehicule.show');
+    Route::get('/vente_vehicule/{id}/edit','edit')->name('vente_vehicule.edit');
+    Route::get('/vente_vehicule/{id}/print','print')->name('vente_vehicule.print');
+    Route::post('/vente_vehicule/{id}/update','update')->name('vente_vehicule.update');
+    Route::post('/vente_vehicule/client','client')->name('vente_vehicule.client');
+    Route::post('/vente_vehicule/chassis','chassis')->name('vente_vehicule.chassis');
+    Route::post('/creer/vente_vehicule','store')->name('vente_vehicule.store');
+
+});
+
+Route::middleware('auth')->controller(ActiviteVehiculeController::class)->group(function(){
+
+
+    Route::get('/activite_vehicule','index')->name('activite_vehicule');
+    Route::get('/activite_vehicule/fermer','fermeture')->name('activite_vehicule.fermer');
+    Route::get('/activite_vehicule/{id}/detail','show')->name('activite_vehicule.show');
+    Route::get('/activite_vehicule/{id}/edit','edit')->name('activite_vehicule.edit');
+    Route::get('/{id}/activite_vehicule/repartition','repartition')->name('activite_vehicule.repartition');
+    Route::post('/activite_vehicule/repartie','repartie')->name('activite_vehicule.repartie');
+    Route::get('/activite_vehicule/{id}/print','print')->name('activite_vehicule.print');
+    Route::post('/activite_vehicule/{id}/update','update')->name('activite_vehicule.update');
+    Route::get('/activite_vehicule/{id}/destroy','destroy')->name('activite_vehicule.delete');
+    Route::get('/activite_vehicule/valider','valider')->name('activite_vehicule.valider');
+    Route::post('/activite_vehicule/client','client')->name('activite_vehicule.client');
+    Route::post('/activite_vehicule/chassis','chassis')->name('activite_vehicule.chassis');
+    Route::post('/creer/activite_vehicule','store')->name('activite_vehicule.store');
+
+});
+
+Route::middleware('auth')->controller(DetailActiviteVehiculeController::class)->group(function(){
+
+    Route::get('/detail_activite_vehicule','index')->name('detail_activite_vehicule');
+    Route::get('/detail_activite_vehicule/create','create')->name('detail_activite_vehicule.create');
+    Route::post('/detail_activite_vehicule/store','store')->name('detail_activite_vehicule.store');
+    Route::get('/detail_activite_vehicule/{id}/show','show')->name('detail_activite_vehicule.show');
+    Route::get('/detail_activite_vehicule/{id}/edit','edit')->name('detail_activite_vehicule.edit');
+    Route::post('/detail_activite_vehicule/{id}/update','update')->name('detail_activite_vehicule.update');
+    Route::get('/detail_activite_vehicule/{id}/destroy','destroy')->name('detail_activite_vehicule.delete');
+    Route::get('/detail_activite_vehicule/{id}/print','print')->name('detail_activite_vehicule.print');
 
 });
 

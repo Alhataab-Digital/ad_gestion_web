@@ -52,6 +52,7 @@ class Utilisateur extends Model implements Authenticatable
     {
         return $this->belongsToMany(Caisse::class);
     }
+    
     public function agence()
     {
         return $this->belongsTo(Agence::class);

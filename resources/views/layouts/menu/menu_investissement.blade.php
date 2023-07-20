@@ -95,7 +95,7 @@
       <i class="bi bi-journal-text"></i><span>Gestion investisseur</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="forms-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
-    @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1" || Auth::user()->role_id=="2")
+    @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="3" || Auth::user()->role_id=="1" || Auth::user()->role_id=="2")
       <li>
         <a href="{{ route('investisseur.create') }}">
           <i class="bi bi-circle"></i><span>Nouveau investisseur</span>
@@ -106,15 +106,13 @@
           <i class="bi bi-circle"></i><span>Liste des investisseur </span>
         </a>
       </li>
-      @endif
-      @if(Auth::user()->role_id=="3")
       <li>
         <a href="{{ route('investisseur.code') }}">
           <i class="bi bi-circle"></i><span>Activation/ inactivation </span>
         </a>
       </li>
       @endif
-      @if(Auth::user()->role_id=="3" || Auth::user()->role_id=="4")
+      @if(Auth::user()->role_id=="1" || Auth::user()->role_id=="3" || Auth::user()->role_id=="4")
       <li>
         <a href="{{ route('i_versement') }}">
           <i class="bi bi-circle"></i><span> Versement  </span>
@@ -172,6 +170,35 @@
     </ul>
 </li><!-- End Tables Nav -->
 @endif
+@if(Auth::user()->role_id=="1" || Auth::user()->role_id=="2" || Auth::user()->role_id=="3")
+<li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#vehicule-nav" data-bs-toggle="collapse" href="#">
+      <i class="bi bi-layout-text-window-reverse"></i><span>Activites vehicule</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="vehicule-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
+      <li>
+        <a href="{{route('activite_vehicule')}}">
+          <i class="bi bi-circle"></i><span>Ouverture activité</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ route('achat_vehicule') }}">
+          <i class="bi bi-circle"></i><span>Achat de vehicule</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ route('vente_vehicule') }}">
+          <i class="bi bi-circle"></i><span>vente de vehicule</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ route('activite_vehicule.fermer') }}">
+          <i class="bi bi-circle"></i><span>Fermeture activité</span>
+        </a>
+      </li>
+    </ul>
+</li><!-- End Tables Nav -->
+@endif
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-layout-text-window-reverse"></i><span>Autres opération caisse</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -190,16 +217,6 @@
       <li>
         <a href="{{ route('operation') }}">
           <i class="bi bi-circle"></i><span>Operation charge</span>
-        </a>
-      </li>
-      <li>
-        <a href="{{ route('achat_voiture') }}">
-          <i class="bi bi-circle"></i><span>Achat de voiture</span>
-        </a>
-      </li>
-      <li>
-        <a href="{{ route('vente_voiture') }}">
-          <i class="bi bi-circle"></i><span>vente de voiture</span>
         </a>
       </li>
       <li>
