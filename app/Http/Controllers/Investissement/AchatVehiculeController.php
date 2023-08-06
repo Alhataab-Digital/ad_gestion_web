@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-use App\Models\fournisseur;
+use App\Models\Fournisseur;
 use App\Models\Caisse;
 use App\Models\Devise;
 use App\Models\TypeReglement;
@@ -34,7 +34,7 @@ class AchatVehiculeController extends Controller
             $caisse=Caisse::find($caisse_id);
             $agence_id=Auth::user()->agence_id;
             $agence=Agence::find( $agence_id);
-            $operations=OperationVehiculeAchete::where('user_id',$id)->where('fournisseur_id','!=', Null )->where('sens_operation', 'sortie' )->get();
+            $operations=OperationVehiculeAchete::where('user_id',$id)->where('fournisseur_id','!=', Null )->where('etat', Null )->where('sens_operation', 'sortie' )->get();
             return view('investissement.achat_vehicule', compact('caisse','operations','agence'));
         }
         return view('devise.message');
@@ -58,7 +58,7 @@ class AchatVehiculeController extends Controller
             /**
              * si le telephone existe afficher le fournisseur
              */
-            if(isset(fournisseur::where('telephone' ,$tel)->where('societe_id',$societe_id)->first(['id'])->id)){
+            if(isset(Fournisseur::where('telephone' ,$tel)->where('societe_id',$societe_id)->first(['id'])->id)){
 
                 $agence_id=Auth::user()->agence_id;
                 $societe_id=Auth::user()->societe_id;

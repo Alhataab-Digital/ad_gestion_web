@@ -34,7 +34,7 @@ class HomeController extends Controller
         $count_activite=ActiviteInvestissement::where('agence_id',$agence_id)->count();
         return view('home', compact('societe','devises','count_investisseur','count_user','count_activite'));
       }
-        return redirect('/')->with('danger',"Session expirée");
+        return redirect('/auth')->with('danger',"Session expirée");
     }
 
     /**

@@ -88,7 +88,7 @@
                 <div class="card-header">
                 <ul class="nav nav-pills card-header-pills">
                     <li class="nav-item">
-                      <h4 style="text-decoration:uppercase;">Stock devise</h4>
+                      <h4 style="text-decoration:uppercase;">Opération attribution</h4>
                     <!--a class="nav-link active" href="#">Active</a-->
                     </li>
                 </ul>
@@ -103,7 +103,7 @@
                     <th scope="col">#</th>
                     <th scope="col">Commentaire </th>
                     <th scope="col">Montant</th>
-                    {{-- <th scope="col">Destination</th> --}}
+                    <th scope="col">Destination</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
@@ -114,11 +114,10 @@
                     <th scope="row">{{ $operation->id}}</th>
                     <td>{{ $operation->commentaire}}</td>
                     <td>{{ $operation->montant_operation}}</td>
-                    {{-- <td>{{ $operation->caisse->libelle}}</td> --}}
-                    {{-- <td>{{ $operation->user->nom}}</td> --}}
+                    <td>{{ $operation->caisse_destination->libelle}}</td>
                     <td>
-                        <a href="{{ route('caisse.encaissement.valider',$operation->id) }}">
-                            <button type="button" class="btn btn-success"><i class="ri ri-arrow-down-line"></i></button>
+                        <a href="{{ route('caisse.attribution.modifier',$operation->id) }}">
+                            <button type="button" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
                         </a>
                     </td>
                   </tr>

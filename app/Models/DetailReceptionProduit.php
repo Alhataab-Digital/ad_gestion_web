@@ -6,14 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Produit;
 
-class DetailLivrer extends Model
+class DetailReceptionProduit extends Model
 {
     use HasFactory;
+
     protected $fillable=[
-        'livrer_id',
+        'reception_id',
         'produit_id',
-        'quantite_livree',
-        'prix_unitaire_livre',
+        'quantite_recu',
+        'prix_unitaire_recu',
     ];
 
     public function produit()

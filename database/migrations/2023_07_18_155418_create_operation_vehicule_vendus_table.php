@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('client_id');
             $table->string('date_comptable');
             $table->string('sens_operation');
+            $table->string('etat')->nullable();
+            $table->string('activite_id');
             $table->string('operation_vehicule_achete_id');
             $table->string('caisse_id');
             $table->string('user_id');

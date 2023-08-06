@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-use App\Models\client;
+use App\Models\Client;
 use App\Models\Caisse;
 use App\Models\Devise;
 use App\Models\Investisseur;
@@ -36,7 +36,7 @@ class VenteVehiculeController extends Controller
             $caisse=Caisse::find($caisse_id);
             $agence_id=Auth::user()->agence_id;
             $agence=Agence::find( $agence_id);
-            $operations=OperationVehiculeVendu::where('user_id',$id)->where('client_id','!=', Null )->where('sens_operation', 'entree' )->get();
+            $operations=OperationVehiculeVendu::where('user_id',$id)->where('client_id','!=', Null )->where('etat',NULL)->where('sens_operation', 'entree' )->get();
             return view('investissement.vente_vehicule', compact('caisse','operations','agence'));
         }
         return view('devise.message');
@@ -50,6 +50,9 @@ class VenteVehiculeController extends Controller
         $data=$request->all();
 
         $tel = $data['telephone'];
+        $agence_id=Auth::user()->agence_id;
+        if(isset(ActiviteVehicule::where('agence_id',$agence_id)->where('etat_activite','ouverte')->first(['id'])->id))
+        {
         /**
          * si le telephone existe afficher le client
          */
@@ -58,7 +61,7 @@ class VenteVehiculeController extends Controller
             $agence_id=Auth::user()->agence_id;
             $societe_id=Auth::user()->societe_id;
             $client_id=client::where('telephone' ,$tel)->where('societe_id',$societe_id)->first(['id'])->id;
-            $client=client::find($client_id);
+            $client=Client::find($client_id);
             $devise_agences=DeviseAgence::where('agence_id',$agence_id)->get();
             $activite_ouverte=ActiviteVehicule::where('agence_id',$agence_id)->where('etat_activite','ouverte')->first();
             $reglements= TypeReglement::all();
@@ -68,7 +71,7 @@ class VenteVehiculeController extends Controller
          */
         }else{
             $societe_id=Auth::user()->societe_id;
-            client::create([
+            Client::create([
                 'telephone'=>$data['telephone'],
                 'societe_id'=>$societe_id,
             ]);
@@ -79,13 +82,16 @@ class VenteVehiculeController extends Controller
             $societe_id=Auth::user()->societe_id;
             $devise_agences=DeviseAgence::where('agence_id',$agence_id)->get();
             $client_id=client::where('telephone' ,$tel)->where('societe_id',$societe_id)->first(['id'])->id;
-            $client=client::find($client_id);
+            $client=Client::find($client_id);
             $devises= Devise::all();
             $activite_ouverte=ActiviteVehicule::where('agence_id',$agence_id)->where('etat_activite','ouverte')->first();
             $reglements= TypeReglement::all();
             return view('investissement.detail_vente_vehicule', compact('client','devise_agences','reglements','activite_ouverte'));
             //return redirect('/vente_devise')->with('success','client ajouté avsec succès');
         }
+    }else{
+        return redirect('/vente_vehicule')->with('danger','Vous n\'avez pas ouvert l\'activite'); 
+     }
     }
 
     /**
@@ -205,6 +211,7 @@ class VenteVehiculeController extends Controller
                                     'marge'=>$marge,
                                     'sens_operation'=>'entree',
                                     'client_id'=>$request->c_id,
+                                    'activite_id'=>$request->activite_id,
                                     'date_comptable'=>$date_comptable,
                                     'operation_vehicule_achete_id'=>$operation_achat_id,
                                     'activite_id'=>$request->activite_id,
@@ -288,7 +295,7 @@ class VenteVehiculeController extends Controller
             $data['chassis']=OperationVehiculeAchete::where('chassis',$request->chassis)->where('etat',null)->get();
             return response()->json($data);
         }
-            return redirect('/')->with('success',"Vous n'êtes pas autorisé à accéder");
+            return redirect('/auth')->with('success',"Vous n'êtes pas autorisé à accéder");
 
     }
     /**

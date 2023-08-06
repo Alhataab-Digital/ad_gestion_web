@@ -39,17 +39,17 @@
                 <!-- Browser Default Validation -->
                 <form class="row g-3" method="post" action="{{ route('workspace.store') }}">
                     @csrf
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <label for="validationDefault01" class="form-label">Raison sociale <span style="color:red">*</span></label>
                         <input type="text" name="raison_sociale" class="form-control" id="validationDefault01" required>
                     </div>
-                    <div class="col-md-2">
+                    <!-- <div class="col-md-2">
                         <label for="validationDefault01" class="form-label">logo(image)</label>
                         <input type="file" name="logo" class="form-control" id="validationDefault01"  >
-                    </div>
-                    <div class="col-md-2">
+                    </div> -->
+                    <!-- <div class="col-md-2">
                         <img src="assets/img/logo.png" alt="" style="width:35mm; height:30mm; border: 1px solid black;" >
-                    </div>
+                    </div> -->
                   <div class="col-md-12">
                         <label for="validationDefault01" class="form-label">Activité <span style="color:red">*</span></label>
                         <input type="text" name="activite" class="form-control" id="validationDefault01"  required>

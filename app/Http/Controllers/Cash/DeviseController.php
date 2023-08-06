@@ -83,7 +83,7 @@ class DeviseController extends Controller
             $devise= Devise::find($id);
             return view('devise.edit',compact('devise'));
         }
-        return redirect('/')->with('success',"Session expirée");
+        return redirect('/auth')->with('success',"Session expirée");
     }
 
     /**

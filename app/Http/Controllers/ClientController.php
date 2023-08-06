@@ -21,7 +21,7 @@ class ClientController extends Controller
             return view('client.index', compact('clients'));
 
         }
-        return redirect('/')->with('danger',"Session expirée");
+        return redirect('/auth')->with('danger',"Session expirée");
 
     }
 

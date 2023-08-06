@@ -25,7 +25,7 @@ class AgenceController extends Controller
         $agences=Agence::Where('societe_id',$societe_id)->get();
         return view('agence.index', compact('agences','devises','regions'));
         }
-        return redirect('/')->with('success',"Session expirée");
+        return redirect('/auth')->with('success',"Session expirée");
     }
 
     /**
@@ -73,7 +73,7 @@ class AgenceController extends Controller
             ]);
             return redirect('/agence')->with('success','Agence crée avec succès');
            }
-           return redirect('/')->with('danger',"Session expirée");
+           return redirect('/auth')->with('danger',"Session expirée");
     }
 
     /**

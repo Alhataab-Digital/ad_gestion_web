@@ -15,6 +15,7 @@ use App\Models\Stock;
 use App\Models\Operation;
 use App\Models\OperationDevise;
 use App\Models\OperationVehiculeAchete;
+use App\Models\OperationVehiculeVendu;
 use App\Models\Agence;
 use App\Models\DeviseAgence;
 use App\Models\MouvementCaisse;
@@ -220,7 +221,7 @@ class ActiviteVehiculeController extends Controller
             $compte_caisse= Caisse::where('user_id',$id)->first(['compte'])->compte;
             $compte_dividende_societe= Caisse::where('user_id',$id)->first(['compte_dividende_societe'])->compte_dividende_societe;
             $date_comptable= Caisse::where('user_id',$id)->first(['date_comptable'])->date_comptable;
-
+            $vehicule_vendus=OperationVehiculeVendu::where('activite_id',$request->activite_id)->get();
         $activite_vehicule=ActiviteVehicule::find($request->activite_id);
 
         if($activite_vehicule->etat_activite=='ouverte'){
@@ -254,6 +255,12 @@ class ActiviteVehiculeController extends Controller
 
                         Investisseur::where('id', $investisseur_id)->update($data);
 
+                }
+                foreach($vehicule_vendus as $vehicule_vendu){
+
+                    $vehicule_vendu->update([
+                        'etat'=>'fermer',
+                    ]);
                 }
             }
 

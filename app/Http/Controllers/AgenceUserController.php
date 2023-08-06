@@ -32,7 +32,7 @@ class AgenceUserController extends Controller
 
             return view('agence_user.index',compact('caisses','users','agences'));
             }
-            return redirect('/')->with('success',"Session expirée");
+            return redirect('/auth')->with('success',"Session expirée");
     }
 
     /**
@@ -85,7 +85,7 @@ class AgenceUserController extends Controller
             ->get(['nom','prenom','id']);
             return response()->json($data);
         }
-            return redirect('/')->with('danger',"Vous n'êtes pas autorisé à accéder");
+            return redirect('/auth')->with('danger',"Vous n'êtes pas autorisé à accéder");
 
     }
 

@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('entrepot_stocks', function (Blueprint $table) {
+        Schema::create('connexion_users', function (Blueprint $table) {
             $table->id();
-            $table->string('nom_entrepot');
-            $table->string('adresse_entrepot')->nullable();
-            $table->string('capacite_entrepot')->nullable();
-            $table->string('agence_id');
+            $table->string('utilisateur_id');
+            $table->string('etat');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('entrepot_stocks');
+        Schema::dropIfExists('connexion_users');
     }
 };

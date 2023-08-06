@@ -71,6 +71,11 @@ class DetailLivrerController extends Controller
 
                     foreach( $stocks as  $stock)
                     {
+                    
+//                         $quatite_count=DetailLivrer::where('produit_id',$request->produit_id)
+//                         ->selectRaw('sum(quantite_livree) as total')
+//                         ->first('total');
+// dd($quatite_count->total);
                         $data=[
                             'quantite_en_stock'     =>$request->qte[$i]+$stock->quantite_en_stock,
                         ];
@@ -78,7 +83,10 @@ class DetailLivrerController extends Controller
                     }
                 }
             }else{
-
+//                 $quatite_count=DetailLivrer::where('produit_id',$request->produit_id)
+//                 ->selectRaw('sum(quantite_livree) as total')
+//                 ->first('total');
+// dd($quatite_count->total);
                 for( $i=0; $i<count($request->produit_id) ; $i++)
                 {
                     $data=[
@@ -96,14 +104,15 @@ class DetailLivrerController extends Controller
             /**
              * ajout des produit livrer
              */
-
             $data_livraison=[
                 'livrer_id'             =>$request->livraison_id,
                 'produit_id'            =>$request->produit_id[$i],
                 'quantite_livree'       =>$request->qte[$i],
                 'prix_unitaire_livre'   =>$request->prix[$i],
             ];
+
             DetailLivrer::create($data_livraison);
+
             }
             /**
              * mise a jour Livraison

@@ -34,7 +34,7 @@ class CaisseController extends Controller
 
         return view('caisse.index', compact('caisses','agences'));
         }
-        return redirect('/')->with('danger',"Session expirée");
+        return redirect('/auth')->with('danger',"Session expirée");
     }
 
     /**
@@ -78,7 +78,7 @@ class CaisseController extends Controller
             ]);
             return redirect('/caisse')->with('success','caisse crée avec succès');
         }
-        return redirect('/')->with('danger',"Session expirée");
+        return redirect('/auth')->with('danger',"Session expirée");
 
     }
 
@@ -215,8 +215,8 @@ class CaisseController extends Controller
                              * mise jour de l'operation
                              */
                             $operation->update([
-                                'date_comptable_reception'=> $user_id,
-                                'user_destination_id'=> $date_comptable,
+                                'date_comptable_reception'=>$date_comptable,
+                                'user_destination_id'=> $user_id ,
                                 'etat'=>'valider',
                             ]);
 
@@ -303,8 +303,9 @@ class CaisseController extends Controller
             }
             return view('caisse.message');
         }
-        return redirect('/')->with('danger',"Session expirée");
+        return redirect('/auth')->with('danger',"Session expirée");
     }
+    
     public function ouverture(Request $request, $id)
     {
         $jour=date("Y-m-d");
@@ -361,7 +362,8 @@ class CaisseController extends Controller
 
             $agence_id=Auth::user()->agence_id;
             $agence=Agence::find($agence_id);
-            $mouvement_caisses=MouvementCaisse::where('caisse_id',$caisse->id)->get();
+            $date_comptable= Caisse::where('user_id',$id)->first(['date_comptable'])->date_comptable;
+            $mouvement_caisses=MouvementCaisse::where('caisse_id',$caisse->id)->where('date_comptable',$date_comptable)->orderBy('id', 'desc')->get();
         /**
          * rapport caisse gestion investissement
          */
@@ -403,5 +405,10 @@ class CaisseController extends Controller
         }
 
         return view('erreur.message');
+    }
+
+    public function attribution_modifier(){
+
+        
     }
 }

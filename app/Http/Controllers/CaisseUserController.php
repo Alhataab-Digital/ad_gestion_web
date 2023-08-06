@@ -30,7 +30,7 @@ class CaisseUserController extends Controller
 
         return view('caisse_user.index',compact('caisses','users','agences'));
         }
-        return redirect('/')->with('danger',"Session expirée");
+        return redirect('/auth')->with('danger',"Session expirée");
     }
 
     public function utilisateur_agence(Request $request){
@@ -42,7 +42,7 @@ class CaisseUserController extends Controller
             ->get(['nom','prenom','id']);
             return response()->json($data);
         }
-            return redirect('/')->with('danger',"Vous n'êtes pas autorisé à accéder");
+            return redirect('/auth')->with('danger',"Vous n'êtes pas autorisé à accéder");
     }
 
     public function utilisateur_caisse(Request $request){
@@ -52,7 +52,7 @@ class CaisseUserController extends Controller
             ->where('user_id','=',0)->get();
             return response()->json($data);
         }
-            return redirect('/')->with('danger',"Vous n'êtes pas autorisé à accéder");
+            return redirect('/auth')->with('danger',"Vous n'êtes pas autorisé à accéder");
     }
 
 

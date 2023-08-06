@@ -22,7 +22,7 @@ class CategorieProduitController extends Controller
             return view('categorie_produit.index', compact('categories'));
 
         }
-        return redirect('/')->with('danger',"Session expirée");
+        return redirect('/auth')->with('danger',"Session expirée");
 
     }
 
@@ -64,7 +64,7 @@ class CategorieProduitController extends Controller
             ]);
             return redirect('/categorie_produit')->with('success','categorie produit crée avec succès');
         }
-        return redirect('/')->with('danger',"Session expirée");
+        return redirect('/auth')->with('danger',"Session expirée");
     }
 
     /**
@@ -85,7 +85,7 @@ class CategorieProduitController extends Controller
             $categorie= CategorieProduit::find($id);
             return view('categorie_produit.edit',compact('categorie'));
         }
-        return redirect('/')->with('danger',"Session expirée");
+        return redirect('/auth')->with('danger',"Session expirée");
     }
 
     /**

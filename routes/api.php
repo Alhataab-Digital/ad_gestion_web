@@ -34,7 +34,7 @@ Route::controller(LoginController::class)->group(function(){
 });
 Route::controller(RegisterController::class)->group(function(){
 
-    Route::get('/registre_form','index');
+    Route::get('/registre/list','index');
     Route::post('/registre','store');
 
 });

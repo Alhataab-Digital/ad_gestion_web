@@ -31,7 +31,7 @@
                 <div class="col-md-3">
 
                     <input class="form-control"  type="hidden" name="commande_id" value="{{ $commande->id }}"  >
-                    {{-- <div class="col-12">
+                    <div class="col-12">
                         <label for="inputNanme4" class="form-label">Nom fournisseur / raison sociale</label>
                         <input type="text" name="nom" class="form-control" id="inputNanme4">
 
@@ -41,7 +41,7 @@
                     <div class="col-12">
                         <label for="inputNanme4" class="form-label">Adresse</label>
                         <input type="text" name="nom" class="form-control" id="inputNanme4">
-                    </div> --}}
+                    </div>
                     <label for="" class="form-label">Fournisseur</label>
                     <select class="form-select" id="" name="fournisseur" required>
                       <option selected disabled value="">Choose...</option>

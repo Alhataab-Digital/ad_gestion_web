@@ -18,12 +18,22 @@
          <i class="bi bi-circle"></i><span>Institution</span>
        </a>
      </li>
-
      <li>
         <a href="{{ route('users.index') }}">
             <i class="bi bi-circle"></i><span>Utilisateur</span>
         </a>
       </li>
+      <li>
+        <a href="{{ route('users.online') }}">
+            <i class="bi bi-circle"></i><span> Utilisateur en ligne</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ route('users.filelog') }}">
+            <i class="bi bi-circle"></i><span>Ficher log Utilisateur</span>
+        </a>
+      </li>
+
       <li>
         <a href="{{ route('devise') }}">
           <i class="bi bi-circle"></i><span>Type devise</span>
@@ -68,8 +78,6 @@
 </li><!-- End Components Nav -->
 @endif
 
-@if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1" || Auth::user()->role_id=="2" || Auth::user()->role_id=="3" || Auth::user()->role_id=="4")
-
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#caisse-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-journal-text"></i><span>Gestion Caisse</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -88,14 +96,13 @@
       </li>
     </ul>
 </li><!-- End Forms Nav -->
-@endif
 
+@if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1" || Auth::user()->role_id=="2")
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-journal-text"></i><span>Gestion investisseur</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="forms-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
-    @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="3" || Auth::user()->role_id=="1" || Auth::user()->role_id=="2")
       <li>
         <a href="{{ route('investisseur.create') }}">
           <i class="bi bi-circle"></i><span>Nouveau investisseur</span>
@@ -111,8 +118,6 @@
           <i class="bi bi-circle"></i><span>Activation/ inactivation </span>
         </a>
       </li>
-      @endif
-      @if(Auth::user()->role_id=="1" || Auth::user()->role_id=="3" || Auth::user()->role_id=="4")
       <li>
         <a href="{{ route('i_versement') }}">
           <i class="bi bi-circle"></i><span> Versement  </span>
@@ -123,25 +128,20 @@
           <i class="bi bi-circle"></i><span> Retrait  </span>
         </a>
       </li>
-      @endif
-      @if(Auth::user()->role_id=="4")
       <li>
         <a href="{{ route('d_retrait') }}">
           <i class="bi bi-circle"></i><span> Retrait dividende </span>
         </a>
       </li>
-      @endif
-      @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1" || Auth::user()->role_id=="2" || Auth::user()->role_id=="3")
-      <li>
+     <li>
         <a href="{{ route('investisseur.consultation') }}">
           <i class="bi bi-circle"></i><span> Consulter compte  </span>
         </a>
       </li>
-      @endif
     </ul>
 </li><!-- End Forms Nav -->
-
-@if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1" || Auth::user()->role_id=="2")
+@endif
+@if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1" ||  Auth::user()->role_id=="3")
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#activite-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-layout-text-window-reverse"></i><span>Activites d'investissement</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -170,7 +170,7 @@
     </ul>
 </li><!-- End Tables Nav -->
 @endif
-@if(Auth::user()->role_id=="1" || Auth::user()->role_id=="2" || Auth::user()->role_id=="3")
+@if(Auth::user()->role_id=="0" ||Auth::user()->role_id=="1" || Auth::user()->role_id=="2")
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#vehicule-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-layout-text-window-reverse"></i><span>Activites vehicule</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -199,6 +199,74 @@
     </ul>
 </li><!-- End Tables Nav -->
 @endif
+@if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1"|| Auth::user()->role_id=="3")
+<li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#stock-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-bar-chart"></i><span>Gestion stock</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="stock-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{{ route('livrer') }}">
+              <i class="bi bi-circle"></i><span>Approvissionnement stock</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('entrepot') }}">
+              <i class="bi bi-circle"></i><span>Entrepôt de stock</span>
+            </a>
+          </li>
+          <li>
+            <a href="charts-echarts.html">
+              <i class="bi bi-circle"></i><span>Mouvement stock</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('inventaire_stock') }}">
+              <i class="bi bi-circle"></i><span>Inventaire stock</span>
+            </a>
+          </li>
+          <li>
+            <a href="charts-echarts.html">
+              <i class="bi bi-circle"></i><span>Transition stock</span>
+            </a>
+          </li>
+        </ul>
+    </li>
+
+    <li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+      <i class="bi bi-journal-text"></i><span>Documents</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="charts-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
+    <li>
+        <a href="{{ route('commande') }}">
+          <i class="bi bi-circle"></i><span>Commande</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ route('commande') }}">
+          <i class="bi bi-circle"></i><span>Borderaux de reception</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ route('devis') }}">
+          <i class="bi bi-circle"></i><span>Devis</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ route('facture') }}">
+          <i class="bi bi-circle"></i><span>Facture</span>
+        </a>
+      </li>
+      <li>
+        <a href="">
+          <i class="bi bi-circle"></i><span>Bon de livraisson</span>
+        </a>
+      </li>
+    </ul>
+  </li><!-- End Charts Nav -->
+@endif
+
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-layout-text-window-reverse"></i><span>Autres opération caisse</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -226,19 +294,34 @@
       </li>
     </ul>
   </li><!-- End Tables Nav -->
-  {{-- <li class="nav-heading">Tiers</li> --}}
+  <li class="nav-heading">Tiers</li>
+  @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1"|| Auth::user()->role_id=="3") 
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="{{ route('categorie_produit') }}">
+      <i class="bx bxs-category-alt"></i>
+      <span>Categories produit</span>
+    </a>
+  </li><!-- End Profile Page Nav -->
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="{{ route('produit') }}">
+      <i class="ri ri-equalizer-fill"></i>
+      <span>Produits</span>
+    </a>
+  </li><!-- End client Page Nav -->
+  @endif
   <!--li class="nav-item">
     <a class="nav-link collapsed" href="{{ route('client') }}">
       <i class="bi bi-people"></i>
       <span>Client</span>
     </a>
   </li--><!-- End client Page Nav -->
-  {{-- <li class="nav-item">
+  <li class="nav-item">
     <a class="nav-link collapsed" href="{{ route('profile') }}">
       <i class="bi bi-person-square"></i>
       <span>Profile</span>
     </a>
-  </li><!-- End Contact Page Nav --> --}}
+  </li><!-- End Contact Page Nav -->
 
 @endif
 

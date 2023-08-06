@@ -4,16 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\client;
+use App\Models\fournisseur;
 use App\Models\EntrepotStock;
 
-class Livrer extends Model
+class ReceptionProduit extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'facture_id',
-        'client_id',
+        'commande_id',
+        'fournisseur_id',
         'entrepot_id',
         'user_id',
         'montant_total',
@@ -21,7 +21,7 @@ class Livrer extends Model
         'etat',
     ];
 
-    public function client()
+    public function fournisseur()
     {
         return $this->belongsTo(Fournisseur::class);
     }

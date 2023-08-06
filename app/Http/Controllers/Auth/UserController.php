@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use App\Models\Utilisateur;
+use App\Models\ConnexionUser;
+use App\Models\UserEnLigne;
 use App\Models\Role;
 use App\Models\Permission;
 use App\Models\RolesUser;
@@ -24,6 +26,25 @@ class UserController extends Controller
             $id=Auth::user()->societe_id;
             $utilisateurs=Utilisateur::where('societe_id',$id)->get();
             return view('users.index',compact('utilisateurs'));
+        }
+        return redirect('/')->with('danger',"Session expirée");
+    }
+
+    public function online(){
+        if(Auth::check()){
+            $id=Auth::user()->societe_id;
+            $onlines=UserEnLigne::all();
+            return view('users.online',compact('onlines'));
+        }
+        return redirect('/')->with('danger',"Session expirée");
+    }
+
+    public function filelog(){
+        if(Auth::check()){
+            $id=Auth::user()->societe_id;
+            $utilisateurs=Utilisateur::all();
+            $filelogs=ConnexionUser::all();
+            return view('users.filelog',compact('filelogs','utilisateurs'));
         }
         return redirect('/')->with('danger',"Session expirée");
     }
@@ -198,4 +219,6 @@ class UserController extends Controller
         ]);
         return back()->with('success','Mot de passe utilisateur initialisé avec succès');
     }
+
+    
 }

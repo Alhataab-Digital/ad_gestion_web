@@ -51,7 +51,7 @@ class DevisController extends Controller
         return redirect('devis/'.$devis->id.'/edit');
 
         }
-        return redirect('/')->with('danger',"Session expirée");
+        return redirect('/auth')->with('danger',"Session expirée");
     }
 
     /**

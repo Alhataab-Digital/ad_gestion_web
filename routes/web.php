@@ -77,9 +77,13 @@ use App\Http\Controllers\DetailFactureController;
 |
 */
 Route::controller(LoginController::class)->group(function(){
-    Route::get('/','login')->name('login');
-    Route::post('/auth','store')->name('login.store');
+    Route::get('/','index');
+    Route::get('/auth','login')->name('login');
+    Route::post('/store','store')->name('login.store');
     Route::get('/logout','logout')->name('logout');
+    
+    Route::get('/user_connexion','user_connexion')->name('users.user_connexion');
+    Route::post('/restore_connexion','restore_connexion')->name('users.restore_connexion');
 });
 
 Route::controller(RegisterController::class)->group(function(){
@@ -89,13 +93,15 @@ Route::controller(RegisterController::class)->group(function(){
 
 });
 
-Route::middleware('auth')->controller(HomeController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(HomeController::class)->group(function(){
     Route::get('/home','index')->name('home');
     Route::get('/{id}/activer','store')->name('activer.environnement');
 });
 
-Route::middleware('auth')->controller(UserController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(UserController::class)->group(function(){
     Route::get('/users/index','index')->name('users.index');
+    Route::get('/users/online','online')->name('users.online');
+    Route::get('/users/filelog','filelog')->name('users.filelog');
     Route::post('/users/store','store')->name('users.store');
     Route::get('/users/{id}/edit','edit')->name('users.edit');
     Route::post('/users/{id}/update','update')->name('users.update');
@@ -106,7 +112,7 @@ Route::middleware('auth')->controller(UserController::class)->group(function(){
     Route::post('/users/permission','permission')->name('users.permission');
 });
 
-Route::middleware('auth')->controller(SocieteController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(SocieteController::class)->group(function(){
     Route::get('/societe','index')->name('workspace');
     Route::post('/societe/creation','store')->name('workspace.store');
     Route::get('/societe/{id}/detail','show')->name('workspace.show');
@@ -114,11 +120,11 @@ Route::middleware('auth')->controller(SocieteController::class)->group(function(
     Route::post('/societe/{id}/update','update')->name('workspace.update');
 });
 
-Route::middleware('auth')->controller(ProfileController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(ProfileController::class)->group(function(){
     Route::get('/profile','index')->name('profile');
 });
 
-Route::middleware('auth')->controller(RoleController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(RoleController::class)->group(function(){
     Route::get('/role','index')->name('role');
     Route::post('/role/creation','store')->name('role.store');
     Route::get('/role/{id}/detail','show')->name('role.show');
@@ -126,7 +132,7 @@ Route::middleware('auth')->controller(RoleController::class)->group(function(){
     Route::post('/role/{id}/update','update')->name('role.update');
 });
 
-Route::middleware('auth')->controller(AgenceController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(AgenceController::class)->group(function(){
     Route::get('/agence','index')->name('agence');
     Route::post('/agence/creation','store')->name('agence.store');
     Route::get('/agence/{id}/detail','show')->name('agence.show');
@@ -135,7 +141,7 @@ Route::middleware('auth')->controller(AgenceController::class)->group(function()
     Route::post('/agence/devise','devise')->name('agence.devise');
 });
 
-Route::middleware('auth')->controller(CaisseController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(CaisseController::class)->group(function(){
     Route::get('/caisse','index')->name('caisse');
     Route::post('/caisse/creation','store')->name('caisse.store');
     Route::get('/caisse/{id}/detail','show')->name('caisse.show');
@@ -150,6 +156,7 @@ Route::middleware('auth')->controller(CaisseController::class)->group(function()
     Route::get('/caisse/encaissement','encaissement')->name('caisse.encaissement');
 
     Route::post('/caisse/attribution_valider','attribution_valider')->name('caisse.attribution.valider');
+    Route::get('/caisse/{id}/attribution_modifier','attribution_modifier')->name('caisse.attribution.modifier');
     Route::get('/caisse/{id}/encaissement_valider','encaissement_valider')->name('caisse.encaissement.valider');
 
     Route::post('/caisse/{id}/fermeture','fermeture')->name('caisse.fermeture');
@@ -157,7 +164,7 @@ Route::middleware('auth')->controller(CaisseController::class)->group(function()
     Route::get('/caisse/rapport','rapport_caisse')->name('caisse.rapport');
 });
 
-Route::middleware('auth')->controller(AgenceUserController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(AgenceUserController::class)->group(function(){
     Route::get('/agence_user','index')->name('agence_user');
     Route::post('/agence_user/creation','store')->name('agence_user.store');
     Route::get('/agence_user/{id}/detail','show')->name('agence_user.show');
@@ -168,7 +175,7 @@ Route::middleware('auth')->controller(AgenceUserController::class)->group(functi
     Route::post('/agence/edit/devise','edit_devise')->name('edit.devise');
 });
 
-Route::middleware('auth')->controller(CaisseUserController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(CaisseUserController::class)->group(function(){
     Route::get('/caisse_user','index')->name('caisse_user');
     Route::post('/caisse_user/creation','store')->name('caisse_user.store');
     Route::get('/caisse_user/{id}/detail','show')->name('caisse_user.show');
@@ -179,7 +186,7 @@ Route::middleware('auth')->controller(CaisseUserController::class)->group(functi
     Route::get('/caisse/select/{id}/annuler','asso_caisse_annuler')->name('annuler.caisse.select');
 });
 
-Route::middleware('auth')->controller(ClientController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(ClientController::class)->group(function(){
     Route::get('/client','index')->name('client');
     Route::post('/client/creation','store')->name('client.store');
     Route::get('/client/{id}/detail','show')->name('client.show');
@@ -187,7 +194,7 @@ Route::middleware('auth')->controller(ClientController::class)->group(function()
     Route::post('/client/{id}/update','update')->name('client.update');
 });
 
-Route::middleware('auth')->controller(FournisseurController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(FournisseurController::class)->group(function(){
     Route::get('/fournisseur','index')->name('fournisseur');
     Route::post('/fournisseur/creation','store')->name('fournisseur.store');
     Route::get('/fournisseur/{id}/detail','show')->name('fournisseur.show');
@@ -195,7 +202,7 @@ Route::middleware('auth')->controller(FournisseurController::class)->group(funct
     Route::post('/fournisseur/{id}/update','update')->name('fournisseur.update');
 });
 
-Route::middleware('auth')->controller(EnvoiController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(EnvoiController::class)->group(function(){
     Route::get('/envoi','index')->name('envoi');
     Route::post('/envoi/numero','numero_client')->name('envoi.numero_client');
     Route::post('/envoi/creation','store')->name('envoi.store');
@@ -204,7 +211,7 @@ Route::middleware('auth')->controller(EnvoiController::class)->group(function(){
     Route::get('/envoi/{id}/print','print')->name('envoi.print');
 });
 
-Route::middleware('auth')->controller(RetraitController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(RetraitController::class)->group(function(){
     Route::get('/retrait','index')->name('retrait');
     Route::post('/retrait/code','code_envoi')->name('retrait.code_envoi');
     Route::post('/retrait/{id}/update','update')->name('retrait.update');
@@ -213,7 +220,7 @@ Route::middleware('auth')->controller(RetraitController::class)->group(function(
     Route::get('/retrait/{id}/print','print')->name('retrait.print');
 });
 
-Route::middleware('auth')->controller(AutresOperationController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(AutresOperationController::class)->group(function(){
 
     Route::get('/operation','index')->name('operation');
     Route::post('/creer/operation','store')->name('operation.store');
@@ -223,7 +230,7 @@ Route::middleware('auth')->controller(AutresOperationController::class)->group(f
 
 });
 
-Route::middleware('auth')->controller(CategorieProduitController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(CategorieProduitController::class)->group(function(){
     Route::get('/categorie_produit','index')->name('categorie_produit');
     Route::post('/categorie_produit/create','create')->name('categorie_produit.create');
     Route::post('/categorie_produit/store','store')->name('categorie_produit.store');
@@ -232,7 +239,7 @@ Route::middleware('auth')->controller(CategorieProduitController::class)->group(
     Route::post('/categorie_produit/{id}/update','update')->name('categorie_produit.update');
 });
 
-Route::middleware('auth')->controller(ProduitController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(ProduitController::class)->group(function(){
     Route::get('/produit','index')->name('produit');
     Route::post('/produit/create','create')->name('produit.create');
     Route::post('/produit/store','store')->name('produit.store');
@@ -249,14 +256,14 @@ Route::middleware('auth')->controller(ProduitController::class)->group(function(
 |
 */
 
-Route::middleware('auth')->controller(TrancheTarifController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(TrancheTarifController::class)->group(function(){
 
     Route::get('/tarif','index')->name('tarif');
     Route::post('/creer/tarif','store')->name('tarif.store');
 
 });
 
-Route::middleware('auth')->controller(DeviseController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(DeviseController::class)->group(function(){
 
     Route::get('/devise','index')->name('devise');
     Route::post('/creer/devise','store')->name('devise.store');
@@ -267,7 +274,7 @@ Route::middleware('auth')->controller(DeviseController::class)->group(function()
     Route::Post('/devise/agence','agence')->name('devise.agence');
 
 });
-Route::middleware('auth')->controller(AchatDeviseController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(AchatDeviseController::class)->group(function(){
 
     Route::get('/achat_devise','index')->name('achat_devise');
     Route::get('/achat_devise/{id}/detail','show')->name('achat_devise.show');
@@ -281,7 +288,7 @@ Route::middleware('auth')->controller(AchatDeviseController::class)->group(funct
 
 });
 
-Route::middleware('auth')->controller(VenteDeviseController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(VenteDeviseController::class)->group(function(){
 
 
     Route::get('/vente_devise','index')->name('vente_devise');
@@ -304,7 +311,7 @@ Route::middleware('auth')->controller(VenteDeviseController::class)->group(funct
 | controller de investissement
 |
 */
- Route::middleware('auth')->controller(InvestisseurController::class)->group(function(){
+ Route::middleware(['auth','initier'])->controller(InvestisseurController::class)->group(function(){
 
     Route::get('/investisseur','index')->name('investisseur');
     Route::get('/create/investisseur','create')->name('investisseur.create');
@@ -319,7 +326,7 @@ Route::middleware('auth')->controller(VenteDeviseController::class)->group(funct
 
 });
 
-Route::middleware('auth')->controller(VersementInvestisseurController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(VersementInvestisseurController::class)->group(function(){
 
     Route::get('/i_versement','index')->name('i_versement');
     Route::post('/i_versement/versement','versement')->name('i_versement.versement');
@@ -332,7 +339,7 @@ Route::middleware('auth')->controller(VersementInvestisseurController::class)->g
 
 });
 
-Route::middleware('auth')->controller(RetraitInvestisseurController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(RetraitInvestisseurController::class)->group(function(){
 
     Route::get('/i_retrait','index')->name('i_retrait');
     Route::post('/i_retrait/versement','retrait')->name('i_retrait.retrait');
@@ -345,7 +352,7 @@ Route::middleware('auth')->controller(RetraitInvestisseurController::class)->gro
 
 });
 
-Route::middleware('auth')->controller(RetraitDividendeController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(RetraitDividendeController::class)->group(function(){
 
     Route::get('/d_retrait','index')->name('d_retrait');
     Route::post('/d_retrait/versement','retrait')->name('d_retrait.retrait');
@@ -358,7 +365,7 @@ Route::middleware('auth')->controller(RetraitDividendeController::class)->group(
 
 });
 
-Route::middleware('auth')->controller(TypeActiviteInvestissementController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(TypeActiviteInvestissementController::class)->group(function(){
 
     Route::get('/type_activite_investissement','index')->name('type_activite_investissement');
     Route::get('/type_activite_investissement/create','create')->name('type_activite_investissement.create');
@@ -370,7 +377,7 @@ Route::middleware('auth')->controller(TypeActiviteInvestissementController::clas
 
 });
 
-Route::middleware('auth')->controller(ActiviteInvestissementController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(ActiviteInvestissementController::class)->group(function(){
 
     Route::get('/activite_investissement','index')->name('activite_investissement');
     Route::get('/activite_investissement/valider','valider')->name('activite_investissement.valider');
@@ -387,7 +394,7 @@ Route::middleware('auth')->controller(ActiviteInvestissementController::class)->
 
 });
 
-Route::middleware('auth')->controller(DetailActiviteInvestissementController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(DetailActiviteInvestissementController::class)->group(function(){
 
     Route::get('/detail_activite_investissement','index')->name('detail_activite_investissement');
     Route::get('/detail_activite_investissement/create','create')->name('detail_activite_investissement.create');
@@ -400,7 +407,7 @@ Route::middleware('auth')->controller(DetailActiviteInvestissementController::cl
 
 });
 
-Route::middleware('auth')->controller(NatureOperationChargeController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(NatureOperationChargeController::class)->group(function(){
 
     Route::get('/nature_operation_charge','index')->name('nature_operation_charge');
     Route::get('/nature_operation_charge/create','create')->name('nature_operation_charge.create');
@@ -413,7 +420,7 @@ Route::middleware('auth')->controller(NatureOperationChargeController::class)->g
 
 });
 
-Route::middleware('auth')->controller(SecteurDepenseController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(SecteurDepenseController::class)->group(function(){
 
     Route::get('/secteur_depense','index')->name('secteur_depense');
     Route::get('/secteur_depense/create','create')->name('secteur_depense.create');
@@ -438,7 +445,7 @@ Route::controller(PortailInvestisseurController::class)->group(function(){
 
 });
 
-Route::middleware('auth')->controller(AchatVehiculeController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(AchatVehiculeController::class)->group(function(){
 
 
     Route::get('/achat_vehicule','index')->name('achat_vehicule');
@@ -451,7 +458,7 @@ Route::middleware('auth')->controller(AchatVehiculeController::class)->group(fun
 
 });
 
-Route::middleware('auth')->controller(VenteVehiculeController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(VenteVehiculeController::class)->group(function(){
 
 
     Route::get('/vente_vehicule','index')->name('vente_vehicule');
@@ -465,7 +472,7 @@ Route::middleware('auth')->controller(VenteVehiculeController::class)->group(fun
 
 });
 
-Route::middleware('auth')->controller(ActiviteVehiculeController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(ActiviteVehiculeController::class)->group(function(){
 
 
     Route::get('/activite_vehicule','index')->name('activite_vehicule');
@@ -484,7 +491,7 @@ Route::middleware('auth')->controller(ActiviteVehiculeController::class)->group(
 
 });
 
-Route::middleware('auth')->controller(DetailActiviteVehiculeController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(DetailActiviteVehiculeController::class)->group(function(){
 
     Route::get('/detail_activite_vehicule','index')->name('detail_activite_vehicule');
     Route::get('/detail_activite_vehicule/create','create')->name('detail_activite_vehicule.create');
@@ -505,7 +512,7 @@ Route::middleware('auth')->controller(DetailActiviteVehiculeController::class)->
 | controller de hotel
 |
 */
-Route::middleware('auth')->controller(TypeChambreController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(TypeChambreController::class)->group(function(){
 
     Route::get('/type_chambre','index')->name('type_chambre');
     Route::post('/creer/type_chambre','store')->name('type_chambre.store');
@@ -516,7 +523,7 @@ Route::middleware('auth')->controller(TypeChambreController::class)->group(funct
 
 });
 
-Route::middleware('auth')->controller(TypeServiceController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(TypeServiceController::class)->group(function(){
 
     Route::get('/type_service','index')->name('type_service');
     Route::post('/creer/type_service','store')->name('type_service.store');
@@ -536,7 +543,7 @@ Route::middleware('auth')->controller(TypeServiceController::class)->group(funct
 | controller de e-commerce
 |
 */
-Route::middleware('auth')->controller(EntrepotController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(EntrepotController::class)->group(function(){
 
     Route::get('/entrepot','index')->name('entrepot');
     Route::post('/creer/entrepot','store')->name('entrepot.store');
@@ -547,7 +554,7 @@ Route::middleware('auth')->controller(EntrepotController::class)->group(function
 
 });
 
-Route::middleware('auth')->controller(CommandeController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(CommandeController::class)->group(function(){
 
     Route::get('/commande','index')->name('commande');
     Route::get('/creer/commande','create')->name('commande.create');
@@ -560,7 +567,7 @@ Route::middleware('auth')->controller(CommandeController::class)->group(function
     Route::get('/commande/{id}/print','print')->name('commande.print');
 
 });
-Route::middleware('auth')->controller(DetailCommandeController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(DetailCommandeController::class)->group(function(){
 
     Route::get('/detail_commande','index')->name('detail_commande');
     Route::post('/creer/detail_commande','create')->name('detail_commande.create');
@@ -572,7 +579,7 @@ Route::middleware('auth')->controller(DetailCommandeController::class)->group(fu
 
 });
 
-Route::middleware('auth')->controller(DevisController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(DevisController::class)->group(function(){
 
     Route::get('/devis','index')->name('devis');
     Route::get('/creer/devis','create')->name('devis.create');
@@ -585,7 +592,7 @@ Route::middleware('auth')->controller(DevisController::class)->group(function(){
 
 });
 
-Route::middleware('auth')->controller(DetailDevisController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(DetailDevisController::class)->group(function(){
 
     Route::get('/detail_devis','index')->name('detail_devis');
     Route::post('/creer/detail_devis','store')->name('detail_devis.store');
@@ -596,7 +603,7 @@ Route::middleware('auth')->controller(DetailDevisController::class)->group(funct
 
 });
 
-Route::middleware('auth')->controller(LivrerController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(LivrerController::class)->group(function(){
 
     Route::get('/livrer','index')->name('livrer');
     Route::post('/creer/livrer','store')->name('livrer.store');
@@ -608,7 +615,7 @@ Route::middleware('auth')->controller(LivrerController::class)->group(function()
 
 });
 
-Route::middleware('auth')->controller(DetailLivrerController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(DetailLivrerController::class)->group(function(){
 
     Route::get('/detail_livrer','index')->name('detail_livrer');
     Route::post('/creer/detail_livrer','store')->name('detail_livrer.store');
@@ -619,7 +626,7 @@ Route::middleware('auth')->controller(DetailLivrerController::class)->group(func
 
 });
 
-Route::middleware('auth')->controller(FactureController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(FactureController::class)->group(function(){
 
     Route::get('/facture','index')->name('facture');
     Route::post('/creer/facture','store')->name('facture.store');
@@ -630,7 +637,7 @@ Route::middleware('auth')->controller(FactureController::class)->group(function(
 
 });
 
-Route::middleware('auth')->controller(DetailFactureController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(DetailFactureController::class)->group(function(){
 
     Route::get('/detail_facture','index')->name('detail_facture');
     Route::post('/creer/detail_facture','store')->name('detail_facture.store');
@@ -642,7 +649,7 @@ Route::middleware('auth')->controller(DetailFactureController::class)->group(fun
 });
 
 
-Route::middleware('auth')->controller(InventaireStockController::class)->group(function(){
+Route::middleware(['auth','initier'])->controller(InventaireStockController::class)->group(function(){
 
     Route::get('/inventaire_stock','index')->name('inventaire_stock');
     Route::post('/creer/inventaire_stock','store')->name('inventaire_stock.store');

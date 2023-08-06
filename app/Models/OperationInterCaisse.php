@@ -23,9 +23,18 @@ class OperationInterCaisse extends Model
     ];
 
 
+    public function caisse_destination()
+    {
+        return $this->belongsTo(Caisse::class, 'caisse_destination_id');
+    }
     public function caisse()
     {
         return $this->belongsTo(Caisse::class);
+    }
+
+    public function user_destination()
+    {
+        return $this->belongsTo(Utilisateur::class,'user_destination_id');
     }
 
     public function user()

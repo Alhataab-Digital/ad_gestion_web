@@ -24,7 +24,7 @@ class FournisseurController extends Controller
             return view('fournisseur.index', compact('fournisseurs'));
 
         }
-        return redirect('/')->with('danger',"Session expirée");
+        return redirect('/auth')->with('danger',"Session expirée");
 
     }
 

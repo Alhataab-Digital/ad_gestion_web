@@ -23,10 +23,11 @@ class EntrepotController extends Controller
         //
         if(Auth::check()){
             $agence_id=Auth::user()->agence_id;
+            
             $entrepots=EntrepotStock::Where('agence_id',$agence_id)->get();
             return view('e-commerce.entrepot', compact('entrepots'));
             }
-            return redirect('/')->with('success',"Session expirée");
+            return redirect('/auth')->with('success',"Session expirée");
     }
 
     /**
@@ -71,7 +72,7 @@ class EntrepotController extends Controller
                     return redirect('/entrepot')->with('success','Vous n\'etes par lier à une agence');
                 }
            }
-           return redirect('/')->with('danger',"Session expirée");
+           return redirect('/auth')->with('danger',"Session expirée");
     }
 
     /**

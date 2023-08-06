@@ -24,7 +24,7 @@ class ProduitController extends Controller
             return view('produit.index', compact('produits','categories'));
 
         }
-        return redirect('/')->with('danger',"Session expirée");
+        return redirect('/auth')->with('danger',"Session expirée");
     }
 
     /**
@@ -76,7 +76,7 @@ class ProduitController extends Controller
             ]);
             return redirect('/produit')->with('success','Produit crée avec succès');
         }
-        return redirect('/')->with('danger',"Session expirée");
+        return redirect('/auth')->with('danger',"Session expirée");
     }
 
     /**

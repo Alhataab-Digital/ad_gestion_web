@@ -72,7 +72,7 @@ class DetailCommandeController extends Controller
             return redirect('detail_commande/'.$commande->id.'/show');
 
         }
-        return redirect('/')->with('danger',"Session expirée");
+        return redirect('/auth')->with('danger',"Session expirée");
 
 
 

@@ -269,7 +269,7 @@ class AchatDeviseController extends Controller
             ->where('devise_id',$request->id)->where('agence_id',$agence_id)->get(['devise_id','taux']);
             return response()->json($data);
         }
-            return redirect('/')->with('success',"Vous n'êtes pas autorisé à accéder");
+            return redirect('/auth')->with('success',"Vous n'êtes pas autorisé à accéder");
 
 
     }
@@ -284,7 +284,7 @@ class AchatDeviseController extends Controller
             ->where('devise_id',$request->id)->where('caisse_id',$caisse_id)->get(['montant','id']);
             return response()->json($data);
         }
-            return redirect('/')->with('success',"Vous n'êtes pas autorisé à accéder");
+            return redirect('/auth')->with('success',"Vous n'êtes pas autorisé à accéder");
 
 
     }

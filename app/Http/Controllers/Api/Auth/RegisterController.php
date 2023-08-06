@@ -16,7 +16,8 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        //
+        $gestions=TypeGestion::all();
+        return response()->json($gestions);
     }
 
     /**

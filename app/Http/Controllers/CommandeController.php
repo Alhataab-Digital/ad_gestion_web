@@ -48,7 +48,7 @@ class CommandeController extends Controller
         return redirect('commande/'.$commande->id.'/edit');
 
         }
-        return redirect('/')->with('danger',"Session expirée");
+        return redirect('/auth')->with('danger',"Session expirée");
     }
 
     /**
@@ -112,7 +112,7 @@ class CommandeController extends Controller
             return response()->json($data);
 
         }
-            return redirect('/')->with('success',"Vous n'êtes pas autorisé à accéder");
+            return redirect('/auth')->with('success',"Vous n'êtes pas autorisé à accéder");
 
 
     }

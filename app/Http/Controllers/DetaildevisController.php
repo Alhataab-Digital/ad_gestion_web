@@ -72,7 +72,7 @@ class DetaildevisController extends Controller
         return redirect('detail_devis/'.$devis->id.'/show');
 
     }
-    return redirect('/')->with('danger',"Session expirée");
+    return redirect('/auth')->with('danger',"Session expirée");
     }
 
     /**

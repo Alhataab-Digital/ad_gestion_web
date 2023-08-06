@@ -18,6 +18,8 @@ class OperationVehiculeVendu extends Model
         'client_id',
         'date_comptable',
         'sens_operation',
+        'etat',
+        'activite_id',
         'operation_vehicule_achete_id',
         'caisse_id',
         'user_id',

@@ -233,7 +233,7 @@ class EnvoiController extends Controller
 
                     return response()->json($data);
                 }
-                    return redirect('/')->with('success',"Vous n'êtes pas autorisé à accéder");
+                    return redirect('/auth')->with('success',"Vous n'êtes pas autorisé à accéder");
 
 
     }

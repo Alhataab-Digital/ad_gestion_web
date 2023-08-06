@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Authentification</title>
+  <title>Restaurer l'utilisateur en cours </title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -45,12 +45,12 @@
       <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
         <div class="container">
           <div class="row justify-content-center">
-            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+            <div class="col-lg-6 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
               <div class="d-flex justify-content-center py-4">
-                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <a href="" class="logo d-flex align-items-center w-auto">
                   <img src="assets/img/logo_ad.jpeg" alt="">
-                  <span class="d-none d-lg-block"> GESTION</span>
+                  <span class="d-none d-lg-block">AD GESTION</span>
                 </a>
               </div><!-- End Logo -->
 
@@ -61,55 +61,32 @@
                   <div class="pt-4 pb-2">
                     @if ($message=Session::get('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                      <i class="bi bi-check-circle me-1"></i>
-                      {{ $message }}
-                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <i class="bi bi-check-circle me-1"></i>
+                        {{ $message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     @endif
                     @if ($message=Session::get('danger'))
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                      <i class="bi bi-exclamation-octagon me-1"></i>
-                      {{ $message }}
-                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <i class="bi bi-exclamation-octagon me-1"></i>
+                        {{ $message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     @endif
-
                   </div>
 
-                  <form  method="post" action="{{ route('login.store') }}" class="row g-3 needs-validation" novalidate>
+                  <form  method="post" action="{{ route('users.restore_connexion') }}"   class="row g-3 needs-validation" novalidate>
                     @csrf
                     <div class="col-12">
-                      <label for="yourUsername" class="form-label">Login</label>
-                      <div class="input-group has-validation">
-                        <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="text" name="email" class="form-control" id="yourUsername" required>
-                        <div class="invalid-feedback">Please enter your username.</div>
-                      </div>
-                    </div>
-
-                    <div class="col-12">
-                      <label for="yourPassword" class="form-label">mot de passe</label>
-                        <div class="input-group has-validation">
-                            <span class="input-group-text" id="inputGroupPrepend"><i class="bi bi-unlock"></i></span>
-                            <input type="password" name="password" class="form-control" id="yourPassword" required>
-                            <div class="invalid-feedback">Please enter your password!</div>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe">
-                        <label class="form-check-label" for="rememberMe">Souviens-toi de moi</label>
-                      </div>
+                      <label for="yourEmail" class="form-label">Votre email</label>
+                      <input type="email" name="email" class="form-control" id="yourEmail" required>
+                      <div class="invalid-feedback">S'il vous plait entrez votre email!</div>
                     </div>
                     <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">Login</button>
+                      <button class="btn btn-primary w-100" type="submit">valider</button>
                     </div>
                     <div class="col-12">
-                      <p class="small mb-0">Deconnecter votre compte déjà en cours d'utilisation <a href="{{ route('users.user_connexion') }}"> ici </a></p>
-                    </div>
-                    <div class="col-12">
-                      <p class="small mb-0">Vous n'avez pas de compte ? <a href="{{ route('registre') }}">Créer un compte</a></p>
+                      <p class="small mb-0">Avez vous déjà un compte ? <a href="{{ route('login') }}">Connexion</a></p>
                     </div>
                   </form>
 

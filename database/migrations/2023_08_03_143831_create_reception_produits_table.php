@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('entrepot_stocks', function (Blueprint $table) {
+        Schema::create('reception_produits', function (Blueprint $table) {
             $table->id();
-            $table->string('nom_entrepot');
-            $table->string('adresse_entrepot')->nullable();
-            $table->string('capacite_entrepot')->nullable();
+            $table->string('commande_id')->nullable();
+            $table->string('fournisseur_id')->nullable();
+            $table->string('entrepot_id')->nullable();
+            $table->string('user_id');
+            $table->string('montant_total')->default('0');
             $table->string('agence_id');
             $table->timestamps();
         });
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('entrepot_stocks');
+        Schema::dropIfExists('reception_produits');
     }
 };
