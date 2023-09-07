@@ -62,36 +62,40 @@
 
               </a>
             </li>
-            {{-- <li>
+            <li>
               <a href="#" class="nav-link text-white">
                 <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#grid"/></svg>
-                {{ $investisseur->nom }} {{ $investisseur->prenom }}
-                Montant investis : {{ number_format($investisseur->compte_investisseur,2,","," ") }}
+                <!-- {{ $investisseur->nom }} {{ $investisseur->prenom }} -->
+                <!-- Montant investis : {{ number_format($investisseur->montant_investis,2,","," ") }} -->
               </a>
+            </li>
+            <li>
+            <a href="{{ route('portail') }}">
+                <button type="button" class="btn btn-primary">Deconnexion</button>
+            </a>
             </li>
             <li>
               <a href="#" class="nav-link text-white">
                 <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#people-circle"/></svg>
-
               </a>
-            </li> --}}
+            </li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="px-3 py-2 border-bottom mb-3">
+
+    <div class="px-3 py-12 border-bottom mb-12">
       <div class="container d-flex flex-wrap justify-content-center">
         {{-- <form class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto" role="search">
           <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
         </form> --}}
 
-        <div class="text-end">
-
+        <div class="text-end" >
             <button type="button" class="btn btn-light text-dark me-2">{{ $investisseur->nom.' '.$investisseur->prenom }}</button>
-
-            <a href="{{ route('portail') }}">
-                <button type="button" class="btn btn-primary">Deconnexion</button>
-            </a>
+           <strong>
+           Montant investis : {{ number_format($investisseur->montant_investis,2,","," ").' XOF'  }}
+           </strong> 
+          
         </div>
       </div>
     </div>

@@ -96,12 +96,12 @@
               <table class="table datatable">
                 <thead class="bg-primary">
                   <tr>
-                    <th scope="col">#</th>
+                    <!-- <th scope="col">#</th> -->
                     <th scope="col">Libelle </th>
                     <th scope="col">montant min</th>
                     <th scope="col">montant max</th>
                     <th scope="col">montant caisse</th>
-                    <th scope="col">montant dividende</th>
+                    <!-- <th scope="col">montant dividende</th> -->
                     <th scope="col">Agence</th>
                     <th scope="col">Action</th>
                   </tr>
@@ -113,24 +113,24 @@
                     @if($agence->id==$caisse->agence_id)
 
                   <tr>
-                    <th scope="row">{{ $caisse->id}}</th>
+                    <!-- <th scope="row">{{ $caisse->id}}</th> -->
                     <td>{{ $caisse->libelle}}</td>
                     <td>{{ $caisse->montant_min}}</td>
                     <td>{{ $caisse->montant_max}}</td>
                     <td>{{ $caisse->compte}}</td>
-                    <td>{{ $caisse->compte_dividende_societe}}</td>
+                    <!-- <td>{{ $caisse->compte_dividende_societe}}</td> -->
 
                     <td>{{ $caisse->agence->nom}}</td>
                     <td>
                         <a href="{{ route('caisse.edit',$caisse->id) }}">
-                            <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
+                          <button type="button" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
                         </a>
-                        <a href="">
+                        <!-- <a href="">
                             <button type="button" class="btn btn-success"><i class="bi bi-check-circle"></i></button>
                         </a>
                         <a href="">
                             <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
-                        </a>
+                        </a> -->
                     </td>
                   </tr>
                   @endif

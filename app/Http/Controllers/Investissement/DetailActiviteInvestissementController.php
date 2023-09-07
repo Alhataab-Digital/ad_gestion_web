@@ -81,6 +81,7 @@ class DetailActiviteInvestissementController extends Controller
                     $activite       =$request->activite_id;
                     $montant_investis  = $request->montant_investis;
                     $taux  = $request->taux;
+                    $taux_devise=$request->taux_devise;
                     $montant_restant  =$request->montant_restant;
                     // dd($activite );
                     for($i=0;$i<count($investisseur_id); $i++)
@@ -105,7 +106,7 @@ class DetailActiviteInvestissementController extends Controller
                     foreach($request->investisseur_id as $key=>$items ){
 
                         $investisseur['id']=$request->investisseur_id[$key];
-                        $investisseur['compte_investisseur']=$request->montant_restant[$key];
+                        $investisseur['compte_investisseur']=ceil($taux_devise*$request->montant_restant[$key]);
 
                         Investisseur::where('id',$request->investisseur_id[$key])->update($investisseur);
 

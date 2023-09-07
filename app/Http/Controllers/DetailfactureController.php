@@ -22,7 +22,7 @@ use App\Models\Devis;
 use App\Models\EntrepotStock;
 use App\Models\StockProduit;
 
-class DetailfactureController extends Controller
+class DetailFactureController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -57,77 +57,63 @@ class DetailfactureController extends Controller
         // count($request->produit));
 
 
-
+        if(Auth::check()){
         $id=Auth::user()->id;
         $agence_id=Auth::user()->agence_id;
+        $facture=Facture::where('devis_id',$request->devis_id)->first();
+      
+        if(isset(StockProduit::where('produit_id',$request->produit_id)->where('entrepot_id',$request->entrepot)->where('agence_id',$agence_id)->first()->id))
+        {
+            $stock=StockProduit::where('produit_id',$request->produit_id)->where('entrepot_id',$request->entrepot)->where('agence_id',$agence_id)->first();
+            if($stock->quantite_en_stock>=$request->qte)
+            {
+                if(isset(DetailFacture::where('facture_id',$request->facture_id)->where('produit_id',$request->produit_id)->first()->id))
+                {
+                    return back()->with('danger',"produit déjà enregisté");
+                }
+                
+                $data_facture=[
+                    'facture_id'            =>$request->facture_id,
+                    'produit_id'            =>$request->produit_id,
+                    'quantite_vendue'       =>$request->qte,
+                    'prix_unitaire_vendu'   =>$request->prix,
+                    ];
+                 DetailFacture::create($data_facture);
 
-        /**
-         * mise à jour du stock produit
-         */
+                 $stock->update([
+                    'quantite_en_stock'=>$stock->quantite_en_stock-$request->qte,
+                 ]);
 
-
-                            $stocks=StockProduit::where('produit_id',$request->produit_id)->where('entrepot_id',$request->entrepot)->where('agence_id',$agence_id)->get();
-
-                            foreach( $stocks as  $stock)
-                            {
-                                for( $i=0; $i<count($request->produit_id) ; $i++)
-                                {
-                                    // dd($stock->produit_id,$request->qte[$i],array($stock->quantite_en_stock));
-
-                                    if($request->produit_id[$i]==$stock->produit_id && $request->qte[$i] <= $stock->quantite_en_stock){
-                                        // dd('ok');
-                                        for( $i=0; $i<count($request->produit_id) ; $i++)
-                                        {
-                                        $data=[
-                                            'quantite_en_stock'     =>$stock->quantite_en_stock-$request->qte[$i],
-                                        ];
-                                        StockProduit::where('produit_id',$request->produit_id[$i])->where('entrepot_id',$request->entrepot)->where('agence_id',$agence_id)->update($data);
-
-                                        }
-
-                                        for( $i=0; $i<count($request->produit_id) ; $i++)
-                                        {
-                                            /**
-                                             * ajout des produit facturer
-                                             */
-
-                                            $data_facture=[
-                                                'facture_id'            =>$request->facture_id,
-                                                'produit_id'            =>$request->produit_id[$i],
-                                                'quantite_vendue'       =>$request->qte[$i],
-                                                'prix_unitaire_vendu'   =>$request->prix[$i],
-                                            ];
-                                            DetailFacture::create($data_facture);
-                                        }
+                 return back();
+            }
+            return back()->with('danger',"La quantité stock est insuffisante");
+        }
+        return back()->with('danger',"Veillez choisir entrepot");;
+        
+            //  $facture=Facture::find($request->facture_id);
+            //  $facture->update([
+            //      'entrepot_id'=>$request->entrepot,
+            //      'montant_total'=>$request->montant_ht,
+            //      'etat' =>'valider',
+            //  ]);
                                             /**
                                              * mise a jour Livraison
                                              */
-                                            $facture=Facture::find($request->facture_id);
-                                            $facture->update([
-                                                'entrepot_id'=>$request->entrepot,
-                                                'montant_total'=>$request->montant_ht,
-                                                'etat' =>'valider',
-                                            ]);
+                                            
 
                                             /**
                                              * mise a jour commande
                                              */
-                                            $devis=Devis::find($request->devis_id);
-                                            $devis->update([
-                                                'etat' =>'facturer',
-                                            ]);
-                                        return redirect('facture/'.$request->facture_id.'/show');
-                                    }else{
-                                        dd('erreur');
-                                    }
+                                    //         $devis=Devis::find($request->devis_id);
+                                    //         $devis->update([
+                                    //             'etat' =>'facturer',
+                                    //         ]);
+                                    //     return redirect('facture/'.$request->facture_id.'/show');
+                                    // }else{
+                                    //     dd('erreur');
+                                    // }
                                 }
-                            }
-
-
-
-
-
-
+                                return redirect('/auth')->with('danger',"Session expirée");
 
     }
 
@@ -136,7 +122,12 @@ class DetailfactureController extends Controller
      */
     public function show(string $id)
     {
-        //
+        ///
+        $facture=Facture::find($id);
+        $detail_factures=DetailFacture::where('facture_id',$facture->id)->get();
+        $total_ht=DetailFacture::where('facture_id',$facture->id)->selectRaw('sum(quantite_vendue*prix_unitaire_vendu) as total')->first('total');
+        return view('e-commerce.facture_show', compact('facture','detail_factures','total_ht'));
+  
     }
 
     /**
@@ -160,6 +151,30 @@ class DetailfactureController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $produit=DetailFacture::find($id);
+
+        $produit->delete();
+
+        return back();
+    }
+
+    public function facture_entrepot(Request $request)
+    {
+        if(Auth::check()){
+
+            $agence_id=Auth::user()->agence_id;
+            $facture_id=Facture::where('devis_id',$request->devis_id)->first();
+            $facture=Facture::find($facture_id->id);
+            $facture->update([
+                 'entrepot_id'=>$request->id,
+             ]);
+
+            $data['entrepot']=EntrepotStock::where('id',$request->id)->get();
+
+            return response()->json($data);
+
+        }
+            return redirect('/auth')->with('success',"Vous n'êtes pas autorisé à accéder");
+
     }
 }

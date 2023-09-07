@@ -19,8 +19,9 @@ class ProduitController extends Controller
         //
         if(Auth::check()){
             $id=Auth::user()->societe_id;
-            $produits=Produit::all();
-            $categories=CategorieProduit::all();
+            $agence_id=Auth::user()->agence_id;
+            $produits=Produit::where('agence_id',$agence_id)->get();
+            $categories=CategorieProduit::where('agence_id',$agence_id)->get();
             return view('produit.index', compact('produits','categories'));
 
         }

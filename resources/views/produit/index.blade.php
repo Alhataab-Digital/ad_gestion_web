@@ -133,7 +133,7 @@
                       <td>{{ $produit->stock_min}}</td>
                       <td>
                           <a href="{{ route('produit.edit',$produit->id) }}">
-                              <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
+                            <button type="button" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
                           </a>
                       </td>
                     </tr>

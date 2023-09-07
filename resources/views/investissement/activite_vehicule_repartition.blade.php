@@ -61,6 +61,7 @@
                                     <input class="form-control" type="text" name="montant_activite" id="" value="{{ $activite_vehicule->montant_ouverture }}" readonly>
                                 </td>
                                 <td>
+                                    <input type="hidden" name="taux_devise" id="" value="{{ $activite_vehicule->taux_devise }}">
                                     <input type="hidden" name="activite_id" id="" value="{{ $activite_vehicule->id }}" readonly>
                                     <input type="hidden" name="montant" id="" value="{{ $activite_vehicule->capital_activite }}" readonly>
                                 </td>
@@ -94,12 +95,12 @@
                                     <option value="{{ $investisseur->id }}">{{ $investisseur->nom.' '.$investisseur->prenom }}</option>
                                 </select></td>
                             <td scope="row">
-                                <input class="form-control" type="text" name="montant_investis[]" id="" value="{{ round(($activite_vehicule->montant_ouverture*$investisseur->compte_investisseur)/$activite_vehicule->capital_activite) }}" readonly>
-                                <input class="form-control" type="hidden" name="montant_restant[]" id="" value="{{round($investisseur->compte_investisseur-($activite_vehicule->montant_ouverture*$investisseur->compte_investisseur)/$activite_vehicule->capital_activite) }}" >
+                                <input class="form-control" type="text" name="montant_investis[]" id="" value="{{ ceil(($activite_vehicule->montant_ouverture*($investisseur->compte_investisseur/$activite_vehicule->taux_devise))/$activite_vehicule->capital_activite) }}" readonly>
+                                <input class="form-control" type="hidden" name="montant_restant[]" id="" value="{{ceil(($investisseur->compte_investisseur/$activite_vehicule->taux_devise)-($activite_vehicule->montant_ouverture*($investisseur->compte_investisseur/$activite_vehicule->taux_devise))/$activite_vehicule->capital_activite) }}" >
                             </td>
                             <td scope="row">
-                                <input class="form-control" type="text"   id="" value="{{ round(($investisseur->compte_investisseur*100)/$activite_vehicule->capital_activite) }} % " readonly>
-                                <input class="form-control" type="hidden"  name="taux[]" id="" value="{{ round(($investisseur->compte_investisseur*100)/$activite_vehicule->capital_activite) }} " >
+                                <input class="form-control" type="text"   id="" value="{{ ceil((($investisseur->compte_investisseur/$activite_vehicule->taux_devise)*100)/$activite_vehicule->capital_activite) }} % " readonly>
+                                <input class="form-control" type="hidden"  name="taux[]" id="" value="{{ ceil((($investisseur->compte_investisseur/$activite_vehicule->taux_devise)*100)/$activite_vehicule->capital_activite) }} " >
                             </td>
                         </tr>
 

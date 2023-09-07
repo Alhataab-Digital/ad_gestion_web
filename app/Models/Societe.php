@@ -21,6 +21,9 @@ class Societe extends Model
         'adresse',
         'complement',
         'site_web',
+        'logo',
+        'compte_societe',
+        'compte_securite',
         'admin_id',
     ];
 }

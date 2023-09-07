@@ -53,6 +53,9 @@ class AutresOperationController extends Controller
         // $request->commentaire,);
 
         $user_id=Auth::user()->id;
+        $agence_id=Auth::user()->agence_id;
+        $societe_id=Auth::user()->societe_id;
+
         if(Caisse::where('user_id',$user_id)->first(['id'])->id)
         {
 
@@ -68,54 +71,63 @@ class AutresOperationController extends Controller
             $data=$request->all();
 
             $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
+            $compte_societe= Societe::where('id',$societe_id)->first(['compte_societe'])->compte_societe;
             $compte_caisse= Caisse::where('user_id',$user_id)->first(['compte'])->compte;
             $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
             $montant_operation=$data['montant_operation'];
 
-            if($compte_caisse < $montant_operation){
-                return redirect()->route('operation')->with('danger',"Le montant caisse est insuffisant");
+            if($compte_societe < $montant_operation){
+                return redirect()->route('operation')->with('danger',"Le montant compte agence est insuffisant");
             }else{
+                if($compte_caisse < $montant_operation){
+                    return redirect()->route('operation')->with('danger',"Le montant caisse est insuffisant");
+                }else{
 
-                    /**
-                     * insertion des données dans la table user
-                     */
-                    Operation::create([
-                        'montant_operation'=>$data['montant_operation'],
-                        'commentaire'=>$data['commentaire'],
-                        'sens_operation'=>'sortie',
-                        'nature_operation_charge_id'=>$data['nature_operation_id'],
-                        'caisse_id'=>$caisse_id,
-                        'user_id'=>$user_id,
-                        'date_comptable'=>$date_comptable,
-                    ]);
+                        /**
+                         * insertion des données dans la table user
+                         */
+                        Operation::create([
+                            'montant_operation'=>$data['montant_operation'],
+                            'commentaire'=>$data['commentaire'],
+                            'sens_operation'=>'sortie',
+                            'nature_operation_charge_id'=>$data['nature_operation_id'],
+                            'caisse_id'=>$caisse_id,
+                            'user_id'=>$user_id,
+                            'date_comptable'=>$date_comptable,
+                        ]);
 
-                    /**
-                     * mise a jour de la caisse
-                    */
-                    $compte=$compte_caisse-$montant_operation;
+                        /**
+                         * mise a jour de la caisse
+                        */
+                        $compte=$compte_caisse-$montant_operation;
+                        $compte_societe=$compte_societe-$montant_operation;
 
-                    $caisse=Caisse::find($caisse_id);
-                    $nature_operation=NatureOperationCharge::find($data['nature_operation_id']);
+                        $societe=Societe::find($societe_id);
+                        $caisse=Caisse::find($caisse_id);
+                        $nature_operation=NatureOperationCharge::find($data['nature_operation_id']);
 
-                    $user_id=Auth::user()->id;
+                        $user_id=Auth::user()->id;
 
-                    MouvementCaisse::create([
-                        'caisse_id'=>$caisse->id,
-                        'user_id'=>$user_id,
-                        'description'=> $nature_operation->nature_operation_charge,
-                        'sortie'=>$montant_operation,
-                        'solde'=>$compte,
-                        'date_comptable'=>$date_comptable,
+                        MouvementCaisse::create([
+                            'caisse_id'=>$caisse->id,
+                            'user_id'=>$user_id,
+                            'description'=> $nature_operation->nature_operation_charge,
+                            'sortie'=>$montant_operation,
+                            'solde'=>$compte,
+                            'date_comptable'=>$date_comptable,
 
-                    ]);
+                        ]);
 
-                    $caisse->update([
-                        'compte'=>$compte,
-                    ]);
+                        $caisse->update([
+                            'compte'=>$compte,
+                        ]);
+                        $societe->update([
+                            'compte_societe'=>$compte_societe,
+                        ]);
 
+                        return redirect()->route('operation')->with('success',"Operation effectuée avec succès");
 
-                    return redirect()->route('operation')->with('success',"Operation effectuée avec succès");
-
+                }
             }
         }
 

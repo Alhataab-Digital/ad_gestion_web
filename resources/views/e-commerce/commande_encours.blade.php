@@ -31,23 +31,34 @@
                     </div>
 
                 </h5>
-
+                @if ($message=Session::get('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  <i class="bi bi-check-circle me-1"></i>
+                  {{ $message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+                @if ($message=Session::get('danger'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <i class="bi bi-exclamation-octagon me-1"></i>
+                  {{ $message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
               <form method="post" action="{{ route('livrer.store') }}">
                 @csrf
                 <!-- Browser Default Validation -->
-                <div class="col-md-3">
+                  <div class="col-md-3">
                     <input class="form-control"  type="hidden" name="commande_id" value="{{ $commande->id }}"  >
                     <label for="" class="form-label">Fournisseur</label>
-                    <select class="form-select" id="" name="fournisseur" required>
+                    <select class="form-select" id="" name="fournisseur_id" required>
                         <option value="{{ $commande->fournisseur->id }}">{{ $commande->fournisseur->nom_fournisseur }}</option>
-
                     </select>
-
                   </div>
                   <div class="col mb-3">
                     <label for="inputText" class="col-sm-2 col-form-label">Telephone</label>
                     <div class="col-sm-3">
-                        <input class="form-control"  type="text" name="montant_decaisser" value="{{ $commande->fournisseur->telephone  }}" class="form-control">
+                        <input class="form-control"  type="text"  value="{{ $commande->fournisseur->telephone  }}" class="form-control">
                     </div>
                     </div>
                   <br>

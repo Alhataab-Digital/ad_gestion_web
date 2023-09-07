@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('montant_decaisse');
             $table->string('total_depense')->nullable();
             $table->string('montant_benefice')->nullable();
+            $table->string('taux_devise');
             $table->string('commentaire')->nullable();
             $table->string('user_id');
             $table->string('caisse_id');

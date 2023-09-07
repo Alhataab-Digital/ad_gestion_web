@@ -18,7 +18,8 @@ class CategorieProduitController extends Controller
         //
         if(Auth::check()){
             $id=Auth::user()->societe_id;
-            $categories=CategorieProduit::all();
+            $agence_id=Auth::user()->agence_id;
+            $categories=CategorieProduit::where('agence_id',$agence_id)->get();
             return view('categorie_produit.index', compact('categories'));
 
         }
@@ -45,7 +46,7 @@ class CategorieProduitController extends Controller
              */
             $request->validate([
                 'nom'=>'required',
-                'commentaire',
+                'commentaire'=>'required',
             ]);
             $agence_id=Auth::user()->agence_id;
             /**

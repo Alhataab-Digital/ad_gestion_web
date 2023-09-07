@@ -69,6 +69,7 @@ class retraitInvestisseurController extends Controller
             $compte_caisse= Caisse::where('user_id',$user_id)->first(['compte'])->compte;
             $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
             $compte_investisseur=$investisseur->compte_investisseur;
+            $compte_investis=$investisseur->montant_investis;
             $montant_retrait=$request->montant;
 
             if($compte_caisse<$montant_retrait){
@@ -80,6 +81,7 @@ class retraitInvestisseurController extends Controller
                 }else{
 
                     $montant_investisseur=$compte_investisseur-$montant_retrait;
+                    $montant_investis=$compte_investis-$montant_retrait;
                     $montant_caisse=$compte_caisse-$montant_retrait;
 
                     // dd($montant_investisseur);
@@ -92,6 +94,7 @@ class retraitInvestisseurController extends Controller
                         'telephone'=>$request->telephone,
                         'email'=>$request->email,
                         'heritier'=>$request->heritier,
+                        'montant_investis'=>$montant_investis,
                         'compte_investisseur'=>$montant_investisseur,
                     ]);
                     /**

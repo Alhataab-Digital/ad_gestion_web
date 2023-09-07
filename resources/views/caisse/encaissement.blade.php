@@ -49,9 +49,10 @@
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Commentaire </th>
-                    <th scope="col">Montant</th>
-                    <th scope="col">Caisse provenance</th>
-                    <th scope="col">Utilisateur</th>
+                    <th scope="col">Montant à encaisser</th>
+                    <th scope="col">Montant provenance</th>
+                    <th scope="col">caisse provenance</th>
+                    <!-- <th scope="col">Utilisateur</th> -->
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
@@ -61,9 +62,10 @@
                   <tr>
                     <th scope="row">{{ $operation->id}}</th>
                     <td>{{ $operation->commentaire}}</td>
-                    <td>{{ $operation->montant_operation}}</td>
+                    <td>{{ round($operation->montant_operation*$operation->taux)}}  {{ $operation->caisse_destination->agence->devise->unite}} </td>
+                    <td>{{ $operation->montant_operation}} {{ $operation->caisse->agence->devise->unite}}</td>
                     <td>{{ $operation->caisse->libelle}}</td>
-                    <td>{{ $operation->user->nom}}</td>
+                    <!-- <td>{{ $operation->user->nom}}</td> -->
                     <td>
                         <a href="{{ route('caisse.encaissement.valider',$operation->id) }}">
                             <button type="button" class="btn btn-success"><i class="ri ri-arrow-down-line"></i></button>

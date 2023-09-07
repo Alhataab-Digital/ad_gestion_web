@@ -37,6 +37,7 @@
                       <th scope="col">Telephone</th>
                       @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1" || Auth::user()->role_id=="2")
                       <th scope="col">Montant investis</th>
+                      <!-- <th scope="col">Compte investissement</th> -->
                       <th scope="col">Dividende</th>
                       <th scope="col">Date creation</th>
                       @endif
@@ -56,7 +57,8 @@
                         <td><a href="#" class="text-primary">{{ $investisseur->email }}</a></td>
                         <td>{{ $investisseur->telephone }}</td>
                         @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1" || Auth::user()->role_id=="2")
-                        <td>{{ $investisseur->compte_investisseur }}</td>
+                        <td>{{ $investisseur->montant_investis }}</td>
+                        <!-- <td>{{ $investisseur->compte_investisseur }}</td> -->
                         <td>{{ $investisseur->compte_dividende }}</td>
                         <td>{{ $investisseur->date_creation }}</td>
                         @endif

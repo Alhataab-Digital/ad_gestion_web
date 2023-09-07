@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Agence;
 use App\Models\Utilisateur;
+use App\Models\Devise;
 
 class Caisse extends Model
 {
@@ -31,6 +32,11 @@ class Caisse extends Model
     public function user()
     {
         return $this->belongsTo(Utilisateur::class);
+    }
+
+    public function devise()
+    {
+        return $this->belongsTo(Devise::class);
     }
 
 }

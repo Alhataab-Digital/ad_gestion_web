@@ -17,6 +17,8 @@ class Agence extends Model
         'adresse',
         'telephone',
         'email',
+        'compte_societe',
+        'compte_securite',
         'societe_id',
         'devise_id',
         'region_id',

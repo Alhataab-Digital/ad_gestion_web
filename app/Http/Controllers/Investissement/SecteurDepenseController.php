@@ -69,7 +69,8 @@ class SecteurDepenseController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $secteur_depense=SecteurDepense::find($id);
+        return view('investissement.secteur_depense_edit',compact('secteur_depense'));
     }
 
     /**
@@ -77,7 +78,18 @@ class SecteurDepenseController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
+        $request->validate([
+            'secteur_depense'=>'required',
+        ]);
+        $data=$request->all();
+        $secteur_depense=SecteurDepense::find($id);
+
+        $secteur_depense->update([
+            'secteur_depense'=>$data['secteur_depense'],
+       ]);
+       return redirect('/secteur_depense')->with('success',"Secteur modifié avec succès");
+
     }
 
     /**

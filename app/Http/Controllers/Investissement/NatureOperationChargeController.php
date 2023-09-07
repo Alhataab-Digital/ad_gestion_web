@@ -75,7 +75,8 @@ class NatureOperationChargeController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $nature_operation_charge=NatureOperationCharge::find($id);
+        return view('investissement.nature_operation_charge_edit',compact('nature_operation_charge'));
     }
 
     /**
@@ -83,7 +84,25 @@ class NatureOperationChargeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        /**
+        * validation des champs de saisie
+        */
+        $request->validate([
+            'nature_operation_charge'=>'required',
+        ]);
+        /**
+         * donnee a ajouté dans la table
+         */
+
+        $data=$request->all();
+
+        $nature_operation_charge=NatureOperationCharge::find($id);
+
+        $nature_operation_charge->update([
+            'nature_operation_charge'=>$data['nature_operation_charge'],
+       ]);
+       return redirect('/nature_operation_charge')->with('success',"nature charge modifié avec succès");
+
     }
 
     /**

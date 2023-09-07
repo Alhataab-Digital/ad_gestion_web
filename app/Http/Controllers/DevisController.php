@@ -13,7 +13,7 @@ use App\Models\TypeReglement;
 use App\Models\Client;
 use App\Models\Produit;
 use App\Models\Devis;
-use App\Models\Detaildevis;
+use App\Models\DetailDevis;
 use App\Models\StockProduit;
 
 class DevisController extends Controller
@@ -60,6 +60,21 @@ class DevisController extends Controller
     public function store(Request $request)
     {
 
+        
+        $client=Client::find($request->client_id);
+
+        $devis=Devis::find($request->devis_id);
+
+                $devis->update([
+                    'client_id' =>$request->client_id,
+                    'montant_total' =>$request->montant_ht,
+                    'etat' =>'en cours',
+                ]);
+        $client->update([
+            'nom_client' =>$request->nom_client,
+            'adresse' =>$request->adresse,
+        ]);
+        return redirect('detail_devis/'.$devis->id.'/show');
     }
 
     /**
@@ -82,7 +97,9 @@ class DevisController extends Controller
         $produit_stocks=StockProduit::where('agence_id',$agence_id)->get();
         $produits=Produit::where('agence_id',$agence_id)->get();
         $clients=Client::all();
-        return view('e-commerce.nouveau_devis', compact('produits','clients','devis','produit_stocks'));
+        $detail_deviss=DetailDevis::where('devis_id',$devis->id)->get();
+        $total_ht=DetailDevis::where('devis_id',$devis->id)->selectRaw('sum(quantite_demandee*prix_unitaire_demande) as total')->first('total');       
+        return view('e-commerce.nouveau_devis', compact('produits','clients','devis','produit_stocks','detail_deviss','total_ht'));
     }
 
     /**
@@ -99,5 +116,20 @@ class DevisController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function select_produit(Request $request){
+        if(Auth::check()){
+            $agence_id=Auth::user()->agence_id;
+
+            $data['produits']=Produit::select('prix_unitaire_vente')
+            ->where('id',$request->id)->get(['prix_unitaire_vente']);
+
+            return response()->json($data);
+
+        }
+            return redirect('/auth')->with('success',"Vous n'êtes pas autorisé à accéder");
+
+
     }
 }

@@ -12,8 +12,8 @@ class Livrer extends Model
     use HasFactory;
 
     protected $fillable = [
-        'facture_id',
-        'client_id',
+        'commande_id',
+        'fournisseur_id',
         'entrepot_id',
         'user_id',
         'montant_total',

@@ -73,7 +73,6 @@
                       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     @endif
-
                   </div>
 
                   <form  method="post" action="{{ route('login.store') }}" class="row g-3 needs-validation" novalidate>

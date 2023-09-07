@@ -24,6 +24,9 @@ return new class extends Migration
             $table->string('adresse')->nullable();
             $table->string('complement')->nullable();
             $table->string('site_web')->nullable();
+            $table->string('logo')->nullable();
+            $table->string('compte_societe')->default('0');
+            $table->string('compte_securite')->default('0');
             $table->string('admin_id');
             $table->timestamps();
         });

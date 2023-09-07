@@ -4,6 +4,14 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use App\Models\Agence;
+use App\Models\Devise;
+use App\Models\Region;
+use App\Models\UserEnLigne;
+use App\Models\Utilisateur;
 
 class ProfileController extends Controller
 {
@@ -28,7 +36,31 @@ class ProfileController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'password'=>'required|confirmed|min:4',
+        ]);
+        /**
+         * donnee a ajouté dans la table
+         */
+        $data=$request->all();
+
+        $utilisateur= Utilisateur::find(Auth::user()->id);
+        if(isset($utilisateur)){
+            if(isset(UserEnLigne::where('utilisateur_id',$utilisateur->id)->first()->id))
+            {
+            $deconnexion=UserEnLigne::where('utilisateur_id',$utilisateur->id)->first();
+            $deconnexion->delete('utilisateur_id',$utilisateur->id);
+            $utilisateur->update([
+                'password'=>Hash::make($data['password']),
+            ]);
+            Session::flush();
+            Auth::logout();
+            return redirect('/auth')->with('success',"Mot de passe modifier avec succès reconnectez vous");
+            }
+            return redirect('/auth');
+        }
+        return redirect('/')->with('danger',"Session expirée");
+        
     }
 
     /**

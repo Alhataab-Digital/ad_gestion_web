@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        $regions=['Niger','Nigeria','Mali','Ghana','Tchad','Lomé','Burkina','Cote d\'ivoire','Chine','France'];
+        $regions=['Algerie','Maroc','Niger','Nigeria','Mali','Sénégal','Guinée','Ghana','Tchad','Togo','Benin','Burkina','Cote d\'ivoire','Chine','France','Amerique',];
         foreach($regions as $region){
             Region::create([
                 'nom'=>$region,

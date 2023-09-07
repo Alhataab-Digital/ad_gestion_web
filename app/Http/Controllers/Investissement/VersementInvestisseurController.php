@@ -68,10 +68,12 @@ class VersementInvestisseurController extends Controller
             $compte_caisse= Caisse::where('user_id',$user_id)->first(['compte'])->compte;
             $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
             $compte_investisseur=$investisseur->compte_investisseur;
+            $compte_investis=$investisseur->montant_investis;
             $montant_versement=$request->montant;
 
 
             $montant_investisseur=$compte_investisseur+$montant_versement;
+            $montant_investis=$compte_investis+$montant_versement;
             $montant_caisse=$compte_caisse+$montant_versement;
 
             // dd($montant_investisseur);
@@ -84,6 +86,7 @@ class VersementInvestisseurController extends Controller
                 'telephone'=>$request->telephone,
                 'email'=>$request->email,
                 'heritier'=>$request->heritier,
+                'montant_investis'=>$montant_investis,
                 'compte_investisseur'=>$montant_investisseur,
             ]);
             /**

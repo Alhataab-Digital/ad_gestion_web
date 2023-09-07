@@ -100,7 +100,26 @@ class AgenceController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'nom'=>'required',
+            'adresse'=>'required',
+            'telephone'=>'required',
+            'email'=>'required',
+        ]);
+        /**
+         * donnee a ajouté dans la table
+         */
+        $data=$request->all();
+        
+        $agence=Agence::find($id);
+        $agence->update([
+            'nom'=>$data['nom'],
+            'devise_id'=>$data['devise_id'],
+            'adresse'=>$data['adresse'],
+            'telephone'=>$data['telephone'],
+            'email'=>$data['email'],
+        ]);
+        return back()->with('success','Agence modifié avec succès');
     }
 
     /**

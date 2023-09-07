@@ -3,7 +3,9 @@
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="{{ route('home') }}" class="logo d-flex align-items-center">
-        <img src="{{asset('assets/img/logo_ad.jpeg')}}" alt="">
+      @if(isset(Auth::user()->societe->logo))
+        <img src="{{ asset('/images/logo/'.Auth::user()->societe->logo) }}" alt="">
+      @endif
         <span class="d-none d-lg-block">{{ Auth::user()->gestion->gestion }}</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -195,7 +197,11 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="{{asset('assets/img/identite.png')}}" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()->prenom.' '.Auth::user()->nom.' ' }}</span>
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()->prenom.' '.Auth::user()->nom.' ' }} 
+              @if(isset(Auth::user()->role->role))
+              ({{ Auth::user()->role->role }})
+              @endif
+            </span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">

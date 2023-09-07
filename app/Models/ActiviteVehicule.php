@@ -15,6 +15,7 @@ class ActiviteVehicule extends Model
         'montant_vente',
         'total_depense',
         'montant_benefice',
+        'taux_devise',
         'detail',
         'user_id',
         'caisse_id',

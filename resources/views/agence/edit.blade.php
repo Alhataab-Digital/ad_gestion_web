@@ -9,9 +9,9 @@
       <h1>MODIFICATION DE L'AGENCE</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Forms</li>
-          <li class="breadcrumb-item active">Layouts</li>
+          <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
+          <li class="breadcrumb-item">param</li>
+          <li class="breadcrumb-item active">agence</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -43,7 +43,7 @@
              </h5>
 
               <!-- Vertical Form -->
-              <form action="{{ route('users.update',$agence->id) }}" method="post" class="row g-3" >
+              <form action="{{ route('agence.update',$agence->id) }}" method="post" class="row g-3" >
                 @csrf
 
                 <div class="col-12">
@@ -52,7 +52,7 @@
                   </div>
                   <div class="col-12">
                     <label for="inputNanme4" class="form-label">Telephone</label>
-                    <input type="text" name="prenom" value="{{ $agence->telephone }}" class="form-control" id="inputNanme4">
+                    <input type="text" name="telephone" value="{{ $agence->telephone }}" class="form-control" id="inputNanme4">
                   </div>
                 <div class="col-12">
                   <label for="inputEmail4" class="form-label">Email</label>
@@ -72,7 +72,14 @@
                     <label for="validationDefault04" class="form-label">Devise par defaut</label>
                     <select class="form-select" id="validationDefault04" name="devise_id" required>
                     <option value="{{ $agence->devise->id }}">{{  $agence->devise->devise }}</option>
-                     </select>
+                     
+                    @foreach ( $devises as $devise )
+                        @if($agence->devise->id!=$devise->id)
+                            <option value="{{ $devise->id }}">{{ $devise->devise }}</option>
+                        @endif
+                    @endforeach
+
+                    </select>
                 </div>
                 <div class="text-center">
                   <button type="submit" class="btn btn-primary">Modifer</button>

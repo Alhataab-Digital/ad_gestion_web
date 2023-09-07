@@ -10,7 +10,7 @@
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
           <li class="breadcrumb-item">param</li>
-          <li class="breadcrumb-item active">type investissement</li>
+          <li class="breadcrumb-item active">type activité</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -91,7 +91,7 @@
                         <td>{{ $type_activite->type_activite}}</td>
                         <td>
                             <a href="{{ route('type_activite_investissement.edit',$type_activite->id) }}">
-                                <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
+                              <button type="button" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
                             </a>
 
                         </td>

@@ -44,7 +44,7 @@ class DeviseController extends Controller
                 'monnaie'=>'required',
                 'devise'=>'required',
                 'unite'=>'required|unique:devises',
-                'taux'=>'required',
+                // 'taux'=>'required',
                 'societe_id'=>'required',
             ]);
             /**
@@ -60,7 +60,7 @@ class DeviseController extends Controller
                 'monnaie'=>$data['monnaie'],
                 'devise'=>$data['devise'],
                 'unite'=>$data['unite'],
-                'taux'=>$data['taux'],
+                // 'taux'=>$data['taux'],
                 'societe_id'=>$data['societe_id'],
             ]);
             return redirect('/devise')->with('success','Devise ajouté avec succès');
@@ -99,7 +99,7 @@ class DeviseController extends Controller
                 'monnaie'=>'required',
                 'devise'=>'required',
                 'unite'=>'required',
-                'taux'=>'required',
+                // 'taux'=>'required',
             ]);
             /**
              * donnee a ajouté dans la table
@@ -113,7 +113,7 @@ class DeviseController extends Controller
                 'monnaie'=>$data['monnaie'],
                 'devise'=>$data['devise'],
                 'unite'=>$data['unite'],
-                'taux'=>$data['taux'],
+                // 'taux'=>$data['taux'],
             ]);
             return redirect('/devise')->with('success','Devise modifier avec succès');
     }

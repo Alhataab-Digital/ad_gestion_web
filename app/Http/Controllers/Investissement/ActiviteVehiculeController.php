@@ -17,6 +17,7 @@ use App\Models\OperationDevise;
 use App\Models\OperationVehiculeAchete;
 use App\Models\OperationVehiculeVendu;
 use App\Models\Agence;
+use App\Models\Societe;
 use App\Models\DeviseAgence;
 use App\Models\MouvementCaisse;
 use App\Models\Investisseur;
@@ -85,53 +86,79 @@ class ActiviteVehiculeController extends Controller
         // dd($data);
         $id=Auth::user()->id;
     
-            if(isset(Caisse::where('user_id',$id)->first(['id'])->id)){
+            if(isset(Caisse::where('user_id',$id)->first(['id'])->id))
+            {
                     $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
                     $caisse=Caisse::find($caisse_id);
+                    $societe_id=Auth::user()->societe_id;
                     $agence_id=Auth::user()->agence_id;
                     $agence=Agence::find( $agence_id);
     
                     $compte_caisse= Caisse::where('user_id',$id)->first(['compte'])->compte;
-                    $capital_investisseur=Investisseur::where('etat','1')->where('agence_id',$agence_id)->selectRaw('sum(compte_investisseur) as total')->first('total');
-                    $date_comptable= Caisse::where('user_id',$id)->first(['date_comptable'])->date_comptable;
-                $activite_vehicule=ActiviteVehicule::where('etat_activite','ouverte')->get();
-                if(isset(ActiviteVehicule::where('etat_activite','ouverte')->first(['id'])->id)){
-                    return redirect('/activite_vehicule',)->with('danger','L\'activite est déjà ouverte ');
-                }else{
-                    if($capital_investisseur->total < $data['montant_ouverture'])  {
-    
-                        return redirect('/activite_vehicule',)->with('danger','Le montant de l\'activité est supperieur au capital investis ');
-    
-                    } else{
-    
-                        if( $compte_caisse < $data['montant_ouverture'])  {
-    
-                            return redirect('/activite_vehicule',)->with('danger','Le montant caisse insuffisant ');
-    
-                        } else{
-                        /**
-                         * insertion des données dans la table user
-                         */
-                        ActiviteVehicule::create([
-                            'intitule'=>$data['intitule'],
-                            'capital_activite'=>$capital_investisseur->total,
-                            'montant_ouverture'=>$data['montant_ouverture'],
-                            'detail'=>$data['detail'],
-                            'user_id'=>$id,
-                            'caisse_id'=>$caisse_id,
-                            'agence_id'=>$agence_id,
-                            'date_comptable'=>$date_comptable,
-                        ]);
-    
-                        $activite_id=ActiviteVehicule::where('user_id',$id)->latest('id')->first();
-    
-                        return redirect('/'.$activite_id->id.'/activite_vehicule/repartition');
-                        }
+                    $investisseurs=Investisseur::where('compte_investisseur','>','0')->where('etat','1')->where('societe_id',$societe_id)->get();
+                    foreach($investisseurs as $investisseur)
+                    {
+                        
+                            $taux=DeviseAgence::where('devise_id',$investisseur->agence->devise_id)->where('agence_id',$agence_id)->get();
+                            foreach($taux as $tx)
+                            {
+                                $capital_investisseurs=Investisseur::where('etat','1')->where('societe_id',$societe_id)->selectRaw('sum(compte_investisseur) as total')->get();
+                                // $somme_total=0;
+                                foreach($capital_investisseurs as $capital_investisseur)
+                                {
+                                    
+                                        // $mult = pow(10, abs($places)); 
+                                        // return $places < 0 ?
+                                        // ceil($value / $mult) * $mult :
+                                        //     ceil($value * $mult) / $mult;
+                                    
+                                    //    dd($capital_investisseur->total,$tx->taux);
+                                        $somme_total=ceil($capital_investisseur->total/$tx->taux);
+                                        // dd($somme_total);
+                                        $date_comptable= Caisse::where('user_id',$id)->first(['date_comptable'])->date_comptable;
+                        
+                                    if(isset(ActiviteVehicule::where('etat_activite','ouverte')->where('agence_id',$agence_id)->first(['id'])->id))
+                                    {
+                                        return redirect('/activite_vehicule',)->with('danger','L\'activite est déjà ouverte ');
+                                    }else{
+                                        if( $somme_total < $data['montant_ouverture'])  {
+                        
+                                            return redirect('/activite_vehicule',)->with('danger','Le montant de l\'activité est supperieur au capital investis ');
+                        
+                                        } else{
+                
+                                            if( $compte_caisse < $data['montant_ouverture'])  {
+                        
+                                                return redirect('/activite_vehicule',)->with('danger','Le montant caisse insuffisant ');
+                        
+                                            } else{
+                                                /**
+                                                 * insertion des données dans la table user
+                                                 */
+                                                ActiviteVehicule::create([
+                                                    'intitule'=>$data['intitule'],
+                                                    'capital_activite'=>$somme_total,
+                                                    'montant_ouverture'=>$data['montant_ouverture'],
+                                                    'taux_devise'=>$tx->taux,
+                                                    'detail'=>$data['detail'],
+                                                    'user_id'=>$id,
+                                                    'caisse_id'=>$caisse_id,
+                                                    'agence_id'=>$agence_id,
+                                                    'date_comptable'=>$date_comptable,
+                                                ]);
+                            
+                                                $activite_id=ActiviteVehicule::where('user_id',$id)->latest('id')->first();
+                            
+                                                return redirect('/'.$activite_id->id.'/activite_vehicule/repartition');
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        
                     }
-                }
-    
             }
-            return view('devise.message');
+        return view('devise.message');
     }
 
     /**
@@ -189,17 +216,22 @@ class ActiviteVehiculeController extends Controller
         $activite_vehicule=ActiviteVehicule::find($id);
 
         $agence_id=Auth::user()->agence_id;
-        $investisseurs=Investisseur::where('compte_investisseur','>','0')->where('etat','1')->where('agence_id',$agence_id)->where('etat','1')->get();
+        $societe_id=Auth::user()->societe_id;
+
+        $investisseurs=Investisseur::where('compte_investisseur','>','0')->where('etat','1')->where('societe_id',$societe_id)->get();
 
         return view('investissement.activite_vehicule_repartition', compact(
-        'investisseurs',
-        'activite_vehicule',
-    ));
+
+            'investisseurs',
+            'activite_vehicule',
+            
+        ));
+
     }
 
     public function valider()
     {
-        //
+
         $id=Auth::user()->id;
         if(isset(Caisse::where('user_id',$id)->first(['id'])->id)){
         $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
@@ -216,38 +248,52 @@ class ActiviteVehiculeController extends Controller
     public function repartie(Request $request)
     {
         $id=Auth::user()->id;
+        $agence_id=Auth::user()->agence_id;
+
         $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
 
             $compte_caisse= Caisse::where('user_id',$id)->first(['compte'])->compte;
-            $compte_dividende_societe= Caisse::where('user_id',$id)->first(['compte_dividende_societe'])->compte_dividende_societe;
+            $compte_dividende_societe= Agence::where('id',$agence_id)->first(['compte_societe'])->compte_societe;
             $date_comptable= Caisse::where('user_id',$id)->first(['date_comptable'])->date_comptable;
             $vehicule_vendus=OperationVehiculeVendu::where('activite_id',$request->activite_id)->get();
-        $activite_vehicule=ActiviteVehicule::find($request->activite_id);
+            $activite_vehicule=ActiviteVehicule::find($request->activite_id);
 
         if($activite_vehicule->etat_activite=='ouverte'){
-
-            $dividende_entreprise=($request->montant_benefice/2);
-            $dividende_investisseur=($request->montant_benefice/2);
+            $taux_devise=$activite_vehicule->taux_devise;
+            $dividende_entreprise=ceil($request->montant_benefice/2);
+            $benefice_investisseur=ceil($request->montant_benefice/2);
+            $benefice_securite=ceil($benefice_investisseur*0.1);
+            $dividende_investisseur=$benefice_investisseur-$benefice_securite;
             $total_depense=$request->total_depense;
+            
+            // dd(
+            //     $taux_devise,
+            //     $dividende_entreprise,
+            //     $benefice_investisseur,
+            //     $benefice_securite,
+            //     $dividende_investisseur,
+            //     $total_depense
+            // );
+
 
             for($i=0;$i<count($request->investisseur_id); $i++)
             {
 
-                 $investisseurs=Investisseur::where('id',$request->investisseur_id[$i])->get();
+                $investisseurs=Investisseur::where('id',$request->investisseur_id[$i])->get();
 
                 foreach( $investisseurs as  $investisseur){
-
+                    $caisse=Caisse::find($caisse_id);
+                    
                     $investisseur_id   =$request->investisseur_id[$i];
-                    $montant_investis  = $request->montant_investis[$i]+$investisseur->compte_investisseur;
-                    $dividende_gagner  =(($request->taux[$i])*$dividende_investisseur)+$investisseur->compte_dividende;
-
-                //     dd(
+                    $montant_investis  = (ceil(($request->montant_investis[$i])*$taux_devise))+$investisseur->compte_investisseur;
+                    $dividende_gagner  =(($request->taux[$i])*(ceil($dividende_investisseur*$taux_devise)))+$investisseur->compte_dividende;
+                // dd(
                 // $investisseur_id,
                 // $montant_investis,
                 // $dividende_investisseur,
                 // $dividende_gagner,
-                // $request->taux,);
-
+                // $request->taux,
+                // );
                         $data=[
                             'compte_dividende'   =>$dividende_gagner,
                             'compte_investisseur'  =>$montant_investis,
@@ -286,7 +332,7 @@ class ActiviteVehiculeController extends Controller
 
                 $compte=$compte_caisse+$montant_operation;
 
-                $compte_dividende_entreprise=$compte_dividende_societe+$dividende_entreprise;
+                $compte_dividende_entreprise=ceil($compte_dividende_societe+$dividende_entreprise*$taux_devise);
 
                 $caisse=Caisse::find($caisse_id);
 
@@ -302,8 +348,11 @@ class ActiviteVehiculeController extends Controller
 
                 // ]);
 
-                $caisse->update([
-                    'compte_dividende_societe'=>$compte_dividende_entreprise,
+                $societe_id=Auth::user()->societe_id;
+                $societe=Societe::find($societe_id);
+                $societe->update([
+                    'compte_societe'=>$compte_dividende_entreprise,
+                    'compte_securite'=>ceil($benefice_securite*$taux_devise),
                 ]);
 
             return redirect('/activite_vehicule')->with('success','Activité fermée');

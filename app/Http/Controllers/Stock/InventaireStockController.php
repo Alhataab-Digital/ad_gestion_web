@@ -24,7 +24,7 @@ class InventaireStockController extends Controller
     {
         //
         $agence_id=Auth::user()->agence_id;
-        $entrepots=EntrepotStock::all();
+        $entrepots=EntrepotStock::where('agence_id',$agence_id)->get();
         $inventaire_stocks=StockProduit::where('entrepot_id',Null)->where('agence_id',$agence_id)->get();
 
         return view('e-commerce.inventaire_stock',compact('entrepots','inventaire_stocks'));
@@ -45,7 +45,7 @@ class InventaireStockController extends Controller
     {
         //
         $agence_id=Auth::user()->agence_id;
-        $entrepots=EntrepotStock::all();
+        $entrepots=EntrepotStock::where('agence_id',$agence_id)->get();
         $inventaire_stocks=StockProduit::where('entrepot_id',$request->entrepot)->where('agence_id',$agence_id)->get();
         return view('e-commerce.inventaire_stock',compact('entrepots','inventaire_stocks'));
 

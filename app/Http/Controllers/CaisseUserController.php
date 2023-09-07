@@ -20,15 +20,20 @@ class CaisseUserController extends Controller
     {
         if(Auth::check()){
         $societe_id=Auth::user()->societe_id;
-
+        $role=Auth::user()->role->id;
+        
+       if($role==1 || $role==0){
         $users=Utilisateur::where('societe_id',$societe_id)->get();
-
         $agences=Agence::where('societe_id',$societe_id)->get();
-
         $caisses=Caisse::where('user_id','!=',0)->get();
-
-
         return view('caisse_user.index',compact('caisses','users','agences'));
+       }
+        $users=Utilisateur::where('societe_id',$societe_id)->where('role_id','!=',1)->Where('role_id','!=',0)->get();
+        $agences=Agence::where('societe_id',$societe_id)->get();
+        $caisses=Caisse::where('user_id','!=',0)->get();
+        return view('caisse_user.index',compact('caisses','users','agences'));
+
+        
         }
         return redirect('/auth')->with('danger',"Session expirée");
     }
@@ -36,9 +41,19 @@ class CaisseUserController extends Controller
     public function utilisateur_agence(Request $request){
         if(Auth::check()){
             $societe_id=Auth::user()->societe_id;
-            $data['users']=Utilisateur::where('societe_id','=',$societe_id)
+            $role=Auth::user()->role->id;
+        
+       if($role==1 || $role==0){
+            $data['users']=Utilisateur::where('societe_id',$societe_id)
             ->where('agence_id','=',$request->id)
             ->where('agence_id','!=',0)
+            ->get(['nom','prenom','id']);
+            return response()->json($data);
+
+        }
+            $data['users']=Utilisateur::where('societe_id',$societe_id)
+            ->where('agence_id',$request->id)
+            ->where('agence_id','!=',0)->where('role_id','!=',1)->Where('role_id','!=',0)
             ->get(['nom','prenom','id']);
             return response()->json($data);
         }

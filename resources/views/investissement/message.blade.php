@@ -5,21 +5,21 @@
 <main id="main" class="main">
 
   <div class="pagetitle">
-    <h1>Operation investissement</h1>
+    <!-- <h1>Operation investissement</h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
         <li class="breadcrumb-item">Operation investissement</li>
         <li class="breadcrumb-item active">Operation investissement</li>
       </ol>
-    </nav>
+    </nav> -->
   </div><!-- End Page Title -->
   <section class="section">
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Operation investissement</h5>
+            <h5 class="card-title"></h5>
 
               <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <i class="bi bi-exclamation-octagon me-1"></i>

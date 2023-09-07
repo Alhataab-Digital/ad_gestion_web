@@ -17,7 +17,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        $roles=['Super Administratreur','Administrateur','PDG','DG','Admin','Agent',];
+        $roles=['Super Administratreur','PDG','Administrateur','Directeur Général','Office Manager','Responsable Agence','Gérant Boutique',];
         foreach($roles as $role){
             Role::create([
                 'role'=>$role,

@@ -44,32 +44,34 @@ class DetailCommandeController extends Controller
                 //
         // dd($request->commande_id,$request->produit,
         // $request->qte,
-        // $request->prix,$request->total,
-        // $request->montant_ht,
-        // $request->fournisseur);
+        // $request->prix,);
+        if(isset(DetailCommande::where('commande_id',$request->commande_id)->where('produit_id',$request->produit)->first(['id'])->id))
+        {
+            return back()->with('danger',"Produit deja enregistrer");
+        }else{
+            
+           
+            $data=[
+                'commande_id'              =>$request->commande_id,
+                'produit_id'               =>$request->produit,
+                'quantite_commandee'       =>$request->qte,
+                'prix_unitaire_commande'  =>$request->prix,
+            ];
+            DetailCommande::create($data);
+            return back();
+        }
+        
+            
 
+            // $commande=Commande::find($request->commande_id);
 
-            for($i=0;$i<count($request->produit); $i++)
-            {
-
-                $data=[
-                    'commande_id'              =>$request->commande_id,
-                    'produit_id'               =>$request->produit[$i],
-                    'quantite_commandee'       =>$request->qte[$i],
-                    'prix_unitaire_commande'  =>$request->prix[$i],
-                ];
-                DetailCommande::create($data);
-
-            }
-
-            $commande=Commande::find($request->commande_id);
-
-            $commande->update([
-                'fournisseur_id' =>$request->fournisseur,
-                'montant_total' =>$request->montant_ht,
-                'etat' =>'en cours',
-            ]);
-            return redirect('detail_commande/'.$commande->id.'/show');
+            // $commande->update([
+            //     'fournisseur_id' =>$request->fournisseur,
+            //     'montant_total' =>$request->montant_ht,
+            //     'etat' =>'en cours',
+            // ]);
+            // return back();
+            // return redirect('detail_commande/'.$commande->id.'/show');
 
         }
         return redirect('/auth')->with('danger',"Session expirée");
@@ -120,7 +122,41 @@ class DetailCommandeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $produit=DetailCommande::find($id);
 
+        $produit->delete();
+
+        return back();
+    }
+
+    public function fournisseur_commande(Request $request)
+    {
+        
+        $societe_id=Auth::user()->societe_id;
+        $tel=$request->id;
+       
+        if(isset(Fournisseur::where('telephone' ,$tel)->where('societe_id',$societe_id)->first(['id'])->id)){
+
+            $agence_id=Auth::user()->agence_id;
+
+            $id=Fournisseur::where('telephone' ,$tel)->first(['id'])->id;
+           
+            $data['fournisseur']=Fournisseur::where('id',$id)->get();
+            return response()->json($data);
+
+        }else{
+
+            Fournisseur::create([
+                'telephone'=>$tel,
+                'societe_id'=>$societe_id,
+            ]);
+            /**
+             * si le telephone existe afficher le client
+             */
+            $id=Fournisseur::where('telephone' ,$tel)->where('societe_id',$societe_id)->first(['id'])->id;
+            $data['fournisseur']=Fournisseur::where('id',$id)->get();
+            return response()->json($data);
+
+        }
     }
 }

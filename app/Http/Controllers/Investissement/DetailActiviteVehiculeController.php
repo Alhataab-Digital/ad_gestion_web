@@ -46,17 +46,23 @@ class DetailActiviteVehiculeController extends Controller
      */
     public function store(Request $request)
     {
+        
+        // $request->taux_devise;
         //
         // dd($request->montant);
         // dd($request->benefice);
         // dd($request->dividende_e);
         // dd($request->dividende_i);
         // dd(
-        // $request->investisseur,
+    //     // $request->investisseur,
         // $request->montant_investis,
-        // $request->montant_restant);
-        // dd($request->compte);
-        // dd($request->investisseur_id);
+        // $request->montant_restant,
+        // $request->taux_devise,
+    //     // $request->montant_restant*$request->taux_devise,
+    //     // $request->compte,
+    //     // $request->investisseur_id
+    // );
+
         $id=Auth::user()->id;
 
         if(Caisse::where('user_id',$id)->first(['id'])->id){
@@ -83,8 +89,10 @@ class DetailActiviteVehiculeController extends Controller
                     $activite       =$request->activite_id;
                     $montant_investis  = $request->montant_investis;
                     $taux  = $request->taux;
+                    $taux_devise=$request->taux_devise;
                     $montant_restant  =$request->montant_restant;
-                    // dd($activite );
+                    // dd($activite ,$montant_investis,$montant_restant,$taux_devise);
+
                     for($i=0;$i<count($investisseur_id); $i++)
                     {
 
@@ -107,7 +115,7 @@ class DetailActiviteVehiculeController extends Controller
                     foreach($request->investisseur_id as $key=>$items ){
 
                         $investisseur['id']=$request->investisseur_id[$key];
-                        $investisseur['compte_investisseur']=$request->montant_restant[$key];
+                        $investisseur['compte_investisseur']=ceil($taux_devise*$request->montant_restant[$key]);
 
                         Investisseur::where('id',$request->investisseur_id[$key])->update($investisseur);
 

@@ -65,6 +65,7 @@ use App\Http\Controllers\DevisController;
 use App\Http\Controllers\DetailDevisController;
 use App\Http\Controllers\FactureController;
 use App\Http\Controllers\DetailFactureController;
+use App\Http\Controllers\ReglementFactureController;
 
 /*
 |--------------------------------------------------------------------------
@@ -118,10 +119,12 @@ Route::middleware(['auth','initier'])->controller(SocieteController::class)->gro
     Route::get('/societe/{id}/detail','show')->name('workspace.show');
     Route::get('/societe/{id}/edit','edit')->name('workspace.edit');
     Route::post('/societe/{id}/update','update')->name('workspace.update');
+    Route::post('/societe/logo/{id}/update','update_logo')->name('logo.update');
 });
 
 Route::middleware(['auth','initier'])->controller(ProfileController::class)->group(function(){
     Route::get('/profile','index')->name('profile');
+    Route::post('/changer/password','store')->name('profile.store');
 });
 
 Route::middleware(['auth','initier'])->controller(RoleController::class)->group(function(){
@@ -153,10 +156,16 @@ Route::middleware(['auth','initier'])->controller(CaisseController::class)->grou
     Route::post('/caisse/{id}/fermeture','fermeture')->name('caisse.fermeture');
 
     Route::get('/caisse/attribution','attribution')->name('caisse.attribution');
+    Route::get('/caisse/attribution_externe','attribution_externe')->name('caisse.attribution_externe');
     Route::get('/caisse/encaissement','encaissement')->name('caisse.encaissement');
 
     Route::post('/caisse/attribution_valider','attribution_valider')->name('caisse.attribution.valider');
-    Route::get('/caisse/{id}/attribution_modifier','attribution_modifier')->name('caisse.attribution.modifier');
+    Route::post('/caisse/attribution_externe_valider','attribution_externe_valider')->name('caisse.attribution_externe.valider');
+    Route::get('/caisse/{id}/attribution_edit','attribution_edit')->name('caisse.attribution.edit');
+    Route::get('/caisse/{id}/attribution_externe_edit','attribution_externe_edit')->name('caisse.attribution_externe.edit');
+    Route::post('/caisse/attribution_modifier','attribution_modifier')->name('caisse.attribution.modifier');
+    Route::post('/caisse/attribution_externe_modifier','attribution_externe_modifier')->name('caisse.attribution_externe.modifier');
+    Route::get('/caisse/{id}/attribution_supprimer','attribution_supprimer')->name('caisse.attribution.delete');
     Route::get('/caisse/{id}/encaissement_valider','encaissement_valider')->name('caisse.encaissement.valider');
 
     Route::post('/caisse/{id}/fermeture','fermeture')->name('caisse.fermeture');
@@ -561,7 +570,7 @@ Route::middleware(['auth','initier'])->controller(CommandeController::class)->gr
     Route::post('/creer/commande','store')->name('commande.store');
     Route::get('/commande/{id}/show','show')->name('commande.show');
     Route::get('/commande/{id}/edit','edit')->name('commande.edit');
-    Route::post('/commande/select','select_produit')->name('produit.select');
+    Route::post('/commande/select','select_produit')->name('produit_select.commande');
     Route::post('/commande/{id}/update','update')->name('commande.update');
     Route::get('/commande/{id}/delete','destroy')->name('commande.delete');
     Route::get('/commande/{id}/print','print')->name('commande.print');
@@ -576,6 +585,8 @@ Route::middleware(['auth','initier'])->controller(DetailCommandeController::clas
     Route::get('/detail_commande/{id}/edit','edit')->name('detail_commande.edit');
     Route::post('/detail_commande/{id}/update','update')->name('detail_commande.update');
     Route::get('/detail_commande/{id}/print','print')->name('detail_commande.print');
+    Route::get('/detail_commande/{id}/delete','destroy')->name('detail_commande.delete');
+    Route::post('/fournisseur/detail_commande','fournisseur_commande')->name('detail_commande_fournisseur.select');
 
 });
 
@@ -586,6 +597,7 @@ Route::middleware(['auth','initier'])->controller(DevisController::class)->group
     Route::post('/creer/devis','store')->name('devis.store');
     Route::get('/devis/{id}/show','show')->name('devis.show');
     Route::get('/devis/{id}/edit','edit')->name('devis.edit');
+    Route::post('/devis/select','select_produit')->name('produit_select.devis');
     Route::post('/devis/{id}/update','update')->name('devis.update');
     Route::get('/devis/{id}/delete','destroy')->name('devis.delete');
     Route::get('/devis/{id}/print','print')->name('devis.print');
@@ -600,6 +612,8 @@ Route::middleware(['auth','initier'])->controller(DetailDevisController::class)-
     Route::get('/detail_devis/{id}/edit','edit')->name('detail_devis.edit');
     Route::post('/detail_devis/{id}/update','update')->name('detail_devis.update');
     Route::get('/detail_devis/{id}/print','print')->name('detail_devis.print');
+    Route::get('/detail_devis/{id}/delete','destroy')->name('detail_devis.delete');
+    Route::post('/client/detail_devis','client_devis')->name('detail_devis_client.select');
 
 });
 
@@ -632,6 +646,7 @@ Route::middleware(['auth','initier'])->controller(FactureController::class)->gro
     Route::post('/creer/facture','store')->name('facture.store');
     Route::get('/facture/{id}/show','show')->name('facture.show');
     Route::get('/facture/{id}/edit','edit')->name('facture.edit');
+    Route::post('/facture/select','select_produit')->name('produit_select.facture');
     Route::post('/facture/{id}/update','update')->name('facture.update');
     Route::get('/facture/{id}/print','print')->name('facture.print');
 
@@ -645,9 +660,10 @@ Route::middleware(['auth','initier'])->controller(DetailFactureController::class
     Route::get('/detail_facture/{id}/edit','edit')->name('detail_facture.edit');
     Route::post('/detail_facture/{id}/update','update')->name('detail_facture.update');
     Route::get('/detail_facture/{id}/print','print')->name('detail_facture.print');
+    Route::get('/detail_facture/{id}/delete','destroy')->name('detail_facture.delete');
+    Route::post('/entrepot/detail_facture','facture_entrepot')->name('detail_facture_entrepot.select');
 
 });
-
 
 Route::middleware(['auth','initier'])->controller(InventaireStockController::class)->group(function(){
 
@@ -657,5 +673,15 @@ Route::middleware(['auth','initier'])->controller(InventaireStockController::cla
     Route::get('/inventaire_stock/{id}/edit','edit')->name('inventaire_stock.edit');
     Route::post('/inventaire_stock/{id}/update','update')->name('inventaire_stock.update');
     Route::get('/inventaire_stock/{id}/print','print')->name('inventaire_stock.print');
+
+});
+
+Route::middleware(['auth','initier'])->controller(ReglementFactureController::class)->group(function(){
+
+    Route::get('/reglement/facture','index')->name('reglement.facture');
+    Route::post('/reglement/store','store')->name('reglement.store');
+    Route::get('/reglement/comptoir','comptoir')->name('reglement.comptoir');
+    Route::post('/reglement/client','numero_client')->name('reglement.numero_client');
+    Route::get('/reglement/{id}/paiement','paiement_facture')->name('reglement.paiement');
 
 });

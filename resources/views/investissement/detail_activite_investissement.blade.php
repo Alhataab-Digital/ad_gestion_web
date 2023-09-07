@@ -95,7 +95,7 @@
                         <tbody class=" text-white" id="show_item" id="tab">
                             <tr>
                                 <th scope="row">
-                                    <select class="form-select" name="secteur_id[]"  required onchange="prixU();" >
+                                    <select class="form-select" name="secteur_id[]"   onchange="prixU();" >
                                         <option selected disabled value="">Choose...</option>
                                         @foreach ($secteur_depenses as $secteur_depense)
                                         <option value="{{ $secteur_depense->id }}">{{ $secteur_depense->secteur_depense }}</option>
@@ -103,7 +103,7 @@
                                     </select>
                                 </th>
                                 <th scope="row">
-                                    <input class="form-control" onchange="prixU();" type="text" name="montant_depense[]"  id="montant_depense" required>
+                                    <input class="form-control" onchange="prixU();" type="text" name="montant_depense[]"  id="montant_depense" >
                                 </th>
                                 <td>
                                     <button type="button" class="btn btn-danger remove_item_btn" ><i class="bi bi-trash"></i></button>
@@ -165,7 +165,7 @@
               $("#show_item").prepend(`
                 <tr>
                     <th scope="row">
-                        <select class="form-select" name="secteur_id[]"  onchange="prixU();" required  >
+                        <select class="form-select" name="secteur_id[]"  onchange="prixU();"   >
                             <option selected disabled value="">Choose...</option>
                                 @foreach ($secteur_depenses as $secteur_depense)
                             <option value="{{ $secteur_depense->id }}">{{ $secteur_depense->secteur_depense }}</option>
@@ -173,7 +173,7 @@
                         </select>
                     </th>
                     <th scope="row">
-                        <input class="form-control" onchange="prixU();" type="text" name="montant_depense[]" id="montant_depense" require >
+                        <input class="form-control" onchange="prixU();" type="text" name="montant_depense[]" id="montant_depense"  >
                     </th>
                     <td>
                             <button type="button" class="btn btn-danger remove_item_btn" ><i class="bi bi-trash"></i></button>

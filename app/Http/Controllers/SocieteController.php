@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use App\Models\Societe;
 use App\Models\Utilisateur;
+use Socket;
+
 class SocieteController extends Controller
 {
     /**
@@ -140,5 +142,31 @@ class SocieteController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function update_logo(Request $request, Societe $societe, $id ){
+        if(Auth::check()){
+            $societe=Societe::findOrFail($id);
+            /**
+             * validation des champs de saisie
+             */
+            $request->validate([
+                'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+
+            $imageName = time().'.'.$request->logo->extension();
+
+            $request->logo->move(public_path('images/logo'), $imageName);
+
+
+            /**
+             * insertion des données dans la table user
+             */
+            $societe->update([
+                'logo'=>$imageName,
+            ]);
+            return back()->with('success','Logo mise à jour avec succès');
+        }
+            return redirect('/')->with('danger',"Session expirée");
     }
 }

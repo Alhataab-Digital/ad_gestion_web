@@ -47,7 +47,7 @@
                   <div class="col mb-3">
                     <label for="inputText" class="col-sm-2 col-form-label">Telephone</label>
                     <div class="col-sm-3">
-                        <input class="form-control"  type="text" name="montant_decaisser" value="{{ $devis->client->telephone  }}" class="form-control">
+                        <input class="form-control"  type="text" name="" value="{{ $devis->client->telephone  }}" class="form-control">
                     </div>
                     </div>
                   <br>
@@ -72,10 +72,8 @@
                               </tr>
                           </thead>
 
-                        {{-- {{ $total=0 }} --}}
-                        @foreach ($detail_deviss as $detail_devis )
-                          {{-- {{ $total=$total+($detail_devis->quantite_devise*$detail_devis->prix_unitaire_devis) }} --}}
-                        <tbody class=" text-white" id="show_item" id="tab">
+                       @foreach ($detail_deviss as $detail_devis )
+                           <tbody class=" text-white" id="show_item" id="tab">
                             <tr>
                                 <th scope="row">
                                     <select class="form-select" name="produit[]" id="produit"   >

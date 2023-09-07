@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('montant_vente')->nullable();
             $table->string('total_depense')->nullable();
             $table->string('montant_benefice')->nullable();
+            $table->string('taux_devise');
             $table->string('detail')->nullable();
             $table->string('user_id');
             $table->string('caisse_id');

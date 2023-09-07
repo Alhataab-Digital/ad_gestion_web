@@ -24,7 +24,16 @@ class UserController extends Controller
     {
         if(Auth::check()){
             $id=Auth::user()->societe_id;
-            $utilisateurs=Utilisateur::where('societe_id',$id)->get();
+            if(isset(Auth::user()->role_id))
+            {
+                $role=Auth::user()->role_id;
+                if($role==1 || $role==0){
+                 $utilisateurs=Utilisateur::where('societe_id',$id)->get();
+                 return view('users.index',compact('utilisateurs'));
+                }
+            }
+           
+            $utilisateurs=Utilisateur::where('societe_id',$id)->where('role_id','!=',1)->Where('role_id','!=',0)->get();
             return view('users.index',compact('utilisateurs'));
         }
         return redirect('/')->with('danger',"Session expirée");

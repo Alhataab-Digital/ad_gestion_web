@@ -39,8 +39,22 @@
         </div>
 
         <div class="col-xl-8">
-
+        @if ($message=Session::get('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                      <i class="bi bi-check-circle me-1"></i>
+                      {{ $message }}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    @endif
+                    @if ($message=Session::get('danger'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                      <i class="bi bi-exclamation-octagon me-1"></i>
+                      {{ $message }}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    @endif
           <div class="card">
+
             <div class="card-body pt-3">
               <!-- Bordered Tabs -->
               <ul class="nav nav-tabs nav-tabs-bordered">
@@ -216,7 +230,7 @@
                 <div class="tab-pane fade  pt-3" id="profile-settings">
 
                   <!-- Settings Form -->
-                  <form>
+                  <form >
 
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email Notifications</label>
@@ -257,27 +271,33 @@
 
                 <div class="tab-pane fade show active pt-3" id="profile-change-password">
                   <!-- Change Password Form -->
-                  <form>
-
-                    <div class="row mb-3">
+                  <form  method="post" action=" {{route('profile.store')}} ">
+                          @csrf
+                    <!-- <div class="row mb-3">
                       <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Ancien passe</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="password" type="password" class="form-control" id="currentPassword">
+                        <input name="password" type="password" class="form-control" id="currentPassword" >
                       </div>
-                    </div>
+                    </div> -->
 
                     <div class="row mb-3">
                       <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">Nouveau passe</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="newpassword" type="password" class="form-control" id="newPassword">
+                        <input name="password" type="password" class="form-control" id="newPassword" >
                       </div>
+                      @if($errors->has('password'))
+                        <span class="text-danger">{{$errors->first('password')}}</span>
+                      @endif
                     </div>
-
+                          
                     <div class="row mb-3">
                       <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Confirmer nouveau passe</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="renewpassword" type="password" class="form-control" id="renewPassword">
+                        <input name="password_confirmation" type="password" class="form-control" id="renewPassword" >
                       </div>
+                      @if($errors->has('password_confirmation'))
+                        <span class="text-danger">{{$errors->first('password_confirmation')}}</span>
+                      @endif
                     </div>
 
                     <div class="text-center">

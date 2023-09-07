@@ -16,20 +16,20 @@ class PortailInvestisseurController extends Controller
     public function index()
     {
         //
-        return view('investissement.portail');
+        return view('investissement.portail.portail');
     }
 
     public function inscrire()
     {
         //
-        return view('investissement.inscrire');
+        return view('investissement.portail.inscrire');
     }
 
     public function profile_investisseur( $id)
     {
         //
         $investisseur=Investisseur::find($id);
-        return view('investissement.profile_investisseur',compact('investisseur'));
+        return view('investissement.portail.profile_investisseur',compact('investisseur'));
     }
 
     public function connect(Request $request)

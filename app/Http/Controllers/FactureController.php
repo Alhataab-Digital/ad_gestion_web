@@ -12,8 +12,8 @@ use App\Models\Devise;
 use App\Models\TypeReglement;
 use App\Models\client;
 use App\Models\Produit;
-use App\Models\devis;
-use App\Models\Detaildevis;
+use App\Models\Devis;
+use App\Models\DetailDevis;
 use App\Models\Facture;
 use App\Models\DetailFacture;
 use App\Models\EntrepotStock;
@@ -26,7 +26,12 @@ class FactureController extends Controller
      */
     public function index()
     {
-        //
+        $factures=Facture::all();
+        $factures_cs=Facture::where('etat',NULL)->get();
+        $factures_lv=Facture::where('etat','valider')->get();
+        $factures_an=Facture::where('etat','annuler')->get();
+        return view('e-commerce.facture',compact('factures','factures_cs','factures_lv','factures_an'));
+    
     }
 
     /**
@@ -98,11 +103,23 @@ class FactureController extends Controller
     {
         //
             $facture=Facture::find($id);
-            $entrepots=EntrepotStock::where("agence_id",$facture->agence_id)->get();
+            if($facture->entrepot_id==NULL)
+            {
+                $entrepots=EntrepotStock::where("agence_id",$facture->agence_id)->get();
+                $devis=Devis::where('id',$facture->devis_id)->first();
+                $detail_deviss=DetailDevis::where('devis_id',$facture->devis_id)->get();
+                $detail_factures=DetailFacture::where('facture_id',$facture->id)->get();
+                $total_ht=DetailFacture::where('facture_id',$facture->id)->selectRaw('sum(quantite_vendue*prix_unitaire_vendu) as total')->first('total');
+                return view('e-commerce.facture_encours', compact('devis','detail_deviss','total_ht','facture','entrepots','detail_factures'));
+
+            }
+           
             $devis=Devis::where('id',$facture->devis_id)->first();
             $detail_deviss=DetailDevis::where('devis_id',$facture->devis_id)->get();
-            $total_ht=DetailDevis::where('devis_id',$facture->devis_id)->selectRaw('sum(quantite_demandee*prix_unitaire_demande) as total')->first('total');
-            return view('e-commerce.facture_encours', compact('devis','detail_deviss','total_ht','facture','entrepots'));
+            $detail_factures=DetailFacture::where('facture_id',$facture->id)->get();
+            $entrepots=EntrepotStock::where('id','!=',$facture->entrepot_id)->where("agence_id",$facture->agence_id)->get();
+            $total_ht=DetailFacture::where('facture_id',$facture->id)->selectRaw('sum(quantite_vendue*prix_unitaire_vendu) as total')->first('total');
+            return view('e-commerce.facture_encours', compact('devis','detail_deviss','total_ht','facture','entrepots','detail_factures'));
 
     }
 
@@ -111,7 +128,20 @@ class FactureController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $facture=Facture::find($id);
+// dd($facture,$request->montant_ht);
+
+                    $facture->update([
+                        'montant_total' =>$request->montant_ht,
+                        'etat' =>'Valider',
+                    ]);
+
+        $devis=devis::find($facture->devis_id);
+                    $devis->update([
+                        'etat' =>'Facture',
+                    ]);
+
+        return redirect('detail_facture/'.$id.'/show');
     }
 
     /**
@@ -120,5 +150,24 @@ class FactureController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function select_produit(Request $request){
+        if(Auth::check()){
+            $agence_id=Auth::user()->agence_id;
+
+            $data['produits']=DetailDevis::where('devis_id',$request->devis_id)->where('produit_id',$request->id)->get();
+
+            return response()->json($data);
+
+        }
+            return redirect('/auth')->with('success',"Vous n'êtes pas autorisé à accéder");
+
+
+    }
+
+    public function print()
+    {
+
     }
 }

@@ -23,10 +23,11 @@ class CommandeController extends Controller
     public function index()
     {
         //
-        $commandes=Commande::all();
-        $commandes_cs=Commande::where('etat','en cours')->get();
-        $commandes_lv=Commande::where('etat','livrer')->get();
-        $commandes_an=Commande::where('etat','annuler')->get();
+        $agence_id=Auth::user()->agence_id;
+        $commandes=Commande::where('agence_id',$agence_id)->get();
+        $commandes_cs=Commande::where('agence_id',$agence_id)->where('etat','en cours')->get();
+        $commandes_lv=Commande::where('agence_id',$agence_id)->where('etat','livrer')->get();
+        $commandes_an=Commande::where('agence_id',$agence_id)->where('etat','annuler')->get();
         return view('e-commerce.commande',compact('commandes','commandes_cs','commandes_lv','commandes_an'));
     }
 
@@ -57,6 +58,23 @@ class CommandeController extends Controller
     public function store(Request $request)
     {
         //
+        // dd($request->commande_id,$request->fournisseur_id,
+        // $request->nom_fournisseur,$request->adresse,$request->montant_ht);
+        if($request->montant_ht){
+            $commande=Commande::find($request->commande_id);
+            $fournisseur=Fournisseur::find($request->fournisseur_id);
+            $commande->update([
+                'fournisseur_id' =>$request->fournisseur_id,
+                'montant_total' =>$request->montant_ht,
+                'etat' =>'en cours',
+            ]);
+            $fournisseur->update([
+                'nom_fournisseur' =>$request->nom_fournisseur,
+                'adresse' =>$request->adresse,
+            ]);
+            return redirect('detail_commande/'.$commande->id.'/show');
+        }
+        return back();
     }
 
     /**
@@ -74,10 +92,17 @@ class CommandeController extends Controller
     {
         //
         $commande=Commande::find($id);
+        $commande=Commande::find($id);
+        $detail_commandes=DetailCommande::where('commande_id',$commande->id)->get();
+        $total_ht=DetailCommande::where('commande_id',$commande->id)->selectRaw('sum(quantite_commandee*prix_unitaire_commande) as total')->first('total');
+        
+        // $total_ht=DetailCommande::where('commande_id',$commande->id)->selectRaw('sum(quantite_commandee*prix_unitaire_commande) as total')->first('total');
+        // return view('e-commerce.commande_encours', compact('commande','total_ht'));
         $agence_id=Auth::user()->agence_id;
         $produits=Produit::where('agence_id',$agence_id)->get();
+        
         $fournisseurs=Fournisseur::all();
-        return view('e-commerce.nouvelle_commande', compact('produits','fournisseurs','commande'));
+        return view('e-commerce.nouvelle_commande', compact('produits','fournisseurs','commande','detail_commandes','total_ht'));
     }
 
     /**
@@ -106,8 +131,8 @@ class CommandeController extends Controller
         if(Auth::check()){
             $agence_id=Auth::user()->agence_id;
 
-            $data['produits']=Produit::select('prix_unitaire_achat')
-            ->where('id',$request->id)->get(['prix_unitaire_achat']);
+            $data['produits']=Produit::select(['prix_unitaire_achat','prix_unitaire_vente'])
+            ->where('id',$request->id)->get(['prix_unitaire_achat','prix_unitaire_vente']);
 
             return response()->json($data);
 

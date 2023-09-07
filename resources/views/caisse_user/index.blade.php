@@ -92,7 +92,7 @@
               <table class="table datatable">
                 <thead class="bg-primary">
                   <tr>
-                    <th scope="col">#</th>
+                    <!-- <th scope="col">#</th> -->
                     <th scope="col">Libelle </th>
                     <th scope="col">montant min</th>
                     <th scope="col">montant max</th>
@@ -109,7 +109,7 @@
                     @if($caisse->agence_id==$agence->id)
                   <tr>
 
-                    <th scope="row">{{ $caisse->id}}</th>
+                    <!-- <th scope="row">{{ $caisse->id}}</th> -->
                     <td>{{ $caisse->libelle}}</td>
                     <td>{{ $caisse->montant_min}}</td>
                     <td>{{ $caisse->montant_max}}</td>
@@ -167,7 +167,7 @@
                                     $("#user").html('<option value="">Choose...</option>');
                                     $.each(response.users,function(index,val){
                                 // alert(val);
-                                    $("#user").append('<option value="'+val.id+'">'+val.nom+'</option>');
+                                    $("#user").append('<option value="'+val.id+'">'+val.prenom+' '+val.nom+'</option>');
                                    })
                                 }
                             })

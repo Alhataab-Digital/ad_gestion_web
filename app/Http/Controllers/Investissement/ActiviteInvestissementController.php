@@ -11,6 +11,7 @@ use App\Models\Caisse;
 use App\Models\Societe;
 use App\Models\Devise;
 use App\Models\Agence;
+use App\Models\DeviseAgence;
 use App\Models\Investisseur;
 use App\Models\TypeActiviteInvestissement;
 use App\Models\MouvementCaisse;
@@ -77,12 +78,14 @@ class ActiviteInvestissementController extends Controller
     {
         $id=Auth::user()->id;
 
+        $societe_id=Auth::user()->societe_id;
+
         if(isset(Caisse::where('user_id',$id)->first(['id'])->id)){
                 $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
                 $caisse=Caisse::find($caisse_id);
                 $agence_id=Auth::user()->agence_id;
                 $agence=Agence::find( $agence_id);
-            $type_activites=TypeActiviteInvestissement::where('agence_id',$agence_id)->get();
+            $type_activites=TypeActiviteInvestissement::where('societe_id',$societe_id)->get();
             return view('investissement.activite_investissement', compact('type_activites','caisse'));
         }
         return view('devise.message');
@@ -114,42 +117,65 @@ class ActiviteInvestissementController extends Controller
         if(isset(Caisse::where('user_id',$id)->first(['id'])->id)){
                 $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
                 $caisse=Caisse::find($caisse_id);
+                $societe_id=Auth::user()->societe_id;
                 $agence_id=Auth::user()->agence_id;
                 $agence=Agence::find( $agence_id);
 
                 $compte_caisse= Caisse::where('user_id',$id)->first(['compte'])->compte;
-                $capital_investisseur=Investisseur::where('etat','1')->where('agence_id',$agence_id)->selectRaw('sum(compte_investisseur) as total')->first('total');
-                $date_comptable= Caisse::where('user_id',$id)->first(['date_comptable'])->date_comptable;
-
-                if($capital_investisseur->total < $data['montant_decaisse'])  {
-
-                    return redirect('/activite_investissement/create',)->with('danger','Le montant de l\'activité est supperieur au capital investis ');
-
-                } else{
-
-                    if($data['montant_decaisse'] > $compte_caisse)  {
-
-                        return redirect('/activite_investissement/create',)->with('danger','Le montant caisse insuffisant ');
-
-                    } else{
-                    /**
-                     * insertion des données dans la table user
-                     */
-                    ActiviteInvestissement::create([
-                        'type_activite_id'=>$data['type_activite'],
-                        'capital_activite'=>$capital_investisseur->total,
-                        'montant_decaisse'=>$data['montant_decaisse'],
-                        'commentaire'=>$data['commentaire'],
-                        'user_id'=>$id,
-                        'caisse_id'=>$caisse_id,
-                        'agence_id'=>$agence_id,
-                        'date_comptable'=>$date_comptable,
-                    ]);
-
-                    $activite_id=ActiviteInvestissement::where('user_id',$id)->latest('id')->first();
-
-                    return redirect('/'.$activite_id->id.'/activite_investissement/repartition');
-                    }
+                $investisseurs=Investisseur::where('compte_investisseur','>','0')->where('etat','1')->where('societe_id',$societe_id)->get();
+                foreach($investisseurs as $investisseur)
+                {
+                    $date_comptable= Caisse::where('user_id',$id)->first(['date_comptable'])->date_comptable;
+                    
+                        $taux=DeviseAgence::where('devise_id',$investisseur->agence->devise_id)->where('agence_id',$agence_id)->get();
+                        foreach($taux as $tx)
+                        {
+                            $capital_investisseurs=Investisseur::where('etat','1')->where('societe_id',$societe_id)->selectRaw('sum(compte_investisseur) as total')->get();
+                                // $somme_total=0;
+                            foreach($capital_investisseurs as $capital_investisseur)
+                            {
+    
+                                //  dd($capital_investisseur->total,$tx->taux);
+                                    $somme_total=round($capital_investisseur->total/$tx->taux);
+                                // dd($somme_total);
+                                    $date_comptable= Caisse::where('user_id',$id)->first(['date_comptable'])->date_comptable;
+                        
+                                if($capital_investisseur->total < $data['montant_decaisse'])  
+                                {
+    
+                                    return redirect('/activite_investissement/create',)->with('danger','Le montant de l\'activité est supperieur au capital investis ');
+    
+                                }else{
+    
+                                    if($data['montant_decaisse'] > $compte_caisse)  {
+    
+                                        return redirect('/activite_investissement/create',)->with('danger','Le montant caisse insuffisant ');
+    
+                                    } else{
+                                    /**
+                                     * insertion des données dans la table user
+                                     */
+                                    ActiviteInvestissement::create([
+                                        'type_activite_id'=>$data['type_activite'],
+                                        'capital_activite'=>$somme_total,
+                                        'montant_decaisse'=>$data['montant_decaisse'],
+                                        'commentaire'=>$data['commentaire'],
+                                        'taux_devise'=>$tx->taux,
+                                        'user_id'=>$id,
+                                        'caisse_id'=>$caisse_id,
+                                        'agence_id'=>$agence_id,
+                                        'date_comptable'=>$date_comptable,
+                                    ]);
+    
+                                    $activite_id=ActiviteInvestissement::where('user_id',$id)->latest('id')->first();
+    
+                                    return redirect('/'.$activite_id->id.'/activite_investissement/repartition');
+                                    }
+                                }
+                            }
+                        }
+                    
+                        
                 }
 
 
@@ -235,7 +261,9 @@ class ActiviteInvestissementController extends Controller
         $activite_investissement=ActiviteInvestissement::find($id);
 
         $agence_id=Auth::user()->agence_id;
-        $investisseurs=Investisseur::where('compte_investisseur','>','0')->where('etat','1')->where('agence_id',$agence_id)->where('etat','1')->get();
+        $societe_id=Auth::user()->societe_id;
+        
+        $investisseurs=Investisseur::where('compte_investisseur','>','0')->where('etat','1')->where('societe_id',$societe_id)->get();
 
         return view('investissement.activite_investissement_repartition', compact(
         'investisseurs',
@@ -249,31 +277,35 @@ class ActiviteInvestissementController extends Controller
     public function repartie(Request $request)
     {
         $id=Auth::user()->id;
+        $agence_id=Auth::user()->agence_id;
         $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
 
             $compte_caisse= Caisse::where('user_id',$id)->first(['compte'])->compte;
-            $compte_dividende_societe= Caisse::where('user_id',$id)->first(['compte_dividende_societe'])->compte_dividende_societe;
+            $compte_dividende_societe= Agence::where('id',$agence_id)->first(['compte_societe'])->compte_societe;
             $date_comptable= Caisse::where('user_id',$id)->first(['date_comptable'])->date_comptable;
 
         $activite_investissement=ActiviteInvestissement::find($request->activite_id);
 
         if($activite_investissement->etat_activite=='valider'){
-
-            $dividende_entreprise=($request->montant_benefice/2);
-            $dividende_investisseur=($request->montant_benefice/2);
+            
+            $taux_devise=$activite_investissement->taux_devise;
+            $dividende_entreprise=ceil($request->montant_benefice/2);
+            $benefice_investisseur=ceil($request->montant_benefice/2);
+            $benefice_securite=ceil($benefice_investisseur*0.1);
+            $dividende_investisseur=$benefice_investisseur-$benefice_securite;
             $total_depense=$request->total_depense;
-
             for($i=0;$i<count($request->investisseur_id); $i++)
             {
 
                  $investisseurs=Investisseur::where('id',$request->investisseur_id[$i])->get();
-
+                 
                 foreach( $investisseurs as  $investisseur){
 
+           
                     $investisseur_id   =$request->investisseur_id[$i];
-                    $montant_investis  = $request->montant_investis[$i]+$investisseur->compte_investisseur;
-                    $dividende_gagner  =(($request->taux[$i])*$dividende_investisseur)+$investisseur->compte_dividende;
-
+                    $montant_investis  = ceil(($request->montant_investis[$i])*$taux_devise)+$investisseur->compte_investisseur;
+                    $dividende_gagner  =(($request->taux[$i])*(ceil($dividende_investisseur*$taux_devise)))+$investisseur->compte_dividende;
+                
                 //     dd(
                 // $investisseur_id,
                 // $montant_investis,
@@ -290,8 +322,8 @@ class ActiviteInvestissementController extends Controller
 
                 }
             }
-
-            for($k=0;$k<count($request->secteur_id); $k++)
+            if($request->secteur_id){
+                for($k=0;$k<count($request->secteur_id); $k++)
             {
 
                 $data=[
@@ -302,6 +334,8 @@ class ActiviteInvestissementController extends Controller
                 OperationDepenseActivite::create($data);
 
             }
+            }
+            
 
             $activite_investissement->update([
                 'etat_activite'=>'terminer',
@@ -315,7 +349,7 @@ class ActiviteInvestissementController extends Controller
 
                 $compte=$compte_caisse+$montant_operation;
 
-                $compte_dividende_entreprise=$compte_dividende_societe+$dividende_entreprise;
+                $compte_dividende_entreprise=ceil($compte_dividende_societe+$dividende_entreprise*$taux_devise);
 
                 $caisse=Caisse::find($caisse_id);
 
@@ -330,11 +364,17 @@ class ActiviteInvestissementController extends Controller
                     'date_comptable'=>$date_comptable,
 
                 ]);
-
-                $caisse->update([
-                    'compte'=>$compte,
-                    'compte_dividende_societe'=>$compte_dividende_entreprise,
+                $societe_id=Auth::user()->societe_id;
+                $societe=Societe::find($societe_id);
+                $societe->update([
+                    'compte_societe'=>$compte_dividende_entreprise,
+                    'compte_securite'=>ceil($benefice_securite*$taux_devise),
                 ]);
+
+                // $caisse->update([
+                //     'compte'=>$compte,
+                //     'compte_dividende_societe'=>$compte_dividende_entreprise,
+                // ]);
 
             return redirect('/activite_investissement/valider');
          } else{

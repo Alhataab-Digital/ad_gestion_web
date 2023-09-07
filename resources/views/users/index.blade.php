@@ -107,7 +107,7 @@
                 <table class="table table-borderless datatable">
                   <thead class="bg-primary ">
                     <tr>
-                      <th scope="col">#</th>
+                      <!-- <th scope="col">#</th> -->
                       <th scope="col">Nom Prenom</th>
                       <th scope="col">adresse</th>
                       <th scope="col">Email</th>
@@ -121,7 +121,7 @@
                       @foreach ($utilisateurs as $utilisateur )
                     <tr>
 
-                      <th scope="row">{{ $utilisateur->id}}</th>
+                      <!-- <th scope="row">{{ $utilisateur->id}}</th> -->
                       <td>{{ $utilisateur->prenom .' '.$utilisateur->nom}}</td>
                       <td>{{ $utilisateur->adresse}}</td>
                       <td>{{ $utilisateur->email}}</td>
@@ -135,7 +135,7 @@
                       <td>{{ $utilisateur->gestion->gestion}}</td>
                       <td>
                           <a href="{{ route('users.edit',$utilisateur->id) }}">
-                              <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
+                              <button type="button" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
                           </a>
                       @if ($utilisateur->etat==0)
                       <a href="{{ route('users.active',$utilisateur->id)}}">

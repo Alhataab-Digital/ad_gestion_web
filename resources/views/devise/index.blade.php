@@ -54,10 +54,10 @@
                             <label for="inputAddress" class="form-label">Unite</label>
                             <input type="text" name="unite" class="form-control" id="inputAddress" >
                         </div>
-                        <div class="col-12">
+                        <!-- <div class="col-12">
                             <label for="inputAddress" class="form-label">Taux</label>
                             <input type="text" name="taux" class="form-control" id="inputAddress" >
-                        </div>
+                        </div> -->
 
                     </div>
                     <div class="modal-footer">
@@ -111,14 +111,14 @@
                     {{-- <td>{{ $devise->taux}}</td> --}}
                     <td>
                         <a href="{{ route('devise.edit',$devise->id) }}">
-                            <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
+                          <button type="button" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
                         </a>
-                        <a href="">
+                        <!-- <a href="">
                             <button type="button" class="btn btn-success"><i class="bi bi-check-circle"></i></button>
                         </a>
                         <a href="">
                             <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
-                        </a>
+                        </a> -->
                     </td>
                   </tr>
                   @endforeach

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('adresse')->default('');
             $table->string('telephone')->default('');
             $table->string('email')->default('');
+            $table->string('compte_societe')->default('0');
+            $table->string('compte_securite')->default('0');
             $table->string('societe_id');
             $table->string('devise_id');
             $table->string('region_id');

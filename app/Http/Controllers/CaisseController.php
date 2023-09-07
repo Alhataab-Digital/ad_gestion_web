@@ -17,6 +17,7 @@ use App\Models\OperationInvestisseur;
 use App\Models\ActiviteInvestissement;
 use App\Models\MouvementCaisse;
 use App\Models\OperationInterCaisse;
+use App\Models\DeviseAgence;
 
 
 class CaisseController extends Controller
@@ -50,7 +51,7 @@ class CaisseController extends Controller
      */
     public function store(Request $request)
     {
-        /**
+            /**
              * validation des champs de saisie
              */
             $request->validate([
@@ -95,7 +96,14 @@ class CaisseController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        if(Auth::check()){
+
+            $societe_id=Auth::user()->societe_id;
+            $caisse=Caisse::find($id);
+            $agences=Agence::where('societe_id',$societe_id)->where('id','!=',$caisse->agence->id)->get();
+        return view('caisse.edit', compact('caisse','agences'));
+        }
+        return redirect('/auth')->with('danger',"Session expirée");
     }
 
     /**
@@ -103,7 +111,27 @@ class CaisseController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
+        $request->validate([
+            'agence_id'=>'required',
+            'libelle'=>'required',
+            'montant_min'=>'required',
+            'montant_max'=>'required',
+        ]);
+        /**
+         * donnee a ajouté dans la table
+         */
+        $data=$request->all();
+        
+        $caisse=Caisse::find($id);
+        $caisse->update([
+            'agence_id'=>$data['agence_id'],
+            'libelle'=>$data['libelle'],
+            'montant_min'=>$data['montant_min'],
+            'montant_max'=>$data['montant_max'],
+        ]);
+        return back()->with('success','caisse modifier avec succès');
+
     }
 
     /**
@@ -113,29 +141,28 @@ class CaisseController extends Controller
     {
         //
     }
-    public function attribution()
+    public function attribution_externe()
     {
             $user_id=Auth::user()->id;
             $agence_id=Auth::user()->agence_id;
+            $agence=Agence::find($agence_id);
             if(isset(Caisse::where('user_id',$user_id)->first(['id'])->id)){
-            $caisse_destinations=Caisse::where('user_id','!=',$user_id)->where('agence_id',$agence_id)->get();
-
+            $caisse_destinations=Caisse::where('user_id','!=',$user_id)->where('agence_id','!=',$agence_id)->get();
+            $devise_agences=DeviseAgence::all();
             $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
-            $operations=OperationInterCaisse::where('caisse_id',$caisse_id)->where('etat',NULL)->get();
+            $operations=OperationInterCaisse::where('caisse_id',$caisse_id)->where('taux','!=',1)->where('etat',NULL)->get();
 
-        return view('caisse.attribution', compact('caisse_destinations','operations'));
+        return view('caisse.attribution_externe', compact('caisse_destinations','operations','devise_agences'));
         }
         return view('investissement.message');
     }
-
-    public function attribution_valider( Request $request)
+    public function attribution_externe_valider( Request $request)
     {
             $user_id=Auth::user()->id;
+            $agence_id=Auth::user()->agence_id;
             $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
             $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
             $montant_caisse=Caisse::where('user_id',$user_id)->first();
-
-
 
         /**
         * validation des champs de saisie
@@ -150,22 +177,102 @@ class CaisseController extends Controller
              */
 
             $data=$request->all();
-            if($montant_caisse->compte <$data['montant_operation']){
-                return redirect('/caisse/attribution')->with('danger','montant caisse insuffisant pour effectuer cette operation');
+
+            $caisse=Caisse::where('user_id',$user_id)->first();
+            $caisse_destination=Caisse::find($data['caisse_destination']);
+            // dd($caisse_destination->agence->devise_id, $caisse_destination->agence_id, $devise_agence);
+            if(isset(DeviseAgence::where('agence_id',$caisse->agence_id)->where('devise_id',$caisse_destination->agence->devise_id)->first()->taux)){
+                
+                $taux=DeviseAgence::where('agence_id',$caisse->agence_id)->where('devise_id',$caisse_destination->agence->devise_id)->first()->taux;
+                
+                if($montant_caisse->compte <$data['montant_operation']){
+                    return redirect('/caisse/attribution_externe')->with('danger','montant caisse insuffisant pour effectuer cette operation');
+                }else{
+                     /**
+                 * insertion des données dans la table user
+                 */
+                OperationInterCaisse::create([
+                    'montant_operation'=>$data['montant_operation'],
+                    'commentaire'=>$data['commentaire'],
+                    'caisse_destination_id'=>$data['caisse_destination'],
+                    'taux'=>$taux,
+                    'caisse_id'=>$caisse_id,
+                    'user_id'=>$user_id,
+                    'date_comptable'=>$date_comptable,
+                ]);
+                return redirect('/caisse/attribution_externe')->with('success','operation crée avec succès');
+                }
             }else{
-                 /**
-             * insertion des données dans la table user
-             */
-            OperationInterCaisse::create([
-                'montant_operation'=>$data['montant_operation'],
-                'commentaire'=>$data['commentaire'],
-                'caisse_destination_id'=>$data['caisse_destination'],
-                'caisse_id'=>$caisse_id,
-                'user_id'=>$user_id,
-                'date_comptable'=>$date_comptable,
-            ]);
-            return redirect('/caisse/attribution')->with('success','operation crée avec succès');
+
+                return redirect('/caisse/attribution_externe')->with('danger','Il faut definir le taux de la devise');
             }
+    }
+
+    public function attribution()
+    {
+            $user_id=Auth::user()->id;
+            $agence_id=Auth::user()->agence_id;
+            if(isset(Caisse::where('user_id',$user_id)->first(['id'])->id)){
+            $caisse_destinations=Caisse::where('user_id','!=',$user_id)->where('agence_id',$agence_id)->get();
+            $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
+            $operations=OperationInterCaisse::where('caisse_id',$caisse_id)->where('taux',1)->where('etat',NULL)->get();
+
+        return view('caisse.attribution', compact('caisse_destinations','operations'));
+        }
+        return view('investissement.message');
+    }
+
+    public function attribution_valider( Request $request)
+    {
+            $user_id=Auth::user()->id;$agence_id=Auth::user()->agence_id;
+            $devise_id=Agence::where('id',$agence_id)->first()->devise_id;
+            $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
+            $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
+            $montant_caisse=Caisse::where('user_id',$user_id)->first();
+
+        /**
+        * validation des champs de saisie
+        */
+            $request->validate([
+                'montant_operation'=>'required',
+                'caisse_destination'=>'required',
+                'commentaire'=>'required',
+            ]);
+            /**
+             * donnee a ajouté dans la table
+             */
+
+            $data=$request->all();
+
+            $caisse=Caisse::where('user_id',$user_id)->first();
+            $caisse_destination=Caisse::find($data['caisse_destination']);
+            // dd($caisse_destination->agence->devise_id, $caisse_destination->agence_id, $devise_agence);
+            if(isset(DeviseAgence::where('agence_id',$caisse->agence_id)->where('devise_id',$caisse_destination->agence->devise_id)->first()->taux)){
+                
+                $taux=DeviseAgence::where('agence_id',$caisse->agence_id)->where('devise_id',$caisse_destination->agence->devise_id)->first()->taux;
+                
+                if($montant_caisse->compte <$data['montant_operation']){
+                    return redirect('/caisse/attribution')->with('danger','montant caisse insuffisant pour effectuer cette operation');
+                }else{
+                     /**
+                 * insertion des données dans la table user
+                 */
+                    OperationInterCaisse::create([
+                    'montant_operation'=>$data['montant_operation'],
+                    'commentaire'=>$data['commentaire'],
+                    'caisse_destination_id'=>$data['caisse_destination'],
+                    'taux'=>$taux,
+                    'caisse_id'=>$caisse_id,
+                    'user_id'=>$user_id,
+                    'date_comptable'=>$date_comptable,
+                    ]);
+                    return redirect('/caisse/attribution')->with('success','operation crée avec succès');
+                }
+            }else{
+
+                return redirect('/caisse/attribution')->with('danger','Il faut definir le taux de la devise');
+            }
+           
 
     }
 
@@ -174,9 +281,12 @@ class CaisseController extends Controller
             $user_id=Auth::user()->id;
         if(isset(Caisse::where('user_id',$user_id)->first(['id'])->id)){
             $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
+            $caisse_destination=Caisse::where('user_id',$user_id)->first();
+            // $devise_agence=DeviseAgence::where('agence_id',$caisse_destination->agence_id)->first()->taux;
+
             $operations=OperationInterCaisse::where('caisse_destination_id',$caisse_id)->where('etat',NULL)->get();
 
-        return view('caisse.encaissement', compact('operations',));
+        return view('caisse.encaissement', compact('operations'));
 
         }
         return view('investissement.message');
@@ -194,7 +304,14 @@ class CaisseController extends Controller
                     $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
                     $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
                     $caisse_destination=Caisse::where('user_id',$user_id)->first();
-                    $montant_operation=$operation->montant_operation;
+                    // $devise_agence=DeviseAgence::where('agence_id',$caisse_destination->agence_id)->first()->taux;
+
+                    $montant_operation_recepteur=round($operation->montant_operation*$operation->taux);
+                    $montant_operation_emetteur=$operation->montant_operation;
+
+                    
+                // dd($montant_operation);
+                
                 /**
                  * on verifie si la de emmetrice est ouverte
                  */
@@ -206,7 +323,7 @@ class CaisseController extends Controller
 
                     $compte_caisse_emettrice=Caisse::where('id',$operation->caisse_id)->first();
 
-                    if($compte_caisse_emettrice->compte >= $montant_operation){
+                    if($compte_caisse_emettrice->compte >= $montant_operation_emetteur){
                         /**
                          * on verifie si la caisse receptionniste est ouverte
                          */
@@ -235,7 +352,7 @@ class CaisseController extends Controller
                             'caisse_id'=>$operation->caisse_id,
                             'user_id'=>$user_provenance,
                             'description'=>'Attribution à la caisse'. $caisse_destination->libelle,
-                            'sortie'=>$montant_operation,
+                            'sortie'=>$operation->montant_operation,
                             'solde'=>$compte,
                             'date_comptable'=>$date_comptable,
 
@@ -249,7 +366,7 @@ class CaisseController extends Controller
                          * mise a jour de la caisse destination
                         */
                         $compte_caisse_destination= Caisse::where('id',$caisse_id)->first(['compte'])->compte;
-                        $compte=$compte_caisse_destination+$operation->montant_operation;
+                        $compte=$compte_caisse_destination+$montant_operation_recepteur;
                         $caisse_provenance=Caisse::where('id',$operation->caisse_id)->first();
 
                         $caisse=Caisse::find($caisse_id);
@@ -258,7 +375,7 @@ class CaisseController extends Controller
                             'caisse_id'=>$caisse_id,
                             'user_id'=>$user_id,
                             'description'=>'Attribution de la caisse'. $caisse_provenance->libelle,
-                            'entree'=>$montant_operation,
+                            'entree'=>$montant_operation_recepteur,
                             'solde'=>$compte,
                             'date_comptable'=>$date_comptable,
 
@@ -286,6 +403,155 @@ class CaisseController extends Controller
 
 
     }
+
+    public function attribution_edit($id)
+    {
+        
+        $user_id=Auth::user()->id;
+        $agence_id=Auth::user()->agence_id;
+        $operation=OperationInterCaisse::find($id);
+        $caisse_destinations=Caisse::where('user_id','!=',$user_id)->where('id','!=',$operation->caisse_destination->id)->where('agence_id',$agence_id)->get();
+        $devise_agences=DeviseAgence::all();
+        return view('caisse.attribution_edit', compact('caisse_destinations','operation','devise_agences'));
+        
+    }
+    public function attribution_modifier( Request $request)
+    {
+            $user_id=Auth::user()->id;
+            $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
+            $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
+            $montant_caisse=Caisse::where('user_id',$user_id)->first();
+
+
+
+        /**
+        * validation des champs de saisie
+        */
+            $request->validate([
+                'operation_id'=>'required',
+                'montant_operation'=>'required',
+                'caisse_destination'=>'required',
+                'commentaire'=>'required',
+            ]);
+            /**
+             * donnee a ajouté dans la table
+             */
+
+            $data=$request->all();
+
+            $caisse=Caisse::where('user_id',$user_id)->first();
+            $caisse_destination=Caisse::find($data['caisse_destination']);
+            if(isset(DeviseAgence::where('agence_id',$caisse->agence_id)->where('devise_id',$caisse_destination->agence->devise_id)->first()->taux))
+            {
+                $taux=DeviseAgence::where('agence_id',$caisse->agence_id)->where('devise_id',$caisse_destination->agence->devise_id)->first()->taux;
+
+                if($montant_caisse->compte <$data['montant_operation']){
+                    return redirect('/caisse/attribution')->with('danger','montant caisse insuffisant pour effectuer cette operation');
+                }else{
+                     /**
+                 * insertion des données dans la table user
+                 */
+                    $operation=OperationInterCaisse::find($data['operation_id']);
+                    if($operation->etat=="valider"){
+                        return redirect('/caisse/attribution')->with('success','attribution déjà valider');
+                    }else{
+                        $operation->update([
+                            'montant_operation'=>$data['montant_operation'],
+                            'commentaire'=>$data['commentaire'],
+                            'caisse_destination_id'=>$data['caisse_destination'],
+                            'taux'=>$taux,
+                            'caisse_id'=>$caisse_id,
+                            'user_id'=>$user_id,
+                            'date_comptable'=>$date_comptable,
+                        ]);
+                        return redirect('/caisse/attribution')->with('success','modification effectuée avec succès');
+                        
+                    }
+                }
+            }
+             return redirect('/caisse/attribution')->with('success',"Vous n'avez pas defini le taux de la devise");
+
+        
+    }
+
+    public function attribution_externe_edit($id)
+    {
+        
+        $user_id=Auth::user()->id;
+        $agence_id=Auth::user()->agence_id;
+        $operation=OperationInterCaisse::find($id);
+        $caisse_destinations=Caisse::where('user_id','!=',$user_id)->where('id','!=',$operation->caisse_destination->id)->where('agence_id','!=',$agence_id)->get();
+        $devise_agences=DeviseAgence::all();
+        return view('caisse.attribution_externe_edit', compact('caisse_destinations','operation','devise_agences'));
+        
+    }
+    public function attribution_externe_modifier( Request $request)
+    {
+            $user_id=Auth::user()->id;
+            $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
+            $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
+            $montant_caisse=Caisse::where('user_id',$user_id)->first();
+
+
+
+        /**
+        * validation des champs de saisie
+        */
+            $request->validate([
+                'operation_id'=>'required',
+                'montant_operation'=>'required',
+                'caisse_destination'=>'required',
+                'commentaire'=>'required',
+            ]);
+            /**
+             * donnee a ajouté dans la table
+             */
+
+            $data=$request->all();
+
+            $caisse=Caisse::where('user_id',$user_id)->first();
+            $caisse_destination=Caisse::find($data['caisse_destination']);
+            if(isset(DeviseAgence::where('agence_id',$caisse->agence_id)->where('devise_id',$caisse_destination->agence->devise_id)->first()->taux))
+            {
+                $taux=DeviseAgence::where('agence_id',$caisse->agence_id)->where('devise_id',$caisse_destination->agence->devise_id)->first()->taux;
+
+                    if($montant_caisse->compte <$data['montant_operation']){
+                        return redirect('/caisse/attribution_externe')->with('danger','montant caisse insuffisant pour effectuer cette operation');
+                    }else{
+                        /**
+                     * insertion des données dans la table user
+                     */
+                    $operation=OperationInterCaisse::find($data['operation_id']);
+                    if($operation->etat=="valider"){
+                        return redirect('/caisse/attribution_externe')->with('success','attribution déjà valider');
+                    }else{
+                        $operation->update([
+                            'montant_operation'=>$data['montant_operation'],
+                            'commentaire'=>$data['commentaire'],
+                            'caisse_destination_id'=>$data['caisse_destination'],
+                            'taux'=>$taux,
+                            'caisse_id'=>$caisse_id,
+                            'user_id'=>$user_id,
+                            'date_comptable'=>$date_comptable,
+                        ]);
+                        return redirect('/caisse/attribution_externe')->with('success','modification effectuée avec succès');
+                        
+                    }
+                }
+            }
+            return redirect('/caisse/attribution_externe')->with('success',"Vous n'avez pas defini le taux de la devise");
+        
+    }
+
+    public function attribution_supprimer($id){
+        $operation=OperationInterCaisse::find($id);
+        $operation->delete();
+        return back(); 
+        
+    }
+
+
+
 
     public function operation()
     {
@@ -407,8 +673,4 @@ class CaisseController extends Controller
         return view('erreur.message');
     }
 
-    public function attribution_modifier(){
-
-        
-    }
 }

@@ -91,7 +91,7 @@
                         <td>{{ $secteur_depense->secteur_depense}}</td>
                         <td>
                             <a href="{{ route('secteur_depense.edit',$secteur_depense->id) }}">
-                                <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
+                              <button type="button" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
                             </a>
 
                         </td>

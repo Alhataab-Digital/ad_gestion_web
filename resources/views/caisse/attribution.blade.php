@@ -5,7 +5,7 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>ATTRIBUTION CAISSE</h1>
+      <h1>ATTRIBUTION CAISSE INTERNE</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Acceuil</a></li>
@@ -21,7 +21,7 @@
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">ATTRIBUTION CAISSE</h5>
+              <h5 class="card-title">ATTRIBUTION CAISSE INTERNE</h5>
               <P>
 
                 @if ($message=Session::get('success'))
@@ -100,7 +100,7 @@
               <table class="table datatable">
                 <thead class="bg-primary">
                   <tr>
-                    <th scope="col">#</th>
+                    <!-- <th scope="col">#</th> -->
                     <th scope="col">Commentaire </th>
                     <th scope="col">Montant</th>
                     <th scope="col">Destination</th>
@@ -111,13 +111,16 @@
 
                     @foreach ($operations as $operation )
                   <tr>
-                    <th scope="row">{{ $operation->id}}</th>
+                    <!-- <th scope="row">{{ $operation->id}}</th> -->
                     <td>{{ $operation->commentaire}}</td>
                     <td>{{ $operation->montant_operation}}</td>
                     <td>{{ $operation->caisse_destination->libelle}}</td>
                     <td>
-                        <a href="{{ route('caisse.attribution.modifier',$operation->id) }}">
+                        <a href="{{ route('caisse.attribution.edit',$operation->id) }}">
                             <button type="button" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
+                        </a>
+                        <a href="{{ route('caisse.attribution.delete',$operation->id) }}">
+                            <button type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                         </a>
                     </td>
                   </tr>

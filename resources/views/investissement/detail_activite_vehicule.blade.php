@@ -104,7 +104,7 @@
                                     <input class="form-control" type="text" name="montant_investis[]" id="" value="{{round( $detail_activite_vehicule->montant_investis) }}" readonly>
                                 </td>
                                 <td scope="row">
-                                    <input class="form-control" type="text" name="taux[]" id="" value="{{ $detail_activite_vehicule->taux/100 }} " readonly>
+                                    <input class="form-control" type="text" name="taux[]" id="" value="{{ ($detail_activite_vehicule->taux/100) }} " readonly>
                                 </td>
 
                         </tr>

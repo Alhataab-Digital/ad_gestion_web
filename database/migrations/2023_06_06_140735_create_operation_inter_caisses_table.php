@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('commentaire');
             $table->string('caisse_id');
             $table->string('caisse_destination_id');
+            $table->float('taux');
             $table->string('date_comptable');
             $table->string('date_comptable_reception')->nullable();
             $table->string('user_id');

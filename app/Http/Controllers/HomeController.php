@@ -11,6 +11,7 @@ use App\Models\Utilisateur;
 use App\Models\Devise;
 use App\Models\Investisseur;
 use App\Models\ActiviteInvestissement;
+use App\Models\ActiviteVehicule;
 use App\Models\Caisse;
 
 class HomeController extends Controller
@@ -29,11 +30,24 @@ class HomeController extends Controller
         $societe_id=Auth::user()->societe_id;
         $agence_id=Auth::user()->agence_id;
         $devises=Devise::where('societe_id',$societe_id)->get();
+        if(isset(Auth::user()->role_id)){
+            $role=Auth::user()->role_id;
+            if($role==1 || $role==0){
+                
+                $count_user=Utilisateur::where('societe_id',$societe_id)->count();
+                $count_investisseur=Investisseur::where('agence_id',$agence_id)->count();
+                $count_activite=ActiviteInvestissement::where('agence_id',$agence_id)->where('etat_activite','!=','annuler')->count();
+                $count_activite_vehicule=ActiviteVehicule::where('agence_id',$agence_id)->where('etat_activite','!=','annuler')->count();
+                return view('home', compact('societe','devises','count_investisseur','count_user','count_activite','count_activite_vehicule'));
+            }
+        }
+        
+        $count_user=Utilisateur::where('societe_id',$societe_id)->where('role_id','!=',1)->Where('role_id','!=',0)->count();
         $count_investisseur=Investisseur::where('agence_id',$agence_id)->count();
-        $count_user=Utilisateur::where('societe_id',$societe_id)->count();
-        $count_activite=ActiviteInvestissement::where('agence_id',$agence_id)->count();
-        return view('home', compact('societe','devises','count_investisseur','count_user','count_activite'));
-      }
+        $count_activite=ActiviteInvestissement::where('agence_id',$agence_id)->where('etat_activite','!=','annuler')->count();
+        $count_activite_vehicule=ActiviteVehicule::where('agence_id',$agence_id)->where('etat_activite','!=','annuler')->count();
+        return view('home', compact('societe','devises','count_investisseur','count_user','count_activite','count_activite_vehicule'));
+    }
         return redirect('/auth')->with('danger',"Session expirée");
     }
 

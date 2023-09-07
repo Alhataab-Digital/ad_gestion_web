@@ -20,10 +20,12 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('password')->nullable();
             $table->string('heritier');
+            $table->string('montant_investis')->default('0');
             $table->string('compte_investisseur')->default('0');
             $table->string('compte_dividende')->default('0');
             $table->string('etat')->default('0');
             $table->string('agence_id');
+            $table->string('societe_id');
             $table->date('date_creation');
             $table->timestamps();
         });

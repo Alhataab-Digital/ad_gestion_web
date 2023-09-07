@@ -22,8 +22,8 @@ class TypeActiviteInvestissementController extends Controller
     public function index()
     {
         //
-       $agence_id=Auth::user()->agence_id;
-            $type_activites=TypeActiviteInvestissement::where('agence_id',$agence_id)->get();
+       $societe_id=Auth::user()->societe_id;
+            $type_activites=TypeActiviteInvestissement::where('societe_id',$societe_id)->get();
         return view('investissement.type_activite',compact('type_activites'));
 
     }
@@ -52,14 +52,14 @@ class TypeActiviteInvestissementController extends Controller
         */
 
        $data=$request->all();
-       $agence_id=Auth::user()->agence_id;
+       $societe_id=Auth::user()->societe_id;
        //dd($data);
        /**
         * insertion des données dans la table user
         */
         TypeActiviteInvestissement::create([
             'type_activite'=>$data['type_activite'],
-            'agence_id'=>$agence_id,
+            'societe_id'=>$societe_id,
        ]);
        return redirect('/type_activite_investissement')->with('success',"Type d'investissement ajouté avec succès");
     }
@@ -77,7 +77,8 @@ class TypeActiviteInvestissementController extends Controller
      */
     public function edit(string $id)
     {
-        //
+            $type_activite=TypeActiviteInvestissement::find($id);
+        return view('investissement.type_activite_edit',compact('type_activite'));
     }
 
     /**
@@ -85,7 +86,15 @@ class TypeActiviteInvestissementController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'type_activite'=>'required',
+        ]);
+        $data=$request->all();
+        $type_activite=TypeActiviteInvestissement::find($id);
+        $type_activite->update([
+            'type_activite'=>$data['type_activite'],
+       ]);
+       return redirect('/type_activite_investissement')->with('success',"Type d'investissement modifier avec succès");
     }
 
     /**

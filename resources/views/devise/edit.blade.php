@@ -9,9 +9,9 @@
       <h1>MODIFICATION LA DEVISE</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Forms</li>
-          <li class="breadcrumb-item active">Layouts</li>
+          <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
+          <li class="breadcrumb-item">param</li>
+          <li class="breadcrumb-item active">devise</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -56,10 +56,10 @@
                   <label for="inputEmail4" class="form-label">Unite</label>
                   <input type="text" name="unite" value="{{ $devise->unite }}" class="form-control" id="inputEmail4">
                 </div>
-                <div class="col-12">
+                <!-- <div class="col-12">
                   <label for="inputAddress" class="form-label">Taux</label>
                   <input type="text" name="taux" value="{{ $devise->taux }}" class="form-control" id="inputAddress" placeholder="1234 Main St">
-                </div>
+                </div> -->
                 <div class="text-center">
                   <button type="submit" class="btn btn-primary">Modifer</button>
                   <a href="{{ route('devise') }}">

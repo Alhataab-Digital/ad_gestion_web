@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Utilisateur;
 use App\Models\Caisse;
+use App\Models\Devise;
 
 class OperationInterCaisse extends Model
 {
@@ -15,6 +16,7 @@ class OperationInterCaisse extends Model
         'commentaire',
         'caisse_id',
         'caisse_destination_id',
+        'taux',
         'date_comptable',
         'date_comptable_reception',
         'user_id',
@@ -22,6 +24,10 @@ class OperationInterCaisse extends Model
         'etat'
     ];
 
+    public function devise()
+    {
+        return $this->belongsTo(Devise::class);
+    }
 
     public function caisse_destination()
     {

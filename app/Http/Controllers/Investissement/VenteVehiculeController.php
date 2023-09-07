@@ -42,7 +42,8 @@ class VenteVehiculeController extends Controller
         return view('devise.message');
     }
 
-    public function client(Request $request){
+    public function client(Request $request)
+    {
 
         $data = $request->validate([
             'telephone'=>'required',
@@ -56,42 +57,42 @@ class VenteVehiculeController extends Controller
         /**
          * si le telephone existe afficher le client
          */
-        if(isset(client::where('telephone' ,$tel)->first(['id'])->id)){
+            if(isset(client::where('telephone' ,$tel)->first(['id'])->id)){
 
-            $agence_id=Auth::user()->agence_id;
-            $societe_id=Auth::user()->societe_id;
-            $client_id=client::where('telephone' ,$tel)->where('societe_id',$societe_id)->first(['id'])->id;
-            $client=Client::find($client_id);
-            $devise_agences=DeviseAgence::where('agence_id',$agence_id)->get();
-            $activite_ouverte=ActiviteVehicule::where('agence_id',$agence_id)->where('etat_activite','ouverte')->first();
-            $reglements= TypeReglement::all();
-            return view('investissement.detail_vente_vehicule', compact('client','devise_agences','reglements','activite_ouverte'));
-        /**
-         * si non enregistre le client et affiche le formulaire
-         */
-        }else{
-            $societe_id=Auth::user()->societe_id;
-            Client::create([
-                'telephone'=>$data['telephone'],
-                'societe_id'=>$societe_id,
-            ]);
+                $agence_id=Auth::user()->agence_id;
+                $societe_id=Auth::user()->societe_id;
+                $client_id=client::where('telephone' ,$tel)->where('societe_id',$societe_id)->first(['id'])->id;
+                $client=Client::find($client_id);
+                $devise_agences=DeviseAgence::where('agence_id',$agence_id)->get();
+                $activite_ouverte=ActiviteVehicule::where('agence_id',$agence_id)->where('etat_activite','ouverte')->first();
+                $reglements= TypeReglement::all();
+                return view('investissement.detail_vente_vehicule', compact('client','devise_agences','reglements','activite_ouverte'));
             /**
-             * si le telephone existe afficher le client
+             * si non enregistre le client et affiche le formulaire
              */
-            $agence_id=Auth::user()->agence_id;
-            $societe_id=Auth::user()->societe_id;
-            $devise_agences=DeviseAgence::where('agence_id',$agence_id)->get();
-            $client_id=client::where('telephone' ,$tel)->where('societe_id',$societe_id)->first(['id'])->id;
-            $client=Client::find($client_id);
-            $devises= Devise::all();
-            $activite_ouverte=ActiviteVehicule::where('agence_id',$agence_id)->where('etat_activite','ouverte')->first();
-            $reglements= TypeReglement::all();
-            return view('investissement.detail_vente_vehicule', compact('client','devise_agences','reglements','activite_ouverte'));
-            //return redirect('/vente_devise')->with('success','client ajouté avsec succès');
+            }else{
+                $societe_id=Auth::user()->societe_id;
+                Client::create([
+                    'telephone'=>$data['telephone'],
+                    'societe_id'=>$societe_id,
+                ]);
+                /**
+                 * si le telephone existe afficher le client
+                 */
+                $agence_id=Auth::user()->agence_id;
+                $societe_id=Auth::user()->societe_id;
+                $devise_agences=DeviseAgence::where('agence_id',$agence_id)->get();
+                $client_id=client::where('telephone' ,$tel)->where('societe_id',$societe_id)->first(['id'])->id;
+                $client=Client::find($client_id);
+                $devises= Devise::all();
+                $activite_ouverte=ActiviteVehicule::where('agence_id',$agence_id)->where('etat_activite','ouverte')->first();
+                $reglements= TypeReglement::all();
+                return view('investissement.detail_vente_vehicule', compact('client','devise_agences','reglements','activite_ouverte'));
+                //return redirect('/vente_devise')->with('success','client ajouté avsec succès');
+            }
+        }else{
+            return redirect('/vente_vehicule')->with('danger','Vous n\'avez pas ouvert l\'activite'); 
         }
-    }else{
-        return redirect('/vente_vehicule')->with('danger','Vous n\'avez pas ouvert l\'activite'); 
-     }
     }
 
     /**
@@ -233,8 +234,8 @@ class VenteVehiculeController extends Controller
                             MouvementCaisse::create([
                                 'caisse_id'=>$caisse->id,
                                 'user_id'=>$id,
-                                'description'=>'Vente vehicule'.$request->chassis,
-                                'sortie'=>$montant_operation,
+                                'description'=>'Vente vehicule '.$request->chassis,
+                                'entree'=>$montant_operation,
                                 'solde'=>$compte,
                                 'date_comptable'=>$date_comptable,
         

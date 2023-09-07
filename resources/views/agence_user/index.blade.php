@@ -86,7 +86,7 @@
               <table class="table datatable">
                 <thead class="bg-primary">
                   <tr>
-                    <th scope="col">#</th>
+                    <!-- <th scope="col">#</th> -->
                     <th scope="col">Nom </th>
                     <th scope="col">Prenom</th>
                     <th scope="col">Adresse</th>
@@ -97,7 +97,7 @@
                 <tbody>
                     @foreach ($users as $user )
                   <tr>
-                    <th scope="row">{{ $user->id}}</th>
+                    <!-- <th scope="row">{{ $user->id}}</th> -->
                     <td>{{ $user->nom}}</td>
                     <td>{{ $user->prenom}}</td>
                     <td>{{ $user->adresse}}</td>
