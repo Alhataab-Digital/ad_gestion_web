@@ -129,8 +129,11 @@ class FactureController extends Controller
     public function update(Request $request, string $id)
     {
         $facture=Facture::find($id);
-// dd($facture,$request->montant_ht);
-
+        // dd($facture,$request->montant_ht);
+        if($request->montant_ht==NULL)
+        {
+            return back();
+        }
                     $facture->update([
                         'montant_total' =>$request->montant_ht,
                         'etat' =>'Valider',

@@ -15,13 +15,14 @@ class Livrer extends Model
         'commande_id',
         'fournisseur_id',
         'entrepot_id',
+        'activite_id',
         'user_id',
         'montant_total',
         'agence_id',
         'etat',
     ];
 
-    public function client()
+    public function fournisseur()
     {
         return $this->belongsTo(Fournisseur::class);
     }

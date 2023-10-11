@@ -5,12 +5,12 @@
 <main id="main" class="main">
 
   <div class="pagetitle">
-    <h1>ACTIVATION DESACTIVATION COMPTE</h1>
+    <h1>CONSULTATION COMPTE</h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
         <li class="breadcrumb-item">Gestion investisseur</li>
-        <li class="breadcrumb-item active">activation desactivation compte</li>
+        <li class="breadcrumb-item active">Consultation compte</li>
       </ol>
     </nav>
   </div><!-- End Page Title -->

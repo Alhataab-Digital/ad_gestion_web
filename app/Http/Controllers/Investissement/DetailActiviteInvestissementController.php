@@ -20,6 +20,9 @@ use App\Models\BeneficeActivite;
 use App\Models\RepartitionDividende;
 use App\Models\OperationInvestisseur;
 use App\Models\SecteurDepense;
+use App\Models\OperationDepenseActivite;
+use App\Models\Livrer;
+use App\Models\OperationReglementFacture;
 
 class DetailActiviteInvestissementController extends Controller
 {
@@ -101,12 +104,13 @@ class DetailActiviteInvestissementController extends Controller
 
                     $activite_investissement->update([
                         'etat_activite'=>'valider',
+                        'compte_activite'=>($activite_investissement->montant_decaisse-$activite_investissement->total_depense)+($activite_investissement->total_recette),
                     ]);
 
                     foreach($request->investisseur_id as $key=>$items ){
 
                         $investisseur['id']=$request->investisseur_id[$key];
-                        $investisseur['compte_investisseur']=ceil($taux_devise*$request->montant_restant[$key]);
+                        $investisseur['compte_investisseur']=round($taux_devise*$request->montant_restant[$key]);
 
                         Investisseur::where('id',$request->investisseur_id[$key])->update($investisseur);
 
@@ -116,25 +120,25 @@ class DetailActiviteInvestissementController extends Controller
                  * mise a jour de la caisse
                 */
 
-                    $compte=($compte_caisse)-($montant_operation);
+                    // $compte=($compte_caisse)-($montant_operation);
 
-                    $caisse=Caisse::find($caisse_id);
+                    // $caisse=Caisse::find($caisse_id);
 
-                    $user_id=Auth::user()->id;
+                    // $user_id=Auth::user()->id;
 
-                    MouvementCaisse::create([
-                        'caisse_id'=>$caisse->id,
-                        'user_id'=>$user_id,
-                        'description'=>'Budget decaisser pour investissement',
-                        'sortie'=>$montant_operation,
-                        'solde'=>$compte,
-                        'date_comptable'=>$date_comptable,
+                    // MouvementCaisse::create([
+                    //     'caisse_id'=>$caisse->id,
+                    //     'user_id'=>$user_id,
+                    //     'description'=>'Budget decaisser pour investissement',
+                    //     'sortie'=>$montant_operation,
+                    //     'solde'=>$compte,
+                    //     'date_comptable'=>$date_comptable,
 
-                    ]);
+                    // ]);
 
-                    $caisse->update([
-                        'compte'=>$compte,
-                    ]);
+                    // $caisse->update([
+                    //     'compte'=>$compte,
+                    // ]);
 
 
                     return redirect('/activite_investissement/valider');
@@ -144,7 +148,7 @@ class DetailActiviteInvestissementController extends Controller
             }
         }
     }
-
+    
     /**
      * Display the specified resource.
      */
@@ -164,15 +168,20 @@ class DetailActiviteInvestissementController extends Controller
             $caisse=Caisse::find($caisse_id);
             $agence_id=Auth::user()->agence_id;
             $agence=Agence::find( $agence_id);
-
+        $devise=Devise::where('id', $agence->devise_id)->first();
         $activite_investissement=ActiviteInvestissement::find($id);
 
-         $detail_activite_investissements=DetailActiviteInvestissement::where('activite_investissement_id',$id)->get();
+        $detail_activite_investissements=DetailActiviteInvestissement::where('activite_investissement_id',$id)->get();
 
         $secteur_depenses=SecteurDepense::all();
+
+        $operation_depenses=OperationDepenseActivite::where('activite_investissement_id',$activite_investissement->id)->get();
+        $livraisons=Livrer::where('activite_id',$activite_investissement->id)->get();
+        $reglements=OperationReglementFacture::where('activite_id',$activite_investissement->id)->get();
+
         return view('investissement.detail_activite_investissement', compact('activite_investissement',
-        'caisse','detail_activite_investissements','secteur_depenses'
-    ));
+        'caisse','detail_activite_investissements','secteur_depenses','operation_depenses','devise','livraisons', 'reglements'
+        ));
     }
 
     /**

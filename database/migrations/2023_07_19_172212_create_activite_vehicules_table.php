@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('user_id');
             $table->string('caisse_id');
             $table->string('agence_id');
+            $table->string('societe_id');
             $table->string('etat_activite')->nullable();;
             $table->date('date_comptable');
             $table->timestamps();

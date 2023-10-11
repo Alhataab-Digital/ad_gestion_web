@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('facture_id');
             $table->string('type_reglement_id');
+            $table->string('activite_id');
             $table->string('montant_operation');
             $table->timestamps();
         });

@@ -391,15 +391,27 @@ Route::middleware(['auth','initier'])->controller(ActiviteInvestissementControll
     Route::get('/activite_investissement','index')->name('activite_investissement');
     Route::get('/activite_investissement/valider','valider')->name('activite_investissement.valider');
     Route::get('/activite_investissement/terminer','terminer')->name('activite_investissement.terminer');
-    Route::get('/{id}/activite_investissement/repartition','repartition')->name('activite_investissement.repartition');
+
     Route::post('/activite_investissement/repartie','repartie')->name('activite_investissement.repartie');
+    Route::post('/activite_investissement/initier','initier')->name('activite_investissement.initier');
+    Route::get('/{id}/activite_investissement/redemarrer','redemarrer')->name('activite_investissement.redemarrer');
+    Route::get('/{id}/activite_investissement/repartition','repartition')->name('activite_investissement.repartition');
     Route::get('/activite_investissement/create','create')->name('activite_investissement.create');
+
     Route::post('/activite_investissement/store','store')->name('activite_investissement.store');
     Route::get('/activite_investissement/{id}/show','show')->name('activite_investissement.show');
     Route::get('/activite_investissement/{id}/edit','edit')->name('activite_investissement.edit');
+
     Route::post('/activite_investissement/{id}/update','update')->name('activite_investissement.update');
     Route::get('/activite_investissement/{id}/destroy','destroy')->name('activite_investissement.delete');
     Route::get('/activite_investissement/{id}/print','print')->name('activite_investissement.print');
+
+    Route::post('/activite_investissement/{id}/depense_activite','depense_activite')->name('activite_investissement.depense_activite');
+    Route::get('/activite_investissement/{id}/supprimer_depense','supprimer_depense')->name('activite_investissement.supprimer_depense');
+    Route::get('/activite_investissement/{id}/annuler_livraison','annuler_livraison')->name('activite_investissement.annuler_livraison');
+    Route::get('/activite_investissement/{id}/annuler_reglement','annuler_reglement')->name('activite_investissement.annuler_reglement');
+    Route::get('/activite_investissement/reception_produit','reception_produit')->name('activite_investissement.reception_produit');
+    Route::get('/activite_investissement/livraison_produit','livraison_produit')->name('activite_investissement.livraison_produit');
 
 });
 
@@ -472,6 +484,8 @@ Route::middleware(['auth','initier'])->controller(VenteVehiculeController::class
 
     Route::get('/vente_vehicule','index')->name('vente_vehicule');
     Route::get('/vente_vehicule/{id}/detail','show')->name('vente_vehicule.show');
+    Route::get('/vente_vehicule/{id}/valider','valider')->name('vente_vehicule.valider');
+    Route::get('/vente_vehicule/{id}/annuler','annuler')->name('vente_vehicule.annuler');
     Route::get('/vente_vehicule/{id}/edit','edit')->name('vente_vehicule.edit');
     Route::get('/vente_vehicule/{id}/print','print')->name('vente_vehicule.print');
     Route::post('/vente_vehicule/{id}/update','update')->name('vente_vehicule.update');
@@ -486,6 +500,7 @@ Route::middleware(['auth','initier'])->controller(ActiviteVehiculeController::cl
 
     Route::get('/activite_vehicule','index')->name('activite_vehicule');
     Route::get('/activite_vehicule/fermer','fermeture')->name('activite_vehicule.fermer');
+    Route::get('/activite_vehicule/terminer','terminer')->name('activite_vehicule.terminer');
     Route::get('/activite_vehicule/{id}/detail','show')->name('activite_vehicule.show');
     Route::get('/activite_vehicule/{id}/edit','edit')->name('activite_vehicule.edit');
     Route::get('/{id}/activite_vehicule/repartition','repartition')->name('activite_vehicule.repartition');

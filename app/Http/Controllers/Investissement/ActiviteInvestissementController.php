@@ -16,11 +16,14 @@ use App\Models\Investisseur;
 use App\Models\TypeActiviteInvestissement;
 use App\Models\MouvementCaisse;
 use App\Models\ActiviteInvestissement;
+use App\Models\SecteurDepense;
 use App\Models\DetailActiviteInvestissement;
 use App\Models\BeneficeActivite;
 use App\Models\RepartitionDividende;
 use App\Models\OperationInvestisseur;
 use App\Models\OperationDepenseActivite;
+use App\Models\OperationReglementFacture;
+use App\Models\Livrer;
 
 class ActiviteInvestissementController extends Controller
 {
@@ -41,6 +44,7 @@ class ActiviteInvestissementController extends Controller
         }
         return view('investissement.message');
     }
+
     public function valider()
     {
         //
@@ -104,15 +108,15 @@ class ActiviteInvestissementController extends Controller
         'type_activite'=>'required',
         'montant_decaisse'=>'required',
         'commentaire'=>'required',
-    ]);
+        ]);
 
-    /**
-     * donnee a ajouté dans la table
-     */
+        /**
+         * donnee a ajouté dans la table
+         */
 
-    $data=$request->all();
-    // dd($data);
-    $id=Auth::user()->id;
+        $data=$request->all();
+        // dd($data);
+        $id=Auth::user()->id;
 
         if(isset(Caisse::where('user_id',$id)->first(['id'])->id)){
                 $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
@@ -190,14 +194,17 @@ class ActiviteInvestissementController extends Controller
     {
         //
         $activite_investissement=ActiviteInvestissement::find($id);
-
+        $agence_id=Auth::user()->agence_id;
+        $agence=Agence::find( $agence_id);
+        $devise=Devise::where('id', $agence->devise_id)->first();
         $detail_activite_investissements=DetailActiviteInvestissement::where('activite_investissement_id',$activite_investissement->id)->get();
         $operation_depenses=OperationDepenseActivite::where('activite_investissement_id',$activite_investissement->id)->get();
-
+        $livraisons=Livrer::where('activite_id',$activite_investissement->id)->get();
+        $reglements=OperationReglementFacture::where('activite_id',$activite_investissement->id)->get();
             return view('investissement.activite_investissement_show', compact(
                 'detail_activite_investissements',
                 'activite_investissement',
-                'operation_depenses'
+                'operation_depenses','devise','livraisons','reglements'
         ));
     }
 
@@ -225,19 +232,19 @@ class ActiviteInvestissementController extends Controller
         /**
         * validation des champs de saisie
         */
-       $request->validate([
+        $request->validate([
         'montant_benefice'=>'required',
-    ]);
-    $data=$request->all();
+        ]);
+        $data=$request->all();
 
-    $activite_investissement=ActiviteInvestissement::find($id);
+        $activite_investissement=ActiviteInvestissement::find($id);
 
-    $activite_investissement->update([
-        'montant_benefice'=>$data['montant_benefice'],
-        'etat_activite'=>'valider',
-    ]);
+        $activite_investissement->update([
+            'montant_benefice'=>$data['montant_benefice'],
+            'etat_activite'=>'valider',
+        ]);
 
-    return redirect('/'.$id.'/activite_investissement/repartition',)->with('danger','Le benefice valider ');
+        return redirect('/'.$id.'/activite_investissement/repartition',)->with('danger','Le benefice valider ');
 
     }
 
@@ -264,24 +271,26 @@ class ActiviteInvestissementController extends Controller
         $societe_id=Auth::user()->societe_id;
         
         $investisseurs=Investisseur::where('compte_investisseur','>','0')->where('etat','1')->where('societe_id',$societe_id)->get();
-
+        
         return view('investissement.activite_investissement_repartition', compact(
         'investisseurs',
         'activite_investissement',
-    ));
+        ));
 
 
 
     }
-
+   
     public function repartie(Request $request)
     {
         $id=Auth::user()->id;
         $agence_id=Auth::user()->agence_id;
+        $societe_id=Auth::user()->societe_id;
         $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
 
             $compte_caisse= Caisse::where('user_id',$id)->first(['compte'])->compte;
-            $compte_dividende_societe= Agence::where('id',$agence_id)->first(['compte_societe'])->compte_societe;
+            $compte_dividende_societe= Societe::where('id',$societe_id)->first(['compte_societe'])->compte_societe;
+            $compte_securite_societe= Societe::where('id',$societe_id)->first(['compte_securite'])->compte_securite;
             $date_comptable= Caisse::where('user_id',$id)->first(['date_comptable'])->date_comptable;
 
         $activite_investissement=ActiviteInvestissement::find($request->activite_id);
@@ -289,9 +298,9 @@ class ActiviteInvestissementController extends Controller
         if($activite_investissement->etat_activite=='valider'){
             
             $taux_devise=$activite_investissement->taux_devise;
-            $dividende_entreprise=ceil($request->montant_benefice/2);
-            $benefice_investisseur=ceil($request->montant_benefice/2);
-            $benefice_securite=ceil($benefice_investisseur*0.1);
+            $dividende_entreprise=round($request->montant_benefice/2);
+            $benefice_investisseur=round($request->montant_benefice/2);
+            $benefice_securite=round($benefice_investisseur*0.1);
             $dividende_investisseur=$benefice_investisseur-$benefice_securite;
             $total_depense=$request->total_depense;
             for($i=0;$i<count($request->investisseur_id); $i++)
@@ -303,8 +312,8 @@ class ActiviteInvestissementController extends Controller
 
            
                     $investisseur_id   =$request->investisseur_id[$i];
-                    $montant_investis  = ceil(($request->montant_investis[$i])*$taux_devise)+$investisseur->compte_investisseur;
-                    $dividende_gagner  =(($request->taux[$i])*(ceil($dividende_investisseur*$taux_devise)))+$investisseur->compte_dividende;
+                    $montant_investis  = (($request->montant_investis[$i])*$taux_devise)+$investisseur->compte_investisseur;
+                    $dividende_gagner  =(($request->taux[$i])*(($dividende_investisseur*$taux_devise)))+$investisseur->compte_dividende;
                 
                 //     dd(
                 // $investisseur_id,
@@ -321,54 +330,23 @@ class ActiviteInvestissementController extends Controller
                         Investisseur::where('id', $investisseur_id)->update($data);
 
                 }
-            }
-            if($request->secteur_id){
-                for($k=0;$k<count($request->secteur_id); $k++)
-            {
-
-                $data=[
-                    'activite_investissement_id'   =>$activite_investissement->id,
-                    'secteur_depense_id'               =>$request->secteur_id[$k],
-                    'montant_depense'       =>$request->montant_depense[$k],
-                ];
-                OperationDepenseActivite::create($data);
-
-            }
-            }
-            
+            }   
 
             $activite_investissement->update([
                 'etat_activite'=>'terminer',
                 'montant_benefice'=>$request->montant_benefice,
-                'total_depense'=>$request->total_depense,
             ]);
-             /**
-                 * mise a jour de la caisse
-                */
-                $montant_operation=$request->montant_benefice+$request->montant_activite;
+             
 
-                $compte=$compte_caisse+$montant_operation;
 
-                $compte_dividende_entreprise=ceil($compte_dividende_societe+$dividende_entreprise*$taux_devise);
+            $compte_dividende_entreprise=round($compte_dividende_societe+$dividende_entreprise*$taux_devise);
+            $compte_securite_societe=round($compte_securite_societe+$benefice_securite*$taux_devise);
 
-                $caisse=Caisse::find($caisse_id);
-
-                $user_id=Auth::user()->id;
-
-                MouvementCaisse::create([
-                    'caisse_id'=>$caisse->id,
-                    'user_id'=>$user_id,
-                    'description'=>'Cloture de l\'activite N° '. $activite_investissement->id,
-                    'entree'=>$montant_operation,
-                    'solde'=>$compte,
-                    'date_comptable'=>$date_comptable,
-
-                ]);
                 $societe_id=Auth::user()->societe_id;
                 $societe=Societe::find($societe_id);
                 $societe->update([
                     'compte_societe'=>$compte_dividende_entreprise,
-                    'compte_securite'=>ceil($benefice_securite*$taux_devise),
+                    'compte_securite'=>$compte_securite_societe,
                 ]);
 
                 // $caisse->update([
@@ -381,6 +359,260 @@ class ActiviteInvestissementController extends Controller
             return redirect("/$activite_investissement->id/activite_investissement/repartition")->with('danger','Activité déjà términée ');;
         }
     }
+    
+    public function redemarrer($id)
+    {
+        $user_id=Auth::user()->id;
+        $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
+            $caisse=Caisse::find($caisse_id);
+            $agence_id=Auth::user()->agence_id;
+            $agence=Agence::find( $agence_id);
+        $devise=Devise::where('id', $agence->devise_id)->first();
+        $activite_investissement=ActiviteInvestissement::find($id);
 
+        $detail_activite_investissements=DetailActiviteInvestissement::where('activite_investissement_id',$id)->get();
+
+        $secteur_depenses=SecteurDepense::all();
+
+        $operation_depenses=OperationDepenseActivite::where('activite_investissement_id',$activite_investissement->id)->get();
+        $livraisons=Livrer::where('activite_id',$activite_investissement->id)->get();
+        $reglements=OperationReglementFacture::where('activite_id',$activite_investissement->id)->get();
+
+        return view('investissement.redemarrer_activite_investissement', compact('activite_investissement',
+        'caisse','detail_activite_investissements','secteur_depenses','operation_depenses','devise','livraisons', 'reglements'
+        ));
+    }
+
+    public function initier(Request $request)
+    {
+        $id=Auth::user()->id;
+        $agence_id=Auth::user()->agence_id;
+        $societe_id=Auth::user()->societe_id;
+        $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
+
+            $compte_caisse= Caisse::where('user_id',$id)->first(['compte'])->compte;
+            $compte_dividende_societe= Societe::where('id',$societe_id)->first(['compte_societe'])->compte_societe;
+            $compte_securite_societe= Societe::where('id',$societe_id)->first(['compte_securite'])->compte_securite;
+            $date_comptable= Caisse::where('user_id',$id)->first(['date_comptable'])->date_comptable;
+
+            $activite_investissement=ActiviteInvestissement::find($request->activite_id); 
+            $detail_activite_investissement=DetailActiviteInvestissement::where('activite_investissement_id',$request->activite_id)->get();
+
+        if($activite_investissement->etat_activite=='valider'){
+            
+            $taux_devise=$activite_investissement->taux_devise;
+            $dividende_entreprise=round($request->montant_benefice/2);
+            $benefice_investisseur=round($request->montant_benefice/2);
+            $benefice_securite=round($benefice_investisseur*0.1);
+            $dividende_investisseur=$benefice_investisseur-$benefice_securite;
+            $total_depense=$request->total_depense;
+            for($i=0;$i<count($request->investisseur_id); $i++)
+            {
+
+                 $investisseurs=Investisseur::where('id',$request->investisseur_id[$i])->get();
+                 
+                foreach( $investisseurs as  $investisseur){
+
+           
+                    $investisseur_id   =$request->investisseur_id[$i];
+                    $montant_investis  = round(($request->montant_investis[$i])*$taux_devise)+$investisseur->compte_investisseur;
+                    // $dividende_gagner  =(($request->taux[$i])*(round($dividende_investisseur*$taux_devise)))+$investisseur->compte_dividende;
+                
+                //     dd(
+                // $investisseur_id,
+                // $montant_investis,
+                // $dividende_investisseur,
+                // $dividende_gagner,
+                // $request->taux,);
+
+                        $data=[
+                            // 'compte_dividende'   =>$dividende_gagner,
+                            'compte_investisseur'  =>$montant_investis,
+                        ];
+
+                        Investisseur::where('id', $investisseur_id)->update($data);
+
+                }
+            }   
+        
+            $capital_investisseur=Investisseur::where('etat','1')->where('societe_id',$societe_id)->selectRaw('sum(compte_investisseur) as total')->first('total');
+                    //  dd($capital_investisseur->total)  ;     
+            $activite_investissement->update([
+                'etat_activite'=>'en cours',
+                'capital_activite'=>$capital_investisseur->total,
+            ]);
+
+            foreach($detail_activite_investissement as $sup )
+            {
+                $sup->delete('activite_investissement_id',$activite_investissement->id);
+            }
+            
+
+
+            // $compte_dividende_entreprise=round($compte_dividende_societe+$dividende_entreprise*$taux_devise);
+            // $compte_securite_societe=round($compte_securite_societe+$benefice_securite*$taux_devise);
+
+            //     $societe_id=Auth::user()->societe_id;
+            //     $societe=Societe::find($societe_id);
+            //     $societe->update([
+            //         'compte_societe'=>$compte_dividende_entreprise,
+            //         'compte_securite'=>$compte_securite_societe,
+            //     ]);
+
+                // $caisse->update([
+                //     'compte'=>$compte,
+                //     'compte_dividende_societe'=>$compte_dividende_entreprise,
+                // ]);
+
+                return redirect("/$activite_investissement->id/activite_investissement/repartition");
+         } else{
+            return redirect("/activite_investissement")->with('danger','Activité déjà términée ');;
+        }
+    }
+
+    public function depense_activite(Request $request, $id)
+    {
+
+        $user_id=Auth::user()->id;
+        $agence_id=Auth::user()->agence_id;
+        $societe_id=Auth::user()->societe_id;
+        $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
+
+        if(Caisse::where('user_id',$user_id)->first(['id'])->id)
+        {
+            $compte_caisse= Caisse::where('user_id',$user_id)->first(['compte'])->compte;
+            $compte_dividende_societe= Societe::where('id',$societe_id)->first(['compte_societe'])->compte_societe;
+            $compte_securite_societe= Societe::where('id',$societe_id)->first(['compte_securite'])->compte_securite;
+            $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
+        
+            if($compte_caisse < $request->montant_depense)
+            {
+                return back()->with('danger','La montant caisse est insuffisant');
+            }
+            else
+            {
+                
+                // dd($id,$request->secteur_id,$request->montant_depense);
+                $activite_investissement=ActiviteInvestissement::find($id);
+            // dd($activite_investissement->compte_activite ,$request->montant_depense);
+                if($activite_investissement->compte_activite < $request->montant_depense)
+                {
+                    return back()->with('danger',"La montant de l'activite est insuffisant");
+                }
+                else
+                {
+                    if($request->secteur_id){
+                            
+                                $data=[
+                                    'activite_investissement_id'   =>$id,
+                                    'secteur_depense_id'           =>$request->secteur_id,
+                                    'montant_depense'              =>$request->montant_depense,
+                                ];
+                                OperationDepenseActivite::create($data);
+
+                                $activite_investissement->update([
+                                    'compte_activite'=>$activite_investissement->compte_activite-$request->montant_depense,
+                                    'total_depense'=>$activite_investissement->total_depense+$request->montant_depense,
+                                ]);
+                        /**
+                             * mise a jour de la caisse
+                            */
+                            $montant_operation=$request->montant_depense;
+                            $secteur_depense=SecteurDepense::find($request->secteur_id);
+                            $compte=$compte_caisse-$montant_operation;
+                        
+                            $caisse=Caisse::find($caisse_id);
+
+                            MouvementCaisse::create([
+                                'caisse_id'=>$caisse->id,
+                                'user_id'=>$user_id,
+                                'description'=>'Depense de l\'activite N° '.$id.' dans le secteur : '.$secteur_depense->secteur_depense,
+                                'sortie'=>$montant_operation,
+                                'solde'=>$compte,
+                                'date_comptable'=>$date_comptable,
+
+                            ]);
+
+                            $caisse->update([
+                                'compte'=>$compte,
+                            ]);
+                            return back();        
+                    }
+                    return back();
+                }
+            }
+
+        }
+       
+
+    }
+    public function supprimer_depense($id)
+    {
+        $depense_activite=OperationDepenseActivite::find($id);
+        $activite_investissement=ActiviteInvestissement::find($depense_activite->activite_investissement_id);
+        
+        
+        $user_id=Auth::user()->id;
+        $agence_id=Auth::user()->agence_id;
+        $societe_id=Auth::user()->societe_id;
+        $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
+
+        if(Caisse::where('user_id',$user_id)->first(['id'])->id)
+        {
+            $compte_caisse= Caisse::where('user_id',$user_id)->first(['compte'])->compte;
+            $compte_dividende_societe= Societe::where('id',$societe_id)->first(['compte_societe'])->compte_societe;
+            $compte_securite_societe= Societe::where('id',$societe_id)->first(['compte_securite'])->compte_securite;
+            $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
+        
+                  
+                    
+
+                                $activite_investissement->update([
+                                    'compte_activite'=>$activite_investissement->compte_activite+$depense_activite->montant_depense,
+                                    'total_depense'=>$activite_investissement->total_depense-$depense_activite->montant_depense,
+                                ]);
+                        /**
+                             * mise a jour de la caisse
+                            */
+                            $montant_operation=$depense_activite->montant_depense;
+                            $secteur_depense=SecteurDepense::find($depense_activite->secteur_depense_id);
+                            $compte=$compte_caisse+$montant_operation;
+                        
+                            $caisse=Caisse::find($caisse_id);
+
+                            MouvementCaisse::create([
+                                'caisse_id'=>$caisse->id,
+                                'user_id'=>$user_id,
+                                'description'=>'Depense de l\'activite N° '.$id.' dans le secteur : '.$secteur_depense->secteur_depense.' supprimer',
+                                'entree'=>$montant_operation,
+                                'solde'=>$compte,
+                                'date_comptable'=>$date_comptable,
+
+                            ]);
+
+                            $caisse->update([
+                                'compte'=>$compte,
+                            ]);
+                            $depense_activite->delete();
+                            return back();        
+                    }
+       
+
+
+
+    }
+    public function annuler_livraison()
+    {
+        dd('annuler livraison');
+    }
+    public function reception_produit()
+    {
+        dd('reception produit');
+    }
+
+    public function livraison_produit()
+    {
+        dd('livraison produit');
+    }
 
 }

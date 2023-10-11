@@ -29,9 +29,12 @@
                     <h5 class="card-title">
                        <div class="col-sm-12">
                                 <button type="submit" class="btn btn-success">Valider</button>
-                                <a href="{{ route('activite_investissement.delete',$activite_investissement->id) }}">
+                                @if(!$activite_investissement->total_depense!=NULL)
+                                  <a href="{{ route('activite_investissement.delete',$activite_investissement->id) }}">
                                     <button type="button" class="btn btn-danger">Supprimer</button>
                                 </a>
+                                @endif
+                      
                                 <a href="{{ route('activite_investissement.valider') }}">
                                     <button type="button" class="btn btn-secondary">Quitter</button>
                                 </a>

@@ -143,16 +143,18 @@ class CaisseController extends Controller
     }
     public function attribution_externe()
     {
+            $id=Auth::user()->id;
+            if(isset(Caisse::where('user_id',$id)->first(['id'])->id)){
             $user_id=Auth::user()->id;
+            $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
             $agence_id=Auth::user()->agence_id;
-            $agence=Agence::find($agence_id);
-            if(isset(Caisse::where('user_id',$user_id)->first(['id'])->id)){
+            $caisse=Caisse::find($caisse_id);
             $caisse_destinations=Caisse::where('user_id','!=',$user_id)->where('agence_id','!=',$agence_id)->get();
             $devise_agences=DeviseAgence::all();
             $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
             $operations=OperationInterCaisse::where('caisse_id',$caisse_id)->where('taux','!=',1)->where('etat',NULL)->get();
 
-        return view('caisse.attribution_externe', compact('caisse_destinations','operations','devise_agences'));
+        return view('caisse.attribution_externe', compact('caisse_destinations','operations','caisse','devise_agences'));
         }
         return view('investissement.message');
     }
@@ -210,14 +212,17 @@ class CaisseController extends Controller
 
     public function attribution()
     {
+        $id=Auth::user()->id;
+        if(isset(Caisse::where('user_id',$id)->first(['id'])->id)){
             $user_id=Auth::user()->id;
+            $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
             $agence_id=Auth::user()->agence_id;
-            if(isset(Caisse::where('user_id',$user_id)->first(['id'])->id)){
+            $caisse=Caisse::find($caisse_id);
             $caisse_destinations=Caisse::where('user_id','!=',$user_id)->where('agence_id',$agence_id)->get();
             $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
             $operations=OperationInterCaisse::where('caisse_id',$caisse_id)->where('taux',1)->where('etat',NULL)->get();
 
-        return view('caisse.attribution', compact('caisse_destinations','operations'));
+        return view('caisse.attribution', compact('caisse_destinations','caisse','operations'));
         }
         return view('investissement.message');
     }
@@ -281,12 +286,14 @@ class CaisseController extends Controller
             $user_id=Auth::user()->id;
         if(isset(Caisse::where('user_id',$user_id)->first(['id'])->id)){
             $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
+            $agence_id=Auth::user()->agence_id;
+            $caisse=Caisse::find($caisse_id);
             $caisse_destination=Caisse::where('user_id',$user_id)->first();
             // $devise_agence=DeviseAgence::where('agence_id',$caisse_destination->agence_id)->first()->taux;
 
             $operations=OperationInterCaisse::where('caisse_destination_id',$caisse_id)->where('etat',NULL)->get();
 
-        return view('caisse.encaissement', compact('operations'));
+        return view('caisse.encaissement', compact('operations','caisse'));
 
         }
         return view('investissement.message');
@@ -485,6 +492,7 @@ class CaisseController extends Controller
         return view('caisse.attribution_externe_edit', compact('caisse_destinations','operation','devise_agences'));
         
     }
+
     public function attribution_externe_modifier( Request $request)
     {
             $user_id=Auth::user()->id;
@@ -543,15 +551,13 @@ class CaisseController extends Controller
         
     }
 
-    public function attribution_supprimer($id){
+    public function attribution_supprimer($id)
+    {
         $operation=OperationInterCaisse::find($id);
         $operation->delete();
         return back(); 
         
     }
-
-
-
 
     public function operation()
     {
@@ -629,7 +635,7 @@ class CaisseController extends Controller
             $agence_id=Auth::user()->agence_id;
             $agence=Agence::find($agence_id);
             $date_comptable= Caisse::where('user_id',$id)->first(['date_comptable'])->date_comptable;
-            $mouvement_caisses=MouvementCaisse::where('caisse_id',$caisse->id)->where('date_comptable',$date_comptable)->orderBy('id', 'desc')->get();
+            $mouvement_caisses=MouvementCaisse::where('caisse_id',$caisse->id)->where('date_comptable',$date_comptable)->orderBy('id', 'ASC')->get();
         /**
          * rapport caisse gestion investissement
          */

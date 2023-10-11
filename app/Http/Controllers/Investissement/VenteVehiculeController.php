@@ -110,7 +110,8 @@ class VenteVehiculeController extends Controller
     {
         $client=Client::find($request->c_id);
 
-        if($request->prix_vente ){
+        if($request->prix_vente )
+        {
 
             if($request->prix_vente > $request->prix_revient){
 
@@ -150,48 +151,6 @@ class VenteVehiculeController extends Controller
         
                         if($operation_achat->etat==NULL){
 
-                            $activites=ActiviteVehicule::where('id',$request->activite_id)->get();
-
-                            // dd($activites);
-
-                            // $capital_investisseur=Investisseur::where('etat','1')->where('agence_id',$agence_id)->selectRaw('sum(compte_investisseur) as total')->first('total');
-                            // $investisseurs= Investisseur::where('agence_id',$agence_id)->get();
-
-                                // $dividende_entreprise=($marge/2);
-                                // $dividende_investisseur=($marge/2);
-                               
-                                // foreach($investisseurs as $investisseur){
-                                //         $taux=round(($investisseur->compte_investisseur/$capital_investisseur->total)*100);
-                                //         $montant_repartis=round(($dividende_investisseur*$taux)/100);
-                                //         $investisseur_id   =$investisseur->id;
-                                //         $dividende_gagner  =$investisseur->compte_dividende+$montant_repartis;
-
-                                //     // dd(
-                                //     // $taux,
-                                //     // $montant_repartis,
-                                //     // $investisseur_id,
-                                //     // $dividende_gagner,
-                                //     //  );
-
-                                //             $data=[
-                                //                 'compte_dividende'   =>$dividende_gagner,
-                                //             ];
-
-                                //             Investisseur::where('id', $investisseur_id)->update($data);
-
-                                // }
-                                foreach($activites as $activite){
-
-                                    $vente=$activite->montant_vente+$request->prix_vente;
-                                    $depense=$activite->total_depense+$request->prix_revient;
-                                    $benefice=$activite->montant_benefice+$marge;
-
-                                    $activite_ouvert->update([
-                                        'montant_vente'=> $vente,
-                                        'total_depense'=> $depense,
-                                        'montant_benefice'=>$benefice,
-                                    ]);
-                                }
                         
                                 $client->update([
                                     'nom_client'=>$request->nom_client,
@@ -220,30 +179,6 @@ class VenteVehiculeController extends Controller
                                     'user_id'=>$id,
                                 ]);
 
-                               
-                                /**
-                                 * mise a jour de la caisse
-                                */
-        
-                            $compte=($compte_caisse)+($montant_operation);
-        
-                            $caisse=Caisse::find($caisse_id);
-        
-                            $user_id=Auth::user()->id;
-        
-                            MouvementCaisse::create([
-                                'caisse_id'=>$caisse->id,
-                                'user_id'=>$id,
-                                'description'=>'Vente vehicule '.$request->chassis,
-                                'entree'=>$montant_operation,
-                                'solde'=>$compte,
-                                'date_comptable'=>$date_comptable,
-        
-                            ]);
-        
-                            $caisse->update([
-                                'compte'=>$compte,
-                            ]);
         
                             return redirect('/vente_vehicule');
                         } else{
@@ -272,6 +207,87 @@ class VenteVehiculeController extends Controller
         //
     }
 
+    public function valider($id)
+    {
+        $user_id=Auth::user()->id;
+        $operation_vente=OperationVehiculeVendu::find($id);
+        $activite_ouvert=ActiviteVehicule::find($operation_vente->activite_id);
+        $operation_achat=OperationVehiculeAchete::find($operation_vente->operation_vehicule_achete_id);
+        $marge = $operation_vente->prix_vente-$operation_achat->prix_revient;
+        if(Caisse::where('user_id',$user_id)->first(['id'])->id){
+        
+            $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
+            $caisse=Caisse::find($caisse_id);
+            $agence_id=Auth::user()->agence_id;
+            $agence=Agence::find( $agence_id);
+
+            $compte_caisse= Caisse::where('user_id',$user_id)->first(['compte'])->compte;
+            $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
+            $montant_operation=$operation_vente->prix_vente;
+            
+
+            if($operation_vente->etat==NULL){
+
+                $activites=ActiviteVehicule::where('id',$operation_vente->activite_id)->get();
+
+                    foreach($activites as $activite){
+
+                        $vente=$activite->montant_vente+$operation_vente->prix_vente;
+                        $depense=$activite->total_depense+$operation_achat->prix_revient;
+                        $benefice=$activite->montant_benefice+$marge;
+
+                        $activite_ouvert->update([
+                            'montant_vente'=> $vente,
+                            'total_depense'=> $depense,
+                            'montant_benefice'=>$benefice,
+                        ]);
+                    }
+            
+
+                    /**
+                     * enregistrement de l'operation
+                     */
+                    $operation_vente->update([
+                        'etat'=>'paye',
+                    ]);
+                    
+
+                   
+                    /**
+                     * mise a jour de la caisse
+                    */
+
+                $compte=($compte_caisse)+($montant_operation);
+
+                $caisse=Caisse::find($caisse_id);
+
+                $user_id=Auth::user()->id;
+
+                MouvementCaisse::create([
+                    'caisse_id'=>$caisse->id,
+                    'user_id'=>$id,
+                    'description'=>'Vente vehicule '.$operation_achat->chassis,
+                    'entree'=>$montant_operation,
+                    'solde'=>$compte,
+                    'date_comptable'=>$date_comptable,
+
+                ]);
+
+                $caisse->update([
+                    'compte'=>$compte,
+                ]);
+
+                return redirect('/vente_vehicule');
+            } else{
+                return redirect("/detail_activite_investissement/repartition")->with('danger','Activité déjà términée ');;
+            }
+        }
+    }
+
+    public function annuler($id)
+    {
+
+    }
     /**
      * Show the form for editing the specified resource.
      */

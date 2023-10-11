@@ -115,7 +115,7 @@ class DetailActiviteVehiculeController extends Controller
                     foreach($request->investisseur_id as $key=>$items ){
 
                         $investisseur['id']=$request->investisseur_id[$key];
-                        $investisseur['compte_investisseur']=ceil($taux_devise*$request->montant_restant[$key]);
+                        $investisseur['compte_investisseur']=round($taux_devise*$request->montant_restant[$key]);
 
                         Investisseur::where('id',$request->investisseur_id[$key])->update($investisseur);
 

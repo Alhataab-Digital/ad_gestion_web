@@ -20,6 +20,7 @@ class ActiviteVehicule extends Model
         'user_id',
         'caisse_id',
         'agence_id',
+        'societe_id',
         'etat_activite',
         'date_comptable',
     ];
@@ -37,5 +38,9 @@ class ActiviteVehicule extends Model
     public function agence()
     {
         return $this->belongsTo(Agence::class);
+    }
+    public function societe()
+    {
+        return $this->belongsTo(Societe::class);
     }
 }

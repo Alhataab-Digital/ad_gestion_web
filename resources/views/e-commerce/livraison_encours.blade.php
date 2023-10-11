@@ -21,7 +21,33 @@
 
           <div class="card">
             <div class="card-body">
-
+                <p>
+                         @if ($message=Session::get('success'))
+                          <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="bi bi-check-circle me-1"></i>
+                                {{ $message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                              @endif
+                              @if ($message=Session::get('danger'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="bi bi-exclamation-octagon me-1"></i>
+                                  {{ $message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                              @endif
+                </p>
+              
+                @if($livraison->etat=='valider')
+                <h5 class="card-title ">
+                    <div class="text-end">
+                        <a  href="{{route('commande')}}">
+                            <button class=" btn btn-secondary "><i class="bi bi-box-arrow-right"></i></button>
+                        </a>
+                    </div>
+                </h5>
+                @endif
+                @if($livraison->etat!='valider')
                 <h5 class="card-title ">
                     Livraison N° 000{{ $livraison->id }}
                     <div class="text-end">
@@ -29,9 +55,8 @@
                             <button class=" btn btn-secondary "><i class="bi bi-box-arrow-right"></i></button>
                         </a>
                     </div>
-
+                    
                 </h5>
-
               <form method="post" action="{{ route('detail_livrer.store') }}">
                 @csrf
                 <!-- Browser Default Validation -->
@@ -46,6 +71,16 @@
                         @foreach ($entrepots as $entrepot )
                         <option value="{{ $entrepot->id }}">
                             {{ $entrepot->nom_entrepot }}
+                        </option>
+
+                        @endforeach
+                    </select>
+                    <label for="" class="form-label">Activite</label>
+                    <select class="form-select" id="" name="activite" required>
+                      <option selected disabled value="">Choose...</option>
+                        @foreach ($activite_investissements as $activite )
+                        <option value="{{ $activite->id }}">
+                            {{ $activite->type_activite->type_activite }}
                         </option>
 
                         @endforeach
@@ -119,10 +154,8 @@
                     </div>
                 </div>
               <!-- End Browser Default Validation -->
-
-
               </form>
-
+              @endif
             </div>
           </div>
 

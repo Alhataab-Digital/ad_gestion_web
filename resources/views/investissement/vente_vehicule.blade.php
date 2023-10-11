@@ -120,12 +120,15 @@
                   <a href="{{ route('vente_vehicule.show',$operation->id) }}">
                           <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
                       </a>
-                      {{--      <a href="">
+                    @if($operation->etat==NULL)
+                      <a href="{{ route('vente_vehicule.valider',$operation->id) }}">
                           <button type="button" class="btn btn-success"><i class="bi bi-check-circle"></i></button>
                       </a>
-                      <a href="">
+                    @elseif($operation->etat=='payer')
+                      <a href="{{ route('vente_vehicule.annuler',$operation->id) }}">
                           <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
-                      </a> --}}
+                      </a>
+                    @endif
                   </td>
                 </tr>
                 @endforeach

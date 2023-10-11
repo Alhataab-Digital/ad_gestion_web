@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('capital_activite');
             $table->string('montant_decaisse');
             $table->string('total_depense')->nullable();
+            $table->string('total_recette')->nullable();
+            $table->string('compte_activite')->nullable();
             $table->string('montant_benefice')->nullable();
             $table->string('taux_devise');
             $table->string('commentaire')->nullable();

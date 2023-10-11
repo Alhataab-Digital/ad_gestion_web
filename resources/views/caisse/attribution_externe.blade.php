@@ -23,7 +23,22 @@
             <div class="card-body">
               <h5 class="card-title">ATTRIBUTION CAISSE EXTERNE</h5>
               <P>
-
+              @if ($caisse->etat==1 && $caisse->date_comptable!= date("Y-m-d") )
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-octagon me-1"></i>
+                    La date operation n'est pas a jour
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+                @if ($caisse->etat==0 )
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-octagon me-1"></i>
+                    Caisse fermer
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+                @if ($caisse->etat==1 && $caisse->date_comptable == date("Y-m-d"))
+              <P>
                 @if ($message=Session::get('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <i class="bi bi-check-circle me-1"></i>
@@ -38,7 +53,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 @endif
-
               </P>
               <!-- General Form Elements -->
               <form  method="post" action="{{ route('caisse.attribution_externe.valider') }}">
@@ -74,12 +88,12 @@
                   </div>
                 </div>
               </form><!-- End General Form Elements -->
-
             </div>
+            @endif
           </div>
 
         </div>
-
+        @if ($caisse->etat==1 && $caisse->date_comptable== date("Y-m-d") )
         <div class="col-lg-6">
 
             <!-- Special title treatmen -->
@@ -139,7 +153,7 @@
 
             </div>
         </div>
-
+        @endif
       </div>
     </section>
 

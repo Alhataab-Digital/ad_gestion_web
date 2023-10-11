@@ -64,6 +64,18 @@ hello
                             </div>
                             <hr>
                             <div class="col-md-6">
+                            <label for="" class="form-label">Activite</label>
+                            <select class="form-select" id="" name="activite" required>
+                            <option selected disabled value="">Choose...</option>
+                                @foreach ($activite_investissements as $activite )
+                                <option value="{{ $activite->id }}">
+                                    {{ $activite->type_activite->type_activite }}
+                                </option>
+
+                                @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6">
                             <input type="hidden" name="facture_id" value="{{$facture->id}}" class="form-control" placeholder="Paiement">
                             <label for="">Reglement</label>
                                 <input type="text" name="montant" class="form-control" placeholder="Paiement">
@@ -101,7 +113,8 @@ hello
                 <table class="table table-borderless ">
                 <thead class="bg-primary ">
                     <tr>
-                    {{-- <th scope="col">#</th> --}}
+                    <th scope="col">Facture N°</th>
+                    <th scope="col">Activite Investissement</th>
                     <th scope="col">reglement </th>
                     <th scope="col">Montant operation</th>
                     <th scope="col">date operation</th>
@@ -111,7 +124,8 @@ hello
                     @foreach ($operations as $operation )
                     <tr>
 
-                    {{-- <th scope="row">{{ $operation->id}}</th> --}}
+                    <th scope="row">{{'Facture n° ' .$operation->facture->id}}</th>
+                    <td>{{ $operation->activite_investissement->type_activite->type_activite}}</td>
                     <td>{{ $operation->reglement->reglement}}</td>
                     <td >{{ number_format($operation->montant_operation,2,","," ")}}</td>
 

@@ -86,9 +86,6 @@
                                             <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
                                             </a>
                                            @endif
-                                           {{-- <a href="{{ route('detail_livrer.edit',$livraison->id) }}">
-                                            <button type="button" class="btn btn-info"><i class="ri ri-edit-line"></i></button>
-                                            </a> --}}
                                         </td>
                                     </tr>
                                 @endforeach

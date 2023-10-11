@@ -17,6 +17,16 @@ use App\Models\DetailCommande;
 use App\Models\Livrer;
 use App\Models\DetailLivrer;
 use App\Models\EntrepotStock;
+use App\Models\Investisseur;
+use App\Models\TypeActiviteInvestissement;
+use App\Models\MouvementCaisse;
+use App\Models\ActiviteInvestissement;
+use App\Models\SecteurDepense;
+use App\Models\DetailActiviteInvestissement;
+use App\Models\BeneficeActivite;
+use App\Models\RepartitionDividende;
+use App\Models\OperationInvestisseur;
+use App\Models\OperationDepenseActivite;
 
 class LivrerController extends Controller
 {
@@ -59,33 +69,33 @@ class LivrerController extends Controller
 
         // );
         
-    if(isset(Livrer::where('commande_id',$request->commande_id)->first(['id'])->id)){
+        if(isset(Livrer::where('commande_id',$request->commande_id)->first(['id'])->id)){
 
-        $livraison=Livrer::where('commande_id',$request->commande_id)->latest('id')->first();
-       
-        return redirect('livrer/'.$livraison->id.'/edit');
-    }else{
-        $id=Auth::user()->id;
-        $agence_id=Auth::user()->agence_id;
-        $request->commande_id;
-        $request->fournisseur_id;
-        Livrer::create([
-            'commande_id'  => $request->commande_id,
-            'fournisseur_id'  =>$request->fournisseur_id,
-            'user_id'      => $id,
-            'agence_id'    => $agence_id,
-        ]);
+            $livraison=Livrer::where('commande_id',$request->commande_id)->latest('id')->first();
+        
+            return redirect('livrer/'.$livraison->id.'/edit');
+        }else{
+            $id=Auth::user()->id;
+            $agence_id=Auth::user()->agence_id;
+            $request->commande_id;
+            $request->fournisseur_id;
+            Livrer::create([
+                'commande_id'  => $request->commande_id,
+                'fournisseur_id'  =>$request->fournisseur_id,
+                'user_id'      => $id,
+                'agence_id'    => $agence_id,
+            ]);
 
-        // $commande=Commande::find($request->commande_id);
+            // $commande=Commande::find($request->commande_id);
 
-        //     $commande->update([
-        //         'etat' =>'livrer',
-        //     ]);
+            //     $commande->update([
+            //         'etat' =>'livrer',
+            //     ]);
 
-        $livraison=Livrer::where('user_id',$id)->where('agence_id',$agence_id)->latest('id')->first();
+            $livraison=Livrer::where('user_id',$id)->where('agence_id',$agence_id)->latest('id')->first();
 
-        return redirect('livrer/'.$livraison->id.'/edit');
-    }
+            return redirect('livrer/'.$livraison->id.'/edit');
+        }
 
     }
 
@@ -113,13 +123,18 @@ class LivrerController extends Controller
         $agence_id=Auth::user()->agence_id;
         if(isset(EntrepotStock::where("agence_id",$agence_id)->first(['id'])->id))
         {
-            $livraison=Livrer::find($id);
-            $entrepots=EntrepotStock::where("agence_id",$agence_id)->get();
-            $commande=Commande::where('id',$livraison->commande_id)->first();
-            $detail_commandes=DetailCommande::where('commande_id',$livraison->commande_id)->get();
-            $total_ht=DetailCommande::where('commande_id',$livraison->commande_id)->selectRaw('sum(quantite_commandee*prix_unitaire_commande) as total')->first('total');
-            return view('e-commerce.livraison_encours', compact('commande','detail_commandes','total_ht','livraison','entrepots'));
-       
+            if(isset(ActiviteInvestissement::where("agence_id",$agence_id)->where('etat_activite','valider')->first(['id'])->id))
+            {
+                $livraison=Livrer::find($id);
+                $entrepots=EntrepotStock::where("agence_id",$agence_id)->get();
+                $activite_investissements=ActiviteInvestissement::where("agence_id",$agence_id)->where('etat_activite','valider')->get();
+                $commande=Commande::where('id',$livraison->commande_id)->first();
+                $detail_commandes=DetailCommande::where('commande_id',$livraison->commande_id)->get();
+                $total_ht=DetailCommande::where('commande_id',$livraison->commande_id)->selectRaw('sum(quantite_commandee*prix_unitaire_commande) as total')->first('total');
+                return view('e-commerce.livraison_encours', compact('commande','detail_commandes','total_ht','livraison','entrepots','activite_investissements'));
+        
+            }
+        return back()->with('danger',"Vous n'avez pas d'activité en cours");
         }
         return back()->with('danger',"Vous n'avez pas d'entrepot");
     }

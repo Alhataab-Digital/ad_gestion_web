@@ -190,19 +190,21 @@
       <i class="bi bi-layout-text-window-reverse"></i><span>Activités d'investissement</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="activite-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
-      <li>
+    <li>
         <a href="{{route('activite_investissement.create')}}">
           <i class="bi bi-circle"></i><span>Ouverture Activité</span>
         </a>
       </li>
+      <!--  -->
+      
       <li>
         <a href="{{ route('activite_investissement') }}">
-          <i class="bi bi-circle"></i><span>Activités en cours</span>
+          <i class="bi bi-circle"></i><span>Activités non valider</span>
         </a>
       </li>
       <li>
         <a href="{{ route('activite_investissement.valider') }}">
-          <i class="bi bi-circle"></i><span>Cloture activité</span>
+          <i class="bi bi-circle"></i><span>Activités non cloturée</span>
         </a>
       </li>
       <li>
@@ -234,9 +236,16 @@
           <i class="bi bi-circle"></i><span>vente de véhicule</span>
         </a>
       </li>
+      @if(Auth::user()->role_id=="0" ||Auth::user()->role_id=="1"||Auth::user()->role_id=="2")
       <li>
         <a href="{{ route('activite_vehicule.fermer') }}">
           <i class="bi bi-circle"></i><span>Fermeture activité</span>
+        </a>
+      </li>
+      @endif
+      <li>
+        <a href="{{ route('activite_vehicule.terminer') }}">
+          <i class="bi bi-circle"></i><span>Activités Cloturée</span>
         </a>
       </li>
     </ul>
@@ -301,6 +310,17 @@
           <i class="bi bi-circle"></i><span>Bon de livraisson</span>
         </a>
       </li> -->
+      <li class="nav-heading"><hr></li>
+      <li>
+        <a href="{{route('activite_investissement.reception_produit')}}">
+          <i class="bi bi-circle"></i><span>Reception interne</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{route('activite_investissement.livraison_produit')}}">
+          <i class="bi bi-circle"></i><span>Livraison interne</span>
+        </a>
+      </li>
     </ul>
   </li><!-- End Charts Nav -->
   <li class="nav-item">
@@ -315,12 +335,7 @@
       </li>
       <li>
       <a href="{{route('reglement.facture')}}">
-          <i class="bi bi-circle"></i><span>Reglement facture</span>
-        </a>
-      </li>
-      <li>
-        <a href="">
-          <i class="bi bi-circle"></i><span>Recouvrement</span>
+          <i class="bi bi-circle"></i><span>Reglement / Recouvrement facture</span>
         </a>
       </li>
     </ul>
