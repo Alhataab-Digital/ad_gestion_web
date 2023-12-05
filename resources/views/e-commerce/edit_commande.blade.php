@@ -5,7 +5,7 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Commande</h1>
+      <h1>COMMANDE DE PRODUIT ET SERVICE</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
@@ -25,17 +25,14 @@
               {{-- <p>Browser default validation with using the <code>required</code> keyword. Try submitting the form below. Depending on your browser and OS, you’ll see a slightly different style of feedback.</p> --}}
               <form class="row g-3" method="post" action="{{ route('detail_commande.store') }}">
                 @csrf
-
                 <!-- Browser Default Validation -->
 
-                <div class="col-md-3">
+                  <div class="col-md-3">
                     <input class="form-control"  type="hidden" name="commande_id" value="{{ $commande->id }}"  >
                     <label for="" class="form-label">Fournisseur</label>
                     <select class="form-select" id="" name="fournisseur" required>
-                        <option value="{{ $commande->fournisseur->id }}">{{ $commande->fournisseur->nom_fournisseur }}</option>
-
+                      <option value="{{ $commande->fournisseur->id }}">{{ $commande->fournisseur->nom_fournisseur }}</option>
                     </select>
-
                   </div>
                   <div class="col mb-3">
                     <label for="inputText" class="col-sm-2 col-form-label">Telephone</label>
@@ -69,7 +66,7 @@
                           </thead>
                           <tbody class=" text-white" id="show_item" id="tab">
                             @foreach ($detail_commandes as $detail_commande )
-                            <tr>
+                              <tr>
                                 <th scope="row">
                                     <select class="form-select" name="produit[]" id="produit"   >
                                         <option data-prix="{{ $detail_commande->produit->prix_unitaire_achat }}" value="{{ $detail_commande->produit->id }}">{{ $detail_commande->produit->nom_produit }}</option>
@@ -87,7 +84,7 @@
                                 <td>
                                     <button type="button" class="btn btn-danger remove_item_btn" ><i class="bi bi-trash"></i></button>
                                 </td>
-                            </tr>
+                              </tr>
                             @endforeach
                           </tbody>
                           <tr>
@@ -95,7 +92,7 @@
                             <td></td>
                             <th style="text-align: right">
                                Montant HT
-                             </th>
+                            </th>
                             <td >
                                 <input class="form-control"  onkeyup="prixU()"  type="text" name="montant_ht" id="montant_ht">
                             </td>

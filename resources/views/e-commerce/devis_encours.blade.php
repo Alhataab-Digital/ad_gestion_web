@@ -5,7 +5,7 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>devis</h1>
+      <h1>DEVIS DE PRODUIT ET SERVICE</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
@@ -23,35 +23,37 @@
             <div class="card-body">
 
                 <h5 class="card-title ">
-                    devis N° 000{{ $devis->id }}
+                Devis N° {{ $devis->id .'/'.\Carbon\Carbon::parse($devis->created_at )->format('d/m/Y')}}
                     <div class="text-end">
                         <a  href="{{route('devis')}}">
                             <button class=" btn btn-secondary "><i class="bi bi-box-arrow-right"></i></button>
                         </a>
                     </div>
-
-                </h5>
-
               <form method="post" action="{{ route('facture.store') }}">
-                @csrf
+              @csrf
                 <!-- Browser Default Validation -->
-                <div class="col-md-3">
-                    <input class="form-control"  type="hidden" name="devis_id" value="{{ $devis->id }}"  >
-                    <label for="" class="form-label">client</label>
-                    <select class="form-select" id="" name="client" required>
-                        <option value="{{ $devis->client->id }}">{{ $devis->client->nom_client }}</option>
-
-                    </select>
-
-                  </div>
-                  <div class="col mb-3">
-                    <label for="inputText" class="col-sm-2 col-form-label">Telephone</label>
-                    <div class="col-sm-3">
-                        <input class="form-control"  type="text" name="" value="{{ $devis->client->telephone  }}" class="form-control">
-                    </div>
-                    </div>
-                  <br>
-                  <hr>
+                @if($devis->activite_id==0) 
+                          <div class="col-md-4">
+                          <label for="" class="form-label">Selectionner l'activité</label>
+                            <select class="form-select" id="" name="activite" required>
+                              <option selected disabled value="">Choose...</option>
+                                @foreach ($activite_investissements as $activite )
+                                <option value="{{ $activite->id }}">
+                                    {{ 'Activite N° '.$activite->id.' : '.$activite->type_activite->type_activite }}
+                                </option>
+                                @endforeach
+                            </select>
+                          </div>
+                    @else
+                    <div class="col-md-4">
+                          <input class="form-control"  type="texte"  name="" value="{{ 'Activite N° '.$devis->activite->id.' : '.$devis->activite->type_activite->type_activite  }}" class="form-control">
+                          
+                          </div>
+                    @endif
+                <div class="bg-secondary text-white " style="text-align: center">
+                  <hr>Devis produit<hr>
+                </div>
+                </h5>
                   <div >
                       <!-- Table with stripped rows -->
                       <table class="table table-borderless " >
@@ -109,29 +111,43 @@
                       </table>
                       <!-- End Table with stripped rows -->
                       <br>
+                      <div class="bg-secondary text-white " style="text-align: center">
+                          <hr>Info client<hr>
+                          </div>
+                          
+                          <table  class="table table-borderless ">
+                            <tr>
+                            <input class="form-control"  type="hidden" name="devis_id" value="{{ $devis->id }}"  >   
+                            <input class="form-control"  type="hidden" name="client_id" value="{{ $devis->client->id }}"  >   
+                                           
+                              <th>
+                                  <label for="inputText" class="col-sm-6 col-form-label">Client</label>
+                                  <input class="form-control"  type="text"  value="{{ $devis->client->nom_client }}" class="form-control">            
+                              </th>
+                              <th>
+                                  <label for="inputText" class="col-sm-6 col-form-label">Telephone</label>
+                                  <input class="form-control"  type="text"  value="{{ $devis->client->telephone  }}" class="form-control">            
+                              </th>
+                              <th>
+                                  <label for="inputText" class="col-sm-6 col-form-label">Adresse</label>
+                                  <input class="form-control"  type="text"  value="{{ $devis->client->adresse  }}" class="form-control">             
+                              </th>           
+                            </tr>
+                          </table>
                       <div >
-                        @if ($devis->etat=='en cours')
-                        <button  class="btn btn-success"><i class="bi bi-share"></i> facturé</button>
-                        @endif
-
+                        <hr>
+                        <div class="text-left" >
+                          @if ($devis->etat=='en cours')
+                          <button  class="btn btn-success"><i class="bi bi-check-square-fill"></i> Confirmer le devis</button>
+                          @endif
+                        </div>
+                        
+                        <hr>
                        </div>
                   </div>
                 <!-- End Browser Default Validation -->
 
               </form>
-              <div class="text-end" >
-                @if ($devis->etat!='annuler')
-                <a href="{{ route('livrer.print',$devis->id) }}">
-                    <button  class="btn btn-info"><i class="bi bi-print"></i> Imprimer</button>
-                </a>
-                @endif
-                @if ($devis->etat=='en cours')
-                <a href="{{ route('devis.delete',$devis->id) }}">
-                    <button  class="btn btn-danger"><i class="bi bi-x-lg"></i> Annuler</button>
-                </a>
-                @endif
-              </div>
-
             </div>
           </div>
 

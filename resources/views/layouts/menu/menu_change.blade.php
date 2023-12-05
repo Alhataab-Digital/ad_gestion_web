@@ -63,7 +63,7 @@
 @endif
 
 @if(Auth::user()->role_id =="1" || Auth::user()->role_id =="2" || Auth::user()->role_id =="3" || Auth::user()->role_id =="0")
-
+@if(Auth::user()->agence_id!="0")
     <!-- End Components Nav -->
     <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#caisse-nav" data-bs-toggle="collapse" href="#">
@@ -72,15 +72,31 @@
         <ul id="caisse-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
 
         <li>
-            <a href="{{ route('caisse.operation') }}">
-            <i class="bi bi-circle"></i><span>Situation caisse</span>
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('caisse.rapport') }}">
-            <i class="bi bi-circle"></i><span>Rapport operation caisse</span>
-            </a>
-        </li>
+        <a href="{{ route('caisse.operation') }}">
+          <i class="bi bi-circle"></i><span>Ouverture & fermeture caisse</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="{{route('caisse.attribution')}}">
+          <i class="bi bi-circle"></i><span>Attribution caisse interne</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{route('caisse.attribution_externe')}}">
+          <i class="bi bi-circle"></i><span>Attribution caisse externe</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{route('caisse.encaissement')}}">
+          <i class="bi bi-circle"></i><span>Approvisionnement caisse</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ route('caisse.rapport') }}">
+          <i class="bi bi-circle"></i><span>Journal caisse</span>
+        </a>
+      </li>
         </ul>
     </li><!-- End Forms Nav -->
 
@@ -110,10 +126,9 @@
             <i class="bi bi-circle"></i><span>Retait change</span>
             </a>
         </li>
-
         </ul>
     </li><!-- End Forms Nav -->
-
+    @endif
     @endif
 @if(Auth::user()->role_id =="1" || Auth::user()->role_id =="2" || Auth::user()->role_id =="0")
 

@@ -41,8 +41,9 @@ class RegisterController extends Controller
             'email'=>$request->email,
             'adresse'=>$request->adresse,
             'password'=>Hash::make($request->password),
-            'terms'=>$request->terms,
-            'gestion_id'=>$request->gestion,
+            'terms'=>1,
+            'gestion_id'=>1,
+            'societe_id'=>1,
         ];
         /**
          * insertion des données dans la table user

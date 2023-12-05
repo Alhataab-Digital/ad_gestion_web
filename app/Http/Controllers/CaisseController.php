@@ -313,7 +313,7 @@ class CaisseController extends Controller
                     $caisse_destination=Caisse::where('user_id',$user_id)->first();
                     // $devise_agence=DeviseAgence::where('agence_id',$caisse_destination->agence_id)->first()->taux;
 
-                    $montant_operation_recepteur=round($operation->montant_operation*$operation->taux);
+                    $montant_operation_recepteur=round($operation->montant_operation/$operation->taux);
                     $montant_operation_emetteur=$operation->montant_operation;
 
                     

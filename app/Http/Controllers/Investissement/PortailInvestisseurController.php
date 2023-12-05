@@ -27,7 +27,7 @@ class PortailInvestisseurController extends Controller
 
     public function profile_investisseur( $id)
     {
-        //
+        $id=decrypt($id);
         $investisseur=Investisseur::find($id);
         return view('investissement.portail.profile_investisseur',compact('investisseur'));
     }
@@ -46,7 +46,7 @@ class PortailInvestisseurController extends Controller
                     $investisseurs=Investisseur::where('email',$request->email)->get();
                     foreach($investisseurs as $investisseur){
                         if($investisseur->etat !=0){
-                        return redirect('profile/'.$investisseur->id.'/investisseur');
+                        return redirect('profile/'.encrypt($investisseur->id).'/investisseur');
                         }
                         return redirect('/portail')->with('danger','Compte inactif');
                     }

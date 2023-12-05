@@ -41,7 +41,9 @@ class ProduitController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //  $agence_id=Auth::user()->agence_id;
+        // dd($request->categorie,$request->nom,$request->prix_a,$request->prix_r,$request->prix_v,$request->stock_min,
+        // $request->description,$agence_id);
         /**
              * validation des champs de saisie
              */
@@ -49,16 +51,15 @@ class ProduitController extends Controller
                 'categorie'=>'required',
                 'nom'=>'required',
                 'prix_a'=>'required',
+                'prix_r'=>'required',
                 'prix_v'=>'required',
                 'stock_min'=>'required',
-                'stock_max'=>'required',
-                'description',
+                'description'=>'required',
             ]);
             $agence_id=Auth::user()->agence_id;
             /**
              * donnee a ajouté dans la table
              */
-
             $data=$request->all();
             // dd($data);
             if(Auth::check()){
@@ -66,13 +67,13 @@ class ProduitController extends Controller
              * insertion des données dans la table user
              */
             Produit::create([
+                'categorie_produit_id'=>$data['categorie'],
                 'nom_produit'=>$data['nom'],
-                'description_produit'=>$data['description'],
                 'prix_unitaire_achat'=>$data['prix_a'],
+                'prix_unitaire_revient'=>$data['prix_r'],
                 'prix_unitaire_vente'=>$data['prix_v'],
                 'stock_min'=>$data['stock_min'],
-                'stock_max'=>$data['stock_max'],
-                'categorie_produit_id'=>$data['categorie'],
+                'description_produit'=>$data['description'],
                 'agence_id'=>$agence_id,
             ]);
             return redirect('/produit')->with('success','Produit crée avec succès');

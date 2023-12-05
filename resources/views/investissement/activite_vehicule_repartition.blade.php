@@ -6,12 +6,12 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Activité N° </h1>
+      <h1>VALIDATION ACTIVITE VEHICULE</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="">Accueil</a></li>
-          <li class="breadcrumb-item">Gestion investisseur</li>
-          <li class="breadcrumb-item active"> investisseur en cours</li>
+          <li class="breadcrumb-item">Activite vehicule</li>
+          <li class="breadcrumb-item active"> Activte non valider</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -28,13 +28,7 @@
                   <div class="card-body">
                     <h5 class="card-title">
                        <div class="col-sm-12">
-                                <button type="submit" class="btn btn-success">Valider</button>
-                                <a href="{{ route('activite_vehicule.delete',$activite_vehicule->id) }}">
-                                    <button type="button" class="btn btn-danger">Supprimer</button>
-                                </a>
-                                <a href="{{ route('activite_vehicule.valider') }}">
-                                    <button type="button" class="btn btn-secondary">Quitter</button>
-                                </a>
+                       Activité vehicule N° {{ $activite_vehicule->id .' : '. $activite_vehicule->intitule}}
                                 <p>
                                     @if ($message=Session::get('success'))
                                     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -79,7 +73,7 @@
                         @endif --}}
                           <th scope="col">nom investisseur</th>
                           <th scope="col">Montant investis </th>
-                          <th scope="col">Montant restant </th>
+                          <!-- <th scope="col">Montant restant </th> -->
                           <th scope="col">Taux </th>
                         </tr>
                       </thead>
@@ -95,12 +89,12 @@
                                     <option value="{{ $investisseur->id }}">{{ $investisseur->nom.' '.$investisseur->prenom }}</option>
                                 </select></td>
                             <td scope="row">
-                                <input class="form-control" type="text" name="montant_investis[]" id="" value="{{ round(($activite_vehicule->montant_ouverture*($investisseur->compte_investisseur/$activite_vehicule->taux_devise))/$activite_vehicule->capital_activite) }}" readonly>
-                                <input class="form-control" type="hidden" name="montant_restant[]" id="" value="{{round(($investisseur->compte_investisseur/$activite_vehicule->taux_devise)-($activite_vehicule->montant_ouverture*($investisseur->compte_investisseur/$activite_vehicule->taux_devise))/$activite_vehicule->capital_activite) }}" >
+                                <input class="form-control" type="text" name="montant_investis[]" id="" value="{{ round(($activite_vehicule->montant_ouverture*($investisseur->compte_investisseur*$activite_vehicule->taux_devise))/$activite_vehicule->capital_activite) }}" readonly>
+                                <input class="form-control" type="hidden" name="montant_restant[]" id="" value="{{round(($investisseur->compte_investisseur*$activite_vehicule->taux_devise)-($activite_vehicule->montant_ouverture*($investisseur->compte_investisseur*$activite_vehicule->taux_devise))/$activite_vehicule->capital_activite) }}" >
                             </td>
                             <td scope="row">
-                                <input class="form-control" type="text"   id="" value="{{ round((($investisseur->compte_investisseur/$activite_vehicule->taux_devise)*100)/$activite_vehicule->capital_activite) }} % " readonly>
-                                <input class="form-control" type="hidden"  name="taux[]" id="" value="{{ round((($investisseur->compte_investisseur/$activite_vehicule->taux_devise)*100)/$activite_vehicule->capital_activite) }} " >
+                                <input class="form-control" type="text"   id="" value="{{ round((($investisseur->compte_investisseur*$activite_vehicule->taux_devise)*100)/$activite_vehicule->capital_activite, 2) }} % " readonly>
+                                <input class="form-control" type="hidden"  name="taux[]" id="" value="{{ round((($investisseur->compte_investisseur*$activite_vehicule->taux_devise)*100)/$activite_vehicule->capital_activite, 2) }} " >
                             </td>
                         </tr>
 
@@ -109,6 +103,15 @@
 
                       </tbody>
                     </table>
+                    <div class="text-end">
+                              <button type="submit" class="btn btn-success">Valider</button>
+                                <a href="{{ route('activite_vehicule.delete',$activite_vehicule->id) }}">
+                                    <button type="button" class="btn btn-danger">Supprimer</button>
+                                </a>
+                                <a href="{{ route('activite_vehicule') }}">
+                                    <button type="button" class="btn btn-secondary">Quitter</button>
+                                </a>
+                    </div>
                   </div>
 
                 </div>

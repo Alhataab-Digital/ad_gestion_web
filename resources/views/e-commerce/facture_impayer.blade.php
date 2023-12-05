@@ -38,6 +38,8 @@
                         <th scope="col">Date operation</th>
                         <!-- <th scope="col">Date echeance</th> -->
                         <th scope="col">Montant facture</th>
+                        <th scope="col">Montant reglé</th>
+                        <th scope="col">Montant restant</th>
                         <th scope="col">Status</th>
                         <th scope="col">Action</th>
                       </tr>
@@ -49,9 +51,11 @@
                         <td>{{ $facture->updated_at }}</td>
                         <!-- <td><a href="#" class="text-primary">At praesentium minu</a></td> -->
                         <td>{{number_format($facture->montant_total,2,","," ")  }}</td>
+                        <td>{{ number_format(($facture->montant_regle),2,","," ")}}</td>
+                        <td>{{ number_format(($facture->montant_total-$facture->montant_regle),2,","," ")}}</td>
                         <td><span class="badge bg-success">{{ $facture->etat }}</span></td>
                         <td>
-                            <a href="{{ route('reglement.paiement',$facture->id) }}">
+                            <a href="{{ route('reglement.paiement',encrypt($facture->id)) }}">
                                 <button type="button" class="btn btn-warning"><i class="bi bi-cart-plus"></i></button>
                             </a>
                         </td>

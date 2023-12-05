@@ -167,8 +167,15 @@ class LoginController extends Controller
             $user=Utilisateur::where('email',$request->email)->first();
             if(isset(UserEnLigne::where('utilisateur_id',$user->id)->first()->id))
             {
+                
+                ConnexionUser::create([
+                    'utilisateur_id'=>$user->id,
+                    'etat'=>'deconnexion',
+                ]);
+                
             $deconnexion=UserEnLigne::where('utilisateur_id',$user->id)->first();
             $deconnexion->delete('utilisateur_id',$user->id);
+
             Session::flush();
             Auth::logout();
             return redirect('/auth')->with('success','Utilisateur débloqué');

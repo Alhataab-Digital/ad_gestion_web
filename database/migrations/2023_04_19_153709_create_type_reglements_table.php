@@ -17,7 +17,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        $reglements=['Espece','Cheque','Virement','carte',];
+        $reglements=['Espece','Cheque','Virement','Carte',];
         foreach($reglements as $reglement){
             TypeReglement::create([
                 'reglement'=>$reglement,

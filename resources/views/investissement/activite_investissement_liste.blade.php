@@ -70,7 +70,7 @@
                         <td>{{ $activite->agence->nom }}</td>
                         <td><span class="badge bg-info">{{ $activite->etat_activite }}</span></td>
                         <td>
-                            <a href="{{ route('activite_investissement.repartition',$activite->id) }}">
+                            <a href="{{ route('activite_investissement.repartition',encrypt($activite->id)) }}">
                                 <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
                             </a>
                         </td>

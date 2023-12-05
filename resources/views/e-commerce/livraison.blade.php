@@ -4,7 +4,7 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>LIVRAISON DE PRODUIT ET SERVICE</h1>
+      <h1>RECEPTION DE PRODUIT ET SERVICE</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
@@ -77,12 +77,12 @@
                                         <th scope="row">{{ $livraison->etat }}</th>
                                         <td>
                                            @if($livraison->etat==Null)
-                                           <a href="{{ route('livrer.edit',$livraison->id) }}">
+                                           <a href="{{ route('livrer.edit',encrypt($livraison->id)) }}">
                                             <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
                                             </a>
                                            @endif
                                            @if($livraison->etat!=Null)
-                                           <a href="{{ route('livrer.show',$livraison->id) }}">
+                                           <a href="{{ route('livrer.show',encrypt($livraison->id)) }}">
                                             <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
                                             </a>
                                            @endif

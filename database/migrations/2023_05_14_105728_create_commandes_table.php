@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('fournisseur_id')->nullable();
             $table->string('user_id');
             $table->string('montant_total')->default('0');
+            $table->string('activite_id')->nullable();
             $table->string('agence_id');
             $table->string('etat')->nullable();
             $table->timestamps();

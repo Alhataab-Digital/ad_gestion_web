@@ -4,8 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
-use App\Http\Controllers\Api\Auth\ProfileController;
 use App\Http\Controllers\Api\Auth\UserController;
+use App\Http\Controllers\Api\Stock\CategorieProduitController;
+use App\Http\Controllers\Api\Investissement\PortailInvestisseurController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,4 +50,27 @@ Route::middleware('auth:sanctum')->controller(UserController::class)->group(func
     Route::post('/users/{id}/role','role');
     Route::post('/users/{id}/password','password');
     Route::post('/users/permission','permission');
+});
+
+Route::controller(CategorieProduitController::class)->group(function(){
+    Route::get('/categorie_produit','index');
+    Route::post('/categorie_produit/create','create');
+    Route::post('/categorie_produit/store','store');
+    Route::get('/categorie_produit/{id}/detail','show');
+    Route::get('/categorie_produit/{id}/edit','edit');
+    Route::post('/categorie_produit/{id}/update','update');
+});
+
+
+Route::controller(PortailInvestisseurController::class)->group(function(){
+
+    Route::get('/portail','index');
+    Route::post('/portail/connect','connect');
+    Route::get('/profile/{id}/investisseur','profile_investisseur');
+    Route::post('/portail/inscription','store');
+    Route::post('/portail/recuperation','recuperation');
+    Route::get('/inscrire','inscrire');
+    Route::post('/operation/investisseur','operation_investisseur');
+    Route::post('/operation/dividende','operation_dividende');
+
 });

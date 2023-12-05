@@ -35,19 +35,28 @@
                     <h5 class="bg-secondary text-white">
                         <table>
                             <tr>
-                                <th>Montant activite</th>
-                                <th>depense activite</th>
+                                <th>Capital activite</th>
+                                <th>Recette activite</th>
+                                <th>Depense activite</th>
+                                <th>Montant Disponible</th>
                                 <th>Benefice activite</th>
                                 <th>Dividende societe</th>
                                 <th>Dividende investisseurs</th>
+                                <th>Benefice de securite</th>
                             </tr>
                             <tr>
-                              <td>
-                               <input type="text" class="form-control" name="montant" id="" value="{{ number_format(($activite_investissement->compte_activite),2,","," ")." ".$devise->unite }}">
-                            </td>
-                            <td>
+                                <td>
+                               <input type="text" class="form-control" name="montant" id="" value="{{ number_format(($activite_investissement->montant_decaisse),2,","," ")." ".$devise->unite }}">
+                                </td>
+                                <td>
+                                <input type="text" class="form-control" name="recette" id="" value="{{ number_format($activite_investissement->total_recette,2,","," ")." ".$devise->unite }}">
+                               </td>
+                                <td>
                                 <input type="text" class="form-control" name="benefice" id="" value="{{ number_format($activite_investissement->total_depense,2,","," ")." ".$devise->unite }}">
                                </td>
+                               <td>
+                               <input type="text" class="form-control" name="montant" id="" value="{{ number_format(($activite_investissement->compte_activite),2,","," ")." ".$devise->unite }}">
+                                </td>
                                <td>
                                 <input type="text" class="form-control" name="benefice" id="" value="{{ number_format($activite_investissement->montant_benefice,2,","," ")." ".$devise->unite }}">
                                </td>
@@ -55,7 +64,10 @@
                                 <input type="text" class="form-control" name="benefice" id="" value="{{ number_format(($activite_investissement->montant_benefice)/2 ,2,","," ")." ".$devise->unite }}">
                                </td>
                                <td>
-                                <input type="text" class="form-control" name="benefice" id="" value="{{ number_format(($activite_investissement->montant_benefice)/2,2,","," ")." ".$devise->unite }}">
+                                <input type="text" class="form-control" name="benefice" id="" value="{{ number_format((($activite_investissement->montant_benefice)/2)-((($activite_investissement->montant_benefice)/2)*0.1),2,","," ")." ".$devise->unite }}">
+                               </td>
+                               <td>
+                                <input type="text" class="form-control" name="benefice" id="" value="{{ number_format((($activite_investissement->montant_benefice)/2)*0.1,2,","," ")." ".$devise->unite }}">
                                </td>
 
                         </table>
@@ -80,28 +92,28 @@
                                 <td scope="row">
                                 <input class="form-control"  value='{{ number_format($operation_depense->montant_depense,2,","," ")." ".$devise->unite}}' readonly>
                                 </td>
-                                <td>
+                                <!-- <td>
                                     <a href="{{ route('activite_investissement.supprimer_depense',$operation_depense->id) }}">
                                         <button type="button" class="btn btn-danger" ><i class="bi bi-trash"></i></button>
                                     </a>
                                     
-                                </td>
+                                </td> -->
                             </tr>
                             @endforeach
-                            @foreach ($livraisons as $livraison )
+                            @foreach ($commandes as $commande )
                             <tr>
                                 <td scope="row">
                                     <select class="form-select" name="" id=""  readonly>
-                                        <option value="">{{'Livraison N°'.$livraison->id.' du fournisseur '. $livraison->fournisseur->nom_fournisseur }}</option>
+                                        <option value="">{{'Achat produit de la commande N°'.$commande->id }}</option>
                                     </select></td>
                                 <td scope="row">
-                                <input class="form-control"  value='{{ number_format($livraison->montant_total,2,","," ")." ".$devise->unite}}' readonly>
+                                <input class="form-control"  value='{{ number_format($commande->montant_total,2,","," ")." ".$devise->unite}}' readonly>
                                 </td>
-                                <td>
-                                    <!-- <a href="{{ route('activite_investissement.annuler_livraison',$livraison->id) }}"></a> -->
+                                <!-- <td>
+                                   
                                         <button type="button" class="btn btn-danger" ><i class="bi bi-trash"></i></button>
                                     
-                                </td>
+                                </td> -->
                             </tr>
                             @endforeach
                         </tbody>
@@ -126,18 +138,17 @@
                                 <td scope="row">
                                 <input class="form-control"  value='{{ number_format($reglement->montant_operation,2,","," ")." ".$devise->unite}}' readonly>
                                 </td>
-                                <td>
-                                    <!-- <a href="{{ route('activite_investissement.annuler_reglement',$reglement->id) }}"></a> -->
-                                        <button type="button" class="btn btn-danger" ><i class="bi bi-trash"></i></button>
+                                <!-- <td>
+                                   <button type="button" class="btn btn-danger" ><i class="bi bi-trash"></i></button>
                                     
                                     
-                                </td>
+                                </td> -->
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
                     <hr>
-                 <table class="table table-borderless datatable">
+                    <table class="table table-borderless datatable">
                       <thead class="bg-primary text-white">
                         <tr>
                         {{-- @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1" || Auth::user()->role_id=="2")
@@ -163,7 +174,7 @@
                                 <input class="form-control" type="text"  id="" value="{{ number_format($detail_activite_investissement->montant_investis,2,","," ")." ".$devise->unite}}">
                             </td>
                             <td scope="row">
-                                <input class="form-control" type="text"  id="" value="{{  number_format(((($detail_activite_investissement->taux)/100)*($activite_investissement->montant_benefice/2)),2,","," ")." ".$devise->unite }}">
+                                <input class="form-control" type="text"  id="" value="{{  number_format(round((((($detail_activite_investissement->taux)/100)*($activite_investissement->montant_benefice/2))-((($detail_activite_investissement->taux)/100)*($activite_investissement->montant_benefice/2))*0.1)),2,","," ")." ".$devise->unite }}">
                             </td>
                             {{-- <td scope="row">
                                 <input type="text"  id="" value="{{  number_format(($detail_activite_investissement->taux),2,","," ") }}">

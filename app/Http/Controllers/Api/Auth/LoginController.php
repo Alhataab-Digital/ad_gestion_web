@@ -39,14 +39,13 @@ class LoginController extends Controller
 
         if(!$user || !Hash::check($request->password, $user->password)){
             return response([
-                'message'=>'invalid credentials'
+                'message'=>'login ou mot de passe incorrect'
             ],422);
         }
-
         $token = $user->createToken('ad_gestion')->plainTextToken;
         return response(
             [
-              'user'=>  $user,
+              'user'=> $user,
               'token'=>$token,
             ], 200
         );

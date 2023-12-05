@@ -117,15 +117,15 @@
 
                   <td>{{ $operation->date_comptable}}</td>
                   <td>
-                  <a href="{{ route('vente_vehicule.show',$operation->id) }}">
+                  <a href="{{ route('vente_vehicule.show',encrypt($operation->id)) }}">
                           <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
                       </a>
                     @if($operation->etat==NULL)
-                      <a href="{{ route('vente_vehicule.valider',$operation->id) }}">
+                      <a href="{{ route('vente_vehicule.valider',encrypt($operation->id)) }}">
                           <button type="button" class="btn btn-success"><i class="bi bi-check-circle"></i></button>
                       </a>
                     @elseif($operation->etat=='payer')
-                      <a href="{{ route('vente_vehicule.annuler',$operation->id) }}">
+                      <a href="{{ route('vente_vehicule.annuler',encrypt($operation->id)) }}">
                           <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
                       </a>
                     @endif

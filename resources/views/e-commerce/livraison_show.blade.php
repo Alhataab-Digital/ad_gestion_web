@@ -5,7 +5,7 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>LIVRAISON</h1>
+      <h1>RECEPTION DE PRODUIT ET SERVICE</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
@@ -23,7 +23,7 @@
             <div class="card-body">
 
                 <h5 class="card-title ">
-                    livraison N° 000{{ $livraison->id }}
+                RECEPTION N° {{ $livraison->id .'/'.\Carbon\Carbon::parse($livraison->created_at )->format('d/m/Y')}}
                     <div class="text-end">
                         <a  href="{{route('livrer')}}">
                             <button class=" btn btn-secondary "><i class="bi bi-box-arrow-right"></i></button>
@@ -35,24 +35,34 @@
               <form method="post" action="">
                 @csrf
                 <!-- Browser Default Validation -->
-                {{-- <div class="col-md-3">
-                    <input class="form-control"  type="hidden" name="livraison_id" value="{{ $livraison->id }}"  >
-                    <label for="" class="form-label">Fournisseur</label>
-                    <select class="form-select" id="" name="fournisseur" required>
-                        <option value="{{ $livraison->fournisseur->id }}">{{ $livraison->fournisseur->nom_fournisseur }}</option>
-
-                    </select>
-
-                  </div> --}}
+                <div class="bg-secondary text-white " style="text-align: center">
+                    <hr>Entrepot & activité utilisés<hr>
+                </div>
+                    <table  class="table table-borderless ">
+                            <tr>
+                                        
+                              <th>
+                                  <label for="inputText" class="col-sm-2 col-form-label">Entrepot</label>
+                                  <div class="">
+                                      <input class="form-control"  type="text" name="montant_decaisser" value="{{ $livraison->entrepot->nom_entrepot  }}" class="form-control">
+                                  </div>
+                              </th>
+                              <th>
+                                  <label for="inputText" class="col-sm-2 col-form-label">Activite</label>
+                                  <div class="">
+                                      <input class="form-control"  type="text" name="montant_decaisser" value="{{ 'Activite N°  '. $livraison->commande->activite->id.' : '.$livraison->commande->activite->type_activite->type_activite  }}" class="form-control">
+                                  </div>
+                              </th>          
+                            </tr>
+                      </table>
                   <div class="col mb-3">
-                    <label for="inputText" class="col-sm-2 col-form-label">Entrepot</label>
-                    <div class="col-sm-3">
-                        <input class="form-control"  type="text" name="montant_decaisser" value="{{ $livraison->entrepot->nom_entrepot  }}" class="form-control">
+                    
                     </div>
-                    </div>
-                  <br>
-                  <hr>
+                    <div class="bg-secondary text-white " style="text-align: center">
+                    <hr>Produit receptionné<hr>
+                </div>
                   <div >
+                    
                       <!-- Table with stripped rows -->
                       <table class="table table-borderless " >
                           <thead class="bg-primary text-white ">
@@ -72,9 +82,7 @@
                               </tr>
                           </thead>
 
-                        {{-- {{ $total=0 }} --}}
                         @foreach ($detail_livraisons as $detail_livraison )
-                          {{-- {{ $total=$total+($detail_livraison->quantite_livraisone*$detail_livraison->prix_unitaire_livraison) }} --}}
                         <tbody class=" text-white" id="show_item" id="tab">
                             <tr>
                                 <th scope="row">
@@ -110,15 +118,31 @@
 
                       </table>
                       <!-- End Table with stripped rows -->
-                      <br>
-                      {{-- <div >
-                        <button  class="btn btn-success"><i class="bi bi-share"></i> Livrer</button>
-
-                       </div> --}}
+                      <div class="bg-secondary text-white " style="text-align: center">
+                          <hr>Info Fournisseur<hr>
+                      </div>
+                      <table  class="table table-borderless ">
+                            <tr>
+                                        
+                              <th>
+                                  <label for="inputText" class="col-sm-6 col-form-label">Client</label>
+                                  <input class="form-control"  type="text"  value="{{ $livraison->fournisseur->nom_fournisseur}}" class="form-control">            
+                              </th>
+                              <th>
+                                  <label for="inputText" class="col-sm-6 col-form-label">Telephone</label>
+                                  <input class="form-control"  type="text"  value="{{ $livraison->fournisseur->telephone  }}" class="form-control">            
+                              </th>
+                              <th>
+                                  <label for="inputText" class="col-sm-6 col-form-label">Adresse</label>
+                                  <input class="form-control"  type="text"  value="{{ $livraison->fournisseur->adresse  }}" class="form-control">             
+                              </th>           
+                            </tr>
+                          </table>
                   </div>
                 <!-- End Browser Default Validation -->
 
               </form>
+              <hr>
               <div class="text-end" >
 
                 <a href="{{ route('livrer.print',$livraison->id) }}">
@@ -127,7 +151,7 @@
                 {{-- <a href="{{ route('livrer.delete',$livraison->id) }}">
                     <button  class="btn btn-danger"><i class="bi bi-x-lg"></i> Annuler</button>
                 </a> --}}
-
+              <hr>
               </div>
 
             </div>

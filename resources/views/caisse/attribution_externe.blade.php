@@ -129,7 +129,7 @@
                     <!-- <th scope="row">{{ $operation->id}}</th> -->
                     <td>{{ $operation->commentaire}}</td>
                     <td>{{ $operation->montant_operation}} {{ $operation->caisse->agence->devise->unite}}</td>
-                    <td>{{ ceil(($operation->montant_operation)*($operation->taux))}} {{ $operation->caisse_destination->agence->devise->unite}}</td>
+                    <td>{{ ceil(($operation->montant_operation)/($operation->taux))}} {{ $operation->caisse_destination->agence->devise->unite}}</td>
                     <td>{{ $operation->caisse_destination->libelle}}</td>
                     
                     <td>

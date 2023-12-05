@@ -60,7 +60,7 @@
                   <tr>
                     <th scope="row">{{ $operation->id}}</th>
                     <td>{{ $operation->commentaire}}</td>
-                    <td>{{ round($operation->montant_operation*$operation->taux)}}  {{ $operation->caisse_destination->agence->devise->unite}} </td>
+                    <td>{{ round($operation->montant_operation/$operation->taux)}}  {{ $operation->caisse_destination->agence->devise->unite}} </td>
                     <td>{{ $operation->montant_operation}} {{ $operation->caisse->agence->devise->unite}}</td>
                     <td>{{ $operation->caisse->libelle}}</td>
                     <!-- <td>{{ $operation->user->nom}}</td> -->

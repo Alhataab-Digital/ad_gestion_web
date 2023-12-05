@@ -134,7 +134,7 @@
                       <td>{{ $utilisateur->societe->raison_sociale}}</td>
                       <td>{{ $utilisateur->gestion->gestion}}</td>
                       <td>
-                          <a href="{{ route('users.edit',$utilisateur->id) }}">
+                          <a href="{{ route('users.edit',encrypt($utilisateur->id)) }}">
                               <button type="button" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
                           </a>
                       @if ($utilisateur->etat==0)

@@ -6,7 +6,7 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>REPARTISSION DIVIDENTE SUR L'ACTIVITE {{ $activite_investissement->type_activite->type_activite }}</h1>
+      <h1>REPARTISSION DIVIDENTE SUR L'ACTIVITE </h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="">Accueil</a></li>
@@ -20,7 +20,8 @@
         <div class="row">
 
             <div class="col-lg-12">
-
+            {{'Activite N° '.$activite_investissement->id.' : '.$activite_investissement->type_activite->type_activite }}
+                         
                 <div class="card recent-sales overflow-auto">
 
 
@@ -50,7 +51,7 @@
                     <hr><br>
                     
                     
-                    <form method="post" action="{{ route('activite_investissement.reboot',$activite_investissement->id) }}">
+                    <form method="post" action="{{ route('activite_investissement.reboot',encrypt($activite_investissement->id)) }}">
                     @csrf  
                         <table class="table table-borderless datatable">
                                 

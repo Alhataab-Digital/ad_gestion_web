@@ -62,21 +62,19 @@
                   </thead>
                   <tbody>
                       @foreach ($filelogs as $filelog )
-                      @foreach($utilisateurs as $utilisateur)
                     <tr>
-                    @if( $filelog->utilisateur_id== $utilisateur->id)
                       <th scope="row">{{ $filelog->id}}</th>
-                      <td>{{ $utilisateur->prenom .' '.$utilisateur->nom}}</td>
-                      <td>{{ $utilisateur->adresse}}</td>
-                      <td>{{ $utilisateur->email}}</td>
-                      @if($utilisateur->role_id==0)
+                      <td>{{ $filelog->utilisateur->prenom .' '.$filelog->utilisateur->nom}}</td>
+                      <td>{{ $filelog->utilisateur->adresse}}</td>
+                      <td>{{ $filelog->utilisateur->email}}</td>
+                      @if($filelog->utilisateur->role_id==0)
                       <td></td>
                       @endif
-                      @if($utilisateur->role_id!=0)
-                      <td>{{ $utilisateur->role->role }}</td>
+                      @if($filelog->utilisateur->role_id!=0)
+                      <td>{{ $filelog->utilisateur->role->role }}</td>
                       @endif
-                      <td>{{ $utilisateur->societe->raison_sociale}}</td>
-                      <td>{{ $utilisateur->gestion->gestion}}</td>
+                      <td>{{ $filelog->utilisateur->societe->raison_sociale}}</td>
+                      <td>{{ $filelog->utilisateur->gestion->gestion}}</td>
                       <td>{{ $filelog->created_at }}</td>
                       @if($filelog->etat=='connexion')
                         <td ><span class="badge bg-success">{{ $filelog->etat}}</span></td>
@@ -84,9 +82,7 @@
                       @if($filelog->etat=='deconnexion')
                       <td ><span class="badge bg-danger">{{ $filelog->etat}}</span></td>
                       @endif
-                      @endif
                     </tr>
-                    @endforeach
                     @endforeach
                   </tbody>
                 </table>

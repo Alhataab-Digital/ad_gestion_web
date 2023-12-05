@@ -79,6 +79,7 @@ class DeviseController extends Controller
      */
     public function edit(string $id)
     {
+        $id = decrypt($id);
         if(Auth::check()){
             $devise= Devise::find($id);
             return view('devise.edit',compact('devise'));

@@ -148,7 +148,7 @@
 
     var montant = Number(document.getElementById("montant_v").value);
 
-           var ttc = Number(taux * montant);
+           var ttc =  Math.round(Number(taux * montant));
            document.getElementById("ttc").value = ttc;
 
             // var taux= document.querySelector("#taux_v");

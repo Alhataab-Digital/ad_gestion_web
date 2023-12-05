@@ -47,7 +47,7 @@ class VersementInvestisseurController extends Controller
      */
     public function store(Request $request, $id)
     {
-
+        $id=decrypt($id);
 
         $investisseur=Investisseur::find($id);
 
@@ -129,7 +129,7 @@ class VersementInvestisseurController extends Controller
             $id=Auth::user()->id;
 
             $operation=OperationInvestisseur::where('user_id',$id)->latest('id')->first();
-            return redirect()->route('i_versement.show',$operation)->with('success','operation effectuee avec succès');
+            return redirect()->route('i_versement.show',encrypt($operation->id))->with('success','operation effectuee avec succès');
 
 
 
@@ -148,7 +148,7 @@ class VersementInvestisseurController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $id=decrypt($id);
             $operation=OperationInvestisseur::find($id);
         return view('investissement.operation_versement_detail',compact('operation'));
     }
@@ -208,6 +208,7 @@ class VersementInvestisseurController extends Controller
 
     public function print( $id)
     {
+        $id=decrypt($id);
         $operation=OperationInvestisseur::find($id);
         // return view('investissement.operation_versement_detail',compact('operation'));
 

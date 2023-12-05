@@ -14,9 +14,9 @@ class Produit extends Model
         'nom_produit',
         'description_produit',
         'prix_unitaire_achat',
+        'prix_unitaire_revient',
         'prix_unitaire_vente',
         'stock_min',
-        'stock_max',
         'categorie_produit_id',
         'agence_id',
     ];

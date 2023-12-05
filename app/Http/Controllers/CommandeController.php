@@ -46,7 +46,7 @@ class CommandeController extends Controller
             ]);
         $commande=Commande::where('user_id',$id)->where('agence_id',$agence_id)->latest('id')->first();
 
-        return redirect('commande/'.$commande->id.'/edit');
+        return redirect('commande/'.encrypt($commande->id).'/edit');
 
         }
         return redirect('/auth')->with('danger',"Session expirée");
@@ -60,7 +60,7 @@ class CommandeController extends Controller
         //
         // dd($request->commande_id,$request->fournisseur_id,
         // $request->nom_fournisseur,$request->adresse,$request->montant_ht);
-        if($request->montant_ht){
+        if($request->montant_ht && $request->nom_fournisseur && $request->adresse){
             $commande=Commande::find($request->commande_id);
             $fournisseur=Fournisseur::find($request->fournisseur_id);
             $commande->update([
@@ -72,7 +72,7 @@ class CommandeController extends Controller
                 'nom_fournisseur' =>$request->nom_fournisseur,
                 'adresse' =>$request->adresse,
             ]);
-            return redirect('detail_commande/'.$commande->id.'/show');
+            return redirect('detail_commande/'.encrypt($commande->id).'/show');
         }
         return back();
     }
@@ -90,8 +90,7 @@ class CommandeController extends Controller
      */
     public function edit(string $id)
     {
-        //
-        $commande=Commande::find($id);
+        $id=decrypt($id);
         $commande=Commande::find($id);
         $detail_commandes=DetailCommande::where('commande_id',$commande->id)->get();
         $total_ht=DetailCommande::where('commande_id',$commande->id)->selectRaw('sum(quantite_commandee*prix_unitaire_commande) as total')->first('total');
@@ -118,7 +117,7 @@ class CommandeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $id=decrypt($id);
         $commande=Commande::find($id);
 
             $commande->update([

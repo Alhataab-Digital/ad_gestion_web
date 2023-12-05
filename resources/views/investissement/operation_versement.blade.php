@@ -41,7 +41,7 @@
                             @endif
                         </p>
                         <!-- No Labels Form -->
-                        <form class="row g-3" method="post" action="{{ route('i_versement.store',$investisseur->id) }}">
+                        <form class="row g-3" method="post" action="{{ route('i_versement.store',encrypt($investisseur->id)) }}">
                             @csrf
                         <div class="col-md-6">
                                 <input type="text" name="nom" value="{{ $investisseur->nom }}" class="form-control" placeholder="Nom">

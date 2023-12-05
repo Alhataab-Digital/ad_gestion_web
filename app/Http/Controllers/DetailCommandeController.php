@@ -14,6 +14,7 @@ use App\Models\Fournisseur;
 use App\Models\Produit;
 use App\Models\Commande;
 use App\Models\DetailCommande;
+use App\Models\ActiviteInvestissement;
 
 class DetailCommandeController extends Controller
 {
@@ -38,11 +39,20 @@ class DetailCommandeController extends Controller
      */
     public function store(Request $request)
     {
+       
 
         if(Auth::check()){
 
-                //
-        // dd($request->commande_id,$request->produit,
+            $request->validate([
+                'commande_id'=>'required',
+                'produit'=>'required',
+                'qte'=>'required',
+                'prix'=>'required',
+            ]);
+
+                
+        // dd($request->commande_id,
+        // $request->produit,
         // $request->qte,
         // $request->prix,);
         if(isset(DetailCommande::where('commande_id',$request->commande_id)->where('produit_id',$request->produit)->first(['id'])->id))
@@ -50,8 +60,7 @@ class DetailCommandeController extends Controller
             return back()->with('danger',"Produit deja enregistrer");
         }else{
             
-           
-            $data=[
+         $data=[
                 'commande_id'              =>$request->commande_id,
                 'produit_id'               =>$request->produit,
                 'quantite_commandee'       =>$request->qte,
@@ -87,10 +96,15 @@ class DetailCommandeController extends Controller
     public function show(string $id)
     {
         //
+        $id=decrypt($id);
         $commande=Commande::find($id);
+        
+        
+        $agence_id=Auth::user()->agence_id;
+        $activite_investissements=ActiviteInvestissement::where("agence_id",$agence_id)->where('etat_activite','valider')->get();
         $detail_commandes=DetailCommande::where('commande_id',$commande->id)->get();
         $total_ht=DetailCommande::where('commande_id',$commande->id)->selectRaw('sum(quantite_commandee*prix_unitaire_commande) as total')->first('total');
-        return view('e-commerce.commande_encours', compact('commande','detail_commandes','total_ht'));
+        return view('e-commerce.commande_encours', compact('commande','detail_commandes','total_ht','activite_investissements'));
     }
 
     /**
@@ -99,6 +113,7 @@ class DetailCommandeController extends Controller
     public function edit(string $id)
     {
         //
+        $id=decrypt($id);
         $commande=Commande::find($id);
         $agence_id=Auth::user()->agence_id;
         $produits=Produit::where('agence_id',$agence_id)->get();
@@ -122,8 +137,8 @@ class DetailCommandeController extends Controller
      */
     public function destroy(string $id)
     {
+        // dd($id);
         $produit=DetailCommande::find($id);
-
         $produit->delete();
 
         return back();

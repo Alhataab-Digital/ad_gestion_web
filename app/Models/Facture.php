@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\EntrepotStock;
+use App\Models\Devis;
 use App\Models\Client;
 
 
@@ -15,8 +16,10 @@ class Facture extends Model
         'devis_id',
         'client_id',
         'entrepot_id',
+        'activite_id',
         'user_id',
         'montant_total',
+        'montant_regle',
         'agence_id',
         'etat',
     ];
@@ -29,5 +32,10 @@ class Facture extends Model
     public function client()
     {
         return $this->belongsTo(Client::class, 'client_id');
+    }
+
+    public function devis()
+    {
+        return $this->belongsTo(Devis::class,'devis_id');
     }
 }

@@ -6,7 +6,7 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>REPARTISSION DIVIDENTE SUR L'ACTIVITE {{ $activite_investissement->type_activite->type_activite }}</h1>
+      <h1>REPARTISSION DIVIDENTE SUR L'ACTIVITE </h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="">Accueil</a></li>
@@ -27,7 +27,7 @@
                   <div class="card-body">
                     <h5 class="card-title">
                        <div class="col-sm-12">
-                               
+                       {{'Activite N° '.$activite_investissement->id.' : '.$activite_investissement->type_activite->type_activite }}
                                 
                                 <p>
                                     @if ($message=Session::get('success'))
@@ -51,25 +51,46 @@
                     <h5 class="bg-secondary text-white">
                         <table>
                             <tr>
-                                {{-- <th>Capital activité</th> --}}
-                                {{-- <th>Montant activite</th> --}}
-                                <th>Montant total activite</th>
-                                <th>Montant total depense</th>
-                                <th>Montant total benefice</th>
+                                
+                            <th>Capital activite</th>
+                                <th>Recette activite</th>
+                                <th>Depense activite</th>
+                                <th>Montant Disponible</th>
+                                @if($activite_investissement->total_recette > $activite_investissement->total_depense)
+                                <th>Benefice activite</th>
+                                <th>Dividende societe</th>
+                                <th>Dividende investisseurs</th>
+                                <th>Benefice de securite</th>
+                                @endif
                             </tr>
-                            <tr>
+                            <tr> 
                                 <td>
-                                    <input class="form-control" type="text" name="" id="total_activite" value="{{$activite_investissement->compte_activite}}" required>
+                                <input class="form-control" type="text"  id="" value="{{ number_format($activite_investissement->montant_decaisse,2,","," ")." ".$devise->unite}}" readonly>
+                                <input class="form-control" type="hidden" name="montant_activite" id="" value="{{ $activite_investissement->montant_decaisse }}" readonly>
                                 </td>
                                 <td>
-                                    <input class="form-control" type="text" onkeyup="prixU()" name="" value="{{$activite_investissement->total_depense}}" id="total_depense"  readonly>
+                                    <input class="form-control" type="text" onkeyup="prixU()" name="" value="{{ number_format($activite_investissement->total_recette,2,","," ")." ".$devise->unite}}" id="total_depense"  readonly>
                                 </td>
                                 <td>
-                                    <input class="form-control" type="text" onkeyup="prixU()" name="" id="montant_benefice" value="{{$activite_investissement->compte_activite-$activite_investissement->montant_decaisse}}" readonly>
+                                    <input class="form-control" type="text" onkeyup="prixU()" name="" value="{{ number_format($activite_investissement->total_depense,2,","," ")." ".$devise->unite}}" id="total_depense"  readonly>
                                 </td>
                                 <td>
-                                    <input class="form-control" type="hidden" name="montant_activite" id="" value="{{ $activite_investissement->montant_decaisse }}" readonly>
+                                    <input class="form-control" type="text" name="" id="total_activite" value="{{ number_format($activite_investissement->compte_activite,2,","," ")." ".$devise->unite}}" required>
                                 </td>
+                                @if($activite_investissement->total_recette > $activite_investissement->total_depense)
+                                <td>
+                                    <input class="form-control" type="text"  name="" id="montant_benefice" value="{{ number_format($activite_investissement->compte_activite-$activite_investissement->montant_decaisse,2,","," ")." ".$devise->unite}}" readonly>
+                                </td>
+                                <td>
+                                    <input class="form-control" type="text"  name="" id="montant_benefice" value="{{ number_format(($activite_investissement->compte_activite-$activite_investissement->montant_decaisse)/2,2,","," ")." ".$devise->unite}}" readonly>
+                                </td>
+                                <td>
+                                    <input class="form-control" type="text"  name="" id="montant_benefice" value="{{ number_format(((($activite_investissement->compte_activite-$activite_investissement->montant_decaisse)/2)-((($activite_investissement->compte_activite-$activite_investissement->montant_decaisse)/2)*0.1)),2,","," ")." ".$devise->unite}}" readonly>
+                                </td>
+                                <td>
+                                    <input class="form-control" type="text"  name="" id="montant_benefice" value="{{ number_format((($activite_investissement->compte_activite-$activite_investissement->montant_decaisse)/2)*0.1,2,","," ")." ".$devise->unite}}" readonly>
+                                </td>
+                                @endif
                                 <td>
                                     <input class="form-control"  type="hidden" name="" id="" value="{{ $activite_investissement->id }}" readonly>
                                     <input class="form-control" type="hidden" name="" id="" value="{{ $activite_investissement->capital_activite }}" readonly>
@@ -91,7 +112,7 @@
                             </tr>
                         </thead>
                         <tbody class=" text-white" id="show_item" id="tab">
-                        <form method="post" action="{{ route('activite_investissement.depense_activite',$activite_investissement->id)}}">
+                        <form method="post" action="{{ route('activite_investissement.depense_activite',encrypt($activite_investissement->id))}}">
                         @csrf
                             <tr>
                                 <th scope="row">
@@ -134,24 +155,23 @@
                                 <input class="form-control"  value='{{ number_format($operation_depense->montant_depense,2,","," ")." ".$devise->unite}}' readonly>
                                 </td>
                                 <td>
-                                    <a href="{{ route('activite_investissement.supprimer_depense',$operation_depense->id) }}">
+                                    <a href="{{ route('activite_investissement.supprimer_depense',encrypt($operation_depense->id)) }}">
                                         <button type="button" class="btn btn-danger" ><i class="bi bi-trash"></i></button>
                                     </a>
                                     
                                 </td>
                             </tr>
                             @endforeach
-                            @foreach ($livraisons as $livraison )
+                            @foreach ($commandes as $commande )
                             <tr>
                                 <td scope="row">
                                     <select class="form-select" name="" id=""  readonly>
-                                        <option value="">{{'Livraison N°'.$livraison->id.' du fournisseur '. $livraison->fournisseur->nom_fournisseur }}</option>
+                                        <option value="">{{'Achat produit de la commande N°'.$commande->id}}</option>
                                     </select></td>
                                 <td scope="row">
-                                <input class="form-control"  value='{{ number_format($livraison->montant_total,2,","," ")." ".$devise->unite}}' readonly>
+                                <input class="form-control"  value='{{ number_format($commande->montant_total,2,","," ")." ".$devise->unite}}' readonly>
                                 </td>
                                 <td>
-                                    <!-- <a href="{{ route('activite_investissement.annuler_livraison',$livraison->id) }}"></a> -->
                                         <button type="button" class="btn btn-danger" ><i class="bi bi-trash"></i></button>
                                     
                                 </td>
@@ -222,20 +242,68 @@
                                             <option value="{{ $detail_activite_investissement->investisseur->id }}">{{ $detail_activite_investissement->investisseur->nom .' '.$detail_activite_investissement->investisseur->prenom }}</option>
                                         </select></td>
                                         <td scope="row">
-                                            <input class="form-control" type="text" name="montant_investis[]" id="" value="{{round( $detail_activite_investissement->montant_investis) }}" readonly>
+                                        <input class="form-control" type="text" name="" id="" value='{{number_format(round( $detail_activite_investissement->montant_investis),2,","," ")." ".$devise->unite }}' readonly>
+                                        <input class="form-control" type="hidden" name="montant_investis[]" id="" value="{{round( $detail_activite_investissement->montant_investis) }}" readonly>
                                         </td>
                                         <td scope="row">
-                                            <input class="form-control" type="text" name="taux[]" id="" value="{{ $detail_activite_investissement->taux/100 }} " readonly>
+                                        <input class="form-control" type="text" name="" id="" value="{{round( $detail_activite_investissement->taux, 2).' %' }} " readonly>
+                                        <input class="form-control" type="hidden" name="taux[]" id="" value="{{ $detail_activite_investissement->taux/100 }} " readonly>
                                         </td>
 
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
+                        
+                        <div class="bg-secondary text-white " style="text-align: center">
+                          <hr>FACTURE(S) IMPAYER<hr>
+                          </div>
+                        @if($facture_montant_total != $facture_montant_regler)
+                         <!-- Table with stripped rows -->
+                        <table class="table table-borderless">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Date operation</th>
+                                <th scope="col">Client</th>
+                                <th scope="col">Montant facture</th>
+                                <th scope="col">Montant reglé</th>
+                                <th scope="col">Montant restant</th>
+                                <!-- <th scope="col">Status</th>
+                                <th scope="col">Action</th> -->
+                            </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($factures as $facture)
+                                @if(($facture->montant_total-$facture->montant_regle)!=0)
+                            <tr>
+                                <th scope="row"><a href="#">{{ $facture->id }}</a></th>
+                                <td>{{ $facture->updated_at }}</td>
+                                <td> {{$facture->client->nom_client}} : <a href="{{route('reglement.facture')}}" class="text-primary">{{$facture->client->telephone}}</a></td>
+                                <td>{{number_format($facture->montant_total,2,","," ")  }}</td>
+                                <td>{{ number_format(($facture->montant_regle),2,","," ")}}</td>
+                                <td>{{ number_format(($facture->montant_total-$facture->montant_regle),2,","," ")}}</td>
+                                <!-- <td><span class="badge bg-success">{{ $facture->etat }}</span></td>
+                                <td>
+                                    <a href="{{ route('reglement.paiement',encrypt($facture->id)) }}">
+                                        <button type="button" class="btn btn-warning"><i class="bi bi-cart-plus"></i></button>
+                                    </a>
+                                </td> -->
+                            </tr>
+                            @endif
+                            @endforeach
+                            </tbody>
+                        </table>
+                        <!-- End Table with stripped rows -->
+                        @endif
+                        </table>
                             <br>
+                            @if($activite_investissement->total_recette > $activite_investissement->total_depense)
+                            @if($facture_montant_total == $facture_montant_regler)
                             <button type="submit" class="btn btn-primary">Cloturer l'activité</button>
-
-                            <a href="{{ route('activite_investissement.redemarrer',$activite_investissement->id ) }}">
+                            @endif
+                            @endif
+                            <a href="{{ route('activite_investissement.redemarrer',encrypt($activite_investissement->id)) }}">
                                 <button type="button" class="btn btn-warning">Redemarrer l'activité</button>
                             </a>
                             <a href="{{ route('activite_investissement.valider') }}">

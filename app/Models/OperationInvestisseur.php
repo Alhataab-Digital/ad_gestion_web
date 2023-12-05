@@ -24,18 +24,21 @@ class OperationInvestisseur extends Model
         'date_comptable',
 ];
 
-public function reglement()
+    public function reglement()
     {
         return $this->belongsTo(TypeReglement::class);
     }
+
     public function caisse()
     {
         return $this->belongsTo(Caisse::class);
     }
+
     public function investisseur()
     {
-        return $this->belongsTo(Investisseur::class);
+        return $this->belongsTo(Investisseur::class,'investisseur_id');
     }
+
     public function user()
     {
         return $this->belongsTo(Utilisateur::class);

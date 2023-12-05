@@ -77,6 +77,7 @@ class SocieteController extends Controller
      */
     public function show( $id)
     {
+        $id=decrypt($id);
         $societe=Societe::findOrFail($id);
         return view('gestion.societe_show',compact('societe'));
     }
@@ -86,6 +87,7 @@ class SocieteController extends Controller
      */
     public function edit($id)
     {
+        $id=decrypt($id);
         $societe=Societe::findOrFail($id);
         return view('gestion.societe_edit',compact('societe'));
     }
@@ -95,7 +97,7 @@ class SocieteController extends Controller
      */
     public function update(Request $request,Societe $societe, $id)
     {
-
+        $id=decrypt($id);
         $societe=Societe::find($id);
 
 
@@ -145,6 +147,8 @@ class SocieteController extends Controller
     }
 
     public function update_logo(Request $request, Societe $societe, $id ){
+        
+        $id=decrypt($id);
         if(Auth::check()){
             $societe=Societe::findOrFail($id);
             /**

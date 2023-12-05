@@ -40,6 +40,18 @@
 
         @endif
 
+        @if(Auth::user()->gestion->gestion=='Cabinet Medical')
+
+        @include('layouts.menu.menu_cabinet_medical')
+
+        @endif
+
+        @if(Auth::user()->gestion->gestion=='Gestion Detenu')
+
+        @include('layouts.menu.menu_detenu')
+
+        @endif
+
 
     </ul>
   </aside><!-- End Sidebar-->

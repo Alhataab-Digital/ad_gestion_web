@@ -15,7 +15,7 @@
     <ul id="components-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
       @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1"||Auth::user()->role_id=="2") 
       <li>
-        <a href="{{ route('workspace.show',Auth::user()->societe_id) }}">
+        <a href="{{ route('workspace.show',encrypt(Auth::user()->societe_id)) }}">
           <i class="bi bi-circle"></i><span>Institution</span>
         </a>
       </li>
@@ -71,6 +71,11 @@
         </a>
       </li>
       <li>
+        <a href="tables-general.html">
+          <i class="bi bi-circle"></i><span>Compte bancaire</span>
+        </a>
+      </li>
+      <li>
         <a href="{{ route('agence_user') }}">
             <i class="bi bi-circle"></i><span>Association Agence Utilisateur</span>
         </a>
@@ -119,6 +124,33 @@
       </li>
     </ul>
 </li><!-- End Forms Nav -->
+<li class="nav-item">
+    <a class="nav-link collapse" data-bs-target="#banque-nav" data-bs-toggle="collapse" href="#">
+      <i class="ri ri-building-line"></i><span>Gestion banque</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="banque-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
+      <li>
+        <a href="tables-general.html">
+          <i class="bi bi-circle"></i><span>Virement bancaire</span>
+        </a>
+      </li>
+      <li>
+        <a href="tables-general.html">
+          <i class="bi bi-circle"></i><span>Retrait banque</span>
+        </a>
+      </li>
+      <li>
+        <a href="tables-general.html">
+          <i class="bi bi-circle"></i><span>Depot banque</span>
+        </a>
+      </li>
+      <li>
+        <a href="tables-data.html">
+          <i class="bi bi-circle"></i><span>Rapprochement bancaire</span>
+        </a>
+      </li>
+    </ul>
+  </li>
 @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1"|| Auth::user()->role_id=="2"|| Auth::user()->role_id=="5")
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
@@ -220,10 +252,16 @@
     <a class="nav-link collapsed" data-bs-target="#vehicule-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-layout-text-window-reverse"></i><span>Activités vehicule</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
-    <ul id="vehicule-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
+    <ul id="vehicule-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav"> 
+      @if(Auth::user()->role_id=="0" ||Auth::user()->role_id=="1"||Auth::user()->role_id=="3"||Auth::user()->role_id=="6")
       <li>
         <a href="{{route('activite_vehicule')}}">
           <i class="bi bi-circle"></i><span>Ouverture activité</span>
+        </a>
+      </li> 
+      <li>
+        <a href="{{ route('activite_vehicule.encours') }}">
+          <i class="bi bi-circle"></i><span>Activité non valider</span>
         </a>
       </li>
       <li>
@@ -236,6 +274,7 @@
           <i class="bi bi-circle"></i><span>vente de véhicule</span>
         </a>
       </li>
+      @endif
       @if(Auth::user()->role_id=="0" ||Auth::user()->role_id=="1"||Auth::user()->role_id=="2")
       <li>
         <a href="{{ route('activite_vehicule.fermer') }}">
@@ -287,7 +326,7 @@
 
     <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#doc-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-journal-text"></i><span>Documents</span><i class="bi bi-chevron-down ms-auto"></i>
+      <i class="bi bi-journal-text"></i><span>Achat/Facturation</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="doc-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
     <li>
@@ -295,6 +334,12 @@
           <i class="bi bi-circle"></i><span>Commandes</span>
         </a>
       </li>
+      <li>
+        <a href="{{ route('livrer') }}">
+          <i class="bi bi-circle"></i><span>Reception</span>
+        </a>
+      </li>
+      <li class="nav-heading"><hr></li>
       <li>
         <a href="{{ route('devis') }}">
           <i class="bi bi-circle"></i><span>Devis</span>
@@ -305,12 +350,8 @@
           <i class="bi bi-circle"></i><span>Factures</span>
         </a>
       </li>
-      <!-- <li>
-        <a href="">
-          <i class="bi bi-circle"></i><span>Bon de livraisson</span>
-        </a>
-      </li> -->
-      <li class="nav-heading"><hr></li>
+      
+      <!-- <li class="nav-heading"><hr></li>
       <li>
         <a href="{{route('activite_investissement.reception_produit')}}">
           <i class="bi bi-circle"></i><span>Reception interne</span>
@@ -320,19 +361,19 @@
         <a href="{{route('activite_investissement.livraison_produit')}}">
           <i class="bi bi-circle"></i><span>Livraison interne</span>
         </a>
-      </li>
+      </li> -->
     </ul>
   </li><!-- End Charts Nav -->
   <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-journal-text"></i><span>Reglement & Recouvrement</span><i class="bi bi-chevron-down ms-auto"></i>
+      <i class="bi bi-journal-text"></i><span>Reglement & Recouvrement Facture</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="charts-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
-    <li>
+    <!-- <li>
         <a href="{{route('reglement.comptoir')}}">
           <i class="bi bi-circle"></i><span>Reglement client comptoir</span>
         </a>
-      </li>
+      </li> -->
       <li>
       <a href="{{route('reglement.facture')}}">
           <i class="bi bi-circle"></i><span>Reglement / Recouvrement facture</span>
@@ -342,7 +383,7 @@
   </li><!-- End Charts Nav -->
   <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#pro-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-journal-text"></i><span>Articles / Produits</span><i class="bi bi-chevron-down ms-auto"></i>
+      <i class="bi bi-journal-text"></i><span>Articles /Categories /Produits</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="pro-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
     <li>

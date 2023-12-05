@@ -39,7 +39,8 @@ class UserController extends Controller
         return redirect('/')->with('danger',"Session expirée");
     }
 
-    public function online(){
+    public function online()
+    {
         if(Auth::check()){
             $id=Auth::user()->societe_id;
             $onlines=UserEnLigne::all();
@@ -48,11 +49,12 @@ class UserController extends Controller
         return redirect('/')->with('danger',"Session expirée");
     }
 
-    public function filelog(){
+    public function filelog()
+    {
         if(Auth::check()){
             $id=Auth::user()->societe_id;
             $utilisateurs=Utilisateur::all();
-            $filelogs=ConnexionUser::all();
+            $filelogs=ConnexionUser::orderBy('id', 'desc')->get();
             return view('users.filelog',compact('filelogs','utilisateurs'));
         }
         return redirect('/')->with('danger',"Session expirée");
@@ -119,6 +121,7 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
+        $id=decrypt($id);
         if(Auth::check()){
             $utilisateur= Utilisateur::find($id);
             $roles=Role::all();
@@ -133,7 +136,7 @@ class UserController extends Controller
      */
     public function update(Request $request,Utilisateur $utilisateur,$id)
     {
-
+        $id=decrypt($id);
         $utilisateur=Utilisateur::find($id);
         /**
              * validation des champs de saisie

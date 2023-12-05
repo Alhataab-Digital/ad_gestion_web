@@ -29,7 +29,7 @@
               </h5>
               <!-- Vertical Form -->
               <form class="row g-3" method="post" action="{{ route('produit.store') }}" >
-                  @csrf
+              @csrf
                 <div class="modal fade" id="basicModal" tabindex="-1">
                   <div class="modal-dialog">
                     <div class="modal-content">
@@ -37,11 +37,9 @@
                         <h5 class="modal-title">Ajouter produit</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
-
                       <div class="modal-body" >
                         <div class="col-12">
                             <label class="form-label"> Categorie produit</label>
-
                               <select class="form-select" aria-label="Default select example" name="categorie">
                                     <option selected>choisir ...</option>
                                 @foreach ( $categories as $categorie )
@@ -59,31 +57,29 @@
                               <input type="text" name="prix_a" class="form-control" id="inputAddress" >
                           </div>
                           <div class="col-12">
-                            <label for="inputAddress" class="form-label">Prix vente</label>
-                            <input type="text" name="prix_v" class="form-control" id="inputAddress" >
-                        </div>
-                        <div class="col-12">
-                            <label for="inputAddress" class="form-label">Stock minimum</label>
-                            <input type="text" name="stock_min" class="form-control" id="inputAddress" >
-                        </div>
+                              <label for="inputAddress" class="form-label">Prix de revient</label>
+                              <input type="text" name="prix_r" class="form-control" id="inputAddress" >
+                          </div>
+                            <div class="col-12">
+                              <label for="inputAddress" class="form-label">Prix vente</label>
+                              <input type="text" name="prix_v" class="form-control" id="inputAddress" >
+                          </div>
 
-                        <div class="col-12">
-                            <label for="inputAddress" class="form-label">Stock maximum</label>
-                            <input type="text" name="stock_max" class="form-control" id="inputAddress" >
-                        </div>
+                          <div class="col-12">
+                              <label for="inputAddress" class="form-label">Stock minimum</label>
+                              <input type="text" name="stock_min" class="form-control" id="inputAddress" >
+                          </div>
 
-                        <div class="col-12">
-                            <label for="inputNanme4" class="form-label">Description produit</label>
-                            <textarea name="description"  class="form-control" style="height: 100px"></textarea>
-                            {{-- <input type="text" name="prenom" class="form-control" id="inputNanme4"> --}}
-                        </div>
+                          <div class="col-12">
+                              <label for="inputNanme4" class="form-label">Description produit</label>
+                              <textarea name="description"  class="form-control" style="height: 100px"></textarea>
+                          </div>
 
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Valider</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
                       </div>
-
                     </div>
                   </div>
                 </div><!-- End Basic Modal-->
@@ -115,9 +111,9 @@
                       <th scope="col">#</th>
                       <th scope="col">Nom </th>
                       <th scope="col">Prix achat </th>
+                      <th scope="col">Prix revient</th>
                       <th scope="col">Prix vente </th>
                       <th scope="col">stock minimum</th>
-                      <th scope="col">stock maximum</th>
                       <th scope="col">Action</th>
                     </tr>
                   </thead>
@@ -128,8 +124,8 @@
                       <th scope="row">{{ $produit->id}}</th>
                       <td>{{ $produit->nom_produit}}</td>
                       <td>{{ $produit->prix_unitaire_achat}}</td>
+                      <td>{{ $produit->prix_unitaire_revient}}</td>
                       <td>{{ $produit->prix_unitaire_vente}}</td>
-                      <td>{{ $produit->stock_max}}</td>
                       <td>{{ $produit->stock_min}}</td>
                       <td>
                           <a href="{{ route('produit.edit',$produit->id) }}">

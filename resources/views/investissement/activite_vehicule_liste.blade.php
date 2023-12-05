@@ -6,7 +6,7 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>ACTIVITES VEHICULES</h1>
+      <h1>ACTIVITES VEHICULES </h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="">Accueil</a></li>
@@ -63,7 +63,7 @@
                         <td>{{ $activite->id }}</td>
                         @endif --}}
                         <td scope="row">{{ $activite->date_comptable }}</td>
-                        <td scope="row">{{ $activite->intitule }}</td>
+                        <td scope="row">{{ 'Activite N°'.$activite->id.' : '.$activite->intitule }}</td>
                         <td>{{ number_format($activite->montant_ouverture,2,","," ").' '.$activite->user->agence->devise->unite}}</td>
                         <td>{{ $activite->user->nom.' '.$activite->user->prenom }}</td>
                         <td>{{ $activite->caisse->libelle }}</td>
@@ -74,7 +74,7 @@
                         <td><span class="badge bg-info">{{ $activite->etat_activite }}</span></td>
                         @endif
                         <td>
-                            <a href="{{ route('activite_vehicule.show',$activite->id) }}">
+                            <a href="{{ route('activite_vehicule.repartition',$activite->id) }}">
                                 <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
                             </a>
                         </td>

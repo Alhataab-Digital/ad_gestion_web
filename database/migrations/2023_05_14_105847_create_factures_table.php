@@ -16,8 +16,10 @@ return new class extends Migration
             $table->string('devis_id')->nullable();
             $table->string('client_id')->nullable();
             $table->string('entrepot_id')->nullable();
+            $table->string('activite_id')->default('0');
             $table->string('user_id');
             $table->string('montant_total')->default('0');
+            $table->string('montant_regle')->default('0');
             $table->string('agence_id');
             $table->string('etat')->nullable();
             $table->timestamps();

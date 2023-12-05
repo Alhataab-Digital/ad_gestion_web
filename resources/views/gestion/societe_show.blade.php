@@ -40,7 +40,7 @@
                 </h5>
 
                 <!-- Browser Default Validation -->
-                <form class="row g-3" method="post" action="{{route('workspace.update',$societe->id)}}">
+                <form class="row g-3" method="post" action="{{route('workspace.update',encrypt($societe->id))}}">
                     @csrf
                     <div class="col-md-10">
                         <label for="validationDefault01" class="form-label">Raison sociale <span style="color:red">*</span></label>
@@ -133,7 +133,7 @@
                               <img src="{{ asset('/images/logo/'.$societe->logo) }}" alt="modal"  width="80" height="80">
                               @endif
                           </div>
-                        <form action="{{ route('logo.update',$societe->id) }}" method="post" enctype="multipart/form-data">
+                        <form action="{{ route('logo.update',encrypt($societe->id)) }}" method="post" enctype="multipart/form-data">
                           @csrf
                           <div class="modal-body">
                           @if($societe->logo==NULL)
@@ -167,41 +167,26 @@
                     </div><!-- End Small Modal-->
                   </div>
                 </div>
+                @if(Auth::user()->gestion->gestion=='Investissement')
+
                 <div class="card">
-              <div class="card-body " style="background-color: silver">
-                <h5 class="card-title">
-
-                    @if ($message=Session::get('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <i class="bi bi-check-circle me-1"></i>
-                        {{ $message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  <div class="card-body " style="background-color: silver">
+                    <div class="col-md-12">
+                          <label for="validationDefault01" class="form-label">Montant compte societe <span style="color:red">*</span></label>
+                          <input type="text"  value="{{$societe->compte_societe }}" class="form-control" readonly>
                     </div>
-                    @endif
-                    @if ($message=Session::get('danger'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <i class="bi bi-exclamation-octagon me-1"></i>
-                        {{ $message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <div class="col-md-12">
+                      <label for="validationDefault03" class="form-label">Montant compte de securite <span style="color:red">*</span></label>
+                      <input type="text"  value="{{$societe->compte_securite }}" class="form-control" readonly>
                     </div>
-                    @endif
+                    <!-- End Browser Default Validation -->
+                  </div>
+                </div>
 
-                </h5>
-                  <div class="col-md-12">
-                        <label for="validationDefault01" class="form-label">Montant compte societe <span style="color:red">*</span></label>
-                        <input type="text"  value="{{$societe->compte_societe }}" class="form-control" readonly>
-                  </div>
-                  <div class="col-md-12">
-                    <label for="validationDefault03" class="form-label">Montant compte de securite <span style="color:red">*</span></label>
-                    <input type="text"  value="{{$societe->compte_securite }}" class="form-control" readonly>
-                  </div>
-                  
+                @endif
                 
-                <!-- End Browser Default Validation -->
-
               </div>
-            </div>
-              </div>
+              
         </div>
     </section>
 

@@ -21,7 +21,7 @@ class Initialiser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(isset(UserEnLigne::where('utilisateur_id',Auth::user()->id)->first()->id)){
+        if(UserEnLigne::where('utilisateur_id',Auth::user()->id)->first()->id){
             return $next($request);
         }
         return redirect('/');

@@ -14,6 +14,7 @@ use App\Models\Client;
 use App\Models\Produit;
 use App\Models\Devis;
 use App\Models\DetailDevis;
+use App\Models\ActiviteInvestissement;
 
 class DetailDevisController extends Controller
 {
@@ -120,10 +121,13 @@ class DetailDevisController extends Controller
     public function show(string $id)
     {
         //
+        $id=decrypt($id);
          $devis=Devis::find($id);
+         $agence_id=Auth::user()->agence_id;
          $detail_deviss=DetailDevis::where('devis_id',$devis->id)->get();
+         $activite_investissements=ActiviteInvestissement::where("agence_id",$agence_id)->where('etat_activite','valider')->get();
          $total_ht=DetailDevis::where('devis_id',$devis->id)->selectRaw('sum(quantite_demandee*prix_unitaire_demande) as total')->first('total');
-         return view('e-commerce.devis_encours', compact('devis','detail_deviss','total_ht'));
+         return view('e-commerce.devis_encours', compact('devis','detail_deviss','total_ht','activite_investissements'));
     }
 
     /**
@@ -131,6 +135,7 @@ class DetailDevisController extends Controller
      */
     public function edit(string $id)
     {
+        $id=decrypt($id);
         $devis=Devis::find($id);
         $agence_id=Auth::user()->agence_id;
         $produits=Produit::where('agence_id',$agence_id)->get();
@@ -154,6 +159,8 @@ class DetailDevisController extends Controller
      */
     public function destroy(string $id)
     {
+        $id=decrypt($id);
+        
         $produit=DetailDevis::find($id);
 
         $produit->delete();

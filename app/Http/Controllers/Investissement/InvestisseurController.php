@@ -58,7 +58,10 @@ class InvestisseurController extends Controller
             $agence_id=Auth::user()->agence_id;
             $societe_id=Auth::user()->societe_id;
             $data=$request->all();
-            //dd($data);
+            if($agence_id==0 || $agence_id==null){
+                return redirect('/investisseur')->with('danger',"Votre compte utilisateur n'est pas associé à une agence");
+            }else{
+                //dd($data);
             /**
              * insertion des données dans la table user
              */
@@ -74,6 +77,8 @@ class InvestisseurController extends Controller
                 'date_creation'=>$date_creation,
             ]);
             return redirect('/investisseur')->with('success','investisseur ajouté avec succès');
+            }
+            
     }
 
     /**

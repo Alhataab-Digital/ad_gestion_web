@@ -45,8 +45,8 @@ class UserController extends Controller
         $request->validated();
 
         $data=$request->all();
-        $societe_id=Auth::user()->societe_id;
-        $gestion_id=Auth::user()->gestion_id;
+        // $societe_id=Auth::user()->societe_id;
+        // $gestion_id=Auth::user()->gestion_id;
         /**
          * insertion des données dans la table user
          */
@@ -57,8 +57,8 @@ class UserController extends Controller
             'adresse'=>$data['adresse'],
             'password'=>Hash::make($data['password']),
             'terms'=>1,
-            'gestion_id'=>$gestion_id,
-            'societe_id'=>$societe_id,
+            'gestion_id'=>1,
+            'societe_id'=>1,
         ]);
 
         return response(

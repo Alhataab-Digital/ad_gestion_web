@@ -13,6 +13,7 @@ use App\Models\Devise;
 use App\Models\TypeReglement;
 use App\Models\Investisseur;
 use App\Models\OperationInvestisseur;
+use App\Models\OperationDividende;
 use App\Models\MouvementCaisse;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -27,7 +28,7 @@ class RetraitDividendeController extends Controller
         if(isset(Caisse::where('user_id',$id)->first(['id'])->id)){
                 $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
                 $caisse=Caisse::find($caisse_id);
-                $operations=OperationInvestisseur::where('user_id',$id)->where('sens_operation','sortie')->get();
+                $operations=OperationDividende::where('user_id',$id)->where('sens_operation','sortie')->get();
 
             return view('investissement.retrait_dividende',compact('operations','caisse'));
         }
@@ -48,7 +49,7 @@ class RetraitDividendeController extends Controller
     public function store(Request $request, $id)
     {
 
-
+        $id=decrypt($id);
         $investisseur=Investisseur::find($id);
 
        if(empty($request->montant)){
@@ -96,7 +97,7 @@ class RetraitDividendeController extends Controller
                     /**
                      * enregistrement de l'operation
                      */
-                    OperationInvestisseur::create([
+                    OperationDividende::create([
                         'montant_operation'=>$request->montant,
                         'sens_operation'=>'sortie',
                         'reglement_id'=>$request->reglement,
@@ -132,9 +133,9 @@ class RetraitDividendeController extends Controller
                     $caisse->update([
                         'compte'=>$montant_caisse,
                     ]);
-                    $id=Auth::user()->id;
+                    $user_id=Auth::user()->id;
 
-                    $operation=OperationInvestisseur::where('user_id',$id)->latest('id')->first();
+                    $operation=OperationDividende::where('user_id',$user_id)->latest('id')->first();
                     return redirect()->route('d_retrait.show',$operation)->with('success','operation effectuee avec succès');
 
 

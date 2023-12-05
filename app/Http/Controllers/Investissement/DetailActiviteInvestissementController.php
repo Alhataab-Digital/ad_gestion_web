@@ -13,6 +13,7 @@ use App\Models\Societe;
 use App\Models\Devise;
 use App\Models\Agence;
 use App\Models\Investisseur;
+use App\Models\Commande;
 use App\Models\TypeActiviteInvestissement;
 use App\Models\ActiviteInvestissement;
 use App\Models\DetailActiviteInvestissement;
@@ -23,6 +24,8 @@ use App\Models\SecteurDepense;
 use App\Models\OperationDepenseActivite;
 use App\Models\Livrer;
 use App\Models\OperationReglementFacture;
+use App\Models\Devis;
+use App\Models\Facture;
 
 class DetailActiviteInvestissementController extends Controller
 {
@@ -110,7 +113,7 @@ class DetailActiviteInvestissementController extends Controller
                     foreach($request->investisseur_id as $key=>$items ){
 
                         $investisseur['id']=$request->investisseur_id[$key];
-                        $investisseur['compte_investisseur']=round($taux_devise*$request->montant_restant[$key]);
+                        $investisseur['compte_investisseur']=round($request->montant_restant[$key]/$taux_devise);
 
                         Investisseur::where('id',$request->investisseur_id[$key])->update($investisseur);
 
@@ -162,25 +165,29 @@ class DetailActiviteInvestissementController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $id=decrypt($id);
         $user_id=Auth::user()->id;
         $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
             $caisse=Caisse::find($caisse_id);
             $agence_id=Auth::user()->agence_id;
-            $agence=Agence::find( $agence_id);
-        $devise=Devise::where('id', $agence->devise_id)->first();
         $activite_investissement=ActiviteInvestissement::find($id);
-
+        $agence=Agence::find( $activite_investissement->agence_id);
+        $devise=Devise::where('id', $agence->devise_id)->first();
         $detail_activite_investissements=DetailActiviteInvestissement::where('activite_investissement_id',$id)->get();
 
         $secteur_depenses=SecteurDepense::all();
+$factures=Facture::where('activite_id',$id)->get();
+        $facture_montant_total=Facture::where('activite_id',$id)->selectRaw('sum(montant_total) as total')->get();
+        $facture_montant_regler=Facture::where('activite_id',$id)->selectRaw('sum(montant_regle) as total')->get();
 
         $operation_depenses=OperationDepenseActivite::where('activite_investissement_id',$activite_investissement->id)->get();
-        $livraisons=Livrer::where('activite_id',$activite_investissement->id)->get();
+        $commandes=Commande::where('activite_id',$activite_investissement->id)->get();
         $reglements=OperationReglementFacture::where('activite_id',$activite_investissement->id)->get();
 
         return view('investissement.detail_activite_investissement', compact('activite_investissement',
-        'caisse','detail_activite_investissements','secteur_depenses','operation_depenses','devise','livraisons', 'reglements'
+        'caisse','detail_activite_investissements','secteur_depenses',
+        'operation_depenses','devise','commandes', 'reglements',
+        'facture_montant_total','facture_montant_regler','factures'
         ));
     }
 

@@ -88,7 +88,7 @@ class DetailFactureController extends Controller
             }
             return back()->with('danger',"La quantité stock est insuffisante");
         }
-        return back()->with('danger',"Veillez choisir entrepot");;
+        return back()->with('danger',"Vous n'avez pas de produit dans l'entrepot");;
         
             //  $facture=Facture::find($request->facture_id);
             //  $facture->update([
@@ -122,7 +122,7 @@ class DetailFactureController extends Controller
      */
     public function show(string $id)
     {
-        ///
+        $id=decrypt($id);
         $facture=Facture::find($id);
         $detail_factures=DetailFacture::where('facture_id',$facture->id)->get();
         $total_ht=DetailFacture::where('facture_id',$facture->id)->selectRaw('sum(quantite_vendue*prix_unitaire_vendu) as total')->first('total');
@@ -151,6 +151,7 @@ class DetailFactureController extends Controller
      */
     public function destroy(string $id)
     {
+        $id=decrypt($id);
         $produit=DetailFacture::find($id);
 
         $produit->delete();

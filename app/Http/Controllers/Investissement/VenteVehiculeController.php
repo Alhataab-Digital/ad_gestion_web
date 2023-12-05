@@ -209,6 +209,7 @@ class VenteVehiculeController extends Controller
 
     public function valider($id)
     {
+        $id=decrypt($id);
         $user_id=Auth::user()->id;
         $operation_vente=OperationVehiculeVendu::find($id);
         $activite_ouvert=ActiviteVehicule::find($operation_vente->activite_id);

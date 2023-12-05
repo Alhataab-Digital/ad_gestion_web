@@ -107,7 +107,7 @@
 
                   <td>{{ $operation->date_comptable}}</td>
                   <td>
-                      <a href="{{ route('i_versement.show',$operation->id) }}">
+                      <a href="{{ route('i_versement.show',encrypt($operation->id)) }}">
                           <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
                       </a>
                       {{-- <a href="">

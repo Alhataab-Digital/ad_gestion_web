@@ -6,7 +6,7 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>REPARTISSION DIVIDENTE SUR L'ACTIVITE {{ $activite_investissement->type_activite->type_activite }}</h1>
+      <h1>REDEMARRAGE ACTIVITE INVESTISSEMENT</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="">Accueil</a></li>
@@ -27,9 +27,8 @@
                   <div class="card-body">
                     <h5 class="card-title">
                        <div class="col-sm-12">
-                               
-                                
-                                <p>
+                       {{'Activite N° '.$activite_investissement->id.' : '.$activite_investissement->type_activite->type_activite }}
+                          <p>
                                     @if ($message=Session::get('success'))
                                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                                     <i class="bi bi-check-circle me-1"></i>
@@ -48,24 +47,33 @@
                         </div>
                     </h5>
                     <hr>
+                    <form method="post" action="{{ route('activite_investissement.initier') }}">
+                    @csrf 
                     <h5 class="bg-secondary text-white">
-                        <table>
+                    
+                    <table class="table text-white ">
                             <tr>
-                                {{-- <th>Capital activité</th> --}}
+                                <th>Capital activité</th>
                                 {{-- <th>Montant activite</th> --}}
-                                <th>Montant total activite</th>
+                                <th>Montant total recette</th>
                                 <th>Montant total depense</th>
-                                <th>Montant total benefice</th>
+                                <th>Montant total disponible</th>
                             </tr>
                             <tr>
                                 <td>
-                                    <input class="form-control" type="text" name="" id="total_activite" value="{{$activite_investissement->compte_activite}}" required>
+                                   <input class="form-control" type="text" name="montant_decaisse" id="" value="{{ $activite_investissement->montant_decaisse }}" >
+                                </td>
+                                <td>
+                                    <input class="form-control" type="text" onkeyup="prixU()" name="" value="{{$activite_investissement->montant_recette}}" id=""  readonly>
                                 </td>
                                 <td>
                                     <input class="form-control" type="text" onkeyup="prixU()" name="" value="{{$activite_investissement->total_depense}}" id="total_depense"  readonly>
                                 </td>
                                 <td>
-                                    <input class="form-control" type="text" onkeyup="prixU()" name="" id="montant_benefice" value="{{$activite_investissement->compte_activite-$activite_investissement->montant_decaisse}}" readonly>
+                                    <input class="form-control" type="text" name="" id="total_activite" value="{{$activite_investissement->compte_activite}}" readonly>
+                                </td>
+                                <td>
+                                    <input class="form-control" type="hidden" onkeyup="prixU()" name="" id="montant_benefice" value="{{$activite_investissement->compte_activite-$activite_investissement->montant_decaisse}}" readonly>
                                 </td>
                                 <td>
                                     <input class="form-control" type="hidden" name="montant_activite" id="" value="{{ $activite_investissement->montant_decaisse }}" readonly>
@@ -76,22 +84,16 @@
                                 </td>
                             </tr>
                             <br>
-                        </table>
+                    </table>
                     </h5>
                     <hr><br>
-                    
-                    
-                    <form method="post" action="{{ route('activite_investissement.initier') }}">
-                    @csrf  
-                        <table class="table table-borderless datatable">
+                    <table class="table table-borderless datatable"> 
                                 
                                     <input class="form-control" type="hidden" name="compte_activite" id="total_activite" value="{{$activite_investissement->compte_activite}}" required>
                                 
                                     <input class="form-control" type="hidden"  name="total_depense" value="{{$activite_investissement->total_depense}}" id="total_depense"  >
                                 
                                     <input class="form-control" type="hidden"  name="montant_benefice" id="montant_benefice" value="{{$activite_investissement->compte_activite-$activite_investissement->montant_decaisse}}">
-                                
-                                    <input class="form-control" type="hidden" name="montant_decaisse" id="" value="{{ $activite_investissement->montant_decaisse }}" >
                                 
                                     <input class="form-control"  type="hidden" name="activite_id" id="" value="{{ $activite_investissement->id }}" >
                                     

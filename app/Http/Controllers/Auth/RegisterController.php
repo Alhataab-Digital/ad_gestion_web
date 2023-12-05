@@ -15,7 +15,7 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        $gestions=TypeGestion::all();
+        $gestions=TypeGestion::orderBy('gestion')->get();
         return view('auth.registre',compact('gestions'));
     }
 

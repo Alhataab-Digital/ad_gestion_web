@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('client_id')->nullable();
             $table->string('user_id');
+            $table->string('activite_id')->default('0');
             $table->string('montant_total')->default('0');
             $table->string('agence_id');
             $table->string('etat')->nullable();

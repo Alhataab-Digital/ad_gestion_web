@@ -75,6 +75,7 @@ class NatureOperationChargeController extends Controller
      */
     public function edit(string $id)
     {
+        $id=decrypt($id);
         $nature_operation_charge=NatureOperationCharge::find($id);
         return view('investissement.nature_operation_charge_edit',compact('nature_operation_charge'));
     }
@@ -84,6 +85,7 @@ class NatureOperationChargeController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $id=decrypt($id);
         /**
         * validation des champs de saisie
         */

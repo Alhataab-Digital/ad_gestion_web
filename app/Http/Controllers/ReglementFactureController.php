@@ -60,6 +60,7 @@ class ReglementFactureController extends Controller
 
     public function paiement_facture($id)
     {
+        $id=decrypt($id);
         $facture=Facture::find($id);
         $societe_id=Auth::user()->societe_id;
         $agence_id=Auth::user()->agence_id;
@@ -75,8 +76,10 @@ class ReglementFactureController extends Controller
         $reglement_facture=ReglementFacture::where('facture_id',$facture->id)->first();
         $operations=OperationReglementFacture::where('facture_id',$facture->id)->get();
         $activite_investissements=ActiviteInvestissement::where("agence_id",$agence_id)->where('etat_activite','valider')->get();
-                
-        return view('e-commerce.paiement_facture',compact('facture','reglement_facture','reglements','operations','client','activite_investissements'));
+        $detail_factures=DetailFacture::where('facture_id',$facture->id)->get();
+        $total_ht=DetailFacture::where('facture_id',$facture->id)->selectRaw('sum(quantite_vendue*prix_unitaire_vendu) as total')->first('total');
+               
+        return view('e-commerce.paiement_facture',compact('facture','reglement_facture','reglements','operations','client','activite_investissements','detail_factures','total_ht'));
     }
     /**
      * Show the form for creating a new resource.
@@ -105,12 +108,10 @@ class ReglementFactureController extends Controller
                 if($request->reglement==0 ){
                     return back()->with('danger',"Veillez remplir le mode reglement de l'operation");
                 }else{
-                    $montant_restant=$facture->montant_total-$reglement_facture->montant_regle;
-                    // dd($montant_restant);
-                    
+                  
                     if( $facture->montant_total==$reglement_facture->montant_regle)
                     {
-                    dd('deja');
+                        return back()->with('danger',"Montant deja reglé");
                     }else{
                         
                             $user_id=Auth::user()->id;
@@ -121,11 +122,10 @@ class ReglementFactureController extends Controller
                                 $compte_caisse= Caisse::where('user_id',$user_id)->first(['compte'])->compte;
                                 $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
                                 
-                            
-                                if($facture->montant_total<$request->montant)
+                            // Si le montant de la facture est inferieur ou egale au montant saisie
+                                if($facture->montant_total<=$request->montant )
                                 {
-
-                                    $montant_regle=$facture->montant_total-$reglement_facture->montant_regle;
+                                    $montant_regle=$facture->montant_total;
                                     $montant_operation=$montant_regle;
 
                                     // dd($montant_regle);
@@ -146,7 +146,8 @@ class ReglementFactureController extends Controller
                                         'facture_id'=>$facture->id,
                                     ]);
                                     $facture->update([
-                                        'etat'=>'regler',
+                                        'etat'=>'terminer',
+                                        'montant_regle'=>$montant_regle,
                                     ]);
 
                                     /**
@@ -154,13 +155,14 @@ class ReglementFactureController extends Controller
                                      */
                                     $activite_investissement=ActiviteInvestissement::find($request->activite);
                                     $activite_investissement->update([
-                                        'compte_activite'=>$activite_investissement->compte_activite+$montant_regle,
+                                        'compte_activite'=>$activite_investissement->compte_activite+$montant_operation, 
+                                        'total_recette'=>$activite_investissement->total_recette+$montant_operation
                                     ]);
                                     /**
                                      * mise a jour de la caisse
                                     */
                     
-                                    $compte=$compte_caisse +$montant_operation;
+                                    $compte=$compte_caisse + $montant_operation;
                     
                                         $caisse=Caisse::find($caisse_id);
                     
@@ -169,7 +171,7 @@ class ReglementFactureController extends Controller
                                     MouvementCaisse::create([
                                     'caisse_id'=>$caisse->id,
                                     'user_id'=>$user_id,
-                                    'description'=>'paiement facture =>'.$request->facture_id,
+                                    'description'=>'reglement facture N° '.$request->facture_id,
                                     'entree'=>$montant_operation,
                                     'solde'=>$compte,
                                     'date_comptable'=>$date_comptable
@@ -186,75 +188,146 @@ class ReglementFactureController extends Controller
                                     //  return redirect()->route('i_versement.show',$operation)->with('success','operation effectuee avec succès');
                                 
 
-                                }else{
-
-                                    $montant_regle=$reglement_facture->montant_regle+$request->montant;
-                                    $montant_operation=$request->montant;
-
-                                    $montant_caisse=$compte_caisse+$montant_operation;
-                                    // dd($montant_regle);
-                                    // dd($montant_investisseur);
-                                    /**
-                                     * mise a jour du client
-                                    */
-                                    $reglement_facture->update([
-                                        'montant_regle'=>$montant_regle,
-                                    ]);
-                                    /**
-                                    * enregistrement de l'operation
-                                    */
-                                    OperationReglementFacture::create([
-                                        'montant_operation'=>$montant_operation,
-                                        'type_reglement_id'=>$request->reglement,
-                                        'activite_id'=>$request->activite,
-                                        'facture_id'=>$facture->id,
-                                    ]);
-                                    if($reglement_facture->montant_regle==$facture->montant_total)
-                                    {
-                                        $facture->update([
-                                            'etat'=>'terminer',
-                                        ]);
-                                    }else{
-                                        $facture->update([
-                                            'etat'=>'echeance',
-                                        ]);
-                                    }
-                                    /**
-                                     * mise a jour activite investissement
-                                     */
-                                    $activite_investissement=ActiviteInvestissement::find($request->activite);
-
-                                    $activite_investissement->update([
-                                        'compte_activite'=>$activite_investissement->compte_activite+$montant_regle,
-                                        'total_recette'=>$activite_investissement->total_recette+$montant_regle
-                                    ]);
-                                    /**
-                                     * mise a jour de la caisse
-                                    */
-                    
-                                    $compte=$compte_caisse + $montant_operation;
-                    
-                                        $caisse=Caisse::find($caisse_id);
-                    
-                                    $user_id=Auth::user()->id;
-                    
-                                    MouvementCaisse::create([
-                                    'caisse_id'=>$caisse->id,
-                                    'user_id'=>$user_id,
-                                    'description'=>'paiement facture =>'.$request->facture_id,
-                                    'entree'=>$montant_operation,
-                                    'solde'=>$compte,
-                                    'date_comptable'=>$date_comptable
-                    
-                                    ]);
-                        
-                                    $caisse->update([
-                                        'compte'=>$compte,
-                                    ]);
-
-                                    // $id=Auth::user()->id;
-                                    return back();
                                 }
+                                //si non si le montant à regle est superieur à Zero
+                                elseif(($facture->montant_total-$reglement_facture->montant_regle) > 0){
+
+                                   $reste_a_payer=$facture->montant_total-$reglement_facture->montant_regle;
+
+                                    //si le reste à payer est supperieur au montant saisie
+                                    if ( $reste_a_payer > $request->montant) {
+                                        // dd('le reste à payer est supperieur au montant saisie');
+                                        $montant_regle=$reglement_facture->montant_regle+$request->montant;
+                                         $montant_operation=$request->montant;
+                                         $montant_caisse=$compte_caisse+$montant_operation;
+                                         // dd($montant_regle);
+                                         // dd($montant_investisseur);
+                                         /**
+                                          * mise a jour du client
+                                         */
+                                         $reglement_facture->update([
+                                             'montant_regle'=>$montant_regle,
+                                         ]);
+                                         /**
+                                         * enregistrement de l'operation
+                                         */
+                                         OperationReglementFacture::create([
+                                             'montant_operation'=>$montant_operation,
+                                             'type_reglement_id'=>$request->reglement,
+                                             'activite_id'=>$request->activite,
+                                             'facture_id'=>$facture->id,
+                                         ]);
+     
+                                             $facture->update([
+                                                 'etat'=>'echeance',
+                                                 'montant_regle'=>$montant_regle,
+                                             ]);
+                                         /**
+                                          * mise a jour activite investissement
+                                          */
+                                         $activite_investissement=ActiviteInvestissement::find($request->activite);
+     
+                                         $activite_investissement->update([
+                                             'compte_activite'=>$activite_investissement->compte_activite+$montant_operation,
+                                             'total_recette'=>$activite_investissement->total_recette+$montant_operation
+                                         ]);
+                                         /**
+                                          * mise a jour de la caisse
+                                         */
+                         
+                                         $compte=$compte_caisse + $montant_operation;
+                         
+                                             $caisse=Caisse::find($caisse_id);
+                         
+                                         $user_id=Auth::user()->id;
+                         
+                                         MouvementCaisse::create([
+                                         'caisse_id'=>$caisse->id,
+                                         'user_id'=>$user_id,
+                                         'description'=>'paiement facture =>'.$request->facture_id,
+                                         'entree'=>$montant_operation,
+                                         'solde'=>$compte,
+                                         'date_comptable'=>$date_comptable
+                         
+                                         ]);
+                             
+                                         $caisse->update([
+                                             'compte'=>$compte,
+                                         ]);
+     
+                                         // $id=Auth::user()->id;
+                                         return back();
+                                    }
+                                     //si non le reste à payer est inferieur ou egale au montant saisie 
+                                    elseif ( $reste_a_payer <= $request->montant){
+                                        // dd('le reste à payer est inferieur ou egale au montant saisie '.$reste_a_payer);
+
+                                         $montant_regle=$reglement_facture->montant_regle+$reste_a_payer;
+                                         $montant_operation=$reste_a_payer;
+                                         $montant_caisse=$compte_caisse+$montant_operation;
+                                        
+                                         $reglement_facture->update([
+                                            'montant_regle'=>$montant_regle,
+                                        ]);
+                                         /**
+                                         * enregistrement de l'operation
+                                         */
+                                         OperationReglementFacture::create([
+                                             'montant_operation'=>$montant_operation,
+                                             'type_reglement_id'=>$request->reglement,
+                                             'activite_id'=>$request->activite,
+                                             'facture_id'=>$facture->id,
+                                         ]);
+
+                                          $facture->update([
+                                                 'etat'=>'terminer',
+                                                 'montant_regle'=>$montant_regle,
+                                             ]);
+     
+                                         
+                                         /**
+                                          * mise a jour activite investissement
+                                          */
+                                         $activite_investissement=ActiviteInvestissement::find($request->activite);
+     
+                                         $activite_investissement->update([
+                                             'compte_activite'=>$activite_investissement->compte_activite+$montant_operation,
+                                             'total_recette'=>$activite_investissement->total_recette+$montant_operation
+                                         ]);
+                                         /**
+                                          * mise a jour de la caisse
+                                         */
+                         
+                                         $compte=$compte_caisse + $montant_operation;
+                         
+                                             $caisse=Caisse::find($caisse_id);
+                         
+                                         $user_id=Auth::user()->id;
+                         
+                                         MouvementCaisse::create([
+                                         'caisse_id'=>$caisse->id,
+                                         'user_id'=>$user_id,
+                                         'description'=>'paiement facture =>'.$request->facture_id,
+                                         'entree'=>$montant_operation,
+                                         'solde'=>$compte,
+                                         'date_comptable'=>$date_comptable
+                         
+                                         ]);
+                             
+                                         $caisse->update([
+                                             'compte'=>$compte,
+                                         ]);
+     
+                                        
+                                         // $id=Auth::user()->id;
+                                         return back();
+                                    }
+
+                                    }else
+                                    // si non si le montant saisie est supperieur au montant à reglé
+                                    {
+                                        return back()->with('danger',"Erreur reglement");
+                                    }
                                 
                             }
                         

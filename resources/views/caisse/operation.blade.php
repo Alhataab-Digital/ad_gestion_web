@@ -61,6 +61,9 @@
                            Fermer la caisse
                           </button>
                         </h5>
+                         <!-- Vertical Form -->
+                         <form class="row g-3" method="post" action="{{ route('caisse.fermeture',$caisse->id) }}" >
+                                    @csrf
                           <div class="modal fade" id="Fermer" tabindex="-1">
                             <div class="modal-dialog">
                               <div class="modal-content" style="background-color: silver">
@@ -68,10 +71,6 @@
                                   <h5 class="modal-title">Ajouter caisse</h5>
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-
-                                <!-- Vertical Form -->
-                                <form class="row g-3" method="post" action="{{ route('caisse.fermeture',$caisse->id) }}" >
-                                    @csrf
                                 <div class="modal-body" >
                                    <div class="col-12">
                                         <label for="inputEmail4" class="form-label">Date de fermeture</label>
@@ -83,10 +82,12 @@
                                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Quitter</button>
 
                                 </div>
-                            </form><!-- Vertical Form -->
+                            
                               </div>
                             </div>
-                          </div><!-- End Basic Modal-->
+                          </div>
+                          </form><!-- Vertical Form -->
+                          <!-- End Basic Modal-->
                           </P>
 
                         </div>
@@ -103,6 +104,9 @@
                             Ouvrer la caisse
                           </button>
                         </h5>
+                        <!-- Vertical Form -->
+                        <form class="row g-3" method="post" action="{{ route('caisse.ouverture',$caisse->id) }}" >
+                                    @csrf
                           <div class="modal fade" id="Fermer" tabindex="-1">
                             <div class="modal-dialog">
                               <div class="modal-content" style="background-color: silver">
@@ -111,9 +115,7 @@
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
 
-                                <!-- Vertical Form -->
-                                <form class="row g-3" method="post" action="{{ route('caisse.ouverture',$caisse->id) }}" >
-                                    @csrf
+                                
                                 <div class="modal-body" >
                                    <div class="col-12">
                                         <label for="inputEmail4" class="form-label">Date d'ouverture</label>
@@ -124,12 +126,12 @@
                                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Quitter</button>
 
                                 </div>
-                            </form><!-- Vertical Form -->
+                            
                               </div>
                             </div>
                           </div><!-- End Basic Modal-->
+                          </form><!-- Vertical Form -->
                           </P>
-
                         </div>
                     </div>
 

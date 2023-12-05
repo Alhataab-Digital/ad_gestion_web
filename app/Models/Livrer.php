@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\client;
 use App\Models\EntrepotStock;
+use App\Models\Commande;
 
 class Livrer extends Model
 {
@@ -15,7 +16,6 @@ class Livrer extends Model
         'commande_id',
         'fournisseur_id',
         'entrepot_id',
-        'activite_id',
         'user_id',
         'montant_total',
         'agence_id',
@@ -30,5 +30,10 @@ class Livrer extends Model
     public function entrepot()
     {
         return $this->belongsTo(EntrepotStock::class);
+    }
+
+    public function commande()
+    {
+        return $this->belongsTo(Commande::class);
     }
 }

@@ -13,6 +13,7 @@ use App\Models\Investisseur;
 use App\Models\ActiviteInvestissement;
 use App\Models\ActiviteVehicule;
 use App\Models\Caisse;
+use App\Models\Facture;
 
 class HomeController extends Controller
 {
@@ -26,27 +27,68 @@ class HomeController extends Controller
         $id=Auth::user()->id;
 
         $societe=Societe::where('admin_id',$id)->first();
-
         $societe_id=Auth::user()->societe_id;
         $agence_id=Auth::user()->agence_id;
+        
         $devises=Devise::where('societe_id',$societe_id)->get();
         if(isset(Auth::user()->role_id)){
             $role=Auth::user()->role_id;
             if($role==1 || $role==0){
+
+                $facture_non_valider=Facture::where('agence_id',$agence_id)->where('etat','encours')->count();
+                $total_non_valider=Facture::where('agence_id',$agence_id)->where('etat','encours')->selectRaw('sum(montant_total) as total')->first('total');
+         
+                $facture_impayer=Facture::where('agence_id',$agence_id)->where('etat','Valider')->where('etat','echance')->count();
+                $total_impayer=Facture::where('agence_id',$agence_id)->where('etat','Valider')->where('etat','echance')->selectRaw('sum(montant_total) as total')->first('total');
+         
+                $facture_payer=Facture::where('agence_id',$agence_id)->where('etat','terminer')->count();
+                $total_payer=Facture::where('agence_id',$agence_id)->where('etat','terminer')->selectRaw('sum(montant_total) as total')->first('total');
+         
                 
+
+
                 $count_user=Utilisateur::where('societe_id',$societe_id)->count();
+                $montant_total_caisse_agence=Caisse::where('agence_id',$agence_id)->selectRaw('sum(compte)as total')->first('total');
+         
+
                 $count_investisseur=Investisseur::where('agence_id',$agence_id)->count();
-                $count_activite=ActiviteInvestissement::where('agence_id',$agence_id)->where('etat_activite','!=','annuler')->count();
+                $activite_non_valider=ActiviteInvestissement::where('agence_id',$agence_id)->where('etat_activite','encours')->count();
+                $activite_encours=ActiviteInvestissement::where('agence_id',$agence_id)->where('etat_activite','valider')->count();
+                $activite_terminer=ActiviteInvestissement::where('agence_id',$agence_id)->where('etat_activite','terminer')->count();
+        
                 $count_activite_vehicule=ActiviteVehicule::where('agence_id',$agence_id)->where('etat_activite','!=','annuler')->count();
-                return view('home', compact('societe','devises','count_investisseur','count_user','count_activite','count_activite_vehicule'));
+                return view('home', compact('societe','devises','count_investisseur','count_user','count_activite_vehicule',
+                'activite_non_valider','activite_encours','activite_terminer','montant_total_caisse_agence',
+                'facture_non_valider','facture_impayer','facture_payer','total_payer','total_impayer','total_non_valider'));
             }
         }
         
-        $count_user=Utilisateur::where('societe_id',$societe_id)->where('role_id','!=',1)->Where('role_id','!=',0)->count();
+                $facture_non_valider=Facture::where('agence_id',$agence_id)->where('etat','encours')->count();
+                $total_non_valider=Facture::where('agence_id',$agence_id)->where('etat','encours')->selectRaw('sum(montant_total) as total')->first('total');
+         
+                $facture_impayer=Facture::where('agence_id',$agence_id)->where('etat','Valider')->where('etat','echance')->count();
+                $total_impayer=Facture::where('agence_id',$agence_id)->where('etat','Valider')->where('etat','echance')->selectRaw('sum(montant_total) as total')->first('total');
+         
+                $facture_payer=Facture::where('agence_id',$agence_id)->where('etat','terminer')->count();
+                $total_payer=Facture::where('agence_id',$agence_id)->where('etat','terminer')->selectRaw('sum(montant_total) as total')->first('total');
+         
+
+
+        $count_user=Utilisateur::where('agence_id',$agence_id)->where('role_id','!=',1)->Where('role_id','!=',0)->count();
+        $montant_total_caisse_agence=Caisse::where('agence_id',$agence_id)->selectRaw('sum(compte)as total')->first('total');
+
         $count_investisseur=Investisseur::where('agence_id',$agence_id)->count();
-        $count_activite=ActiviteInvestissement::where('agence_id',$agence_id)->where('etat_activite','!=','annuler')->count();
+        $activite_non_valider=ActiviteInvestissement::where('agence_id',$agence_id)->where('etat_activite','encours')->count();
+        $activite_encours=ActiviteInvestissement::where('agence_id',$agence_id)->where('etat_activite','valider')->count();
+        $activite_terminer=ActiviteInvestissement::where('agence_id',$agence_id)->where('etat_activite','terminer')->count();
+
         $count_activite_vehicule=ActiviteVehicule::where('agence_id',$agence_id)->where('etat_activite','!=','annuler')->count();
-        return view('home', compact('societe','devises','count_investisseur','count_user','count_activite','count_activite_vehicule'));
+
+        return view('home', compact('societe','devises','count_investisseur','count_user','count_activite_vehicule',
+        'activite_non_valider','activite_encours','activite_terminer','montant_total_caisse_agence',
+        'facture_non_valider','facture_impayer','facture_payer','total_payer','total_impayer','total_non_valider')
+    
+        );
     }
         return redirect('/auth')->with('danger',"Session expirée");
     }
@@ -65,6 +107,7 @@ class HomeController extends Controller
      */
     public function store( $id)
     {
+        
         $utilisateur=Utilisateur::findOrFail($id);
 
         $societe=Societe::where('admin_id',$id)->first();

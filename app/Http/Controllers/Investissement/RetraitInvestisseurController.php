@@ -24,11 +24,11 @@ class retraitInvestisseurController extends Controller
      */
     public function index()
     {
-        $id=Auth::user()->id;
-        if(isset(Caisse::where('user_id',$id)->first(['id'])->id)){
-                $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
+        $user_id=Auth::user()->id;
+        if(isset(Caisse::where('user_id',$user_id)->first(['id'])->id)){
+                $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
                 $caisse=Caisse::find($caisse_id);
-                $operations=OperationInvestisseur::where('user_id',$id)->where('sens_operation','sortie')->get();
+                $operations=OperationInvestisseur::where('user_id',$user_id)->where('sens_operation','sortie')->get();
 
             return view('investissement.retrait',compact('operations','caisse'));
         }
@@ -49,7 +49,7 @@ class retraitInvestisseurController extends Controller
     public function store(Request $request, $id)
     {
 
-
+        $id=decrypt($id);
         $investisseur=Investisseur::find($id);
 
        if(empty($request->montant)){
@@ -105,7 +105,7 @@ class retraitInvestisseurController extends Controller
                         'sens_operation'=>'sortie',
                         'reglement_id'=>$request->reglement,
                         'caisse_id'=>$caisse_id,
-                        'investisseur_id'=>$id,
+                        'investisseur_id'=>$investisseur->id,
                         'user_id'=>$user_id,
                         'date_comptable'=>$date_comptable,
 
@@ -131,15 +131,11 @@ class retraitInvestisseurController extends Controller
 
                     ]);
 
-
-
                     $caisse->update([
                         'compte'=>$montant_caisse,
                     ]);
-                    $id=Auth::user()->id;
-
-                    $operation=OperationInvestisseur::where('user_id',$id)->latest('id')->first();
-                    return redirect()->route('i_retrait.show',$operation)->with('success','operation effectuee avec succès');
+                    $operation=OperationInvestisseur::where('user_id',$user_id)->latest('id')->first();
+                    return redirect()->route('i_retrait.show',encrypt($operation->id))->with('success','operation effectuee avec succès');
 
 
                 }
@@ -163,7 +159,7 @@ class retraitInvestisseurController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $id=decrypt($id);
             $operation=OperationInvestisseur::find($id);
         return view('investissement.operation_retrait_detail',compact('operation'));
     }
@@ -229,6 +225,7 @@ class retraitInvestisseurController extends Controller
 
     public function print( $id)
     {
+        $id=decrypt($id);
         $operation=OperationInvestisseur::find($id);
         // return view('investissement.operation_versement_detail',compact('operation'));
 

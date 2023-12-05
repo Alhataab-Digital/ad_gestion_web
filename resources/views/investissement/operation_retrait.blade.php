@@ -58,7 +58,7 @@ hello
                     @if ($caisse->etat==1 && $caisse->date_comptable == date("Y-m-d"))
 
                     <!-- No Labels Form -->
-                    <form class="row g-3" method="post" action="{{ route('i_retrait.store',$investisseur->id) }}">
+                    <form class="row g-3" method="post" action="{{ route('i_retrait.store',encrypt($investisseur->id)) }}">
                         @csrf
                        <div class="col-md-6">
                             <input type="text" name="nom" value="{{ $investisseur->nom }}" class="form-control" placeholder="Nom">

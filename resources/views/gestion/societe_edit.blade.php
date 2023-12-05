@@ -41,7 +41,7 @@
                 </h5>
 
                 <!-- Browser Default Validation -->
-                <form class="row g-3" method="post" action="{{route('workspace.update',$societe->id)}}">
+                <form class="row g-3" method="post" action="{{route('workspace.update',encrypt($societe->id))}}">
                     @csrf
                     <div class="col-md-12">
                         <label for="validationDefault01" class="form-label">Raison sociale <span style="color:red">*</span></label>

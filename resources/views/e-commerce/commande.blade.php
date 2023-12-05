@@ -77,13 +77,14 @@
                                         <th scope="row">{{ $commande->etat }}</th>
                                         <td>
                                            @if($commande->etat==Null)
-                                           <a href="{{ route('commande.edit',$commande->id) }}">
-                                            <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
+                                           <a href="{{ route('commande.edit',encrypt($commande->id)) }}">
+                                           <button type="button" class="btn btn-info"><i class="ri ri-edit-line"></i></button>
                                             </a>
                                            @endif
+                                          
                                            @if($commande->etat!=Null)
-                                           <a href="{{ route('detail_commande.show',$commande->id) }}">
-                                            <button type="button" class="btn btn-secondary"><i class="bi bi-edit"></i></button>
+                                           <a href="{{ route('detail_commande.show',encrypt($commande->id)) }}">
+                                            <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
                                             </a>
                                            @endif
                                         </td>

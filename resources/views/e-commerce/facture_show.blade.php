@@ -5,7 +5,7 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>facture</h1>
+      <h1>FACTURE DE PRODUIT ET SERVICE</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
@@ -23,7 +23,7 @@
             <div class="card-body">
 
                 <h5 class="card-title ">
-                    facture N° 000{{ $facture->id }}
+                Facture N° {{ $facture->id .'/'.\Carbon\Carbon::parse($facture->created_at )->format('d/m/Y')}}
                     <div class="text-end">
                         <a  href="{{route('facture')}}">
                             <button class=" btn btn-secondary "><i class="bi bi-box-arrow-right"></i></button>
@@ -35,20 +35,31 @@
               <form method="post" action="">
                 @csrf
                 <!-- Browser Default Validation -->
-                    
-                  <div class="col mb-3">
-                    <label for="inputText" class="col-sm-2 col-form-label">Entrepot</label>
-                    <div class="col-sm-3">
-                        <input class="form-control"  type="text" name="montant_decaisser" value="{{ $facture->entrepot_stock->nom_entrepot  }}" class="form-control">
+                <div class="bg-secondary text-white " style="text-align: center">
+                          <hr>Entrepot & activité utilisé<hr>
+                </div>
+                <table  class="table table-borderless ">
+                            <tr>
+                                        
+                              <th>
+                                <label for="inputText" class="col-sm-2 col-form-label">Entrepot </label>
+                                <div class="">
+                                    <input class="form-control"  type="text" name="montant_decaisser" value="{{ $facture->entrepot_stock->nom_entrepot  }}" class="form-control">
+                                </div>
+                              </th>
+                              <th>
+                                  <label for="inputText" class="col-sm-2 col-form-label">Activite</label>
+                                  <div class="">
+                                      <input class="form-control"  type="text" name="" value="{{ 'Activite N°  '. $facture->devis->activite_id.' : '.$facture->devis->activite->type_activite->type_activite  }}" class="form-control">
+                                  </div>
+                              </th>          
+                            </tr>
+                      </table>
+                    <div class="bg-secondary text-white " style="text-align: center">
+                          <hr>Produit facturé<hr>
                     </div>
-                    </div>
-                    <div class="col-md-4">
-                      <label for="validationDefault01" class="form-label">Client</label>
-                      <input type="text" class="form-control" name="client" id="client" value="{{ $facture->client->nom_client}}">
-                    </div>
-                  <br>
-                  <hr>
                   <div >
+                  
                       <!-- Table with stripped rows -->
                       <table class="table table-borderless " >
                           <thead class="bg-primary text-white ">
@@ -113,6 +124,27 @@
                 <!-- End Browser Default Validation -->
 
               </form>
+              <div class="bg-secondary text-white " style="text-align: center">
+                          <hr>Info client<hr>
+                          </div>
+                          
+                          <table  class="table table-borderless ">
+                            <tr>
+                                        
+                              <th>
+                                  <label for="inputText" class="col-sm-6 col-form-label">Client</label>
+                                  <input class="form-control"  type="text"  value="{{ $facture->client->nom_client }}" class="form-control">            
+                              </th>
+                              <th>
+                                  <label for="inputText" class="col-sm-6 col-form-label">Telephone</label>
+                                  <input class="form-control"  type="text"  value="{{ $facture->client->telephone  }}" class="form-control">            
+                              </th>
+                              <th>
+                                  <label for="inputText" class="col-sm-6 col-form-label">Adresse</label>
+                                  <input class="form-control"  type="text"  value="{{ $facture->client->adresse  }}" class="form-control">             
+                              </th>           
+                            </tr>
+                          </table>
               <div class="text-end" >
 
                 <a href="{{ route('facture.print',$facture->id) }}">

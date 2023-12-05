@@ -84,7 +84,7 @@ hello
                             <input type="text" value="{{ $operation->created_at }}" class="form-control" placeholder="Zip">
                         </div>
                         <div class="text-center">
-                            <a href="{{ route('i_versement.print',$operation->id) }}">
+                            <a href="{{ route('i_versement.print',encrypt($operation->id)) }}">
                             <div class="btn btn-primary"> Imprimer</div>
                             </a>
                             <a href="{{ route('i_versement') }}">

@@ -21,14 +21,12 @@ class RegisterRequeste extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        return  [
                 'nom'=>'required',
                 'prenom'=>'required',
                 'email'=>'required|email|unique:utilisateurs',
                 'adresse'=>'required',
                 'password'=>'required|min:4',
-                'terms'=>'required',
-                'gestion'=>'required',
         ];
         
     }

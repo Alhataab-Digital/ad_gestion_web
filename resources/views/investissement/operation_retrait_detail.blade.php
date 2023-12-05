@@ -42,7 +42,7 @@ hello
                         </p>
                     <!-- No Labels Form -->
                     <form class="row g-3" method="post" action="">
-                        @csrf
+                        
                        <div class="col-md-6">
                             <input type="text" name="nom" value="{{ $operation->investisseur->nom }}" class="form-control" placeholder="Nom">
                         </div>
@@ -83,7 +83,7 @@ hello
                             <input type="text" value="{{ $operation->created_at }}" class="form-control" placeholder="Zip">
                         </div>
                         <div class="text-center">
-                            <a href="{{ route('i_retrait.print',$operation->id) }}">
+                            <a href="{{ route('i_retrait.print',encrypt($operation->id)) }}">
                             <div class="btn btn-primary"> Imprimer</div>
                             </a>
                             <a href="{{ route('i_retrait') }}">

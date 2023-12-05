@@ -43,15 +43,15 @@
                             <input type="hidden" name="societe_id" value="{{ Auth::user()->societe_id }}" class="form-control" id="inputNanme4">
                         </div>
                         <div class="col-12">
-                            <label for="inputNanme4" class="form-label">Monnaie</label>
+                            <label for="inputNanme4" class="form-label">Devise</label>
                             <input type="text" name="monnaie" class="form-control" id="inputNanme4">
                         </div>
                         <div class="col-12">
-                            <label for="inputNanme4" class="form-label">Devise</label>
+                            <label for="inputNanme4" class="form-label">Unite</label>
                             <input type="text" name="devise" class="form-control" id="inputNanme4">
                         </div>
                         <div class="col-12">
-                            <label for="inputAddress" class="form-label">Unite</label>
+                            <label for="inputAddress" class="form-label">Symbole</label>
                             <input type="text" name="unite" class="form-control" id="inputAddress" >
                         </div>
                         <!-- <div class="col-12">
@@ -92,11 +92,11 @@
               <table class="table table-borderless datatable">
                 <thead class="bg-primary ">
                   <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Monnaie</th>
-                    <th scope="col">devise</th>
+                    <!-- <th scope="col">#</th> -->
+                    <th scope="col">Devise</th>
                     <th scope="col">unite</th>
-                    {{-- <th scope="col">taux</th> --}}
+                    <th scope="col">symbole</th>
+                    <!-- {{-- <th scope="col">taux</th> --}} -->
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
@@ -104,13 +104,13 @@
                     @foreach ($devises as $devise )
                   <tr>
 
-                    <th scope="row">{{ $devise->id}}</th>
+                    <!-- <th scope="row">{{ $devise->id}}</th> -->
                     <td>{{ $devise->monnaie}}</td>
                     <td>{{ $devise->devise}}</td>
                     <td>{{ $devise->unite}}</td>
-                    {{-- <td>{{ $devise->taux}}</td> --}}
+                    <!-- {{-- <td>{{ $devise->taux}}</td> --}} -->
                     <td>
-                        <a href="{{ route('devise.edit',$devise->id) }}">
+                        <a href="{{ route('devise.edit',encrypt($devise->id)) }}">
                           <button type="button" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
                         </a>
                         <!-- <a href="">

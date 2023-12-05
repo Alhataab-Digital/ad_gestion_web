@@ -77,18 +77,21 @@
                                         <th scope="row">{{ $devis->etat }}</th>
                                         <td>
                                            @if($devis->etat==Null)
-                                           <a href="{{ route('devis.edit',$devis->id) }}">
-                                            <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
+                                           <a href="{{ route('devis.edit',encrypt($devis->id)) }}">
+                                            <button type="button" class="btn btn-info"><i class="ri ri-edit-line"></i></button>
                                             </a>
                                            @endif
                                            @if($devis->etat!=Null)
-                                           <a href="{{ route('detail_devis.show',$devis->id) }}">
+                                           <a href="{{ route('detail_devis.show',encrypt($devis->id)) }}">
                                             <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
                                             </a>
                                            @endif
+                                           <!-- @if($devis->etat==Null)
                                            <a href="{{ route('detail_devis.edit',$devis->id) }}">
                                             <button type="button" class="btn btn-info"><i class="ri ri-edit-line"></i></button>
                                             </a>
+                                           @endif -->
+                                          
                                         </td>
                                     </tr>
                                 @endforeach

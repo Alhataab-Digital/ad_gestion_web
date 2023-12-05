@@ -4,7 +4,7 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>facture DE PRODUIT ET SERVICE</h1>
+      <h1>FACTURE DE PRODUIT ET SERVICE</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
@@ -75,18 +75,18 @@
                                         <th scope="row">{{ $facture->etat }}</th>
                                         <td>
                                            @if($facture->etat==Null)
-                                           <a href="{{ route('facture.edit',$facture->id) }}">
-                                            <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
+                                           <a href="{{ route('facture.edit',encrypt($facture->id)) }}">
+                                            <button type="button" class="btn btn-info"><i class="ri ri-edit-line"></i></button>
                                             </a>
                                            @endif
                                            @if($facture->etat!=Null)
-                                           <a href="{{ route('detail_facture.show',$facture->id) }}">
+                                           <a href="{{ route('detail_facture.show',encrypt($facture->id)) }}">
                                             <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
                                             </a>
                                            @endif
-                                           <a href="{{ route('detail_facture.edit',$facture->id) }}">
+                                           <!-- <a href="{{ route('detail_facture.edit',$facture->id) }}">
                                             <button type="button" class="btn btn-info"><i class="ri ri-edit-line"></i></button>
-                                            </a>
+                                            </a> -->
                                         </td>
                                     </tr>
                                 @endforeach

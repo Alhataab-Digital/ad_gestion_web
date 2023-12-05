@@ -60,7 +60,7 @@
                             <td>{{ $activite_ouverte->intitule }}</td>
                         <td>
                             <a href="{{ route('detail_activite_vehicule.edit',$activite_ouverte->id) }}">
-                            <span class="badge bg-danger">Fermer</span>
+                            <span class="badge bg-warning">Detail</span>
                             </a>
                         </td>
                             @endforeach

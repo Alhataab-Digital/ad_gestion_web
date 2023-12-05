@@ -182,7 +182,19 @@ class AchatVehiculeController extends Controller
                                 'user_id'=>$user_id,
                             ]);
 
+                            // $activites=ActiviteVehicule::where('id',$operation_vente->activite_id)->get();
 
+                            // foreach($activites as $activite){
+
+                            //     $vente=$activite->montant_vente+$operation_vente->prix_vente;
+                            //     $depense=$activite->total_depense+$operation_achat->prix_revient;
+                            //     $benefice=$activite->montant_benefice+$marge;
+
+                            //     $activite_ouvert->update([
+                            //         'montant_vente'=> $vente,
+                            //         'total_depense'=> $depense,
+                            //         'montant_benefice'=>$benefice,
+                            //     ]);
 
                             $compte=$compte_caisse-$montant_operation;
 
@@ -232,6 +244,7 @@ class AchatVehiculeController extends Controller
      */
     public function show(string $id)
     {
+        $id=decrypt($id);
         $agence_id=Auth::user()->agence_id;
         $operation= OperationVehiculeAchete::find($id);
         $agence=Agence::find( $agence_id);

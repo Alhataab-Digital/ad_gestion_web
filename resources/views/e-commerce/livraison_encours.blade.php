@@ -5,12 +5,12 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Livraison</h1>
+      <h1>RECEPTION DE PRODUIT ET SERVICE</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
           <li class="breadcrumb-item">Documents</li>
-          <li class="breadcrumb-item active">Livraison</li>
+          <li class="breadcrumb-item active">Reception</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -49,7 +49,7 @@
                 @endif
                 @if($livraison->etat!='valider')
                 <h5 class="card-title ">
-                    Livraison N° 000{{ $livraison->id }}
+                RECEPTION N° {{ $livraison->id .'/'.\Carbon\Carbon::parse($livraison->created_at )->format('d/m/Y')}}
                     <div class="text-end">
                         <a  href="{{route('commande')}}">
                             <button class=" btn btn-secondary "><i class="bi bi-box-arrow-right"></i></button>
@@ -60,37 +60,43 @@
               <form method="post" action="{{ route('detail_livrer.store') }}">
                 @csrf
                 <!-- Browser Default Validation -->
-
+                <div class="bg-secondary text-white " style="text-align: center">
+                  <hr>Entrepot & activité utilisés<hr>
+                          </div>
                 <div class="col-md-3">
                     <input class="form-control"  type="hidden" name="livraison_id" value="{{ $livraison->id }}"  >
                     <input class="form-control"  type="hidden" name="commande_id" value="{{ $commande->id }}"  >
                     <input class="form-control"  type="hidden" name="fournisseur" value="{{ $commande->fournisseur_id }}"  >
-                    <label for="" class="form-label">Entrepot</label>
-                    <select class="form-select" id="" name="entrepot" required>
-                      <option selected disabled value="">Choose...</option>
-                        @foreach ($entrepots as $entrepot )
-                        <option value="{{ $entrepot->id }}">
-                            {{ $entrepot->nom_entrepot }}
-                        </option>
+                    
+                </div>
+                    <table  class="table table-borderless ">
+                            <tr>  
+                              <th>
+                                <label for="" class="form-label">Entrepot</label>
+                                  <select class="form-select" id="" name="entrepot" required>
+                                    <option selected disabled value="">Choose...</option>
+                                      @foreach ($entrepots as $entrepot )
+                                      <option value="{{ $entrepot->id }}">
+                                          {{ $entrepot->nom_entrepot }}
+                                      </option>
 
-                        @endforeach
-                    </select>
-                    <label for="" class="form-label">Activite</label>
-                    <select class="form-select" id="" name="activite" required>
-                      <option selected disabled value="">Choose...</option>
-                        @foreach ($activite_investissements as $activite )
-                        <option value="{{ $activite->id }}">
-                            {{ $activite->type_activite->type_activite }}
-                        </option>
-
-                        @endforeach
-                    </select>
-
-                  </div>
-
+                                      @endforeach
+                                  </select>
+                              </th>
+                              <th>
+                                  <label for="" class="form-label">Activite</label>
+                                  <div class="">
+                                      <input class="form-control"  type="text" name="" value="{{ 'Activite N°  '. $livraison->commande->activite->id.' : '.$livraison->commande->activite->type_activite->type_activite  }}" class="form-control">
+                                  </div>
+                              </th>          
+                            </tr>
+                    </table>
                   <br>
                   <hr>
                   <div >
+                  <div class="bg-secondary text-white " style="text-align: center">
+                          <hr>Produit à livrer<hr>
+                          </div>
                       <!-- Table with stripped rows -->
                       <table class="table table-borderless " >
                           <thead class="bg-primary text-white ">
@@ -109,11 +115,8 @@
                                   </th>
                               </tr>
                           </thead>
-
-                        {{-- {{ $total=0 }} --}}
                         @foreach ($detail_commandes as $detail_commande )
-                        {{-- {{ $total=$total+($detail_commande->quantite_commandee*$detail_commande->prix_unitaire_commande) }} --}}
-                      <tbody class=" text-white" id="show_item" id="tab">
+                       <tbody class=" text-white" id="show_item" id="tab">
                           <tr>
                               <th scope="row">
                                   <select class="form-select" name="produit_id[]" id="produit"   >
@@ -148,10 +151,31 @@
 
                     </table>
                     <!-- End Table with stripped rows -->
-                    <br>
-                    <div class="text-left">
-                        <button type="submit" class="btn btn-success"><i class="bx bxs-save" ></i> </button>
+                    <div class="bg-secondary text-white " style="text-align: center">
+                          <hr>Info Fournisseur<hr>
+                      </div>
+                      <table  class="table table-borderless ">
+                            <tr>
+                                        
+                              <th>
+                                  <label for="inputText" class="col-sm-6 col-form-label">Client</label>
+                                  <input class="form-control"  type="text"  value="{{ $livraison->fournisseur->nom_fournisseur}}" class="form-control">            
+                              </th>
+                              <th>
+                                  <label for="inputText" class="col-sm-6 col-form-label">Telephone</label>
+                                  <input class="form-control"  type="text"  value="{{ $livraison->fournisseur->telephone  }}" class="form-control">            
+                              </th>
+                              <th>
+                                  <label for="inputText" class="col-sm-6 col-form-label">Adresse</label>
+                                  <input class="form-control"  type="text"  value="{{ $livraison->fournisseur->adresse  }}" class="form-control">             
+                              </th>           
+                            </tr>
+                          </table>
+                    <hr>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-success"><i class="bx bxs-save" ></i> Sauvegarder</button>
                     </div>
+                    <hr>
                 </div>
               <!-- End Browser Default Validation -->
               </form>

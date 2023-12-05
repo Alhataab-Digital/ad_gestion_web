@@ -77,6 +77,7 @@ class TypeActiviteInvestissementController extends Controller
      */
     public function edit(string $id)
     {
+        $id=decrypt($id);
             $type_activite=TypeActiviteInvestissement::find($id);
         return view('investissement.type_activite_edit',compact('type_activite'));
     }
@@ -86,6 +87,7 @@ class TypeActiviteInvestissementController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $id=decrypt($id);
         $request->validate([
             'type_activite'=>'required',
         ]);

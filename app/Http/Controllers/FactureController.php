@@ -48,7 +48,7 @@ class FactureController extends Controller
     public function store(Request $request)
     {
 
-        // dd(
+        //dd(
 
         // $request->devis_id,
         // $request->produit,
@@ -56,36 +56,44 @@ class FactureController extends Controller
         // $request->prix ,
         // $request->total,
         // $request->montant_ht,
-        // $request->client
+        // $request->client,
+        //$request->activite
 
-        // );
+        //);
         $facture=Facture::where('devis_id',$request->devis_id)->first();
 
             if(isset($facture)){
 
                 $facture=Facture::where('devis_id',$request->devis_id)->latest('id')->first();
+                
+                $devis=Devis::find($request->devis_id);
 
-                return redirect('facture/'.$facture->id.'/edit');
+                    $devis->update([
+                        'activite_id' =>$request->activite,
+                    ]);
+
+                return redirect('facture/'.encrypt($facture->id).'/edit');
             }else{
                 $id=Auth::user()->id;
                 $agence_id=Auth::user()->agence_id;
 
                 Facture::create([
                     'devis_id'  => $request->devis_id,
+                    'activite_id'  => $request->activite,
                     'client_id'  => $request->client,
                     'user_id'      => $id,
                     'agence_id'    => $agence_id,
                 ]);
 
-                // $devis=devis::find($request->devis_id);
+                $devis=Devis::find($request->devis_id);
 
-                //     $devis->update([
-                //         'etat' =>'Facture',
-                //     ]);
+                    $devis->update([
+                        'activite_id' =>$request->activite,
+                    ]);
 
                 $facture=Facture::where('user_id',$id)->where('agence_id',$agence_id)->latest('id')->first();
 
-                return redirect('facture/'.$facture->id.'/edit');
+                return redirect('facture/'.encrypt($facture->id).'/edit');
             }
     }
     /**
@@ -101,7 +109,7 @@ class FactureController extends Controller
      */
     public function edit(string $id)
     {
-        //
+            $id=decrypt($id);
             $facture=Facture::find($id);
             if($facture->entrepot_id==NULL)
             {
@@ -128,6 +136,8 @@ class FactureController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // dd($request->client_id);
+        $id=decrypt($id);
         $facture=Facture::find($id);
         // dd($facture,$request->montant_ht);
         if($request->montant_ht==NULL)
@@ -136,6 +146,7 @@ class FactureController extends Controller
         }
                     $facture->update([
                         'montant_total' =>$request->montant_ht,
+                        'client_id' =>$request->client_id,
                         'etat' =>'Valider',
                     ]);
 
@@ -144,7 +155,7 @@ class FactureController extends Controller
                         'etat' =>'Facture',
                     ]);
 
-        return redirect('detail_facture/'.$id.'/show');
+        return redirect('detail_facture/'.encrypt($id).'/show');
     }
 
     /**

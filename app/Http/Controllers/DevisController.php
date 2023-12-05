@@ -48,7 +48,7 @@ class DevisController extends Controller
             ]);
         $devis=Devis::where('user_id',$id)->where('agence_id',$agence_id)->latest('id')->first();
 
-        return redirect('devis/'.$devis->id.'/edit');
+        return redirect('devis/'.encrypt($devis->id).'/edit');
 
         }
         return redirect('/auth')->with('danger',"Session expirée");
@@ -59,22 +59,23 @@ class DevisController extends Controller
      */
     public function store(Request $request)
     {
+        if($request->montant_ht && $request->nom_client && $request->adresse){
+            $client=Client::find($request->client_id);
+            // dd($client);
+            $devis=Devis::find($request->devis_id);
 
-        
-        $client=Client::find($request->client_id);
-
-        $devis=Devis::find($request->devis_id);
-
-                $devis->update([
-                    'client_id' =>$request->client_id,
-                    'montant_total' =>$request->montant_ht,
-                    'etat' =>'en cours',
-                ]);
-        $client->update([
-            'nom_client' =>$request->nom_client,
-            'adresse' =>$request->adresse,
-        ]);
-        return redirect('detail_devis/'.$devis->id.'/show');
+                    $devis->update([
+                        'client_id' =>$request->client_id,
+                        'montant_total' =>$request->montant_ht,
+                        'etat' =>'en cours',
+                    ]);
+            $client->update([
+                'nom_client' =>$request->nom_client,
+                'adresse' =>$request->adresse,
+            ]);
+            return redirect('detail_devis/'.encrypt($devis->id).'/show');
+        }
+        return back();
     }
 
     /**
@@ -90,8 +91,7 @@ class DevisController extends Controller
      */
     public function edit(string $id)
     {
-        //
-        //
+        $id=decrypt($id);
         $devis=Devis::find($id);
         $agence_id=Auth::user()->agence_id;
         $produit_stocks=StockProduit::where('agence_id',$agence_id)->get();

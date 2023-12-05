@@ -67,6 +67,9 @@ use App\Http\Controllers\FactureController;
 use App\Http\Controllers\DetailFactureController;
 use App\Http\Controllers\ReglementFactureController;
 
+
+use App\Http\Controllers\Detenu\DetenuController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -82,7 +85,6 @@ Route::controller(LoginController::class)->group(function(){
     Route::get('/auth','login')->name('login');
     Route::post('/store','store')->name('login.store');
     Route::get('/logout','logout')->name('logout');
-    
     Route::get('/user_connexion','user_connexion')->name('users.user_connexion');
     Route::post('/restore_connexion','restore_connexion')->name('users.restore_connexion');
 });
@@ -499,6 +501,7 @@ Route::middleware(['auth','initier'])->controller(ActiviteVehiculeController::cl
 
 
     Route::get('/activite_vehicule','index')->name('activite_vehicule');
+    Route::get('/activite_vehicule/encours','encours')->name('activite_vehicule.encours');
     Route::get('/activite_vehicule/fermer','fermeture')->name('activite_vehicule.fermer');
     Route::get('/activite_vehicule/terminer','terminer')->name('activite_vehicule.terminer');
     Route::get('/activite_vehicule/{id}/detail','show')->name('activite_vehicule.show');
@@ -698,5 +701,19 @@ Route::middleware(['auth','initier'])->controller(ReglementFactureController::cl
     Route::get('/reglement/comptoir','comptoir')->name('reglement.comptoir');
     Route::post('/reglement/client','numero_client')->name('reglement.numero_client');
     Route::get('/reglement/{id}/paiement','paiement_facture')->name('reglement.paiement');
+
+});
+
+
+/**
+ * GESTION DES DETENUE
+ */
+
+ Route::middleware(['auth','initier'])->controller(DetenuController::class)->group(function(){
+
+    Route::get('/detention/detenu/index','index')->name('index.detenu');
+    Route::get('/detention/detenu/create','create')->name('create.detenu');
+    Route::post('/detention/store','store')->name('store.detenu');
+    Route::get('/detention/detenu/{id}','edit')->name('edit.detenu');
 
 });

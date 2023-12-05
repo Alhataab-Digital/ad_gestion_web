@@ -30,7 +30,7 @@
   <link href="{{asset('assets/vendor/simple-datatables/style.css')}}" rel="stylesheet">
   <!-- Template Main CSS File -->
   <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
-  @livewireStyles
+  <!-- @livewireStyles -->
   <!-- =======================================================
   * Template Name: NiceAdmin - v2.5.0
   * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
@@ -63,7 +63,7 @@
 
   <!-- Template Main JS File -->
   <script src="{{asset('assets/js/main.js')}}"></script>
-  @livewireScripts
+  <!-- @livewireScripts -->
 </body>
 
 </html>
