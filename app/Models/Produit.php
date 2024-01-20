@@ -23,7 +23,7 @@ class Produit extends Model
 
     public function categorie()
     {
-        return $this->belongsTo(CategorieProduit::class);
+        return $this->belongsTo(CategorieProduit::class,'categorie_produit_id');
     }
 
     public function agence()

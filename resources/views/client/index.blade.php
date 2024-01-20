@@ -122,7 +122,7 @@
                     <td>{{ $client->telephone}}</td>
                     <td>{{ $client->adresse}}</td>
                     <td>
-                        <a href="{{ route('client.edit',$client->id) }}">
+                        <a href="{{ route('client.edit',encrypt($client->id)) }}">
                             <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
                         </a>
                     </td>

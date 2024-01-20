@@ -30,8 +30,9 @@ class CaisseController extends Controller
         if(Auth::check()){
 
             $societe_id=Auth::user()->societe_id;
+            $agence_id=Auth::user()->agence_id;
             $agences=Agence::where('societe_id',$societe_id)->get();
-            $caisses=Caisse::all();
+            $caisses=Caisse::where('agence_id',$agence_id)->get();
 
         return view('caisse.index', compact('caisses','agences'));
         }
@@ -96,6 +97,8 @@ class CaisseController extends Controller
      */
     public function edit(string $id)
     {
+        $id=decrypt($id);
+
         if(Auth::check()){
 
             $societe_id=Auth::user()->societe_id;
@@ -111,7 +114,7 @@ class CaisseController extends Controller
      */
     public function update(Request $request, string $id)
     {
-
+        $id=decrypt($id);
         $request->validate([
             'agence_id'=>'required',
             'libelle'=>'required',
@@ -302,6 +305,8 @@ class CaisseController extends Controller
 
     public function encaissement_valider( $id)
     {
+        $id=decrypt($id);
+
         $operation=OperationInterCaisse::find($id);
 
         if($operation->etat=="valider"){
@@ -413,7 +418,7 @@ class CaisseController extends Controller
 
     public function attribution_edit($id)
     {
-        
+        $id=decrypt($id);
         $user_id=Auth::user()->id;
         $agence_id=Auth::user()->agence_id;
         $operation=OperationInterCaisse::find($id);
@@ -422,6 +427,7 @@ class CaisseController extends Controller
         return view('caisse.attribution_edit', compact('caisse_destinations','operation','devise_agences'));
         
     }
+
     public function attribution_modifier( Request $request)
     {
             $user_id=Auth::user()->id;
@@ -483,7 +489,7 @@ class CaisseController extends Controller
 
     public function attribution_externe_edit($id)
     {
-        
+        $id=decrypt($id);
         $user_id=Auth::user()->id;
         $agence_id=Auth::user()->agence_id;
         $operation=OperationInterCaisse::find($id);
@@ -553,6 +559,7 @@ class CaisseController extends Controller
 
     public function attribution_supprimer($id)
     {
+        $id=decrypt($id);
         $operation=OperationInterCaisse::find($id);
         $operation->delete();
         return back(); 
@@ -580,6 +587,7 @@ class CaisseController extends Controller
     
     public function ouverture(Request $request, $id)
     {
+        $id=decrypt($id);
         $jour=date("Y-m-d");
         if($request->date==$jour){
 
@@ -605,8 +613,10 @@ class CaisseController extends Controller
         }
 
     }
+    
     public function fermeture(Request $request,$id)
     {
+        $id=decrypt($id);
         $caisse = Caisse::find($id);
         $user_id=Auth::user()->id;
 
@@ -627,6 +637,7 @@ class CaisseController extends Controller
 
     public function rapport_caisse()
     {
+
         $id=Auth::user()->id;
         if(Caisse::where('user_id',$id)->first()){
 

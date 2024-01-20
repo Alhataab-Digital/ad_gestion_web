@@ -55,8 +55,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="submit" class="btn btn-primary">Save changes</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                      <button type="submit" class="btn btn-primary">Sauvegarder</button>
                     </div>
                 <!-- Vertical Form -->
                   </div>
@@ -103,15 +103,15 @@
                     <td>{{ $entrepot->adresse_entrepot}}</td>
                     <td>{{ $entrepot->capacite_entrepot}}</td>
                     <td>
-                        <a href="{{ route('entrepot.edit',$entrepot->id) }}">
-                            <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
+                        <a href="{{ route('entrepot.edit',encrypt($entrepot->id)) }}">
+                            <button type="button" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
                         </a>
-                        <a href="">
+                        <!-- <a href="">
                             <button type="button" class="btn btn-success"><i class="bi bi-check-circle"></i></button>
                         </a>
                         <a href="">
                             <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
-                        </a>
+                        </a> -->
                     </td>
                   </tr>
                   @endforeach

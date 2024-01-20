@@ -17,7 +17,9 @@
 
     <section class="section">
       <div class="row">
-        <div class="col-lg-12">
+        
+      @if ($caisse->etat==1 && $caisse->date_comptable == date("Y-m-d") )
+        <div class=" form-signin w-50 m-auto col-lg-12">
 
           <div class="card">
             <div class="card-body">
@@ -38,17 +40,15 @@
                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 @endif
-
-
-            </P>
+              </P>
               <!-- General Form Elements -->
               <form method="post" action="{{ route('operation.store') }}">
                 @csrf
                 <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label">Nature operation</label>
-                    <div class="col-sm-10">
+                    <label class="col-sm-4 col-form-label">Nature operation</label>
+                    <div class="col-sm-8">
                         <select class="form-select" aria-label="Default select example" name="nature_operation_id">
-                            <option selected>choisir</option>
+                            <option selected>Choisir la nature</option>
                                 @foreach ($nature_operations as $nature_operation )
                                     <option value="{{ $nature_operation->id }}">{{ $nature_operation->nature_operation_charge }}</option>
                                 @endforeach
@@ -56,20 +56,20 @@
                     </div>
                   </div>
                 <div class="row mb-3">
-                  <label for="inputNumber" class="col-sm-2 col-form-label">Montant</label>
-                  <div class="col-sm-10">
+                  <label for="inputNumber" class="col-sm-4 col-form-label">Montant</label>
+                  <div class="col-sm-8">
                     <input type="number" name="montant_operation" class="form-control">
                   </div>
                 </div>
                 {{-- <div class="row mb-3">
-                  <label for="inputNumber" class="col-sm-2 col-form-label">piece jointe</label>
-                  <div class="col-sm-10">
+                  <label for="inputNumber" class="col-sm-4 col-form-label">piece jointe</label>
+                  <div class="col-sm-8">
                     <input class="form-control" type="file" id="formFile">
                   </div>
                 </div> --}}
                 <div class="row mb-3">
-                  <label for="inputPassword" class="col-sm-2 col-form-label">commentaire </label>
-                  <div class="col-sm-10">
+                  <label for="inputPassword" class="col-sm-4 col-form-label">commentaire </label>
+                  <div class="col-sm-8">
                     <textarea class="form-control" style="height: 100px" name="commentaire"></textarea>
                   </div>
                 </div>
@@ -85,129 +85,73 @@
 
             </div>
           </div>
-
         </div>
-
-        {{-- <div class="col-lg-6">
-
+        <div class="col-lg-12">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Advanced Form Elements</h5>
+              <h5 class="card-title">
+                  Operations
+              </h5>
+              <!-- Table with stripped rows -->
+              <table class="table table-borderless datatable">
+                <thead class="bg-primary ">
+                  <tr>
+                    {{-- <th scope="col">#</th> --}}
+                    <th scope="col">Nature operation </th>
+                    <th scope="col">Montant operation</th>
+                    <th scope="col">agent caisse</th>
+                    <!-- <th scope="col">sens</th> -->
+                    <th scope="col">date operation</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    @foreach ($operations as $operation )
+                  <tr>
 
-              <!-- Advanced Form Elements -->
-              <form>
-                <div class="row mb-5">
-                  <label class="col-sm-2 col-form-label">Switches</label>
-                  <div class="col-sm-10">
-                    <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                      <label class="form-check-label" for="flexSwitchCheckDefault">Default switch checkbox input</label>
-                    </div>
-                    <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
-                      <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch checkbox input</label>
-                    </div>
-                    <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" id="flexSwitchCheckDisabled" disabled>
-                      <label class="form-check-label" for="flexSwitchCheckDisabled">Disabled switch checkbox input</label>
-                    </div>
-                    <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" id="flexSwitchCheckCheckedDisabled" checked disabled>
-                      <label class="form-check-label" for="flexSwitchCheckCheckedDisabled">Disabled checked switch checkbox input</label>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row mb-5">
-                  <label class="col-sm-2 col-form-label">Ranges</label>
-                  <div class="col-sm-10">
-                    <div>
-                      <label for="customRange1" class="form-label">Example range</label>
-                      <input type="range" class="form-range" id="customRange1">
-                    </div>
-                    <div>
-                      <label for="disabledRange" class="form-label">Disabled range</label>
-                      <input type="range" class="form-range" id="disabledRange" disabled>
-                    </div>
-                    <div>
-                      <label for="customRange2" class="form-label">Min and max with steps</label>
-                      <input type="range" class="form-range" min="0" max="5" step="0.5" id="customRange2">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-sm-2 col-form-label">Floating labels</label>
-                  <div class="col-sm-10">
-                    <div class="form-floating mb-3">
-                      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                      <label for="floatingInput">Email address</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                      <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-                      <label for="floatingPassword">Password</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                      <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" style="height: 100px;"></textarea>
-                      <label for="floatingTextarea">Comments</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                      <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                      </select>
-                      <label for="floatingSelect">Works with selects</label>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row mb-5">
-                  <label class="col-sm-2 col-form-label">Input groups</label>
-                  <div class="col-sm-10">
-                    <div class="input-group mb-3">
-                      <span class="input-group-text" id="basic-addon1">@</span>
-                      <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-                    </div>
-
-                    <div class="input-group mb-3">
-                      <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                      <span class="input-group-text" id="basic-addon2">@example.com</span>
-                    </div>
-
-                    <label for="basic-url" class="form-label">Your vanity URL</label>
-                    <div class="input-group mb-3">
-                      <span class="input-group-text" id="basic-addon3">https://example.com/users/</span>
-                      <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
-                    </div>
-
-                    <div class="input-group mb-3">
-                      <span class="input-group-text">$</span>
-                      <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-                      <span class="input-group-text">.00</span>
-                    </div>
-
-                    <div class="input-group mb-3">
-                      <input type="text" class="form-control" placeholder="Username" aria-label="Username">
-                      <span class="input-group-text">@</span>
-                      <input type="text" class="form-control" placeholder="Server" aria-label="Server">
-                    </div>
-
-                    <div class="input-group">
-                      <span class="input-group-text">With textarea</span>
-                      <textarea class="form-control" aria-label="With textarea"></textarea>
-                    </div>
-                  </div>
-                </div>
-
-              </form><!-- End General Form Elements -->
+                    <td>{{ $operation->nature_operation_charge->nature_operation_charge}}</td> 
+                    <td >{{ number_format($operation->montant_operation,2,","," ").' '.$operation->user->agence->devise->unite}}</td>
+                    <td>{{ $operation->user->nom.' '.$operation->prenom}}</td>
+                    <!-- <td>{{ $operation->sens_operation}}</td> -->
+                  
+                    <td>{{ $operation->date_comptable}}</td>
+                    <td>
+                      @if($operation->date_comptable == date("Y-m-d"))
+                        <a href="{{ route('operation.delete',encrypt($operation->id)) }}">
+                            <button type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                        </a>
+                      @else
+                      <a href="{{ route('operation.show',encrypt($operation->id)) }}">
+                            <button type="button" class="btn btn-secondary"><i class="bi bi-eye"></i></button>
+                        </a>
+                      @endif
+                    </td>
+                  </tr>
+                  @endforeach
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
 
             </div>
           </div>
 
-        </div> --}}
+          </div>
+        </div>
+      @elseif ($caisse->etat==1 && $caisse->date_comptable!= date("Y-m-d") )
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-octagon me-1"></i>
+                    La date operation n'est pas a jour
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
+      @else
+      
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-octagon me-1"></i>
+                    Caisse fermer
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+      
+      @endif
     </section>
 
   </main><!-- End #main -->

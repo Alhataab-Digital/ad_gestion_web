@@ -7,23 +7,23 @@ hello
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>RETRAIT INVESTISSEUR</h1>
+      <h1>RETRAIT DIVIDENDE</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="">Accueil</a></li>
           <li class="breadcrumb-item">Gestion investisseur</li>
-          <li class="breadcrumb-item active">Retrait investisseur</li>
+          <li class="breadcrumb-item active">Retrait dividende</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
     <section class="section">
       <div class="row">
 
-        <div class="col-lg-6">
+        <div class="form-signin w-50 m-auto col-lg-6">
 
-            <div class="card bg-danger text-white">
+            <div class="card bg-primary text-white">
                 <div class="card-body">
-                    <h5 class="card-title  text-white">Retrait investisseur</h5>
+                    <h5 class="card-title  text-white">Retrait dividende</h5>
                         <p>
                             @if ($message=Session::get('success'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -58,8 +58,8 @@ hello
                     @if ($caisse->etat==1 && $caisse->date_comptable == date("Y-m-d"))
 
                     <!-- No Labels Form -->
-                    <form class="row g-3" method="post" action="{{ route('d_retrait.store',encrypt($investisseur->id)) }}">
-                        @csrf
+                    <form class="row g-3" method="post">
+                       
                        <div class="col-md-6">
                             <input type="text" name="nom" value="{{ $investisseur->nom }}" class="form-control" placeholder="Nom">
                         </div>
@@ -84,6 +84,34 @@ hello
                             <label for="">Heritier</label>
                             <input type="text" name="heritier" value="{{ $investisseur->heritier }}" class="form-control" placeholder="Nom heritier">
                         </div>
+                       
+                    </form><!-- End No Labels Form -->
+                    @endif
+                </div>
+            </div>
+
+            <div class="card bg-secondary text-white">
+        
+                <div class="card-body">
+                <br>
+                    @if ($caisse->etat==1 && $caisse->date_comptable == date("Y-m-d"))
+
+                    <!-- No Labels Form -->
+                    <form class="row g-3" method="post" action="{{ route('d_retrait.store',encrypt($investisseur->id)) }}">
+                        @csrf
+                      
+                            <input type="hidden" name="nom" value="{{ $investisseur->nom }}" class="form-control" placeholder="Nom">
+                        
+                            <input type="hidden" name="prenom" value="{{ $investisseur->prenom }}" class="form-control" placeholder="Prenom">
+                        
+                            <input type="hidden" name="telephone" value="{{ $investisseur->telephone }}" class="form-control" placeholder="Telephone">
+                    
+                            <input type="hidden" name="email" value="{{ $investisseur->email }}" class="form-control" placeholder="Email">
+                        
+                            <input type="hidden"  value="{{ number_format($investisseur->compte_dividende,2,","," ").' '.Auth::user()->agence->devise->unite}}" class="form-control" placeholder="Email">
+                        
+                            <input type="hidden" name="heritier" value="{{ $investisseur->heritier }}" class="form-control" placeholder="Nom heritier">
+                       
                         <div class="col-md-6">
                             <input type="text" name="montant" class="form-control" placeholder="Montant a retirer">
                         </div>
@@ -101,15 +129,12 @@ hello
                             <input type="text" class="form-control" placeholder="Zip">
                         </div> --}}
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                            <button type="reset" class="btn btn-secondary">Reset</button>
+                            <button type="submit" class="btn btn-primary">Valider</button>
                         </div>
                     </form><!-- End No Labels Form -->
                     @endif
                 </div>
             </div>
-
-
         </div>
 
 

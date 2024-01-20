@@ -64,16 +64,18 @@
                         <td>{{ $activite->id }}</td>
                         @endif --}}
                         <td scope="row">{{ $activite->date_comptable }}</td>
-                        <td scope="row">{{ $activite->type_activite->type_activite }}</td>
+                        <td scope="row">{{ 'Activite N°'.$activite->id.' '.$activite->type_activite->type_activite }}</td>
                         <td>{{ number_format($activite->montant_decaisse,2,","," ").' '.$activite->user->agence->devise->unite}}</td>
                         <td>{{ number_format($activite->montant_benefice,2,","," ").' '.$activite->user->agence->devise->unite}}</td>
                         <td>{{ $activite->user->nom.' '.$activite->user->prenom }}</td>
                         <td>{{ $activite->caisse->libelle }}</td>
                         <td>{{ $activite->agence->nom }}</td>
-                        <td><span class="badge bg-info">{{ $activite->etat_activite }}</span></td>
+                        <td>
+                          <span class="badge bg-success">{{ $activite->etat_activite }}</span>
+                        </td>
                         <td>
                             <a href="{{ route('detail_activite_investissement.edit',encrypt($activite->id)) }}">
-                                <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
+                                <button type="button" class="btn btn-secondary"><i class="bx bxs-folder-open"></i></button>
                             </a>
                         </td>
                     </tr>

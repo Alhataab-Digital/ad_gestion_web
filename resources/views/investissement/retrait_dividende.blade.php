@@ -16,8 +16,8 @@
   </div><!-- End Page Title -->
   <section class="section">
     <div class="row">
-      <div class="col-lg-6">
-        <div class="card bg-primary text-white">
+      <div class="form-signin w-50 m-auto col-lg-6">
+      <div class="card bg-primary text-white">
           <div class="card-body ">
             <h5 class="card-title text-white">retrait compte dividende</h5>
             <p>
@@ -36,33 +36,33 @@
                 </div>
                 @endif
             </p>
-            @if ($caisse->etat==1 && $caisse->date_comptable!= date("Y-m-d") )
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-octagon me-1"></i>
-                La date operation n'est pas a jour
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            @endif
-            @if ($caisse->etat==0 )
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-octagon me-1"></i>
-                Caisse fermer
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            @endif
-            @if ($caisse->etat==1 && $caisse->date_comptable == date("Y-m-d"))
-            <!-- Multi Columns Form -->
-            <form class="row g-3" method="POST" action="{{ route('d_retrait.retrait') }}">
-                @csrf
-              <div class="col-md-12">
-                <label for="inputName5" class="form-label">Code Investisseur</label>
-                <input type="text" name="code" class="form-control" id="telephone">
-              </div>
-              <div class="text-center">
-                <button type="submit" class="btn btn-primary">Suivant</button>
-              </div>
-            </form><!-- End Multi Columns Form -->
-        @endif
+                @if ($caisse->etat==1 && $caisse->date_comptable!= date("Y-m-d") )
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-octagon me-1"></i>
+                    La date operation n'est pas a jour
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+                @if ($caisse->etat==0 )
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-octagon me-1"></i>
+                    Caisse fermer
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+                @if ($caisse->etat==1 && $caisse->date_comptable == date("Y-m-d"))
+                <!-- Multi Columns Form -->
+                <form class="row g-3" method="POST" action="{{ route('d_retrait.retrait') }}">
+                    @csrf
+                  <div class="col-md-12">
+                    <label for="inputName5" class="form-label">Code Investisseur</label>
+                    <input type="text" name="code" class="form-control" id="telephone">
+                  </div>
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Suivant</button>
+                  </div>
+                </form><!-- End Multi Columns Form -->
+                @endif
 
 
           </div>

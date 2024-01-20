@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nom_produit');
             $table->string('description_produit');
             $table->string('prix_unitaire_achat');
-            $table->string('prix_unitaire_revient')->nullable();
+            $table->string('prix_unitaire_revient')->default(0);
             $table->string('prix_unitaire_vente');
             $table->string('stock_min');
             $table->string('categorie_produit_id');

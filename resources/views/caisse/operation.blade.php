@@ -62,7 +62,7 @@
                           </button>
                         </h5>
                          <!-- Vertical Form -->
-                         <form class="row g-3" method="post" action="{{ route('caisse.fermeture',$caisse->id) }}" >
+                         <form class="row g-3" method="post" action="{{ route('caisse.fermeture',encrypt($caisse->id)) }}" >
                                     @csrf
                           <div class="modal fade" id="Fermer" tabindex="-1">
                             <div class="modal-dialog">
@@ -105,7 +105,7 @@
                           </button>
                         </h5>
                         <!-- Vertical Form -->
-                        <form class="row g-3" method="post" action="{{ route('caisse.ouverture',$caisse->id) }}" >
+                        <form class="row g-3" method="post" action="{{ route('caisse.ouverture',encrypt($caisse->id)) }}" >
                                     @csrf
                           <div class="modal fade" id="Fermer" tabindex="-1">
                             <div class="modal-dialog">

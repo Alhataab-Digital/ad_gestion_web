@@ -65,7 +65,7 @@
                     <td>{{ $operation->caisse->libelle}}</td>
                     <!-- <td>{{ $operation->user->nom}}</td> -->
                     <td>
-                        <a href="{{ route('caisse.encaissement.valider',$operation->id) }}">
+                        <a href="{{ route('caisse.encaissement.valider',encrypt($operation->id)) }}">
                             <button type="button" class="btn btn-success"><i class="ri ri-arrow-down-line"></i></button>
                         </a>
 

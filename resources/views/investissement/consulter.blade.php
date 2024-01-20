@@ -19,7 +19,7 @@ hello
     <section class="section">
       <div class="row">
 
-        <div class="col-lg-6">
+        <div class="form-signin w-50 m-auto col-lg-6">
 
             <div class="card bg-info text-white">
                 <div class="card-body">
@@ -71,7 +71,7 @@ hello
                         </div>
 
                         <div class="col-md-6">
-                            <label for="">Compte</label>
+                            <label for="">Compte investissement</label>
                             @if(Auth::user()->agence_id=="0")
                             <input type="text"  value="{{ number_format($investisseur->compte_investisseur,2,","," ")}}" class="form-control" placeholder="Email">
                             @endif
@@ -80,7 +80,17 @@ hello
                             @endif
                          </div>
 
-                        <div class="col-md-4">
+                         <div class="col-md-6">
+                            <label for="">Compte dividende</label>
+                            @if(Auth::user()->agence_id=="0")
+                            <input type="text"  value="{{ number_format($investisseur->compte_dividende,2,","," ")}}" class="form-control" placeholder="Email">
+                            @endif
+                            @if(Auth::user()->agence_id!="0")
+                            <input type="text"  value="{{ number_format($investisseur->compte_dividende,2,","," ").' '.Auth::user()->agence->devise->unite}}" class="form-control" placeholder="Email">
+                            @endif
+                         </div>
+
+                        <!-- <div class="col-md-4">
                             <label for="">Etat</label>
                             @if($investisseur->etat==0)
                             <input type="text" value="Compte desactiver" class="form-control" placeholder="Zip">
@@ -88,7 +98,7 @@ hello
                             @if($investisseur->etat==1)
                             <input type="text" value="Compte activer" class="form-control" placeholder="Zip">
                             @endif
-                        </div>
+                        </div> -->
                         <div class="text-center">
                             <a href="{{ route('investisseur.consultation') }}">
                                 <div class="btn btn-secondary"> Quitter</div>

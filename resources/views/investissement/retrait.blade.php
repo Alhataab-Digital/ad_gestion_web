@@ -10,16 +10,16 @@
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
         <li class="breadcrumb-item">Gestion investisseur</li>
-        <li class="breadcrumb-item active">retrait investisseur</li>
+        <li class="breadcrumb-item active">Retrait investisseur</li>
       </ol>
     </nav>
   </div><!-- End Page Title -->
   <section class="section">
     <div class="row">
-      <div class="col-lg-6">
+      <div class="form-signin w-50 m-auto col-lg-6">
         <div class="card bg-danger text-white">
           <div class="card-body ">
-            <h5 class="card-title text-white">retrait compte investisseur</h5>
+            <h5 class="card-title text-white">Retrait compte investisseur</h5>
             <p>
                 @if ($message=Session::get('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('fichier')->nullable();
             $table->string('date_comptable');
             $table->string('caisse_id');
+            $table->string('agence_id');
             $table->string('user_id');
             $table->timestamps();
         });

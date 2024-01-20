@@ -7,6 +7,13 @@ use App\Models\Investisseur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\TypeReglement;
+use App\Models\OperationInvestisseur;
+use App\Models\OperationDividende;
+use App\Models\MouvementCaisse;
+use App\Models\DeviseAgence;
+use App\Models\Agence;
+use App\Models\Caisse;
 
 class PortailInvestisseurController extends Controller
 {
@@ -29,7 +36,13 @@ class PortailInvestisseurController extends Controller
     {
         $id=decrypt($id);
         $investisseur=Investisseur::find($id);
-        return view('investissement.portail.profile_investisseur',compact('investisseur'));
+        $agence=Agence::find($investisseur->agence_id);
+        $operation_div=OperationDividende::where('investisseur_id',$id)->where('valider','oui')->orderBy('id', 'DESC')->get();
+        $operation_inv=OperationInvestisseur::where('investisseur_id',$id)->where('valider','oui')->orderBy('id', 'DESC')->get();
+        $operation_div_invalid=OperationDividende::where('investisseur_id',$id)->where('valider','non')->orderBy('id', 'DESC')->get();
+        $operation_inv_invalid=OperationInvestisseur::where('investisseur_id',$id)->where('valider','non')->orderBy('id', 'DESC')->get();
+
+        return view('investissement.portail.profile_investisseur',compact('investisseur','operation_div','operation_inv','operation_div_invalid','operation_inv_invalid','agence'));
     }
 
     public function connect(Request $request)
@@ -147,7 +160,128 @@ class PortailInvestisseurController extends Controller
             return response()->json($data);
         }
 
+    }
 
+    public function valider_operation_div($id)
+    {
+
+        $id=decrypt($id);
+        $operation=OperationDividende::find($id);
+        $investisseur=Investisseur::find($operation->investisseur_id);
+        $user_id=$operation->user_id;
+        
+            $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
+            $compte_caisse= Caisse::where('user_id',$user_id)->first(['compte'])->compte;
+            $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
+            $compte_dividende=$investisseur->compte_dividende;
+            $montant_retrait=$operation->montant_operation;
+
+                    $montant_investisseur=$compte_dividende-$montant_retrait;
+                    $montant_caisse=$compte_caisse-$montant_retrait;
+
+                    // dd($montant_investisseur);
+                    /**
+                     * mise a jour du client
+                     */
+                    $investisseur->update([
+                        'compte_dividende'=>$montant_investisseur,
+                    ]);
+                    /**
+                     * enregistrement de l'operation
+                     */
+                    $operation->update([
+                        'valider'=>'oui',
+                        'solde'=>$montant_investisseur,
+                    ]);
+
+                    /**
+                     * mise a jour de la caisse
+                     */
+
+                    $compte=$compte_caisse - $operation->montant_operation;
+
+                    $caisse=Caisse::find($caisse_id);
+
+                    $user_id=$operation->user_id;
+
+                    MouvementCaisse::create([
+                        'caisse_id'=>$caisse->id,
+                        'user_id'=>$user_id,
+                        'description'=>'retrait dividende investisseur =>'.$investisseur->nom.'/'.$investisseur->telephone,
+                        'sortie'=>$montant_retrait,
+                        'solde'=>$compte,
+                        'date_comptable'=>$date_comptable,
+
+                    ]);
+
+                    $caisse->update([
+                        'compte'=>$montant_caisse,
+                    ]);
+
+                    return redirect('profile/'.encrypt($investisseur->id).'/investisseur');
+
+       
+    }
+
+    public function valider_operation_inv($id)
+    {
+
+        $id=decrypt($id);
+        $operation=OperationInvestisseur::find($id);
+        $investisseur=Investisseur::find($operation->investisseur_id);
+        $user_id=$operation->user_id;
+      
+            $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
+            $compte_caisse= Caisse::where('user_id',$user_id)->first(['compte'])->compte;
+            $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
+            $compte_investisseur=$investisseur->compte_investisseur;
+            $compte_investis=$investisseur->montant_investis;
+            $montant_retrait=$operation->montant_operation;
+
+                    $montant_investisseur=$compte_investisseur-$montant_retrait;
+                    $montant_investis=$compte_investis-$montant_retrait;
+                    $montant_caisse=$compte_caisse-$montant_retrait;
+
+                    // dd($montant_investisseur);
+                    /**
+                     * mise a jour du client
+                     */
+                    $investisseur->update([
+                        'montant_investis'=>$montant_investis,
+                        'compte_investisseur'=>$montant_investisseur,
+                    ]);
+                    /**
+                     * enregistrement de l'operation
+                     */
+                    $operation->update([
+                        'valider'=>'oui',
+                        'solde'=>$montant_investisseur,
+                    ]);
+
+                    /**
+                     * mise a jour de la caisse
+                     */
+
+                    $compte=$compte_caisse - $operation->montant_operation;
+
+                    $caisse=Caisse::find($caisse_id);
+
+                    MouvementCaisse::create([
+                        'caisse_id'=>$caisse->id,
+                        'user_id'=>$user_id,
+                        'description'=>'retrait dans compte investissement =>'.$investisseur->nom.'/'.$investisseur->telephone,
+                        'sortie'=>$montant_retrait,
+                        'solde'=>$compte,
+                        'date_comptable'=>$date_comptable,
+
+                    ]);
+
+                    $caisse->update([
+                        'compte'=>$montant_caisse,
+                    ]);
+
+                    return redirect('profile/'.encrypt($investisseur->id).'/investisseur');
+                  
 
     }
 }

@@ -81,7 +81,7 @@ class CategorieProduitController extends Controller
      */
     public function edit(string $id)
     {
-        //
+       $id=decrypt($id);
         if(Auth::check()){
             $categorie= CategorieProduit::find($id);
             return view('categorie_produit.edit',compact('categorie'));
@@ -94,7 +94,7 @@ class CategorieProduitController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $id=decrypt($id);
         $categorie=CategorieProduit::find($id);
         /**
              * validation des champs de saisie

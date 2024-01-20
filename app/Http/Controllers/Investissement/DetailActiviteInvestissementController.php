@@ -55,10 +55,12 @@ class DetailActiviteInvestissementController extends Controller
         // dd($request->benefice);
         // dd($request->dividende_e);
         // dd($request->dividende_i);
-        // dd(
-        // $request->investisseur,
-        // $request->montant_investis,
-        // $request->montant_restant);
+        //     dd(
+        //     $request->montant_activite,
+        //     $request->montant_investis,
+        //     $request->montant_restant,
+        //     $request->montant
+        // );
         // dd($request->compte);
         // dd($request->investisseur_id);
         $id=Auth::user()->id;
@@ -151,7 +153,7 @@ class DetailActiviteInvestissementController extends Controller
             }
         }
     }
-    
+
     /**
      * Display the specified resource.
      */
@@ -176,9 +178,9 @@ class DetailActiviteInvestissementController extends Controller
         $detail_activite_investissements=DetailActiviteInvestissement::where('activite_investissement_id',$id)->get();
 
         $secteur_depenses=SecteurDepense::all();
-$factures=Facture::where('activite_id',$id)->get();
-        $facture_montant_total=Facture::where('activite_id',$id)->selectRaw('sum(montant_total) as total')->get();
-        $facture_montant_regler=Facture::where('activite_id',$id)->selectRaw('sum(montant_regle) as total')->get();
+        $factures=Facture::where('activite_id',$id)->where('client_id','!=', NULL)->get();
+        $facture_montant_total=Facture::where('activite_id',$id)->where('client_id','!=', NULL)->selectRaw('sum(montant_total) as total')->get();
+        $facture_montant_regler=Facture::where('activite_id',$id)->where('client_id','!=', NULL)->selectRaw('sum(montant_regle) as total')->get();
 
         $operation_depenses=OperationDepenseActivite::where('activite_investissement_id',$activite_investissement->id)->get();
         $commandes=Commande::where('activite_id',$activite_investissement->id)->get();

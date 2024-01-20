@@ -90,7 +90,7 @@
                         <th scope="row">{{ $nature_operation_charge->id}}</th>
                         <td>{{ $nature_operation_charge->nature_operation_charge}}</td>
                         <td>
-                            <a href="{{ route('nature_operation_charge.edit',$nature_operation_charge->id) }}">
+                            <a href="{{ route('nature_operation_charge.edit',encrypt($nature_operation_charge->id)) }}">
                               <button type="button" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
                             </a>
 

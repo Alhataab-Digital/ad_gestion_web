@@ -105,7 +105,7 @@
                     </table>
                     <div class="text-end">
                               <button type="submit" class="btn btn-success">Valider</button>
-                                <a href="{{ route('activite_vehicule.delete',$activite_vehicule->id) }}">
+                                <a href="{{ route('activite_vehicule.delete',encrypt($activite_vehicule->id)) }}">
                                     <button type="button" class="btn btn-danger">Supprimer</button>
                                 </a>
                                 <a href="{{ route('activite_vehicule') }}">

@@ -52,7 +52,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <input class="form-control" type="text" name="montant_activite" id="" value="{{ $activite_investissement->montant_decaisse }}" readonly>
+                                    <input class="form-control" type="text" name="montant_activite" id="" value="{{ $activite_investissement->montant_decaisse }}" >
                                 </td>
                                 <td>
                                     <input type="hidden" name="taux_devise" id="" value="{{ $activite_investissement->taux_devise }}">
@@ -107,7 +107,7 @@
                       </tbody>
                     </table>
                     <hr>
-                    <div class="text-end"> 
+                    <div class="text-end">
                         <button type="submit" class="btn btn-success">Valider</button>
                         @if(!$activite_investissement->total_depense!=NULL)
                           <a href="{{ route('activite_investissement.delete',$activite_investissement->id) }}">
@@ -121,12 +121,12 @@
                     <hr>
                 </div>
                   </div>
-                  
-                
+
+
             </div><!-- End Recent Sales -->
-                              
+
         </div>
-         
+
     </form>
 
     </section>

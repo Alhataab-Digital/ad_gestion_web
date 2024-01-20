@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-use App\Models\fournisseur;
+use App\Models\Fournisseur;
 use App\Models\Caisse;
 use App\Models\Devise;
 use App\Models\TypeReglement;
@@ -34,7 +34,7 @@ class ActiviteVehiculeController extends Controller
      */
     public function index()
     {
-        
+
         $id=Auth::user()->id;
         if(isset(Caisse::where('user_id',$id)->first(['id'])->id)){
             $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
@@ -42,7 +42,7 @@ class ActiviteVehiculeController extends Controller
                 $agence_id=Auth::user()->agence_id;
                 $agence=Agence::find( $agence_id);
                 $devise=Devise::where('id', $agence->devise_id)->first();
-        $activites=ActiviteVehicule::where('etat_activite','en cours')->where('agence_id',$agence_id)->get();
+        $activites=ActiviteVehicule::where('etat_activite','en cours')->where('agence_id',$agence_id)->orderBy('id', 'DESC')->get();
         return view('investissement.activite_vehicule',compact('activites','caisse','devise'));
         }
         return view('investissement.message');
@@ -57,7 +57,7 @@ class ActiviteVehiculeController extends Controller
                 $agence_id=Auth::user()->agence_id;
                 $agence=Agence::find( $agence_id);
                 $devise=Devise::where('id', $agence->devise_id)->first();
-        $activites=ActiviteVehicule::where('etat_activite',NULL)->where('agence_id',$agence_id)->get();
+        $activites=ActiviteVehicule::where('etat_activite',NULL)->where('agence_id',$agence_id)->orderBy('id', 'DESC')->get();
         return view('investissement.activite_vehicule_liste',compact('activites','caisse','devise'));
         }
         return view('investissement.message');
@@ -73,7 +73,7 @@ class ActiviteVehiculeController extends Controller
                 $agence_id=Auth::user()->agence_id;
                 $societe_id=Auth::user()->societe_id;
                 $agence=Agence::find( $agence_id);
-        $activite_ouvertes=ActiviteVehicule::where('etat_activite','ouverte')->where('societe_id',$societe_id)->get();
+        $activite_ouvertes=ActiviteVehicule::where('etat_activite','ouverte')->where('societe_id',$societe_id)->orderBy('id', 'DESC')->get();
         return view('investissement.fermer_activite_vehicule',compact('activite_ouvertes','caisse'));
         }
         return view('investissement.message');
@@ -88,7 +88,7 @@ class ActiviteVehiculeController extends Controller
                 $agence_id=Auth::user()->agence_id;
                 $agence=Agence::find( $agence_id);
                 $devise=Devise::where('id', $agence->devise_id)->first();
-        $activites=ActiviteVehicule::where('etat_activite','fermer')->where('agence_id',$agence_id)->get();
+        $activites=ActiviteVehicule::where('etat_activite','fermer')->where('agence_id',$agence_id)->orderBy('id', 'DESC')->get();
         return view('investissement.activite_vehicule_terminer',compact('activites','caisse','devise'));
         }
         return view('investissement.message');
@@ -111,28 +111,27 @@ class ActiviteVehiculeController extends Controller
             'montant_ouverture'=>'required',
             'detail'=>'required',
         ]);
-    
+
         /**
          * donnee a ajouté dans la table
          */
-    
+
         $data=$request->all();
         // dd($data);
-        $id=Auth::user()->id;
-    
-            if(isset(Caisse::where('user_id',$id)->first(['id'])->id))
+        $user_id=Auth::user()->id;
+            if(isset(Caisse::where('user_id',$user_id)->first(['id'])->id)==true)
             {
-                    $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
+                    $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
                     $caisse=Caisse::find($caisse_id);
                     $societe_id=Auth::user()->societe_id;
                     $agence_id=Auth::user()->agence_id;
                     $agence=Agence::find( $agence_id);
-    
-                    $compte_caisse= Caisse::where('user_id',$id)->first(['compte'])->compte;
+
+                    $compte_caisse= Caisse::where('user_id',$user_id)->first(['compte'])->compte;
                     $investisseurs=Investisseur::where('compte_investisseur','>','0')->where('etat','1')->where('societe_id',$societe_id)->get();
                     foreach($investisseurs as $investisseur)
                     {
-                        
+
                             $taux=DeviseAgence::where('devise_id',$investisseur->agence->devise_id)->where('agence_id',$agence_id)->get();
                             foreach($taux as $tx)
                             {
@@ -140,31 +139,31 @@ class ActiviteVehiculeController extends Controller
                                 // $somme_total=0;
                                 foreach($capital_investisseurs as $capital_investisseur)
                                 {
-                                    
-                                        // $mult = pow(10, abs($places)); 
+
+                                        // $mult = pow(10, abs($places));
                                         // return $places < 0 ?
                                         // round($value / $mult) * $mult :
                                         //     round($value * $mult) / $mult;
-                                    
+
                                     //    dd($capital_investisseur->total,$tx->taux);
                                         $somme_total=round($capital_investisseur->total*$tx->taux);
                                         // dd($somme_total);
-                                        $date_comptable= Caisse::where('user_id',$id)->first(['date_comptable'])->date_comptable;
-                        
+                                        $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
+
                                     if(isset(ActiviteVehicule::where('etat_activite','ouverte')->where('agence_id',$agence_id)->first(['id'])->id))
                                     {
                                         return back()->with('danger',"Une activite est en cours d'utilisation");
                                     }else{
                                         if( $somme_total < $data['montant_ouverture'])  {
-                        
+
                                             return back()->with('danger','Le montant de l\'activité est supperieur au capital investis ');
-                        
+
                                         } else{
-                
+
                                             if( $compte_caisse < $data['montant_ouverture'])  {
-                        
+
                                                 return back()->with('danger','Le montant caisse insuffisant ');
-                        
+
                                             } else{
                                                 /**
                                                  * insertion des données dans la table user
@@ -175,25 +174,25 @@ class ActiviteVehiculeController extends Controller
                                                     'montant_ouverture'=>$data['montant_ouverture'],
                                                     'taux_devise'=>$tx->taux,
                                                     'detail'=>$data['detail'],
-                                                    'user_id'=>$id,
+                                                    'user_id'=>$user_id,
                                                     'caisse_id'=>$caisse_id,
                                                     'agence_id'=>$agence_id,
                                                     'societe_id'=>$societe_id,
                                                     'date_comptable'=>$date_comptable,
                                                 ]);
-                            
-                                                $activite_id=ActiviteVehicule::where('user_id',$id)->latest('id')->first();
-                            
-                                                return redirect('/'.$activite_id->id.'/activite_vehicule/repartition');
+
+                                                $activite_id=ActiviteVehicule::where('user_id',$user_id)->latest('id')->first();
+
+                                                return redirect('/'.encrypt($activite_id->id).'/activite_vehicule/repartition');
                                             }
                                         }
                                     }
                                 }
                             }
-                        
+
                     }
             }
-        return view('devise.message');
+                return view('devise.message');
     }
 
     /**
@@ -261,12 +260,12 @@ class ActiviteVehiculeController extends Controller
         $societe_id=Auth::user()->societe_id;
 
         $investisseurs=Investisseur::where('compte_investisseur','>','0')->where('etat','1')->where('societe_id',$societe_id)->get();
-       
+
         return view('investissement.activite_vehicule_repartition', compact(
 
             'investisseurs',
             'activite_vehicule',
-            
+
         ));
 
     }
@@ -282,7 +281,7 @@ class ActiviteVehiculeController extends Controller
                 $agence=Agence::find( $agence_id);
         $activites=ActiviteVehicule::where('etat_activite','ouverte')->where('agence_id',$agence_id)->get();
         return redirect('/activite_vehicule',)->with('success','Activite ouverte ');
-    
+
         }
         return view('investissement.message');
     }
@@ -317,11 +316,11 @@ class ActiviteVehiculeController extends Controller
 
                 foreach( $investisseurs as  $investisseur){
                     $caisse=Caisse::find($caisse_id);
-                    
+
                     $investisseur_id   =$request->investisseur_id[$i];
                     $montant_investis  = round((($request->montant_investis[$i]/$taux_devise)+$investisseur->compte_investisseur),-3);
                     $dividende_gagner  =(($request->taux[$i])*(round($dividende_investisseur/$taux_devise)))+$investisseur->compte_dividende;
-               
+
                         $data=[
                             'compte_dividende'   =>$dividende_gagner,
                             'compte_investisseur'  =>$montant_investis,
@@ -330,14 +329,16 @@ class ActiviteVehiculeController extends Controller
                         Investisseur::where('id', $investisseur_id)->update($data);
 
                         OperationDividende::create([
-                            'montant_operation'=>$dividende_gagner,
+                            'montant_operation'=>(($request->taux[$i])*(round($dividende_investisseur/$taux_devise))),
+                            'solde'=>$dividende_gagner,
                             'sens_operation'=>'entree',
                             'reglement_id'=>1,
                             'caisse_id'=>$caisse_id,
                             'investisseur_id'=>$investisseur_id,
                             'user_id'=>$id,
                             'date_comptable'=>$date_comptable,
-    
+                            'valider'=>"oui",
+
                         ]);
                 }
             }
@@ -355,7 +356,7 @@ class ActiviteVehiculeController extends Controller
 
                 $compte_dividende_entreprise=round($compte_dividende_societe+$dividende_entreprise/$taux_devise);
                 $compte_securite_societe=round($compte_securite_societe+$benefice_securite/$taux_devise);
-                
+
                 $caisse=Caisse::find($caisse_id);
 
                 $user_id=Auth::user()->id;
@@ -369,7 +370,7 @@ class ActiviteVehiculeController extends Controller
 
             return redirect('/activite_vehicule')->with('danger','Activité fermée');
          } else{
-            return redirect("/$activite_vehicule->id/activite_vehicule/repartition")->with('danger','Activité déjà términée ');;
+            return redirect("/encrypt($activite_vehicule->id)/activite_vehicule/repartition")->with('danger','Activité déjà términée ');;
         }
     }
 }

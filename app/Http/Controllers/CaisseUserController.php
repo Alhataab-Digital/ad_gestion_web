@@ -147,7 +147,7 @@ class CaisseUserController extends Controller
     public function asso_caisse_annuler(Request $request, $id)
     {
 
-
+        $id=decrypt($id);
         $caisse=Caisse::find($id);
 
         $caisse->update([

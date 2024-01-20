@@ -16,8 +16,8 @@
   </div><!-- End Page Title -->
   <section class="section">
     <div class="row">
-      <div class="col-lg-6">
-        <div class="card  bg-success text-white">
+      <div class=" form-signin w-50 m-auto col-lg-6">
+        <div class=" card  bg-success text-white">
           <div class="card-body ">
             <h5 class="card-title text-white">Versement compte investisseur</h5>
             <p>

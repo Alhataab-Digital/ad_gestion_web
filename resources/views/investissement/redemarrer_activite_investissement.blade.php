@@ -16,7 +16,7 @@
       </nav>
     </div><!-- End Page Title -->
     <section class="section">
-    
+
         <div class="row">
 
             <div class="col-lg-12">
@@ -48,9 +48,9 @@
                     </h5>
                     <hr>
                     <form method="post" action="{{ route('activite_investissement.initier') }}">
-                    @csrf 
+                    @csrf
                     <h5 class="bg-secondary text-white">
-                    
+
                     <table class="table text-white ">
                             <tr>
                                 <th>Capital activité</th>
@@ -64,7 +64,7 @@
                                    <input class="form-control" type="text" name="montant_decaisse" id="" value="{{ $activite_investissement->montant_decaisse }}" >
                                 </td>
                                 <td>
-                                    <input class="form-control" type="text" onkeyup="prixU()" name="" value="{{$activite_investissement->montant_recette}}" id=""  readonly>
+                                    <input class="form-control" type="text" onkeyup="prixU()" name="" value="{{$activite_investissement->total_recette}}" id=""  readonly>
                                 </td>
                                 <td>
                                     <input class="form-control" type="text" onkeyup="prixU()" name="" value="{{$activite_investissement->total_depense}}" id="total_depense"  readonly>
@@ -87,21 +87,21 @@
                     </table>
                     </h5>
                     <hr><br>
-                    <table class="table table-borderless datatable"> 
-                                
+                    <table class="table table-borderless datatable">
+
                                     <input class="form-control" type="hidden" name="compte_activite" id="total_activite" value="{{$activite_investissement->compte_activite}}" required>
-                                
+
                                     <input class="form-control" type="hidden"  name="total_depense" value="{{$activite_investissement->total_depense}}" id="total_depense"  >
-                                
+
                                     <input class="form-control" type="hidden"  name="montant_benefice" id="montant_benefice" value="{{$activite_investissement->compte_activite-$activite_investissement->montant_decaisse}}">
-                                
+
                                     <input class="form-control"  type="hidden" name="activite_id" id="" value="{{ $activite_investissement->id }}" >
-                                    
+
                                     <input class="form-control" type="hidden" name="capital_activite" id="" value="{{ $activite_investissement->capital_activite }}" >
                                 </td>
                                 </tr>
                             <thead class="bg-primary text-white">
-                            
+
                                 <tr>
                                     <th scope="col">nom investisseur</th>
                                     <th scope="col">Montant investis </th>
@@ -132,7 +132,7 @@
                                 <button type="button" class="btn btn-secondary">Quitter</button>
                             </a>
                     </form>
-                                
+
                 </div>
 
             </div>
@@ -140,7 +140,7 @@
         </div><!-- End Recent Sales -->
 
       </div>
-    
+
 
     </section>
 

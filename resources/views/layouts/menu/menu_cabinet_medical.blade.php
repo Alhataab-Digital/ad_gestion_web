@@ -56,8 +56,51 @@
               <i class="bi bi-circle"></i><span>Association Caisse Utilisateur</span>
             </a>
           </li>
-
-
+          <li>
+        <a href="tables-general.html">
+          <i class="bi bi-circle"></i><span>Tarifs</span>
+        </a>
+      </li>
+      <li>
+        <a href="tables-general.html">
+          <i class="bi bi-circle"></i><span>Maladies</span>
+        </a>
+      </li>
+      <li>
+        <a href="tables-general.html">
+          <i class="bi bi-circle"></i><span>Modèles d'analyse</span>
+        </a>
+      </li>
+      <li>
+        <a href="tables-general.html">
+          <i class="bi bi-circle"></i><span>Modèles de radio</span>
+        </a>
+      </li>
+      <li>
+        <a href="tables-general.html">
+          <i class="bi bi-circle"></i><span>Modèles de certificat</span>
+        </a>
+      </li>
+      <li>
+        <a href="tables-general.html">
+          <i class="bi bi-circle"></i><span>Modèles d' ordonnance</span>
+        </a>
+      </li>
+      <li>
+        <a href="tables-general.html">
+          <i class="bi bi-circle"></i><span>Analyses</span>
+        </a>
+      </li>
+      <li>
+        <a href="tables-general.html">
+          <i class="bi bi-circle"></i><span>Vaccins</span>
+        </a>
+      </li>
+      <li>
+        <a href="tables-general.html">
+          <i class="bi bi-circle"></i><span>Médicaments</span>
+        </a>
+      </li>
         </ul>
     </li>
    
@@ -111,22 +154,12 @@
     <ul id="tables-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
       <li>
         <a href="tables-general.html">
-          <i class="bi bi-circle"></i><span>Compte bancaire</span>
+          <i class="bi bi-circle"></i><span>Nouvelle consultation</span>
         </a>
       </li>
       <li>
         <a href="tables-general.html">
-          <i class="bi bi-circle"></i><span>Depot banque</span>
-        </a>
-      </li>
-      <li>
-        <a href="tables-general.html">
-          <i class="bi bi-circle"></i><span>Retrait banque</span>
-        </a>
-      </li>
-      <li>
-        <a href="tables-data.html">
-          <i class="bi bi-circle"></i><span>Rapprochement bancaire</span>
+          <i class="bi bi-circle"></i><span>Liste des consultations</span>
         </a>
       </li>
     </ul>
@@ -139,22 +172,12 @@
     <ul id="charts-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
       <li>
         <a href="{{ route('commande') }}">
-          <i class="bi bi-circle"></i><span>Commande</span>
+          <i class="bi bi-circle"></i><span>Nouveau patient</span>
         </a>
       </li>
       <li>
         <a href="{{ route('devis') }}">
-          <i class="bi bi-circle"></i><span>Devis</span>
-        </a>
-      </li>
-      <li>
-        <a href="{{ route('facture') }}">
-          <i class="bi bi-circle"></i><span>Facture</span>
-        </a>
-      </li>
-      <li>
-        <a href="">
-          <i class="bi bi-circle"></i><span>Bon de livraisson</span>
+          <i class="bi bi-circle"></i><span>Liste des patients</span>
         </a>
       </li>
     </ul>
@@ -167,22 +190,22 @@
     <ul id="icons-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
       <li>
         <a href="icons-bootstrap.html">
-          <i class="bi bi-circle"></i><span>Recu de Vente</span>
+          <i class="bi bi-circle"></i><span>Consultations</span>
         </a>
       </li>
       <li>
         <a href="icons-remix.html">
-          <i class="bi bi-circle"></i><span>Facture de vente</span>
+          <i class="bi bi-circle"></i><span>Vaccination</span>
         </a>
       </li>
       <li>
         <a href="icons-boxicons.html">
-          <i class="bi bi-circle"></i><span>Reçu annuler</span>
+          <i class="bi bi-circle"></i><span>Certification</span>
         </a>
       </li>
       <li>
         <a href="icons-boxicons.html">
-          <i class="bi bi-circle"></i><span>Facture annuler</span>
+          <i class="bi bi-circle"></i><span>Analyse</span>
         </a>
       </li>
     </ul>

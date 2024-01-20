@@ -17,13 +17,13 @@
 
     <section class="section">
       <div class="row">
-        <div class="col-lg-10">
+        <div class="form-signin w-50 m-auto col-lg-12">
 
-           <div class="card">
 
-                <div class="card-body">
-                <h5 class="card-title">Formulaire d'enregistrement activité</h5>
-                <p>
+          <div class="card bg-secondary text-white">
+            <div class="card-body">
+              <h5 class="card-title text-white">Creer une nouvelle activité</h5>
+              <p>
                     @if ($message=Session::get('success'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                           <i class="bi bi-check-circle me-1"></i>
@@ -39,13 +39,6 @@
                         </div>
                     @endif
                 </p>
-                @if ($caisse->etat==1 && $caisse->date_comptable!= date("Y-m-d") )
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="bi bi-exclamation-octagon me-1"></i>
-                    La date operation n'est pas a jour
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                @endif
                 @if ($caisse->etat==0 )
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <i class="bi bi-exclamation-octagon me-1"></i>
@@ -54,46 +47,43 @@
                 </div>
                 @endif
                 @if ($caisse->etat==1 && $caisse->date_comptable == date("Y-m-d"))
-                <!-- General Form Elements -->
-                <form method="post" action="{{ route('activite_investissement.store') }}">
-                    @csrf
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label">Type d'activité</label>
-                        <div class="col-sm-10">
-                        <select class="form-select" aria-label="Default select example" name="type_activite" require>
-                            <option >Choisir...</option>
-                            @foreach ($type_activites as $type_activite )
-                            <option value="{{ $type_activite->id }}">{{ $type_activite->type_activite }}</option>
-                            @endforeach
-
-                        </select>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                    <label for="inputText" class="col-sm-2 col-form-label">Budget decaisser</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="montant_decaisse" class="form-control">
-                    </div>
-                    </div>
-                    <div class="row mb-3">
-                    <label for="inputPassword" class="col-sm-2 col-form-label">commentaire </label>
-                    <div class="col-sm-10">
-                        <textarea name="commentaire"  class="form-control" style="height: 100px"></textarea>
-                    </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <div class="col-sm-10">
-                          <button type="submit" class="btn btn-primary">Valider</button>
-                      </div>
-                    </div>
-
-                </form><!-- End General Form Elements -->
-                @endif
+              <!-- Multi Columns Form -->
+              <form class="row g-3" method="post" action="{{ route('activite_investissement.store') }}">
+                  @csrf
+                <div class="col-md-12">
+                  <label for="inputState" class="form-label">Type activité</label>
+                  <select id="inputState" class="form-select" name="type_activite" required>
+                    <option selected>Choose...</option>
+                    @foreach ($type_activites as $type_activite )
+                    <option value="{{ $type_activite->id }}">{{ $type_activite->type_activite }}</option>
+                    @endforeach
+                  </select>
                 </div>
+                <div class="col-md-12">
+                  <label for="inputName5" class="form-label">Montant activité</label>
+                  <input type="text" class="form-control" id="inputName5" name="montant_decaisse" required>
+                </div>
+                
+                <!-- <div class="col-12">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="gridCheck">
+                    <label class="form-check-label" for="gridCheck">
+                      Check me out
+                    </label>
+                  </div>
+                </div> -->
+                <div class="text-end">
+                  <button type="submit" class="btn btn-primary">Enregister</button>
+                  <!-- <button type="reset" class="btn btn-secondary">Reset</button> -->
+                </div>
+              </form><!-- End Multi Columns Form -->
+              @endif
             </div>
+          </div>
+
         </div>
 
+        </div>
       </div>
     </section>
 

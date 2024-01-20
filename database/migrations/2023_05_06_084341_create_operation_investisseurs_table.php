@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('operation_investisseurs', function (Blueprint $table) {
             $table->id();
             $table->string('montant_operation');
+            $table->string('solde')->default(0);
             $table->string('sens_operation');
             $table->string('reglement_id');
             $table->string('caisse_id');
             $table->string('investisseur_id');
             $table->string('user_id');
+            $table->string('valider')->default("non");
             $table->date('date_comptable');
             $table->timestamps();
         });

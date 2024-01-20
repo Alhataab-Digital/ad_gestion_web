@@ -34,7 +34,7 @@ class AchatVehiculeController extends Controller
             $caisse=Caisse::find($caisse_id);
             $agence_id=Auth::user()->agence_id;
             $agence=Agence::find( $agence_id);
-            $operations=OperationVehiculeAchete::where('user_id',$id)->where('fournisseur_id','!=', Null )->where('etat', Null )->where('sens_operation', 'sortie' )->get();
+            $operations=OperationVehiculeAchete::where('user_id',$id)->where('fournisseur_id','!=', Null )->where('etat', Null )->where('sens_operation', 'sortie' )->orderBy('id', 'DESC')->get();
             return view('investissement.achat_vehicule', compact('caisse','operations','agence'));
         }
         return view('devise.message');
@@ -223,7 +223,7 @@ class AchatVehiculeController extends Controller
 
                             $id=Auth::user()->id;
                             $operation=OperationVehiculeAchete::where('user_id',$id)->latest('id')->first();
-                            return redirect()->route('achat_vehicule.show',$operation)->with('success','operation effectuee avec succès');
+                            return redirect()->route('achat_vehicule.show',encrypt($operation->id))->with('success','operation effectuee avec succès');
 
                         }
                     }

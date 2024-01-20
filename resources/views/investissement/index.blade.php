@@ -55,6 +55,7 @@
                       @endif
                       <th scope="col">heritier</th>
                       <th scope="col">status</th>
+                      <th scope="col">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -81,7 +82,17 @@
                         @if($investisseur->etat==1)
                         <td><span class="badge bg-success">compte actif</span></td>
                         @endif
-
+                        <td>
+                        <a href="{{ route('investisseur.edit',encrypt($investisseur->id)) }}">
+                            <button type="button" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
+                        </a>
+                         <a href="">
+                            <button type="button" class="btn btn-secondary"><i class="bi bi-eye"></i></button>
+                        </a>
+                        <!-- <a href="">
+                            <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
+                        </a> -->
+                    </td>
                     </tr>
 
                     @endforeach

@@ -7,6 +7,7 @@ use App\Models\Utilisateur;
 use App\Models\Fournisseur;
 use App\Models\Client;
 use App\Models\reglement;
+use App\Models\Agence;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,6 +22,7 @@ class Operation extends Model
         'fichier',
         'date_comptable',
         'caisse_id',
+        'agence_id',
         'user_id',
     ];
 
@@ -32,6 +34,11 @@ class Operation extends Model
     public function caisse()
     {
         return $this->belongsTo(Caisse::class);
+    }
+
+    public function agence()
+    {
+        return $this->belongsTo(Agence::class);
     }
 
     public function client()
@@ -49,8 +56,8 @@ class Operation extends Model
         return $this->belongsTo(Utilisateur::class);
     }
 
-    public function reglement()
+    public function nature_operation_charge()
     {
-        return $this->belongsTo(TypeReglement::class);
+        return $this->belongsTo(NatureOperationCharge::class,'nature_operation_charge_id');
     }
 }

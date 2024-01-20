@@ -19,11 +19,11 @@ hello
     <section class="section">
       <div class="row">
 
-        <div class="col-lg-6">
+        <div class="form-signin w-50 m-auto col-lg-6">
 
             <div class="card bg-danger text-white">
                 <div class="card-body">
-                    <h5 class="card-title text-white">Retrait </h5>
+                    <h5 class="card-title text-white">Retrait N° {{$operation->id}} </h5>
                         <p>
                             @if ($message=Session::get('success'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -67,10 +67,20 @@ hello
                         @endif
                         </div>
 
-                        {{-- <div class="col-12">
-                            <input type="text" name="heritier" value="{{ $operation->investisseur->heritier }}" class="form-control" placeholder="Nom heritier">
-                        </div> --}}
-                        <div class="col-md-6">
+                    </form><!-- End No Labels Form -->
+
+
+                </div>
+            </div>
+
+            <div class="card bg-secondary text-white">
+                
+                <div class="card-body">
+                <br><br>
+                    <!-- No Labels Form -->
+                    <form class="row g-3" method="post" action="">
+                        
+                        <div class="col-md-4">
                             <input type="text" name="montant" value="{{ number_format($operation->montant_operation,2,","," ").' '.$operation->user->agence->devise->unite}}" class="form-control" placeholder="Montant a verser">
                         </div>
                         <div class="col-md-4">
@@ -79,9 +89,10 @@ hello
                                 <option >{{ $operation->reglement->reglement }}</option>
                             </select>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-4">
                             <input type="text" value="{{ $operation->created_at }}" class="form-control" placeholder="Zip">
                         </div>
+                        @if($operation->valider=='oui')
                         <div class="text-center">
                             <a href="{{ route('i_retrait.print',encrypt($operation->id)) }}">
                             <div class="btn btn-primary"> Imprimer</div>
@@ -90,13 +101,12 @@ hello
                                 <div class="btn btn-secondary"> Quitter</div>
                                 </a>
                           </div>
+                        @endif
                     </form><!-- End No Labels Form -->
 
 
                 </div>
             </div>
-
-
         </div>
 
     </section>

@@ -36,7 +36,7 @@ class VenteVehiculeController extends Controller
             $caisse=Caisse::find($caisse_id);
             $agence_id=Auth::user()->agence_id;
             $agence=Agence::find( $agence_id);
-            $operations=OperationVehiculeVendu::where('user_id',$id)->where('client_id','!=', Null )->where('etat',NULL)->where('sens_operation', 'entree' )->get();
+            $operations=OperationVehiculeVendu::where('user_id',$id)->where('client_id','!=', Null )->where('etat',NULL)->where('sens_operation', 'entree' )->orderBy('id', 'DESC')->get();
             return view('investissement.vente_vehicule', compact('caisse','operations','agence'));
         }
         return view('devise.message');

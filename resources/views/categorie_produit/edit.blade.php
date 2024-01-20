@@ -42,7 +42,7 @@
             </h5>
 
               <!-- Vertical Form -->
-              <form action="{{ route('categorie_produit.update',$categorie->id) }}" method="post" class="row g-3" >
+              <form action="{{ route('categorie_produit.update',encrypt($categorie->id)) }}" method="post" class="row g-3" >
                 @csrf
 
                 <div class="col-12">

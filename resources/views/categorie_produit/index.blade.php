@@ -98,7 +98,7 @@
                       <td>{{ $categorie->nom_categorie_produit}}</td>
                       <td>{{ $categorie->description_categorie_produit}}</td>
                       <td>
-                          <a href="{{ route('categorie_produit.edit',$categorie->id) }}">
+                          <a href="{{ route('categorie_produit.edit',encrypt($categorie->id)) }}">
                               <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
                           </a>
                       </td>

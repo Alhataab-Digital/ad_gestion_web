@@ -16,10 +16,10 @@
   </div><!-- End Page Title -->
   <section class="section">
     <div class="row">
-      <div class="col-lg-6">
+      <div class="form-signin w-50 m-auto col-lg-6">
         <div class="card">
           <div class="card-body ">
-            <h5 class="card-title ">Activation / desactivation compte investisseur</h5>
+            <h5 class="card-title ">Consultation compte investisseur</h5>
             <p>
                 @if ($message=Session::get('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">

@@ -128,7 +128,7 @@
                       <td>{{ $produit->prix_unitaire_vente}}</td>
                       <td>{{ $produit->stock_min}}</td>
                       <td>
-                          <a href="{{ route('produit.edit',$produit->id) }}">
+                          <a href="{{ route('produit.edit',encrypt($produit->id)) }}">
                             <button type="button" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
                           </a>
                       </td>

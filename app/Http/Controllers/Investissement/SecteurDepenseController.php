@@ -69,6 +69,7 @@ class SecteurDepenseController extends Controller
      */
     public function edit(string $id)
     {
+        $id=decrypt($id);
         $secteur_depense=SecteurDepense::find($id);
         return view('investissement.secteur_depense_edit',compact('secteur_depense'));
     }
@@ -78,7 +79,7 @@ class SecteurDepenseController extends Controller
      */
     public function update(Request $request, string $id)
     {
-
+        $id=decrypt($id);
         $request->validate([
             'secteur_depense'=>'required',
         ]);

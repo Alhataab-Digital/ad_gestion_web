@@ -117,12 +117,12 @@
                     <td>{{ $caisse->libelle}}</td>
                     <td>{{ $caisse->montant_min}}</td>
                     <td>{{ $caisse->montant_max}}</td>
-                    <td>{{ $caisse->compte}}</td>
+                    <td>{{number_format($caisse->compte,2,","," ")  }}</td>
                     <!-- <td>{{ $caisse->compte_dividende_societe}}</td> -->
 
                     <td>{{ $caisse->agence->nom}}</td>
                     <td>
-                        <a href="{{ route('caisse.edit',$caisse->id) }}">
+                        <a href="{{ route('caisse.edit',encrypt($caisse->id)) }}">
                           <button type="button" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
                         </a>
                         <!-- <a href="">

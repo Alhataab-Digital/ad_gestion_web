@@ -132,7 +132,7 @@
                     <td>{{ $agence->region->nom}}</td>
                     <td>{{ $agence->societe->raison_sociale}}</td>
                     <td>
-                        <a href="{{ route('agence.edit',$agence->id) }}">
+                        <a href="{{ route('agence.edit',encrypt($agence->id)) }}">
                           <button type="button" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
                         </a>
                         <!-- <a href="">

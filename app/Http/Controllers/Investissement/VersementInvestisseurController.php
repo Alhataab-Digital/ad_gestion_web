@@ -27,7 +27,7 @@ class VersementInvestisseurController extends Controller
         if(isset(Caisse::where('user_id',$id)->first(['id'])->id)){
                 $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
                 $caisse=Caisse::find($caisse_id);
-                $operations=OperationInvestisseur::where('user_id',$id)->where('sens_operation','entree')->get();
+                $operations=OperationInvestisseur::where('user_id',$id)->where('sens_operation','entree')->orderBy('id', 'DESC')->get();
 
             return view('investissement.versement',compact('operations','caisse'));
         }
@@ -94,12 +94,14 @@ class VersementInvestisseurController extends Controller
              */
             OperationInvestisseur::create([
                 'montant_operation'=>$request->montant,
+                'solde'=>$montant_investisseur,
                 'sens_operation'=>'entree',
                 'reglement_id'=>$request->reglement,
                 'caisse_id'=>$caisse_id,
                 'investisseur_id'=>$id,
                 'user_id'=>$user_id,
                 'date_comptable'=>$date_comptable,
+                'valider'=>'oui',
 
             ]);
 

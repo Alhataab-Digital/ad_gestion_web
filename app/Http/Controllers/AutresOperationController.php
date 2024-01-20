@@ -28,8 +28,10 @@ class AutresOperationController extends Controller
     {
         $user_id=Auth::user()->id;
         if(isset(Caisse::where('user_id',$user_id)->first(['id'])->id)){
+            $caisse=Caisse::where('user_id',$user_id)->first();
             $nature_operations=NatureOperationCharge::all();
-            return view('operation.index', compact('nature_operations'));
+            $operations=Operation::where('user_id',$user_id)->orderBy('id','DESC')->get();
+            return view('operation.index', compact('nature_operations','operations','caisse'));
         }
         return view('investissement.message');
     }
@@ -92,6 +94,7 @@ class AutresOperationController extends Controller
                             'sens_operation'=>'sortie',
                             'nature_operation_charge_id'=>$data['nature_operation_id'],
                             'caisse_id'=>$caisse_id,
+                            'agence_id'=>$agence_id,
                             'user_id'=>$user_id,
                             'date_comptable'=>$date_comptable,
                         ]);
@@ -138,7 +141,10 @@ class AutresOperationController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $id=decrypt($id);
+            $operation=Operation::find($id);
+            return view('operation.show', compact('operation'));
+       
     }
 
     /**
@@ -162,6 +168,50 @@ class AutresOperationController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $id=decrypt($id);
+        $agence_id=Auth::user()->agence_id;
+        $societe_id=Auth::user()->societe_id;
+        $operation=Operation::find($id);
+        $user_id=$operation->user_id;
+
+        if(Caisse::where('user_id',$user_id)->first(['id'])->id)
+        {
+
+            $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
+            $compte_societe= Societe::where('id',$societe_id)->first(['compte_societe'])->compte_societe;
+            $compte_caisse= Caisse::where('user_id',$user_id)->first(['compte'])->compte;
+            $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
+            $montant_operation=$operation->montant_operation;  
+                          
+                        /**
+                         * mise a jour de la caisse
+                        */
+                        $compte=$compte_caisse+$montant_operation;
+                        $compte_societe=$compte_societe+$montant_operation;
+
+                        $societe=Societe::find($societe_id);
+                        $caisse=Caisse::find($caisse_id);
+                        $nature_operation=NatureOperationCharge::find($operation->nature_operation_charge_id);
+
+                        MouvementCaisse::create([
+                            'caisse_id'=>$caisse->id,
+                            'user_id'=>$user_id,
+                            'description'=> 'Supprimer '.$nature_operation->nature_operation_charge,
+                            'entree'=>$montant_operation,
+                            'solde'=>$compte,
+                            'date_comptable'=>$date_comptable,
+
+                        ]);
+
+                        $caisse->update([
+                            'compte'=>$compte,
+                        ]);
+                        $societe->update([
+                            'compte_societe'=>$compte_societe,
+                        ]);
+
+                        $operation->delete();
+                        return redirect()->route('operation')->with('success',"Operation effectuée avec succès");
+        }
     }
 }

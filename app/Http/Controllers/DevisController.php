@@ -69,6 +69,7 @@ class DevisController extends Controller
                         'montant_total' =>$request->montant_ht,
                         'etat' =>'en cours',
                     ]);
+                    
             $client->update([
                 'nom_client' =>$request->nom_client,
                 'adresse' =>$request->adresse,

@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\Auth\UserController;
 
 use App\Http\Controllers\SocieteController;
+use App\Http\Controllers\RegionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
@@ -66,6 +67,7 @@ use App\Http\Controllers\DetailDevisController;
 use App\Http\Controllers\FactureController;
 use App\Http\Controllers\DetailFactureController;
 use App\Http\Controllers\ReglementFactureController;
+use App\Http\Controllers\BanqueController;
 
 
 use App\Http\Controllers\Detenu\DetenuController;
@@ -124,6 +126,14 @@ Route::middleware(['auth','initier'])->controller(SocieteController::class)->gro
     Route::post('/societe/logo/{id}/update','update_logo')->name('logo.update');
 });
 
+Route::middleware(['auth','initier'])->controller(RegionController::class)->group(function(){
+    Route::get('/region','index')->name('region');
+    Route::post('/region/creation','store')->name('region.store');
+    Route::get('/region/{id}/detail','show')->name('region.show');
+    Route::get('/region/{id}/edit','edit')->name('region.edit');
+    Route::post('/region/{id}/update','update')->name('region.update');
+});
+
 Route::middleware(['auth','initier'])->controller(ProfileController::class)->group(function(){
     Route::get('/profile','index')->name('profile');
     Route::post('/changer/password','store')->name('profile.store');
@@ -144,6 +154,46 @@ Route::middleware(['auth','initier'])->controller(AgenceController::class)->grou
     Route::get('/agence/{id}/edit','edit')->name('agence.edit');
     Route::post('/agence/{id}/update','update')->name('agence.update');
     Route::post('/agence/devise','devise')->name('agence.devise');
+});
+
+Route::middleware(['auth','initier'])->controller(BanqueController::class)->group(function(){
+    Route::get('/banque','index')->name('banque');
+    Route::post('/banque/creation','store')->name('banque.store');
+    Route::get('/banque/{id}/detail','show')->name('banque.show');
+    Route::get('/banque/{id}/edit','edit')->name('banque.edit');
+    Route::post('/banque/{id}/update','update')->name('banque.update');
+
+    Route::get('/banque/operation','operation')->name('banque.operation');
+    Route::post('/banque/{id}/ouverture','ouverture')->name('banque.ouverture');
+    Route::post('/banque/{id}/fermeture','fermeture')->name('banque.fermeture');
+
+    Route::get('/banque/virement','virement')->name('banque.virement');
+    Route::get('/banque/depot','depot')->name('banque.depot');
+    Route::get('/banque/retrait','retrait')->name('banque.retrait');
+
+    Route::get('/banque/{id}/virement_valider','virement_valider')->name('banque.virement.valider');
+    Route::get('/banque/{id}/depot_valider','depot_valider')->name('banque.depot.valider');
+    Route::get('/banque/{id}/retrait_valider','retrait_valider')->name('banque.retrait.valider');
+    
+    Route::post('/banque/virement_create','virement_create')->name('banque.virement.create');
+    Route::post('/banque/depot_create','depot_create')->name('banque.depot.create');
+    Route::post('/banque/retrait_create','retrait_create')->name('banque.retrait.create');
+
+    Route::get('/banque/{id}/virement_edit','virement_edit')->name('banque.virement.edit');
+    Route::get('/banque/{id}/depot_edit','depot_edit')->name('banque.depot.edit');
+    Route::get('/banque/{id}/retrait_edit','retrait_edit')->name('banque.retrait.edit');
+
+    Route::post('/banque/virement_modifier','virement_modifier')->name('banque.virement.modifier');
+    Route::post('/banque/depot_modifier','depot_modifier')->name('banque.depot.modifier');
+    Route::post('/banque/retrait_modifier','retrait_modifier')->name('banque.retrait.modifier');
+    
+    Route::get('/banque/{id}/virement_supprimer','virement_supprimer')->name('banque.virement.delete');
+    Route::get('/banque/{id}/depot_supprimer','depot_supprimer')->name('banque.depot.delete');
+    Route::get('/banque/{id}/retrait_supprimer','retrait_supprimer')->name('banque.retrait.delete');
+
+    Route::post('/caisse/{id}/fermeture','fermeture')->name('caisse.fermeture');
+
+    Route::get('/caisse/rapport','rapport_caisse')->name('caisse.rapport');
 });
 
 Route::middleware(['auth','initier'])->controller(CaisseController::class)->group(function(){
@@ -238,6 +288,7 @@ Route::middleware(['auth','initier'])->controller(AutresOperationController::cla
     Route::get('/operation/{id}/detail','show')->name('operation.show');
     Route::get('/operation/{id}/edit','edit')->name('operation.edit');
     Route::post('/operation/{id}/update','update')->name('operation.update');
+    Route::get('/operation/{id}/delete','destroy')->name('operation.delete');
 
 });
 
@@ -329,6 +380,7 @@ Route::middleware(['auth','initier'])->controller(VenteDeviseController::class)-
     Route::post('/store/investisseur','store')->name('investisseur.store');
     Route::get('/investisseur/{id}/show','show')->name('investisseur.show');
     Route::get('/investisseur/{id}/edit','edit')->name('investisseur.edit');
+    Route::post('/investisseur/{id}/password','password')->name('investisseur.password');
     Route::post('/investisseur/{id}/update','update')->name('investisseur.update');
     Route::get('/investisseur/code','code')->name('investisseur.code');
     Route::post('/activer_desactiver/investisseur','activer_desactiver')->name('investisseur.activer_desactiver');
@@ -353,7 +405,7 @@ Route::middleware(['auth','initier'])->controller(VersementInvestisseurControlle
 Route::middleware(['auth','initier'])->controller(RetraitInvestisseurController::class)->group(function(){
 
     Route::get('/i_retrait','index')->name('i_retrait');
-    Route::post('/i_retrait/versement','retrait')->name('i_retrait.retrait');
+    Route::post('/i_retrait/investissement','retrait')->name('i_retrait.retrait');
     Route::post('/i_retrait/{id}/operation','operation')->name('i_retrait.operation');
     Route::post('/creer/{id}/i_retrait','store')->name('i_retrait.store');
     Route::get('/i_retrait/{id}/show','show')->name('i_retrait.show');
@@ -364,9 +416,9 @@ Route::middleware(['auth','initier'])->controller(RetraitInvestisseurController:
 });
 
 Route::middleware(['auth','initier'])->controller(RetraitDividendeController::class)->group(function(){
-
+    
     Route::get('/d_retrait','index')->name('d_retrait');
-    Route::post('/d_retrait/versement','retrait')->name('d_retrait.retrait');
+    Route::post('/d_retrait/dividende','retrait')->name('d_retrait.retrait');
     Route::post('/d_retrait/{id}/operation','operation')->name('d_retrait.operation');
     Route::post('/creer/{id}/d_retrait','store')->name('d_retrait.store');
     Route::get('/d_retrait/{id}/show','show')->name('d_retrait.show');
@@ -465,7 +517,11 @@ Route::controller(PortailInvestisseurController::class)->group(function(){
     Route::post('/portail/inscription','store')->name('portail.store');
     Route::post('/portail/recuperation','recuperation')->name('portail.recuperation');
     Route::get('/inscrire','inscrire')->name('inscrire');
+    Route::get('/operation/{id}/investisseur','operation_investisseur')->name('operation.compte');
+    Route::get('/operation/{id}/dividende','operation_dividende')->name('operation.dividende');
 
+    Route::get('/i_retrait/{id}/operation/valider','valider_operation_inv')->name('valider.operation_inv');
+    Route::get('/d_retrait/{id}/operation/valider','valider_operation_div')->name('valider.operation_div');
 });
 
 Route::middleware(['auth','initier'])->controller(AchatVehiculeController::class)->group(function(){

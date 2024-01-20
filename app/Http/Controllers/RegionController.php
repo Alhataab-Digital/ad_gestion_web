@@ -3,6 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use App\Models\Utilisateur;
+use App\Models\Agence;
+use App\Models\Caisse;
+use App\Models\CaisseUser;
+use App\Models\Region;
 
 class RegionController extends Controller
 {
@@ -11,7 +19,13 @@ class RegionController extends Controller
      */
     public function index()
     {
-        //
+        if(Auth::check()){
+
+            $regions=Region::all();
+
+        return view('region.index', compact('regions'));
+        }
+        return redirect('/auth')->with('danger',"Session expirée");
     }
 
     /**

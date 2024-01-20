@@ -43,7 +43,7 @@
              </h5>
 
               <!-- Vertical Form -->
-              <form action="{{ route('caisse.update',$caisse->id) }}" method="post" class="row g-3" >
+              <form action="{{ route('caisse.update',encrypt($caisse->id)) }}" method="post" class="row g-3" >
                 @csrf
                 <div class="col-12">
                             <label for="validationDefault04" class="form-label">State</label>

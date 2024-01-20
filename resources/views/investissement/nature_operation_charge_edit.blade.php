@@ -42,7 +42,7 @@
             </h5>
 
               <!-- Vertical Form -->
-              <form action="{{ route('nature_operation_charge.update',$nature_operation_charge->id) }}" method="post" class="row g-3" >
+              <form action="{{ route('nature_operation_charge.update',encrypt($nature_operation_charge->id)) }}" method="post" class="row g-3" >
                 @csrf
                 <div class="col-12">
                     <label for="inputNanme4" class="form-label">Description</label>

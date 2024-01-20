@@ -94,7 +94,9 @@ class InvestisseurController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $id=decrypt($id);
+        $investisseur=Investisseur::find($id);
+        return view('investissement.edit', compact('investisseur') );
     }
 
     /**
@@ -102,7 +104,30 @@ class InvestisseurController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $id=decrypt($id);
+        $investisseur=Investisseur::find($id);
+        
+        $investisseur->update([
+                'nom'=>$request->nom,
+                'prenom'=>$request->prenom,
+                'email'=>$request->email,
+                'telephone'=>$request->telephone,
+                'heritier'=>$request->heritier,
+            ]);
+            return back()->with('success','investisseur modifier avec succès');
+            
+    }
+
+    public function password(Request $request, $id)
+    {
+        $id=decrypt($id);
+        $investisseur=Investisseur::find($id);
+        
+        $investisseur->update([
+                'password'=>$request->password,
+            ]);
+            return back()->with('success','mot de passe investisseur modifier avec succès');
+            
     }
 
     /**

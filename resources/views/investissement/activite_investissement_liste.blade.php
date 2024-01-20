@@ -71,7 +71,7 @@
                         <td><span class="badge bg-info">{{ $activite->etat_activite }}</span></td>
                         <td>
                             <a href="{{ route('activite_investissement.repartition',encrypt($activite->id)) }}">
-                                <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
+                                <button type="button" class="btn btn-secondary"><i class="bx bxs-folder-open"></i></button>
                             </a>
                         </td>
                     </tr>

@@ -123,7 +123,7 @@
                             <tr>
                                 <td scope="row">
                                     <select class="form-select" name="" id=""  readonly>
-                                        <option value="">{{'Achat vehicule CH :'.$operation_vente->operation_vehicule_achete->chassis }}</option>
+                                        <option value="">{{'Vente vehicule CH :'.$operation_vente->operation_vehicule_achete->chassis }}</option>
                                     </select></td>
                                 <td scope="row">
                                 <input class="form-control"  value='{{ number_format($operation_vente->prix_vente,2,","," ")." ".$devise->unite}}' readonly>
@@ -159,7 +159,7 @@
                                 <input class="form-control" type="hidden" name="montant_investis[]" id="" value="{{round( $detail_activite_vehicule->montant_investis)}}" readonly>
                                 </td>
                                 <td scope="row">
-                                <input class="form-control" type="text" name="" id="" value="{{ ($detail_activite_vehicule->taux, 2).' %' }}" readonly>
+                                <input class="form-control" type="text" name="" id="" value="{{ ($detail_activite_vehicule->taux).' %' }}" readonly>
                                 <input class="form-control" type="hidden" name="taux[]" id="" value="{{ ($detail_activite_vehicule->taux)/100 }}" readonly>
                                 </td>
 

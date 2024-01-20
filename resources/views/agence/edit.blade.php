@@ -43,7 +43,7 @@
              </h5>
 
               <!-- Vertical Form -->
-              <form action="{{ route('agence.update',$agence->id) }}" method="post" class="row g-3" >
+              <form action="{{ route('agence.update',encrypt($agence->id)) }}" method="post" class="row g-3" >
                 @csrf
 
                 <div class="col-12">
@@ -64,8 +64,11 @@
                 </div>
                 <div class="col-12">
                     <label for="validationDefault04" class="form-label">Pays / Region </label>
-                    <select class="form-select" id="validationDefault04" name="devise_id" required>
-                    <option value="{{ $agence->devise->id }}">{{  $agence->region->nom }}</option>
+                    <select class="form-select" id="validationDefault04" name="region_id" required>
+                    <option value="{{ $agence->region_id }}">{{ $agence->region->code." ".$agence->region->nom }}</option>
+                    @foreach ( $regions as $region )
+                            <option value="{{$region->id }}">{{ $region->code." ".$region->nom }}</option>
+                    @endforeach
                      </select>
                 </div>
                 <div class="col-12">

@@ -74,7 +74,7 @@
                         <td><span class="badge bg-info">{{ $activite->etat_activite }}</span></td>
                         @endif
                         <td>
-                            <a href="{{ route('activite_vehicule.repartition',$activite->id) }}">
+                            <a href="{{ route('activite_vehicule.repartition',encrypt($activite->id)) }}">
                                 <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
                             </a>
                         </td>

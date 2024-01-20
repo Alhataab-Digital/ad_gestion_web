@@ -89,10 +89,13 @@ class AgenceController extends Controller
      */
     public function edit(string $id)
     {
+        $id=decrypt($id);
         $agence=Agence::find($id);
         $devises=Devise::all();
+        $regions=Region::where('id','!=',$agence->region_id)->orderBy('nom','asc')->get();
+        // $regions=Region::all();
         $devise_agences=DeviseAgence::where('agence_id',$id)->get();
-        return view('agence.edit',compact('agence','devises','devise_agences'));
+        return view('agence.edit',compact('agence','regions','devises','devise_agences'));
     }
 
     /**
@@ -100,11 +103,13 @@ class AgenceController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $id=decrypt($id);
         $request->validate([
             'nom'=>'required',
             'adresse'=>'required',
             'telephone'=>'required',
             'email'=>'required',
+            'region_id'=>'required',
         ]);
         /**
          * donnee a ajouté dans la table
@@ -117,6 +122,7 @@ class AgenceController extends Controller
             'devise_id'=>$data['devise_id'],
             'adresse'=>$data['adresse'],
             'telephone'=>$data['telephone'],
+            'region_id'=>$data['region_id'],
             'email'=>$data['email'],
         ]);
         return back()->with('success','Agence modifié avec succès');

@@ -94,7 +94,14 @@ class ProduitController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $id=decrypt($id);
+        if(Auth::check()){
+            $produit= Produit::find($id);
+            $categorie_produits= CategorieProduit::where('id','!=',$produit->categorie_produit_id);
+            return view('produit.edit',compact('categorie_produits','produit'));
+        }
+        return redirect('/auth')->with('danger',"Session expirée");
+
     }
 
     /**
@@ -102,7 +109,41 @@ class ProduitController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $id=decrypt($id);
+        $produit=Produit::find($id);
+        /**
+             * validation des champs de saisie
+             */
+            $data=$request->validate([
+                'categorie'=>'required',
+                'nom'=>'required',
+                'prix_a'=>'required',
+                'prix_r'=>'required',
+                'prix_v'=>'required',
+                'stock_min'=>'required',
+                'description'=>'required',
+            ]);
+            /**
+             * donnee a ajouté dans la table
+             */
+
+
+            /**
+             * insertion des données dans la table user
+             */
+            $produit->update([
+                'categorie_produit_id'=>$data['categorie'],
+                'nom_produit'=>$data['nom'],
+                'prix_unitaire_achat'=>$data['prix_a'],
+                'prix_unitaire_revient'=>$data['prix_r'],
+                'prix_unitaire_vente'=>$data['prix_v'],
+                'stock_min'=>$data['stock_min'],
+                'description_produit'=>$data['description'],
+            ]);
+            return back()->with('success','Produit modifier avec succès');
+
+
+
     }
 
     /**

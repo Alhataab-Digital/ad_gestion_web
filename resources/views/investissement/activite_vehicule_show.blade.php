@@ -92,9 +92,6 @@
                                 <td scope="row">
                                 <input class="form-control"  value='{{ number_format($operation_achat->prix_revient,2,","," ")." ".$devise->unite}}' readonly>
                                 </td>
-                                <td>
-                                        <button type="button" class="btn btn-danger" ><i class="bi bi-trash"></i></button>
-                                </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -114,14 +111,12 @@
                             <tr>
                                 <td scope="row">
                                     <select class="form-select" name="" id=""  readonly>
-                                        <option value="">{{'Achat vehicule CH :'.$operation_vente->operation_vehicule_achete->chassis }}</option>
+                                        <option value="">{{'Vente vehicule CH :'.$operation_vente->operation_vehicule_achete->chassis }}</option>
                                     </select></td>
                                 <td scope="row">
                                 <input class="form-control"  value='{{ number_format($operation_vente->prix_vente,2,","," ")." ".$devise->unite}}' readonly>
                                 </td>
-                                <td>
-                                        <button type="button" class="btn btn-danger" ><i class="bi bi-trash"></i></button>
-                                </td>
+                               
                             </tr>
                             @endforeach
                         </tbody>

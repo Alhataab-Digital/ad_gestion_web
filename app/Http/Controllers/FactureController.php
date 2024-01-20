@@ -26,11 +26,14 @@ class FactureController extends Controller
      */
     public function index()
     {
-        $factures=Facture::all();
-        $factures_cs=Facture::where('etat',NULL)->get();
-        $factures_lv=Facture::where('etat','valider')->get();
-        $factures_an=Facture::where('etat','annuler')->get();
-        return view('e-commerce.facture',compact('factures','factures_cs','factures_lv','factures_an'));
+        $agence_id=Auth::user()->agence_id;
+        $factures=Facture::orderBy('updated_at','DESC')->where('agence_id',$agence_id)->get();
+        $factures_nvs=Facture::where('etat',NULL)->where('agence_id',$agence_id)->orderBy('updated_at','DESC')->get();
+        $factures_imps=Facture::where('etat','valider')->where('agence_id',$agence_id)->orderBy('updated_at','DESC')->get();
+        $factures_ech=Facture::where('etat','echeance')->where('agence_id',$agence_id)->orderBy('updated_at','DESC')->get();
+        $factures_pays=Facture::where('etat','terminer')->where('agence_id',$agence_id)->orderBy('updated_at','DESC')->get();
+        $factures_anns=Facture::where('etat','annuler')->where('agence_id',$agence_id)->orderBy('updated_at','DESC')->get();
+        return view('e-commerce.facture',compact('factures','factures_nvs','factures_imps','factures_ech','factures_pays','factures_anns'));
     
     }
 
@@ -48,18 +51,7 @@ class FactureController extends Controller
     public function store(Request $request)
     {
 
-        //dd(
-
-        // $request->devis_id,
-        // $request->produit,
-        // $request->qte,
-        // $request->prix ,
-        // $request->total,
-        // $request->montant_ht,
-        // $request->client,
-        //$request->activite
-
-        //);
+        
         $facture=Facture::where('devis_id',$request->devis_id)->first();
 
             if(isset($facture)){
@@ -74,6 +66,7 @@ class FactureController extends Controller
 
                 return redirect('facture/'.encrypt($facture->id).'/edit');
             }else{
+                $devis=Devis::find($request->devis_id);
                 $id=Auth::user()->id;
                 $agence_id=Auth::user()->agence_id;
 
@@ -81,6 +74,7 @@ class FactureController extends Controller
                     'devis_id'  => $request->devis_id,
                     'activite_id'  => $request->activite,
                     'client_id'  => $request->client,
+                    'montant_total'=>$devis->montant_total,
                     'user_id'      => $id,
                     'agence_id'    => $agence_id,
                 ]);
@@ -147,7 +141,7 @@ class FactureController extends Controller
                     $facture->update([
                         'montant_total' =>$request->montant_ht,
                         'client_id' =>$request->client_id,
-                        'etat' =>'Valider',
+                        'etat' =>'valider',
                     ]);
 
         $devis=devis::find($facture->devis_id);

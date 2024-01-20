@@ -59,7 +59,7 @@
                     @foreach ($activite_ouvertes as $activite_ouverte )
                             <td>{{ $activite_ouverte->intitule }}</td>
                         <td>
-                            <a href="{{ route('detail_activite_vehicule.edit',$activite_ouverte->id) }}">
+                            <a href="{{ route('detail_activite_vehicule.edit',encrypt($activite_ouverte->id)) }}">
                             <span class="badge bg-warning">Detail</span>
                             </a>
                         </td>

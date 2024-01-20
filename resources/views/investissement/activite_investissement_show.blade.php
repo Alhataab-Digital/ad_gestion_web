@@ -25,7 +25,7 @@
                 <div class="card recent-sales overflow-auto">
                   <div class="card-body">
                     <h5 class="card-title">
-                       <div class="col-sm-12">
+                       <div class="col-sm-12 text-end">
                                 <a href="{{ route('activite_investissement.terminer') }}">
                                     <button type="button" class="btn btn-secondary">Quitter</button>
                                 </a>

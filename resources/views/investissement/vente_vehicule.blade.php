@@ -2,7 +2,7 @@
 
 @section('content')
 
-<main id="main" class="main">
+<main id="main" class="main ">
 
   <div class="pagetitle">
     <h1>Vente vehicule</h1>
@@ -16,7 +16,7 @@
   </div><!-- End Page Title -->
   <section class="section">
     <div class="row">
-      <div class="col-lg-3">
+      <div class="col-lg-6 form-signin w-50 m-auto">
         <div class="card">
           <div class="card-body bg-success text-white">
             <h5 class="card-title text-white">Vente vehicule</h5>
@@ -53,7 +53,7 @@
         </div>
 
       </div>
-      <div class="col-lg-12">
+      <div class="col-lg-12 form-signin w-100 m-auto">
 
         <div class="card">
           <div class="card-body">

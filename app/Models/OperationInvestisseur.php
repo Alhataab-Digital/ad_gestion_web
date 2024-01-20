@@ -16,12 +16,14 @@ class OperationInvestisseur extends Model
     protected $fillable = [
 
         'montant_operation',
+        'solde',
         'sens_operation',
         'reglement_id',
         'caisse_id',
         'investisseur_id',
         'user_id',
         'date_comptable',
+        'valider',
 ];
 
     public function reglement()

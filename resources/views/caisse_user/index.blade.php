@@ -124,7 +124,7 @@
                             <button type="button" class="btn btn-success"><i class="bi bi-check-circle"></i></button>
                         </a-->
                         @if ($caisse->etat==0)
-                        <a href="{{ route('annuler.caisse.select',$caisse->id) }}">
+                        <a href="{{ route('annuler.caisse.select',encrypt($caisse->id)) }}">
                             <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
                         </a>
                         @else

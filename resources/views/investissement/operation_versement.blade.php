@@ -19,7 +19,7 @@
     <section class="section">
       <div class="row">
 
-        <div class="col-lg-6 ">
+        <div  class="form-signin w-50 m-auto col-lg-12 ">
 
             <div class="card bg-success text-white">
                 <div class="card-body">
@@ -41,21 +41,21 @@
                             @endif
                         </p>
                         <!-- No Labels Form -->
-                        <form class="row g-3" method="post" action="{{ route('i_versement.store',encrypt($investisseur->id)) }}">
-                            @csrf
+                        <form class="row g-3">
+                            
                         <div class="col-md-6">
-                                <input type="text" name="nom" value="{{ $investisseur->nom }}" class="form-control" placeholder="Nom">
+                                <input type="text"  value="{{ $investisseur->nom }}" class="form-control" placeholder="Nom">
                             </div>
                             <div class="col-md-6">
-                                <input type="text" name="prenom" value="{{ $investisseur->prenom }}" class="form-control" placeholder="Prenom">
+                                <input type="text"  value="{{ $investisseur->prenom }}" class="form-control" placeholder="Prenom">
                             </div>
                             <div class="col-md-12">
-                                <input type="text" name="telephone" value="{{ $investisseur->telephone }}" class="form-control" placeholder="Telephone">
+                                <input type="text"  value="{{ $investisseur->telephone }}" class="form-control" placeholder="Telephone">
                             </div>
                             <div class="col-md-6">
 
                                 <label for="">email</label>
-                                <input type="email" name="email" value="{{ $investisseur->email }}" class="form-control" placeholder="Email">
+                                <input type="email"  value="{{ $investisseur->email }}" class="form-control" placeholder="Email">
                             </div>
                             <div class="col-md-6">
 
@@ -65,8 +65,32 @@
 
                             <div class="col-12">
                                 <label for="">Heritier</label>
-                                <input type="text" name="heritier" value="{{ $investisseur->heritier }}" class="form-control" placeholder="Nom heritier">
+                                <input type="text"  value="{{ $investisseur->heritier }}" class="form-control" placeholder="Nom heritier">
                             </div>
+                            
+                        </form><!-- End No Labels Form -->
+
+                </div>
+                </div>
+                <div class="card bg-secondary text-white">
+                
+                <div class="card-body">
+                <br><br>
+                        <!-- No Labels Form -->
+                        <form class="row g-3" method="post" action="{{ route('i_versement.store',encrypt($investisseur->id)) }}">
+                            @csrf
+                                <input type="hidden" name="nom" value="{{ $investisseur->nom }}" class="form-control" placeholder="Nom">
+                            
+                                <input type="hidden" name="prenom" value="{{ $investisseur->prenom }}" class="form-control" placeholder="Prenom">
+                           
+                                <input type="hidden" name="telephone" value="{{ $investisseur->telephone }}" class="form-control" placeholder="Telephone">
+                           
+                                <input type="hidden" name="email" value="{{ $investisseur->email }}" class="form-control" placeholder="Email">
+                            
+                               
+                                <input type="hidden" name="heritier" value="{{ $investisseur->heritier }}" class="form-control" placeholder="Nom heritier">
+                            
+
                             <div class="col-md-6">
                                 <input type="text" name="montant" class="form-control" placeholder="Montant a verser">
                             </div>
@@ -84,8 +108,7 @@
                                 <input type="text" class="form-control" placeholder="Zip">
                             </div> --}}
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                                <button type="reset" class="btn btn-secondary">Reset</button>
+                                <button type="submit" class="btn btn-primary">Valider</button>
                             </div>
                         </form><!-- End No Labels Form -->
 

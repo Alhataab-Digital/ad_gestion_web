@@ -9,6 +9,8 @@ class Region extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'indicatif',
+        'code',
         'nom',
         'position',
 

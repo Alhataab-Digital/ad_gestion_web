@@ -28,7 +28,7 @@ class retraitInvestisseurController extends Controller
         if(isset(Caisse::where('user_id',$user_id)->first(['id'])->id)){
                 $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
                 $caisse=Caisse::find($caisse_id);
-                $operations=OperationInvestisseur::where('user_id',$user_id)->where('sens_operation','sortie')->get();
+                $operations=OperationInvestisseur::where('user_id',$user_id)->where('sens_operation','sortie')->where('valider','oui')->orderBy('id', 'DESC')->get();
 
             return view('investissement.retrait',compact('operations','caisse'));
         }
@@ -88,15 +88,15 @@ class retraitInvestisseurController extends Controller
                     /**
                      * mise a jour du client
                      */
-                    $investisseur->update([
-                        'nom'=>$request->nom,
-                        'prenom'=>$request->prenom,
-                        'telephone'=>$request->telephone,
-                        'email'=>$request->email,
-                        'heritier'=>$request->heritier,
-                        'montant_investis'=>$montant_investis,
-                        'compte_investisseur'=>$montant_investisseur,
-                    ]);
+                    // $investisseur->update([
+                    //     'nom'=>$request->nom,
+                    //     'prenom'=>$request->prenom,
+                    //     'telephone'=>$request->telephone,
+                    //     'email'=>$request->email,
+                    //     'heritier'=>$request->heritier,
+                    //     'montant_investis'=>$montant_investis,
+                    //     'compte_investisseur'=>$montant_investisseur,
+                    // ]);
                     /**
                      * enregistrement de l'operation
                      */
@@ -115,25 +115,26 @@ class retraitInvestisseurController extends Controller
                      * mise a jour de la caisse
                      */
 
-                    $compte=$compte_caisse - $request->montant;
+                    // $compte=$compte_caisse - $request->montant;
 
-                    $caisse=Caisse::find($caisse_id);
+                    // $caisse=Caisse::find($caisse_id);
 
-                    $user_id=Auth::user()->id;
+                    // $user_id=Auth::user()->id;
 
-                    MouvementCaisse::create([
-                        'caisse_id'=>$caisse->id,
-                        'user_id'=>$user_id,
-                        'description'=>'retrait investisseur =>'.$request->nom.'/'.$request->telephone,
-                        'sortie'=>$montant_retrait,
-                        'solde'=>$compte,
-                        'date_comptable'=>$date_comptable,
+                    // MouvementCaisse::create([
+                    //     'caisse_id'=>$caisse->id,
+                    //     'user_id'=>$user_id,
+                    //     'description'=>'retrait investisseur =>'.$request->nom.'/'.$request->telephone,
+                    //     'sortie'=>$montant_retrait,
+                    //     'solde'=>$compte,
+                    //     'date_comptable'=>$date_comptable,
 
-                    ]);
+                    // ]);
 
-                    $caisse->update([
-                        'compte'=>$montant_caisse,
-                    ]);
+                    // $caisse->update([
+                    //     'compte'=>$montant_caisse,
+                    // ]);
+
                     $operation=OperationInvestisseur::where('user_id',$user_id)->latest('id')->first();
                     return redirect()->route('i_retrait.show',encrypt($operation->id))->with('success','operation effectuee avec succès');
 
@@ -153,6 +154,7 @@ class retraitInvestisseurController extends Controller
 
 
     }
+
 
     /**
      * Display the specified resource.
