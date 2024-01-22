@@ -13,6 +13,20 @@
     <section class="section dashboard">
     @if(Auth::user()->agence_id!="0")
       <div class="row">
+                @if ($message=Session::get('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle me-1"></i>
+                    {{ $message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+                @if ($message=Session::get('danger'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-octagon me-1"></i>
+                    {{ $message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
         <!-- Left side columns -->
         <div class="col-lg-12">
           <div class="row">
@@ -449,7 +463,20 @@
 
     @endif
     @if(Auth::user()->agence_id=="0")
-
+    @if ($message=Session::get('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle me-1"></i>
+        {{ $message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+    @if ($message=Session::get('danger'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-octagon me-1"></i>
+        {{ $message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
       <!-- Card with an image on left -->
       <div class="card mb-3">
                 <div class="row g-0">

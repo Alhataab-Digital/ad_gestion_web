@@ -15,6 +15,8 @@ use App\Models\Produit;
 use App\Models\Devis;
 use App\Models\DetailDevis;
 use App\Models\StockProduit;
+use App\Models\StockProduitActivite;
+use App\Models\ActiviteInvestissement;
 
 class DevisController extends Controller
 {
@@ -95,12 +97,28 @@ class DevisController extends Controller
         $id=decrypt($id);
         $devis=Devis::find($id);
         $agence_id=Auth::user()->agence_id;
-        $produit_stocks=StockProduit::where('agence_id',$agence_id)->get();
-        $produits=Produit::where('agence_id',$agence_id)->get();
+        $activite_investissements=ActiviteInvestissement::where("agence_id",$agence_id)->where('etat_activite','valider')->get();
+        $produit_stocks=StockProduitActivite::where('agence_id',$agence_id)->where('activite_id',$devis->activite_id)->where('quantite_en_stock','>','0')->get();
+        // $produits=Produit::where('agence_id',$agence_id)->get();
         $clients=Client::all();
         $detail_deviss=DetailDevis::where('devis_id',$devis->id)->get();
         $total_ht=DetailDevis::where('devis_id',$devis->id)->selectRaw('sum(quantite_demandee*prix_unitaire_demande) as total')->first('total');
-        return view('e-commerce.nouveau_devis', compact('produits','clients','devis','produit_stocks','detail_deviss','total_ht'));
+        return view('e-commerce.nouveau_devis', compact(
+            // 'produits',
+            'clients','devis','produit_stocks','detail_deviss','total_ht','activite_investissements'));
+    }
+
+    public function activite_devis(Request $request ,$id)
+    {
+        // dd($request->activite);
+        $id=decrypt($id);
+        $devis=Devis::find($id);
+        $agence_id=Auth::user()->agence_id;
+        $devis->update([
+            'activite_id' =>$request->activite,
+        ]);
+
+        return redirect('devis/'.encrypt($devis->id).'/edit');
     }
 
     /**
@@ -133,4 +151,6 @@ class DevisController extends Controller
 
 
     }
+
+
 }

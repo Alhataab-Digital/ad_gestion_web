@@ -480,6 +480,11 @@ Route::middleware(['auth','initier'])->controller(DetailActiviteInvestissementCo
     Route::get('/detail_activite_investissement/{id}/destroy','destroy')->name('detail_activite_investissement.delete');
     Route::get('/detail_activite_investissement/{id}/print','print')->name('detail_activite_investissement.print');
 
+
+    Route::get('/detail_activite_investissement/{id}/supprimer_commande','supprimer_commande')->name('detail_activite_investissement.supprimer_commande');
+
+    Route::get('/detail_activite_investissement/{id}/supprimer_reglement','supprimer_reglement')->name('detail_activite_investissement.supprimer_reglement');
+
 });
 
 Route::middleware(['auth','initier'])->controller(NatureOperationChargeController::class)->group(function(){
@@ -674,6 +679,7 @@ Route::middleware(['auth','initier'])->controller(DevisController::class)->group
     Route::post('/devis/select','select_produit')->name('produit_select.devis');
     Route::post('/devis/{id}/update','update')->name('devis.update');
     Route::get('/devis/{id}/delete','destroy')->name('devis.delete');
+    Route::post('/devis/{id}activite','activite_devis')->name('devis.activite');
     Route::get('/devis/{id}/print','print')->name('devis.print');
 
 });

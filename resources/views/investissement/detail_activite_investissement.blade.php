@@ -16,7 +16,7 @@
       </nav>
     </div><!-- End Page Title -->
     <section class="section">
-    
+
         <div class="row">
 
             <div class="col-lg-12">
@@ -28,7 +28,7 @@
                     <h5 class="card-title">
                        <div class="col-sm-12">
                        {{'Activite N° '.$activite_investissement->id.' : '.$activite_investissement->type_activite->type_activite }}
-                                
+
                                 <p>
                                     @if ($message=Session::get('success'))
                                     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -51,7 +51,7 @@
                     <h5 class="bg-secondary text-white">
                         <table>
                             <tr>
-                                
+
                             <th>Capital activite</th>
                                 <th>Recette activite</th>
                                 <th>Depense activite</th>
@@ -63,7 +63,7 @@
                                 <th>Benefice de securite</th>
                                 @endif
                             </tr>
-                            <tr> 
+                            <tr>
                                 <td>
                                 <input class="form-control" type="text"  id="" value="{{ number_format($activite_investissement->montant_decaisse,2,","," ")." ".$devise->unite}}" readonly>
                                 <input class="form-control" type="hidden" name="montant_activite" id="" value="{{ $activite_investissement->montant_decaisse }}" readonly>
@@ -100,7 +100,7 @@
                         </table>
                     </h5>
                     <hr><br>
-                    
+
                     <table class="table table-borderless bg-secondary text-white"  >
                         <thead class=" ">
                             <tr>
@@ -131,7 +131,7 @@
                                 </td>
                             </tr>
                         </form>
-                           
+
                         </tbody>
                     </table>
                     <table class="table table-borderless bg-danger text-white"  >
@@ -158,7 +158,7 @@
                                     <a href="{{ route('activite_investissement.supprimer_depense',encrypt($operation_depense->id)) }}">
                                         <button type="button" class="btn btn-danger" ><i class="bi bi-trash"></i></button>
                                     </a>
-                                    
+
                                 </td>
                             </tr>
                             @endforeach
@@ -172,8 +172,10 @@
                                 <input class="form-control"  value='{{ number_format($commande->montant_total,2,","," ")." ".$devise->unite}}' readonly>
                                 </td>
                                 <td>
+                                    <a href="{{ route('detail_activite_investissement.supprimer_commande',encrypt($commande->id)) }}">
                                         <button type="button" class="btn btn-danger" ><i class="bi bi-trash"></i></button>
-                                    
+                                    </a>
+
                                 </td>
                             </tr>
                             @endforeach
@@ -200,34 +202,34 @@
                                 <input class="form-control"  value='{{ number_format($reglement->montant_operation,2,","," ")." ".$devise->unite}}' readonly>
                                 </td>
                                 <td>
-                                    <!-- <a href="{{ route('activite_investissement.annuler_reglement',$reglement->id) }}"></a> -->
+                                    <a href="{{ route('detail_activite_investissement.supprimer_reglement',encrypt($reglement->id)) }}">
                                         <button type="button" class="btn btn-danger" ><i class="bi bi-trash"></i></button>
-                                    
-                                    
+                                    </a>
+
                                 </td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
                     <form method="post" action="{{ route('activite_investissement.repartie') }}">
-                    @csrf  
+                    @csrf
                         <table class="table table-borderless datatable">
-                                
+
                                     <input class="form-control" type="hidden" name="compte_activite" id="total_activite" value="{{$activite_investissement->compte_activite}}" required>
-                                
+
                                     <input class="form-control" type="hidden"  name="total_depense" value="{{$activite_investissement->total_depense}}" id="total_depense"  >
-                                
+
                                     <input class="form-control" type="hidden"  name="montant_benefice" id="montant_benefice" value="{{$activite_investissement->compte_activite-$activite_investissement->montant_decaisse}}">
-                                
+
                                     <input class="form-control" type="hidden" name="montant_decaisse" id="" value="{{ $activite_investissement->montant_decaisse }}" >
-                                
+
                                     <input class="form-control"  type="hidden" name="activite_id" id="" value="{{ $activite_investissement->id }}" >
-                                    
+
                                     <input class="form-control" type="hidden" name="capital_activite" id="" value="{{ $activite_investissement->capital_activite }}" >
                                 </td>
                                 </tr>
                             <thead class="bg-primary text-white">
-                            
+
                                 <tr>
                                     <th scope="col">nom investisseur</th>
                                     <th scope="col">Montant investis </th>
@@ -254,7 +256,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        
+
                         <div class="bg-secondary text-white " style="text-align: center">
                           <hr>FACTURE(S) IMPAYER<hr>
                           </div>
@@ -300,7 +302,9 @@
                             <br>
                             @if($activite_investissement->total_recette > $activite_investissement->total_depense)
                             @if($facture_montant_total == $facture_montant_regler)
+                            @if($produit_stock->total==0)
                             <button type="submit" class="btn btn-primary">Cloturer l'activité</button>
+                            @endif
                             @endif
                             @endif
                             <a href="{{ route('activite_investissement.redemarrer',encrypt($activite_investissement->id)) }}">
@@ -310,7 +314,7 @@
                                 <button type="button" class="btn btn-secondary">Quitter</button>
                             </a>
                     </form>
-                                
+
                 </div>
 
             </div>
@@ -318,7 +322,7 @@
         </div><!-- End Recent Sales -->
 
       </div>
-    
+
 
     </section>
 

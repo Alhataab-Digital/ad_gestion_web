@@ -40,7 +40,7 @@
                 </div>
                 <table  class="table table-borderless ">
                             <tr>
-                                        
+
                               <th>
                                 <label for="inputText" class="col-sm-2 col-form-label">Entrepot </label>
                                 <div class="">
@@ -52,14 +52,14 @@
                                   <div class="">
                                       <input class="form-control"  type="text" name="" value="{{ 'Activite N°  '. $facture->devis->activite_id.' : '.$facture->devis->activite->type_activite->type_activite  }}" class="form-control">
                                   </div>
-                              </th>          
+                              </th>
                             </tr>
                       </table>
                     <div class="bg-secondary text-white " style="text-align: center">
                           <hr>Produit facturé<hr>
                     </div>
                   <div >
-                  
+
                       <!-- Table with stripped rows -->
                       <table class="table table-borderless " >
                           <thead class="bg-primary text-white ">
@@ -127,27 +127,27 @@
               <div class="bg-secondary text-white " style="text-align: center">
                           <hr>Info client<hr>
                           </div>
-                          
+
                           <table  class="table table-borderless ">
                             <tr>
-                                        
+
                               <th>
                                   <label for="inputText" class="col-sm-6 col-form-label">Client</label>
-                                  <input class="form-control"  type="text"  value="{{ $facture->client->nom_client }}" class="form-control">            
+                                  <input class="form-control"  type="text"  value="{{ $facture->client->nom_client }}" class="form-control">
                               </th>
                               <th>
                                   <label for="inputText" class="col-sm-6 col-form-label">Telephone</label>
-                                  <input class="form-control"  type="text"  value="{{ $facture->client->telephone  }}" class="form-control">            
+                                  <input class="form-control"  type="text"  value="{{ $facture->client->telephone  }}" class="form-control">
                               </th>
                               <th>
                                   <label for="inputText" class="col-sm-6 col-form-label">Adresse</label>
-                                  <input class="form-control"  type="text"  value="{{ $facture->client->adresse  }}" class="form-control">             
-                              </th>           
+                                  <input class="form-control"  type="text"  value="{{ $facture->client->adresse  }}" class="form-control">
+                              </th>
                             </tr>
                           </table>
               <div class="text-end" >
 
-                <a href="{{ route('facture.print',$facture->id) }}">
+                <a href="{{ route('facture.print',encrypt($facture->id)) }}">
                     <button  class="btn btn-info"><i class="bi bi-print"></i> Imprimer</button>
                 </a>
                 {{-- <a href="{{ route('facture.delete',$facture->id) }}">

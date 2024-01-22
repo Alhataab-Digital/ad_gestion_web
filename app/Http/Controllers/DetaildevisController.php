@@ -14,6 +14,7 @@ use App\Models\Client;
 use App\Models\Produit;
 use App\Models\Devis;
 use App\Models\DetailDevis;
+use App\Models\StockProduitActivite;
 use App\Models\ActiviteInvestissement;
 
 class DetailDevisController extends Controller
@@ -42,40 +43,62 @@ class DetailDevisController extends Controller
 
         if(Auth::check()){
 
-            //
-    // dd($request->devis_id,$request->produit,
-    // $request->qte,
-    // $request->prix,);
-    if(isset(DetailDevis::where('devis_id',$request->devis_id)->where('produit_id',$request->produit)->first(['id'])->id))
-    {
-        return back()->with('danger',"Produit deja enregistrer");
-    }else{
-        
-       
-        $data=[
-            'devis_id'              =>$request->devis_id,
-            'produit_id'               =>$request->produit,
-            'quantite_demandee'       =>$request->qte,
-            'prix_unitaire_demande'  =>$request->prix,
-        ];
-        DetailDevis::create($data);
-        return back();
-    }
-    
-        
+            $agence_id=Auth::user()->agence_id;
 
-        // $devis=devis::find($request->devis_id);
+            // dd(
+            // $request->devis_id,
+            // $request->activite_id,
+            // $request->produit,
+            // $agence_id,
+            // $request->qte,
+            // $request->prix,);
+// dd(StockProduitActivite::where('produit_id',$request->produit)->where('activite_id',$request->activite_id)->where('agence_id',$agence_id)->first()->id);
 
-        // $devis->update([
-        //     'fournisseur_id' =>$request->fournisseur,
-        //     'montant_total' =>$request->montant_ht,
-        //     'etat' =>'en cours',
-        // ]);
-        // return back();
-        // return redirect('detail_devis/'.$devis->id.'/show');
 
-    }
-    return redirect('/auth')->with('danger',"Session expirée");
+        if(isset(StockProduitActivite::where('produit_id',$request->produit)->where('activite_id',$request->activite_id)->where('agence_id',$agence_id)->first()->id))
+        {
+            $stock=StockProduitActivite::where('produit_id',$request->produit)->where('activite_id',$request->activite_id)->where('agence_id',$agence_id)->first();
+                if($stock->quantite_en_stock>=$request->qte)
+                {
+                    if(isset(DetailDevis::where('devis_id',$request->devis_id)->where('produit_id',$request->produit)->first(['id'])->id))
+                    {
+                        return back()->with('danger',"Produit deja enregistrer");
+                    }else{
+                         $data=[
+                                'devis_id'              =>$request->devis_id,
+                                'produit_id'               =>$request->produit,
+                                'quantite_demandee'       =>$request->qte,
+                                'prix_unitaire_demande'  =>$request->prix,
+                            ];
+                         DetailDevis::create($data);
+
+                            $stock->update([
+                                'quantite_en_stock'=>$stock->quantite_en_stock-$request->qte,
+                            ]);
+
+                            return back();
+                        }
+                }
+                return back()->with('danger',"La quantité stock est insuffisante");
+            }
+            return back()->with('danger',"Vous n'avez pas de produit dans l'entrepot");;
+
+
+
+
+
+                // $devis=devis::find($request->devis_id);
+
+                // $devis->update([
+                //     'fournisseur_id' =>$request->fournisseur,
+                //     'montant_total' =>$request->montant_ht,
+                //     'etat' =>'en cours',
+                // ]);
+                // return back();
+                // return redirect('detail_devis/'.$devis->id.'/show');
+
+        }
+            return redirect('/auth')->with('danger',"Session expirée");
 
             //
             // if(Auth::check()){
@@ -160,8 +183,15 @@ class DetailDevisController extends Controller
     public function destroy(string $id)
     {
         $id=decrypt($id);
-        
+
         $produit=DetailDevis::find($id);
+        $stock=StockProduitActivite::where('produit_id',$produit->produit_id)->first();
+
+        // dd($produit, $stock);
+
+        $stock->update([
+            'quantite_en_stock'=>$stock->quantite_en_stock+$produit->quantite_demandee,
+        ]);
 
         $produit->delete();
 
@@ -170,16 +200,16 @@ class DetailDevisController extends Controller
 
     public function client_devis(Request $request)
     {
-        
+
         $societe_id=Auth::user()->societe_id;
         $tel=$request->id;
-       
+
         if(isset(Client::where('telephone' ,$tel)->where('societe_id',$societe_id)->first(['id'])->id)){
 
             $agence_id=Auth::user()->agence_id;
 
-            $id=Client::where('telephone' ,$tel)->first(['id'])->id;
-           
+            $id=Client::where('telephone' ,$tel)->where('societe_id',$societe_id)->first(['id'])->id;
+
             $data['client']=Client::where('id',$id)->get();
             return response()->json($data);
 

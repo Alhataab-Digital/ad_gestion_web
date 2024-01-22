@@ -45,22 +45,22 @@
                       {{ $message }}
                       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                   </div>
-                @endif 
+                @endif
                 <!-- Browser Default Validation -->
-                <div >    
+                <div >
                 <form method="post" action="{{ route('detail_facture.store') }}">
                   @csrf
                   <div class="col-md-4">
                     <input class="form-control"  type="hidden" name="facture_id" value="{{ $facture->id }}"  >
                     <input class="form-control"  type="hidden" id ="devis_id" name="devis_id" value="{{ $devis->id }}"  >
                     <input class="form-control"  type="hidden" name="client" value="{{ $devis->client_id }}"  >
-                    
-                    
+
+
 
                   </div>
                   <table  class="table table-borderless ">
                             <tr>
-                                        
+
                               <th>
                                 <label for="" class="form-label">Entrepot</label>
                                   @if($facture->entrepot_id==NULL)
@@ -82,16 +82,16 @@
                                             {{ $entrepot->nom_entrepot }}
                                         </option>
                                         @endforeach
-                                        
+
                                     </select>
                                   @endif
                               </th>
                               <th>
                                   <label for="inputText" class="col-sm-2 col-form-label">Activite</label>
                                   <div class="">
-                                      <input class="form-control"  type="text" name="" value="{{ 'Activite N°  '. $facture->devis->activite_id.' : '.$facture->devis->activite->type_activite->type_activite  }}" class="form-control">
+                                      <input class="form-control"  type="text" name="activite" value="{{ 'Activite N°  '. $facture->devis->activite_id.' : '.$facture->devis->activite->type_activite->type_activite  }}" class="form-control">
                                   </div>
-                              </th>          
+                              </th>
                             </tr>
                       </table>
                   <br>
@@ -112,14 +112,14 @@
                                   <th scope="col">
                                       Montant total
                                   </th>
-                                  @if($facture->etat==NULL) 
+                                  @if($facture->etat==NULL)
                                   <th scope="col">
                                       Action
                                   </th>
                                   @endif
                               </tr>
                           </thead>
-                          @if($facture->etat==NULL) 
+                          @if($facture->etat==NULL)
                           <tbody class=" text-white" id="show_item" id="tab">
                             <tr>
                                 <th scope="row">
@@ -147,7 +147,7 @@
                           @endif
                           </table>
                     </form>
-                          
+
                       @foreach($detail_factures as $detail_facture)
                       <table class="table table-borderless " >
                       <tbody>
@@ -166,8 +166,8 @@
                                   <th scope="row" id="">
                                       <input class="form-control"   type="text" name="total"  value="{{$detail_facture->quantite_vendue*$detail_facture->prix_unitaire_vendu}}" >
                                   </th>
-                                  
-                                @if($facture->etat==NULL) 
+
+                                @if($facture->etat==NULL)
                                   <td>
                                     <a href="{{route('detail_facture.delete',encrypt($detail_facture->id))}}">
                                     <button class="btn btn-danger remove_item_btn" ><i class="bi bi-trash"></i></button>
@@ -192,33 +192,33 @@
                     <div class="bg-secondary text-white " style="text-align: center">
                           <hr>Info client<hr>
                           </div>
-                          
+
                           <table  class="table table-borderless ">
                             <tr>
-                                  <input class="form-control"  type="hidden" name="devis_id" value="{{ $devis->id }}"  >   
-                                           
+                                  <input class="form-control"  type="hidden" name="devis_id" value="{{ $devis->id }}"  >
+
                               <th>
                                   <label for="inputText" class="col-sm-6 col-form-label">Client</label>
-                                  <input class="form-control"  type="text"  value="{{ $devis->client->nom_client }}" class="form-control">            
+                                  <input class="form-control"  type="text"  value="{{ $devis->client->nom_client }}" class="form-control">
                               </th>
                               <th>
                                   <label for="inputText" class="col-sm-6 col-form-label">Telephone</label>
-                                  <input class="form-control"  type="text"  value="{{ $devis->client->telephone  }}" class="form-control">            
+                                  <input class="form-control"  type="text"  value="{{ $devis->client->telephone  }}" class="form-control">
                               </th>
                               <th>
                                   <label for="inputText" class="col-sm-6 col-form-label">Adresse</label>
-                                  <input class="form-control"  type="text"  value="{{ $devis->client->adresse  }}" class="form-control">             
-                              </th>           
+                                  <input class="form-control"  type="text"  value="{{ $devis->client->adresse  }}" class="form-control">
+                              </th>
                             </tr>
                           </table>
                       <div >
                         <hr>
                     <!-- End Table with stripped rows -->
                     <div class="text-end" >
-                    @if($facture->etat==NULL) 
+                    @if($facture->etat==NULL)
                     <form class="row g-3" method="post" action="{{ route('facture.update',encrypt($facture->id)) }}">
                       @csrf
-                      <input class="form-control"  type="hidden" name="client_id" value="{{ $devis->client->id }}" class="form-control">            
+                      <input class="form-control"  type="hidden" name="client_id" value="{{ $devis->client->id }}" class="form-control">
                       <input class="form-control" type="hidden" name="montant_ht" value="{{$total_ht->total}}">
                       <div class="text-left">
                             <button type="submit" class="btn btn-success"><i class="bx bxs-save" ></i> Sauvegarde</button>
@@ -257,10 +257,10 @@
                     success:function(response){
                     $.each(response.produits,function(edit,val){
 
-                      $("#qte").append('<input class="form-control" onchange="prixU();" id="qte_v" type="text" name="qte" value="'+val.quantite_demandee+'" >');
+                      $("#qte").append('<input class="form-control" onchange="prixU();" id="qte_v" type="text" name="qte" value="'+val.quantite_demandee+'" readonly>');
 
-                      $("#prix_u").append('<input class="form-control" onchange="prixU();" id="prix_v" type="text" name="prix" value="'+val.prix_unitaire_demande+'" >');
-                      
+                      $("#prix_u").append('<input class="form-control" onchange="prixU();" id="prix_v" type="text" name="prix" value="'+val.prix_unitaire_demande+'" readonly >');
+
                     })
                   }
                 })

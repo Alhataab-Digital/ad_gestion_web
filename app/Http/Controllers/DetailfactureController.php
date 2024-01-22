@@ -56,12 +56,12 @@ class DetailFactureController extends Controller
         // $request->fournisseur,
         // count($request->produit));
 
-
+// dd($request->activite);
         if(Auth::check()){
         $id=Auth::user()->id;
         $agence_id=Auth::user()->agence_id;
         $facture=Facture::where('devis_id',$request->devis_id)->first();
-      
+
         if(isset(StockProduit::where('produit_id',$request->produit_id)->where('entrepot_id',$request->entrepot)->where('agence_id',$agence_id)->first()->id))
         {
             $stock=StockProduit::where('produit_id',$request->produit_id)->where('entrepot_id',$request->entrepot)->where('agence_id',$agence_id)->first();
@@ -71,7 +71,7 @@ class DetailFactureController extends Controller
                 {
                     return back()->with('danger',"produit déjà enregisté");
                 }
-                
+
                 $data_facture=[
                     'facture_id'            =>$request->facture_id,
                     'produit_id'            =>$request->produit_id,
@@ -89,7 +89,7 @@ class DetailFactureController extends Controller
             return back()->with('danger',"La quantité stock est insuffisante");
         }
         return back()->with('danger',"Vous n'avez pas de produit dans l'entrepot");;
-        
+
             //  $facture=Facture::find($request->facture_id);
             //  $facture->update([
             //      'entrepot_id'=>$request->entrepot,
@@ -99,7 +99,7 @@ class DetailFactureController extends Controller
                                             /**
                                              * mise a jour Livraison
                                              */
-                                            
+
 
                                             /**
                                              * mise a jour commande
@@ -127,7 +127,7 @@ class DetailFactureController extends Controller
         $detail_factures=DetailFacture::where('facture_id',$facture->id)->get();
         $total_ht=DetailFacture::where('facture_id',$facture->id)->selectRaw('sum(quantite_vendue*prix_unitaire_vendu) as total')->first('total');
         return view('e-commerce.facture_show', compact('facture','detail_factures','total_ht'));
-  
+
     }
 
     /**
@@ -153,6 +153,15 @@ class DetailFactureController extends Controller
     {
         $id=decrypt($id);
         $produit=DetailFacture::find($id);
+        // dd($produit);
+        $stock=StockProduit::where('produit_id',$produit->produit_id)->first();
+
+        // dd($produit, $stock);
+
+        $stock->update([
+            'quantite_en_stock'=>$stock->quantite_en_stock+$produit->quantite_vendue,
+        ]);
+
 
         $produit->delete();
 

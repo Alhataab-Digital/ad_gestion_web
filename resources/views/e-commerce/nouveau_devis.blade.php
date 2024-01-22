@@ -38,6 +38,38 @@
                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
               @endif
+              @if ($devis->activite_id!=0)
+                <table>
+                    <th class="col-lg-6">
+                        {{-- <label for="" class="form-label">Activite</label> --}}
+                            <select class="form-select" id="activite" name="activite" required>
+                             <option value="{{ $devis->activite_id }}">
+                                    {{ $devis->activite->type_activite->type_activite }}
+                                </option>
+                            </select>
+                      </th>
+                </table>
+              @else
+              <form method="post" action="{{ route('devis.activite',encrypt($devis->id)) }}">
+                @csrf
+                <table>
+                    <th class="col-lg-8">
+                        {{-- <label for="" class="form-label">Activite</label> --}}
+                            <select class="form-select" id="activite" name="activite" required>
+                              <option selected disabled value="">Choix activité...</option>
+                                @foreach ($activite_investissements as $activite )
+                                <option value="{{ $activite->id }}">
+                                    {{ $activite->type_activite->type_activite }}
+                                </option>
+                                @endforeach
+                            </select>
+                      </th>
+                      <th><button class="btn btn-success" type="submit">valider</button></th>
+                </table>
+
+              </form>
+              @endif
+
                 <div class="bg-secondary text-white " style="text-align: center">
                   <hr>Devis produits<hr>
                 </div>
@@ -69,13 +101,15 @@
                             <table class="table table-borderless " >
                               <tbody class=" text-white" >
                                   <tr class="" >
-                                      <th class="col-lg-4" scope="row">
-                                      <input class="form-control"  type="hidden" name="devis_id" value="{{ $devis->id }}"  >
-        
+                                      <th class="col-lg-6" scope="row">
+                                        <input class="form-control"  type="hidden" name="devis_id" value="{{ $devis->id }}"  >
+                                        @if ($devis->activite_id!=0)
+                                        <input class="form-control"  type="hidden" name="activite_id" value="{{$devis->activite_id }}"  >
+                                        @endif
                                           <select class="form-select" name="produit" id="produit" required  >
                                               <option selected disabled value="">Choose...</option>
-                                              @foreach ($produits as $produit)
-                                              <option  value="{{ $produit->id }}">{{ $produit->nom_produit }}</option>
+                                              @foreach ($produit_stocks as $produit_stock)
+                                              <option  value="{{ $produit_stock->produit->id }}">{{ $produit_stock->produit->nom_produit }}</option>
                                               @endforeach
                                           </select>
                                       </th>
@@ -97,7 +131,7 @@
                             </table>
                           </form>
                           <table class="table table-borderless " >
-                              
+
                               @foreach($detail_deviss as $detail_devis)
                                   <tr >
                                       <th class="col-lg-4" scope="row">
@@ -115,7 +149,7 @@
                                           <input class="form-control"   type="text" name="total"  value="{{$detail_devis->quantite_demandee*$detail_devis->prix_unitaire_demande}}" >
                                       </th>
                                       <td class="col-lg-1" >
-                                        <a href="{{route('detail_devis.delete',$detail_devis->id)}}">
+                                        <a href="{{route('detail_devis.delete',encrypt($detail_devis->id))}}">
                                         <button class="btn btn-danger remove_item_btn" ><i class="bi bi-trash"></i></button>
                                         </a>
                                       </td>
@@ -159,7 +193,7 @@
                               </form>
                           </div>
                         <div class="text-end" >
-              
+
                         @if ($devis->etat!='annuler')
                         <!-- <a href="{{ route('devis.print',$devis->id) }}">
                             <button  class="btn btn-info"><i class="bi bi-print"></i> Imprimer</button>
@@ -199,7 +233,7 @@
                       $("#qte").append('<input class="form-control" onchange="prixU();" id="qte_v" type="text" name="qte" value="1" >');
 
                       $("#prix_u").append('<input class="form-control" onchange="prixU();" id="prix_v" type="text" name="prix" value="'+val.prix_unitaire_vente+'" >');
-                      
+
                     })
                   }
                 })
@@ -225,7 +259,7 @@
                     $("#nom").append('<label for="validationDefault02" class="form-label">nom client</label><input class="form-control"  type="text" name="nom_client" value="'+val.nom_client+'" required >');
 
                     $("#adresse").append('<label for="validationDefault02" class="form-label">Adresse</label><input class="form-control"type="text" name="adresse" value="'+val.adresse+'" required >');
-                    
+
                     $("#id").append('<input class="form-control" type="hidden" name="client_id" value="'+val.id+'" required >');
 
                   })
@@ -233,6 +267,7 @@
               })
 
             });
+
 
         function prixU(){
                     var produit=document.getElementById('produit');

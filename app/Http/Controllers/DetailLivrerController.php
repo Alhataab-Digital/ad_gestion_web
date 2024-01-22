@@ -18,6 +18,7 @@ use App\Models\Livrer;
 use App\Models\DetailLivrer;
 use App\Models\EntrepotStock;
 use App\Models\StockProduit;
+use App\Models\StockProduitActivite;
 use App\Models\Investisseur;
 use App\Models\TypeActiviteInvestissement;
 use App\Models\MouvementCaisse;
@@ -52,7 +53,7 @@ class DetailLivrerController extends Controller
      */
     public function store(Request $request)
     {
-// dd($request->activite);
+//  dd($request->activite);
         $livraison=Livrer::find($request->livraison_id);
         $user_id=Auth::user()->id;
         $id=Auth::user()->id;
@@ -110,6 +111,38 @@ class DetailLivrerController extends Controller
                                     'quantite_en_stock'     =>$request->qte[$i],
                                 ];
                                 StockProduit::create($data);
+                            }
+                        }
+
+                        /**
+                         * mise à jour du stock produit activite
+                         */
+                        if(isset(StockProduitActivite::where('produit_id',$request->produit_id)->where('activite_id',$request->activite)->where('agence_id',$agence_id)->first(['produit_id'])->produit_id))
+                        {
+                            for( $i=0; $i<count($request->produit_id) ; $i++)
+                            {
+                                $stocks=StockProduitActivite::where('produit_id',$request->produit_id[$i])->where('activite_id',$request->activite)->where('agence_id',$agence_id)->get();
+
+                                foreach( $stocks as  $stock)
+                                {
+
+                                    $data=[
+                                        'quantite_en_stock'     =>$request->qte[$i]+$stock->quantite_en_stock,
+                                    ];
+                                    StockProduitActivite::where('produit_id',$request->produit_id[$i])->where('activite_id',$request->activite)->where('agence_id',$agence_id)->update($data);
+
+                                }
+                            }
+                        }else{
+                            for( $i=0; $i<count($request->produit_id) ; $i++)
+                            {
+                                $data=[
+                                    'produit_id'            =>$request->produit_id[$i],
+                                    'activite_id'           =>$request->activite,
+                                    'agence_id'             =>$agence_id,
+                                    'quantite_en_stock'     =>$request->qte[$i],
+                                ];
+                                StockProduitActivite::create($data);
                             }
                         }
 

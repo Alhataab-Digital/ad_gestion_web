@@ -32,8 +32,8 @@
               <form method="post" action="{{ route('facture.store') }}">
               @csrf
                 <!-- Browser Default Validation -->
-                @if($devis->activite_id==0) 
-                          <div class="col-md-4">
+                    @if($devis->activite_id==0)
+                          <div class="col-md-6">
                           <label for="" class="form-label">Selectionner l'activité</label>
                             <select class="form-select" id="" name="activite" required>
                               <option selected disabled value="">Choose...</option>
@@ -45,10 +45,16 @@
                             </select>
                           </div>
                     @else
-                    <div class="col-md-4">
-                          <input class="form-control"  type="texte"  name="" value="{{ 'Activite N° '.$devis->activite->id.' : '.$devis->activite->type_activite->type_activite  }}" class="form-control">
-                          
-                          </div>
+                    <div class="col-md-6">
+                        <label for="" class="form-label">Selectionner l'activité</label>
+                          <select class="form-select" id="" name="activite" required>
+                              @foreach ($activite_investissements as $activite )
+                              <option value="{{ $activite->id }}">
+                                  {{ 'Activite N° '.$activite->id.' : '.$activite->type_activite->type_activite }}
+                              </option>
+                              @endforeach
+                          </select>
+                        </div>
                     @endif
                 <div class="bg-secondary text-white " style="text-align: center">
                   <hr>Devis produit<hr>
@@ -114,24 +120,24 @@
                       <div class="bg-secondary text-white " style="text-align: center">
                           <hr>Info client<hr>
                           </div>
-                          
+
                           <table  class="table table-borderless ">
                             <tr>
-                            <input class="form-control"  type="hidden" name="devis_id" value="{{ $devis->id }}"  >   
-                            <input class="form-control"  type="hidden" name="client_id" value="{{ $devis->client->id }}"  >   
-                                           
+                            <input class="form-control"  type="hidden" name="devis_id" value="{{ $devis->id }}"  >
+                            <input class="form-control"  type="hidden" name="client_id" value="{{ $devis->client->id }}"  >
+
                               <th>
                                   <label for="inputText" class="col-sm-6 col-form-label">Client</label>
-                                  <input class="form-control"  type="text"  value="{{ $devis->client->nom_client }}" class="form-control">            
+                                  <input class="form-control"  type="text"  value="{{ $devis->client->nom_client }}" class="form-control">
                               </th>
                               <th>
                                   <label for="inputText" class="col-sm-6 col-form-label">Telephone</label>
-                                  <input class="form-control"  type="text"  value="{{ $devis->client->telephone  }}" class="form-control">            
+                                  <input class="form-control"  type="text"  value="{{ $devis->client->telephone  }}" class="form-control">
                               </th>
                               <th>
                                   <label for="inputText" class="col-sm-6 col-form-label">Adresse</label>
-                                  <input class="form-control"  type="text"  value="{{ $devis->client->adresse  }}" class="form-control">             
-                              </th>           
+                                  <input class="form-control"  type="text"  value="{{ $devis->client->adresse  }}" class="form-control">
+                              </th>
                             </tr>
                           </table>
                       <div >
@@ -141,7 +147,7 @@
                           <button  class="btn btn-success"><i class="bi bi-check-square-fill"></i> Confirmer le devis</button>
                           @endif
                         </div>
-                        
+
                         <hr>
                        </div>
                   </div>
@@ -160,8 +166,6 @@
     <script src="{{asset('assets/js/jquery.js')}}"></script>
     <script type="text/javascript">
 
-
-
         function prixU(){
                     var ht=0;
                         var totaux=document.getElementsByName('total[]');
@@ -170,7 +174,6 @@
                             ht=+(ht)+ +(total);
                         }
                         document.getElementById('montant_ht').value= ht;
-
         }
     </script>
 

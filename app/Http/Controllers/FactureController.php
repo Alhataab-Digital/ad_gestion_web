@@ -62,6 +62,7 @@ class FactureController extends Controller
 
                     $devis->update([
                         'activite_id' =>$request->activite,
+                        'etat' =>'valider',
                     ]);
 
                 return redirect('facture/'.encrypt($facture->id).'/edit');
@@ -83,6 +84,7 @@ class FactureController extends Controller
 
                     $devis->update([
                         'activite_id' =>$request->activite,
+                        'etat' =>'valider',
                     ]);
 
                 $facture=Facture::where('user_id',$id)->where('agence_id',$agence_id)->latest('id')->first();

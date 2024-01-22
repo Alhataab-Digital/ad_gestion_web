@@ -105,7 +105,7 @@
                     <!-- <th scope="row">{{ $banque->id}}</th> -->
                     <td>{{ $banque->libelle}}</td>
                     <td>{{ $banque->numero_compte_banque}}</td>
-                    <td>{{ $banque->compte}}</td>
+                    <td style="text-align:right">{{ number_format($banque->compte,2,","," ").' '.$agence->devise->unite}}</td>
                     <!-- <td>{{ $banque->compte_dividende_societe}}</td> -->
 
                     <td>{{ $banque->agence->nom}}</td>

@@ -40,7 +40,7 @@
                 </div>
                     <table  class="table table-borderless ">
                             <tr>
-                                        
+
                               <th>
                                   <label for="inputText" class="col-sm-2 col-form-label">Entrepot</label>
                                   <div class="">
@@ -52,17 +52,17 @@
                                   <div class="">
                                       <input class="form-control"  type="text" name="montant_decaisser" value="{{ 'Activite N°  '. $livraison->commande->activite->id.' : '.$livraison->commande->activite->type_activite->type_activite  }}" class="form-control">
                                   </div>
-                              </th>          
+                              </th>
                             </tr>
                       </table>
                   <div class="col mb-3">
-                    
+
                     </div>
                     <div class="bg-secondary text-white " style="text-align: center">
                     <hr>Produit receptionné<hr>
                 </div>
                   <div >
-                    
+
                       <!-- Table with stripped rows -->
                       <table class="table table-borderless " >
                           <thead class="bg-primary text-white ">
@@ -123,19 +123,19 @@
                       </div>
                       <table  class="table table-borderless ">
                             <tr>
-                                        
+
                               <th>
                                   <label for="inputText" class="col-sm-6 col-form-label">Client</label>
-                                  <input class="form-control"  type="text"  value="{{ $livraison->fournisseur->nom_fournisseur}}" class="form-control">            
+                                  <input class="form-control"  type="text"  value="{{ $livraison->fournisseur->nom_fournisseur}}" class="form-control">
                               </th>
                               <th>
                                   <label for="inputText" class="col-sm-6 col-form-label">Telephone</label>
-                                  <input class="form-control"  type="text"  value="{{ $livraison->fournisseur->telephone  }}" class="form-control">            
+                                  <input class="form-control"  type="text"  value="{{ $livraison->fournisseur->telephone  }}" class="form-control">
                               </th>
                               <th>
                                   <label for="inputText" class="col-sm-6 col-form-label">Adresse</label>
-                                  <input class="form-control"  type="text"  value="{{ $livraison->fournisseur->adresse  }}" class="form-control">             
-                              </th>           
+                                  <input class="form-control"  type="text"  value="{{ $livraison->fournisseur->adresse  }}" class="form-control">
+                              </th>
                             </tr>
                           </table>
                   </div>
@@ -145,7 +145,7 @@
               <hr>
               <div class="text-end" >
 
-                <a href="{{ route('livrer.print',$livraison->id) }}">
+                <a href="{{ route('livrer.print',encrypt($livraison->id)) }}">
                     <button  class="btn btn-info"><i class="bi bi-print"></i> Imprimer</button>
                 </a>
                 {{-- <a href="{{ route('livrer.delete',$livraison->id) }}">
@@ -165,8 +165,6 @@
   </main><!-- End #main -->
     <script src="{{asset('assets/js/jquery.js')}}"></script>
     <script type="text/javascript">
-
-
 
         function prixU(){
                     var ht=0;

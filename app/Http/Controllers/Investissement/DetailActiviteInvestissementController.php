@@ -26,6 +26,7 @@ use App\Models\Livrer;
 use App\Models\OperationReglementFacture;
 use App\Models\Devis;
 use App\Models\Facture;
+use App\Models\StockProduitActivite;
 
 class DetailActiviteInvestissementController extends Controller
 {
@@ -178,6 +179,12 @@ class DetailActiviteInvestissementController extends Controller
         $detail_activite_investissements=DetailActiviteInvestissement::where('activite_investissement_id',$id)->get();
 
         $secteur_depenses=SecteurDepense::all();
+
+
+
+        $produit_stock=StockProduitActivite::where('activite_id',$id)->selectRaw('sum(quantite_en_stock) as total')->first();
+        // dd($produit_stock->total);
+
         $factures=Facture::where('activite_id',$id)->where('client_id','!=', NULL)->get();
         $facture_montant_total=Facture::where('activite_id',$id)->where('client_id','!=', NULL)->selectRaw('sum(montant_total) as total')->get();
         $facture_montant_regler=Facture::where('activite_id',$id)->where('client_id','!=', NULL)->selectRaw('sum(montant_regle) as total')->get();
@@ -186,7 +193,7 @@ class DetailActiviteInvestissementController extends Controller
         $commandes=Commande::where('activite_id',$activite_investissement->id)->get();
         $reglements=OperationReglementFacture::where('activite_id',$activite_investissement->id)->get();
 
-        return view('investissement.detail_activite_investissement', compact('activite_investissement',
+        return view('investissement.detail_activite_investissement', compact('activite_investissement','produit_stock',
         'caisse','detail_activite_investissements','secteur_depenses',
         'operation_depenses','devise','commandes', 'reglements',
         'facture_montant_total','facture_montant_regler','factures'
@@ -207,5 +214,14 @@ class DetailActiviteInvestissementController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function supprimer_commande()
+    {
+        return back();
+    }
+    public function supprimer_reglement()
+    {
+        return back();
     }
 }

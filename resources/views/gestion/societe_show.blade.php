@@ -168,21 +168,21 @@
                   </div>
                 </div>
                 @if(Auth::user()->gestion->gestion=='Investissement')
-
+                @if (isset($agence->devise->unite))
                 <div class="card">
-                  <div class="card-body " style="background-color: silver">
-                    <div class="col-md-12">
-                          <label for="validationDefault01" class="form-label">Montant compte societe <span style="color:red">*</span></label>
-                          <input type="text"  value="{{number_format($societe->compte_societe ,2,","," ").' '.$agence->devise->unite }}" class="form-control" readonly>
+                    <div class="card-body " style="background-color: silver">
+                      <div class="col-md-12">
+                            <label for="validationDefault01" class="form-label">Montant compte societe <span style="color:red">*</span></label>
+                            <input type="text"  value="{{number_format($societe->compte_societe ,2,","," ").' '.$agence->devise->unite }}" class="form-control" readonly>
+                      </div>
+                      <div class="col-md-12">
+                        <label for="validationDefault03" class="form-label">Montant compte de securite <span style="color:red">*</span></label>
+                        <input type="text"  value="{{number_format($societe->compte_securite ,2,","," ").' '.$agence->devise->unite }}" class="form-control" readonly>
+                      </div>
+                      <!-- End Browser Default Validation -->
                     </div>
-                    <div class="col-md-12">
-                      <label for="validationDefault03" class="form-label">Montant compte de securite <span style="color:red">*</span></label>
-                      <input type="text"  value="{{number_format($societe->compte_securite ,2,","," ").' '.$agence->devise->unite }}" class="form-control" readonly>
-                    </div>
-                    <!-- End Browser Default Validation -->
                   </div>
-                </div>
-
+                @endif
                 @endif
 
               </div>

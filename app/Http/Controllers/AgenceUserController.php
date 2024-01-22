@@ -21,20 +21,22 @@ class AgenceUserController extends Controller
     {
         if(Auth::check()){
 
-            $societe_id=Auth::user()->societe_id;
-            $role=Auth::user()->role->id;
-            $agences=Agence::where('societe_id',$societe_id)->get();
+            if(isset(Auth::user()->role->id)){
+                $societe_id=Auth::user()->societe_id;
+                $role=Auth::user()->role->id;
+                $agences=Agence::where('societe_id',$societe_id)->get();
 
-           if($role==1 || $role==0){
-            $users=Utilisateur::where('societe_id',$societe_id)->Where('agence_id','!=','0')->get();
-            $caisses=Caisse::all();
-            return view('agence_user.index',compact('caisses','users','agences'));
-           }
-            $users=Utilisateur::where('societe_id',$societe_id)->Where('agence_id','!=','0')->where('role_id','!=',1)->Where('role_id','!=',0)->get();
-            $caisses=Caisse::all();
-            return view('agence_user.index',compact('caisses','users','agences'));            
-            
+                if($role==1 || $role==0){
+                    $users=Utilisateur::where('societe_id',$societe_id)->Where('agence_id','!=','0')->get();
+                    $caisses=Caisse::all();
+                    return view('agence_user.index',compact('caisses','users','agences'));
+                }
+                $users=Utilisateur::where('societe_id',$societe_id)->Where('agence_id','!=','0')->where('role_id','!=',1)->Where('role_id','!=',0)->get();
+                $caisses=Caisse::all();
+                return view('agence_user.index',compact('caisses','users','agences'));
             }
+            return redirect('/home')->with('danger',"l'utilisateur n'as pas de role");
+        }
             return redirect('/auth')->with('success',"Session expirée");
     }
 

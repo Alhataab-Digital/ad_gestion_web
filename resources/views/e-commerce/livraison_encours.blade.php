@@ -37,7 +37,7 @@
                             </div>
                               @endif
                 </p>
-              
+
                 @if($livraison->etat=='valider')
                 <h5 class="card-title ">
                     <div class="text-end">
@@ -55,7 +55,7 @@
                             <button class=" btn btn-secondary "><i class="bi bi-box-arrow-right"></i></button>
                         </a>
                     </div>
-                    
+
                 </h5>
               <form method="post" action="{{ route('detail_livrer.store') }}">
                 @csrf
@@ -67,10 +67,10 @@
                     <input class="form-control"  type="hidden" name="livraison_id" value="{{ $livraison->id }}"  >
                     <input class="form-control"  type="hidden" name="commande_id" value="{{ $commande->id }}"  >
                     <input class="form-control"  type="hidden" name="fournisseur" value="{{ $commande->fournisseur_id }}"  >
-                    
+
                 </div>
                     <table  class="table table-borderless ">
-                            <tr>  
+                            <tr>
                               <th>
                                 <label for="" class="form-label">Entrepot</label>
                                   <select class="form-select" id="" name="entrepot" required>
@@ -84,11 +84,11 @@
                                   </select>
                               </th>
                               <th>
-                                  <label for="" class="form-label">Activite</label>
-                                  <div class="">
-                                      <input class="form-control"  type="text" name="" value="{{ 'Activite N°  '. $livraison->commande->activite->id.' : '.$livraison->commande->activite->type_activite->type_activite  }}" class="form-control">
-                                  </div>
-                              </th>          
+                                <label for="" class="form-label">Entrepot</label>
+                                  <select class="form-select" id="" name="activite" required>
+                                    <option value="{{ $livraison->commande->activite->id}}">{{ 'Activite N°  '. $livraison->commande->activite->id.' : '.$livraison->commande->activite->type_activite->type_activite  }}</option>
+                                  </select>
+                              </th>
                             </tr>
                     </table>
                   <br>
@@ -156,19 +156,19 @@
                       </div>
                       <table  class="table table-borderless ">
                             <tr>
-                                        
+
                               <th>
                                   <label for="inputText" class="col-sm-6 col-form-label">Client</label>
-                                  <input class="form-control"  type="text"  value="{{ $livraison->fournisseur->nom_fournisseur}}" class="form-control">            
+                                  <input class="form-control"  type="text"  value="{{ $livraison->fournisseur->nom_fournisseur}}" class="form-control">
                               </th>
                               <th>
                                   <label for="inputText" class="col-sm-6 col-form-label">Telephone</label>
-                                  <input class="form-control"  type="text"  value="{{ $livraison->fournisseur->telephone  }}" class="form-control">            
+                                  <input class="form-control"  type="text"  value="{{ $livraison->fournisseur->telephone  }}" class="form-control">
                               </th>
                               <th>
                                   <label for="inputText" class="col-sm-6 col-form-label">Adresse</label>
-                                  <input class="form-control"  type="text"  value="{{ $livraison->fournisseur->adresse  }}" class="form-control">             
-                              </th>           
+                                  <input class="form-control"  type="text"  value="{{ $livraison->fournisseur->adresse  }}" class="form-control">
+                              </th>
                             </tr>
                           </table>
                     <hr>
