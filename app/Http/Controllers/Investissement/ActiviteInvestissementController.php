@@ -340,7 +340,7 @@ class ActiviteInvestissementController extends Controller
 
                         OperationDividende::create([
                             'montant_operation'=>(($request->taux[$i])*(round($dividende_investisseur/$taux_devise))),
-                            'solde'=>$montant_gagner,
+                            'solde'=>$dividende_gagner,
                             'sens_operation'=>'entree',
                             'reglement_id'=>0,
                             'caisse_id'=>$caisse_id,

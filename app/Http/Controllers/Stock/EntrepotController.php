@@ -23,7 +23,7 @@ class EntrepotController extends Controller
         //
         if(Auth::check()){
             $agence_id=Auth::user()->agence_id;
-            
+
             $entrepots=EntrepotStock::Where('agence_id',$agence_id)->get();
             return view('e-commerce.entrepot', compact('entrepots'));
             }
@@ -91,7 +91,7 @@ class EntrepotController extends Controller
         $id=decrypt($id);
         if(Auth::check()){
             $agence_id=Auth::user()->agence_id;
-            
+
             $entrepot=EntrepotStock::find($id);
             return view('e-commerce.editer_entrepot', compact('entrepot'));
             }

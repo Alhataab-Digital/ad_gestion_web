@@ -169,8 +169,16 @@
                       {{-- <th scope="row">{{ $operation->id}}</th> --}}
                       <td>{{ $mouvement_caisse->date_comptable}}</td>
                       <td>{{ $mouvement_caisse->description}}</td>
+                      @if ($mouvement_caisse->entree==NULL)
+                      <td></td>
+                      @else
                       <td style="text-align:right">{{ number_format($mouvement_caisse->entree,2,","," ").' '.$agence->devise->unite}}</td>
+                      @endif
+                      @if ($mouvement_caisse->sortie==NULL)
+                      <td></td>
+                      @else
                       <td style="text-align:right">{{ number_format($mouvement_caisse->sortie,2,","," ").' '.$agence->devise->unite}}</td>
+                      @endif
                       <td style="text-align:right">{{ number_format($mouvement_caisse->solde,2,","," ").' '.$agence->devise->unite}}</td>
 
                     </tr>
@@ -179,8 +187,16 @@
                         {{-- <th scope="row">{{ $operation->id}}</th> --}}
                         <td>{{ $mouvement_caisse->date_comptable}}</td>
                         <td>{{ $mouvement_caisse->description}}</td>
+                        @if ($mouvement_caisse->entree==NULL)
+                        <td></td>
+                        @else
                         <td style="text-align:right">{{ number_format($mouvement_caisse->entree,2,","," ").' '.$agence->devise->unite}}</td>
+                        @endif
+                        @if ($mouvement_caisse->sortie==NULL)
+                        <td></td>
+                        @else
                         <td style="text-align:right">{{ number_format($mouvement_caisse->sortie,2,","," ").' '.$agence->devise->unite}}</td>
+                        @endif
                         <td style="text-align:right">{{ number_format($mouvement_caisse->solde,2,","," ").' '.$agence->devise->unite}}</td>
 
                       </tr>

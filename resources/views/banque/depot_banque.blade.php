@@ -38,9 +38,9 @@
                     <div class="form-check">
                       <input class="form-check-input" type="radio" name="source" id="gridRadios2" value="autre">
                       <label class="form-check-label" for="gridRadios2">
-                        Simple
+                        Autres
                       </label>
-                    </div>  
+                    </div>
                   </div>
                 </fieldset>
                 <div class="row mb-3">
@@ -60,7 +60,7 @@
                     <input type="text" name="montant" class="form-control" required>
                   </div>
                 </div>
-                
+
                 <div class="row mb-3">
                   <label for="inputPassword" class="col-sm-3 col-form-label">Commentaire</label>
                   <div class="col-sm-9">
@@ -118,7 +118,7 @@
                     @foreach ($operations as $operation )
                   <tr>
                     <td>{{ $operation->banque->libelle.' - '.$operation->banque->numero_compte_banque}}</td>
-                    <td>{{ $operation->montant_operation}}</td>
+                    <td style="text-align:right">{{ number_format($operation->montant_operation,2,","," ").' '.$operation->banque->agence->devise->unite}}</td>
                     <td>{{ $operation->source}}</td>
                     <td>{{ $operation->description}}</td>
                     <th scope="row">{{ $operation->date_comptable}}</th>

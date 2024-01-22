@@ -21,7 +21,7 @@
             <div class="card recent-sales overflow-auto">
               <div class="card-body">
                 <h5 class="card-title">Liste investisseur</h5>
-                          <p> 
+                          <p>
                               @if ($message=Session::get('success'))
                               <div class="alert alert-success alert-dismissible fade show" role="alert">
                               <i class="bi bi-check-circle me-1"></i>
@@ -70,9 +70,9 @@
                         <td><a href="#" class="text-primary">{{ $investisseur->email }}</a></td>
                         <td>{{ $investisseur->telephone }}</td>
                         @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1" || Auth::user()->role_id=="2")
-                        <td>{{ $investisseur->montant_investis }}</td>
+                        <td style="text-align:right">{{number_format($investisseur->montant_investis,2,","," ") }}  {{ $investisseur->agence->devise->unite}}</td>
                         <!-- <td>{{ $investisseur->compte_investisseur }}</td> -->
-                        <td>{{ $investisseur->compte_dividende }}</td>
+                        <td style="text-align:right">{{number_format($investisseur->compte_dividende,2,","," ") }}  {{ $investisseur->agence->devise->unite}}</td>
                         <td>{{ $investisseur->date_creation }}</td>
                         @endif
                         <td>{{ $investisseur->heritier }}</td>

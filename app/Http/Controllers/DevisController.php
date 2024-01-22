@@ -23,11 +23,11 @@ class DevisController extends Controller
      */
     public function index()
     {
-        //
-        $deviss=Devis::all();
-        $deviss_cs=Devis::where('etat','en cours')->get();
-        $deviss_lv=Devis::where('etat','livrer')->get();
-        $deviss_an=Devis::where('etat','annuler')->get();
+         $agence_id=Auth::user()->agence_id;
+        $deviss=Devis::where('agence_id',$agence_id)->orderBy('id','DESC')->get();
+        $deviss_cs=Devis::where('etat','en cours')->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
+        $deviss_lv=Devis::where('etat','livrer')->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
+        $deviss_an=Devis::where('etat','annuler')->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
         return view('e-commerce.devis',compact('deviss','deviss_cs','deviss_lv','deviss_an'));
 
     }
@@ -69,7 +69,7 @@ class DevisController extends Controller
                         'montant_total' =>$request->montant_ht,
                         'etat' =>'en cours',
                     ]);
-                    
+
             $client->update([
                 'nom_client' =>$request->nom_client,
                 'adresse' =>$request->adresse,
@@ -99,7 +99,7 @@ class DevisController extends Controller
         $produits=Produit::where('agence_id',$agence_id)->get();
         $clients=Client::all();
         $detail_deviss=DetailDevis::where('devis_id',$devis->id)->get();
-        $total_ht=DetailDevis::where('devis_id',$devis->id)->selectRaw('sum(quantite_demandee*prix_unitaire_demande) as total')->first('total');       
+        $total_ht=DetailDevis::where('devis_id',$devis->id)->selectRaw('sum(quantite_demandee*prix_unitaire_demande) as total')->first('total');
         return view('e-commerce.nouveau_devis', compact('produits','clients','devis','produit_stocks','detail_deviss','total_ht'));
     }
 

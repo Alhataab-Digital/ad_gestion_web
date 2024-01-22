@@ -98,8 +98,8 @@
                   <tr>
                     <!-- <th scope="col">#</th> -->
                     <th scope="col">Libelle </th>
-                    <th scope="col">montant min</th>
-                    <th scope="col">montant max</th>
+                    {{-- <th scope="col">montant min</th>
+                    <th scope="col">montant max</th> --}}
                     <th scope="col">montant caisse</th>
                     <!-- <th scope="col">montant dividende</th> -->
                     <th scope="col">Agence</th>
@@ -115,9 +115,9 @@
                   <tr>
                     <!-- <th scope="row">{{ $caisse->id}}</th> -->
                     <td>{{ $caisse->libelle}}</td>
-                    <td>{{ $caisse->montant_min}}</td>
-                    <td>{{ $caisse->montant_max}}</td>
-                    <td>{{number_format($caisse->compte,2,","," ")  }}</td>
+                    {{-- <td>{{ $caisse->montant_min}}</td>
+                    <td>{{ $caisse->montant_max}}</td> --}}
+                    <td style="text-align:right">{{ number_format($caisse->compte,2,","," ").' '.$agence->devise->unite}}</td>
                     <!-- <td>{{ $caisse->compte_dividende_societe}}</td> -->
 
                     <td>{{ $caisse->agence->nom}}</td>

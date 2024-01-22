@@ -8,7 +8,7 @@
 @if(Auth::user()->societe_id!="0")
 
 @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1"||  Auth::user()->role_id=="2"||  Auth::user()->role_id=="4")
-  <li class="nav-item">
+  <li class="nav-item ">
       <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
         <i class="bi bi-gear-wide-connected"></i><span>Parametre</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
@@ -21,7 +21,7 @@
         </li>
         <li>
           <a href="{{ route('users.index') }}">
-              <i class="bi bi-circle"></i><span>Utilisateur</span>
+              <i class="bi bi-circle"></i><span>Utilisateurs</span>
           </a>
         </li>
         @endif
@@ -50,19 +50,19 @@
         </li>
         <li>
           <a href="{{ route('secteur_depense') }}">
-            <i class="bi bi-circle"></i><span>Secteur depense activite</span>
+            <i class="bi bi-circle"></i><span>Secteur dépense activité</span>
           </a>
         </li>
         <li>
           <a href="{{ route('nature_operation_charge') }}">
-            <i class="bi bi-circle"></i><span>Nature opération charge</span>
+            <i class="bi bi-circle"></i><span>Nature opération chargé </span>
           </a>
         </li>
         @endif
         @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1"||Auth::user()->role_id=="2")
         <li>
           <a href="{{ route('agence') }}">
-            <i class="bi bi-circle"></i><span>Agences</span>
+            <i class="bi bi-circle"></i><span>Agences </span>
           </a>
         </li>
         <li>
@@ -72,23 +72,23 @@
         </li>
         <li>
           <a href="{{route('banque')}}">
-            <i class="bi bi-circle"></i><span>Banque</span>
+            <i class="bi bi-circle"></i><span>Banques </span>
           </a>
         </li>
         <li>
           <a href="{{ route('agence_user') }}">
-              <i class="bi bi-circle"></i><span>Association Agence Utilisateur</span>
+              <i class="bi bi-circle"></i><span>Association agence utilisateur </span>
           </a>
         </li>
         <li>
           <a href="{{ route('caisse_user') }}">
-            <i class="bi bi-circle"></i><span>Association Caisse Utilisateur</span>
+            <i class="bi bi-circle"></i><span>Association caisse utilisateur </span>
           </a>
         </li>
       @endif
       <li>
           <a href="{{ route('region') }}">
-            <i class="bi bi-circle"></i><span>Region / Pays</span>
+            <i class="bi bi-circle"></i><span>Region / Pays </span>
           </a>
         </li>
       </ul>
@@ -129,7 +129,7 @@
         </li>
       </ul>
   </li><!-- End Forms Nav -->
-  @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1"||Auth::user()->role_id=="2"||Auth::user()->role_id=="3")
+@if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1"||Auth::user()->role_id=="2"||Auth::user()->role_id=="3")
   <li class="nav-item">
     <a class="nav-link collapse" data-bs-target="#banque-nav" data-bs-toggle="collapse" href="#">
       <i class="ri ri-building-line"></i><span>Gestion banque</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -151,14 +151,14 @@
         </a>
       </li> -->
       <li>
-        <a href="tables-data.html">
+        <a href="{{route('banque.rapprochement')}}">
           <i class="bi bi-circle"></i><span>Rapprochement bancaire</span>
         </a>
       </li>
 
     </ul>
   </li>
-  @endif
+@endif
 @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1"|| Auth::user()->role_id=="2"|| Auth::user()->role_id=="5")
   <li class="nav-item">
       <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
@@ -239,12 +239,12 @@
 
         <li>
           <a href="{{ route('activite_investissement') }}">
-            <i class="bi bi-circle"></i><span>Activités non valider</span>
+            <i class="bi bi-circle"></i><span>Activités non validée</span>
           </a>
         </li>
         <li>
           <a href="{{ route('activite_investissement.valider') }}">
-            <i class="bi bi-circle"></i><span>Activités non cloturée</span>
+            <i class="bi bi-circle"></i><span>Activités validée & non cloturée</span>
           </a>
         </li>
         <li>
@@ -269,7 +269,7 @@
         </li>
         <li>
           <a href="{{ route('activite_vehicule.encours') }}">
-            <i class="bi bi-circle"></i><span>Activité non valider</span>
+            <i class="bi bi-circle"></i><span>Activités non validée </span>
           </a>
         </li>
         <li>
@@ -286,13 +286,13 @@
         @if(Auth::user()->role_id=="0" ||Auth::user()->role_id=="1"||Auth::user()->role_id=="2")
         <li>
           <a href="{{ route('activite_vehicule.fermer') }}">
-            <i class="bi bi-circle"></i><span>Fermeture activité</span>
+            <i class="bi bi-circle"></i><span>Activités validées & en cours</span>
           </a>
         </li>
         @endif
         <li>
           <a href="{{ route('activite_vehicule.terminer') }}">
-            <i class="bi bi-circle"></i><span>Activités Cloturée</span>
+            <i class="bi bi-circle"></i><span>Activités clôturée</span>
           </a>
         </li>
       </ul>
@@ -333,11 +333,51 @@
   </li>
 
   <li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#cr-nav" data-bs-toggle="collapse" href="#">
+      <i class="bi bi-journal-text"></i><span>Commandes & Réceptions</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="cr-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
+      <li>
+        <a href="{{ route('commande') }}">
+          <i class="bi bi-circle"></i><span>Commandes</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ route('livrer') }}">
+          <i class="bi bi-circle"></i><span>Réceptions</span>
+        </a>
+      </li>
+      {{-- <li class="nav-heading"><hr></li>
+      <li>
+        <a href="{{ route('devis') }}">
+          <i class="bi bi-circle"></i><span>Devis</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ route('facture') }}">
+          <i class="bi bi-circle"></i><span>Factures</span>
+        </a>
+      </li> --}}
+
+      <!-- <li class="nav-heading"><hr></li>
+      <li>
+        <a href="{{route('activite_investissement.reception_produit')}}">
+          <i class="bi bi-circle"></i><span>Reception interne</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{route('activite_investissement.livraison_produit')}}">
+          <i class="bi bi-circle"></i><span>Livraison interne</span>
+        </a>
+      </li> -->
+    </ul>
+  </li>
+  <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#doc-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-journal-text"></i><span>Achat/Facturation</span><i class="bi bi-chevron-down ms-auto"></i>
+      <i class="bi bi-journal-text"></i><span>Devis & Facturations</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="doc-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
-      <li>
+      {{-- <li>
         <a href="{{ route('commande') }}">
           <i class="bi bi-circle"></i><span>Commandes</span>
         </a>
@@ -347,7 +387,7 @@
           <i class="bi bi-circle"></i><span>Reception</span>
         </a>
       </li>
-      <li class="nav-heading"><hr></li>
+      <li class="nav-heading"><hr></li> --}}
       <li>
         <a href="{{ route('devis') }}">
           <i class="bi bi-circle"></i><span>Devis</span>
@@ -374,7 +414,7 @@
   </li><!-- End Charts Nav -->
   <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-      <i class="bi bi-journal-text"></i><span>Reglement & Recouvrement Facture</span><i class="bi bi-chevron-down ms-auto"></i>
+      <i class="bi bi-journal-text"></i><span>Reglements & Recouvrements</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="charts-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
     <!-- <li>
@@ -384,7 +424,8 @@
       </li> -->
       <li>
       <a href="{{route('reglement.facture')}}">
-          <i class="bi bi-circle"></i><span>Reglement / Recouvrement facture</span>
+          <i class="bi bi-circle"></i><span>Reglement facture & Recouvrement facture
+          </span>
         </a>
       </li>
     </ul>
@@ -408,7 +449,6 @@
     </ul>
   </li><!-- End Charts Nav -->
 @endif
-
   <li class="nav-heading">Tiers</li>
 @if(Auth::user()->role_id=="0" || Auth::user()->role_id=="1"|| Auth::user()->role_id=="2"|| Auth::user()->role_id=="4"|| Auth::user()->role_id=="5"|| Auth::user()->role_id=="7")
   <!-- <li class="nav-item">
@@ -445,12 +485,13 @@
       <i class="bi bi-person-square"></i>
       <span>Profile</span>
     </a>
-  </li><!-- End Contact Page Nav -->
+  </li>
+  <!-- End Contact Page Nav -->
 @endif
 <li class="nav-heading"><br></li>
   <li class="nav-item">
     <a class="nav-link collapsed" href="{{ route('logout') }}">
-      <i class="bi bi-file-earmark"></i>
+        <i class="bi bi-box-arrow-left"></i>
       <span>Déconnexion</span>
     </a>
 </li><!-- End Blank Page Nav -->

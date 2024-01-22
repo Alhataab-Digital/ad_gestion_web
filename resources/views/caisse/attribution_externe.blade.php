@@ -128,15 +128,15 @@
                   <tr>
                     <!-- <th scope="row">{{ $operation->id}}</th> -->
                     <td>{{ $operation->commentaire}}</td>
-                    <td>{{ $operation->montant_operation}} {{ $operation->caisse->agence->devise->unite}}</td>
-                    <td>{{ ceil(($operation->montant_operation)/($operation->taux))}} {{ $operation->caisse_destination->agence->devise->unite}}</td>
+                    <td style="text-align:right">{{ number_format($operation->montant_operation,2,","," ").' '.$operation->caisse->agence->devise->unite}}</td>
+                    <td style="text-align:right">{{number_format(ceil(($operation->montant_operation)/($operation->taux)),2,","," ").' '.$operation->caisse_destination->agence->devise->unite}}</td>
                     <td>{{ $operation->caisse_destination->libelle}}</td>
-                    
+
                     <td>
-                        <a href="{{ route('caisse.attribution_externe.edit',$operation->id) }}">
+                        <a href="{{ route('caisse.attribution_externe.edit',encrypt($operation->id)) }}">
                             <button type="button" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
                         </a>
-                        <a href="{{ route('caisse.attribution.delete',$operation->id) }}">
+                        <a href="{{ route('caisse.attribution.delete',encrypt($operation->id)) }}">
                             <button type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                         </a>
                     </td>

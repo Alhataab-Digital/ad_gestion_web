@@ -79,7 +79,7 @@ class DetailLivrerController extends Controller
                 // }
                 // else
                 // {
-                
+
                         /**
                          * mise à jour du stock produit
                          */
@@ -92,11 +92,12 @@ class DetailLivrerController extends Controller
 
                                 foreach( $stocks as  $stock)
                                 {
-                            
+
                                     $data=[
                                         'quantite_en_stock'     =>$request->qte[$i]+$stock->quantite_en_stock,
                                     ];
                                     StockProduit::where('produit_id',$request->produit_id[$i])->where('entrepot_id',$request->entrepot)->where('agence_id',$agence_id)->update($data);
+
                                 }
                             }
                         }else{
@@ -145,15 +146,15 @@ class DetailLivrerController extends Controller
                         $commande->update([
                             'etat' =>'livrer',
                         ]);
-                            return redirect('livrer/'.encrypt($request->livraison_id).'/show');  
+                            return redirect('livrer/'.encrypt($request->livraison_id).'/show');
                     // }
 
             }
         }
-            
 
 
-            
+
+
 
     }
 

@@ -28,13 +28,13 @@ class FactureController extends Controller
     {
         $agence_id=Auth::user()->agence_id;
         $factures=Facture::orderBy('updated_at','DESC')->where('agence_id',$agence_id)->get();
-        $factures_nvs=Facture::where('etat',NULL)->where('agence_id',$agence_id)->orderBy('updated_at','DESC')->get();
-        $factures_imps=Facture::where('etat','valider')->where('agence_id',$agence_id)->orderBy('updated_at','DESC')->get();
-        $factures_ech=Facture::where('etat','echeance')->where('agence_id',$agence_id)->orderBy('updated_at','DESC')->get();
-        $factures_pays=Facture::where('etat','terminer')->where('agence_id',$agence_id)->orderBy('updated_at','DESC')->get();
-        $factures_anns=Facture::where('etat','annuler')->where('agence_id',$agence_id)->orderBy('updated_at','DESC')->get();
+        $factures_nvs=Facture::where('etat',NULL)->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
+        $factures_imps=Facture::where('etat','valider')->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
+        $factures_ech=Facture::where('etat','echeance')->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
+        $factures_pays=Facture::where('etat','terminer')->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
+        $factures_anns=Facture::where('etat','annuler')->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
         return view('e-commerce.facture',compact('factures','factures_nvs','factures_imps','factures_ech','factures_pays','factures_anns'));
-    
+
     }
 
     /**
@@ -51,13 +51,13 @@ class FactureController extends Controller
     public function store(Request $request)
     {
 
-        
+
         $facture=Facture::where('devis_id',$request->devis_id)->first();
 
             if(isset($facture)){
 
                 $facture=Facture::where('devis_id',$request->devis_id)->latest('id')->first();
-                
+
                 $devis=Devis::find($request->devis_id);
 
                     $devis->update([
@@ -115,7 +115,7 @@ class FactureController extends Controller
                 return view('e-commerce.facture_encours', compact('devis','detail_deviss','total_ht','facture','entrepots','detail_factures'));
 
             }
-           
+
             $devis=Devis::where('id',$facture->devis_id)->first();
             $detail_deviss=DetailDevis::where('devis_id',$facture->devis_id)->get();
             $detail_factures=DetailFacture::where('facture_id',$facture->id)->get();

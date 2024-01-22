@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use App\Models\Societe;
 use App\Models\Utilisateur;
+use App\Models\Agence;
 use Socket;
 
 class SocieteController extends Controller
@@ -79,7 +80,9 @@ class SocieteController extends Controller
     {
         $id=decrypt($id);
         $societe=Societe::findOrFail($id);
-        return view('gestion.societe_show',compact('societe'));
+        $agence_id=Auth::user()->agence_id;
+        $agence=Agence::find($agence_id);
+        return view('gestion.societe_show',compact('societe','agence'));
     }
 
     /**
@@ -147,7 +150,7 @@ class SocieteController extends Controller
     }
 
     public function update_logo(Request $request, Societe $societe, $id ){
-        
+
         $id=decrypt($id);
         if(Auth::check()){
             $societe=Societe::findOrFail($id);

@@ -174,7 +174,7 @@ Route::middleware(['auth','initier'])->controller(BanqueController::class)->grou
     Route::get('/banque/{id}/virement_valider','virement_valider')->name('banque.virement.valider');
     Route::get('/banque/{id}/depot_valider','depot_valider')->name('banque.depot.valider');
     Route::get('/banque/{id}/retrait_valider','retrait_valider')->name('banque.retrait.valider');
-    
+
     Route::post('/banque/virement_create','virement_create')->name('banque.virement.create');
     Route::post('/banque/depot_create','depot_create')->name('banque.depot.create');
     Route::post('/banque/retrait_create','retrait_create')->name('banque.retrait.create');
@@ -186,14 +186,14 @@ Route::middleware(['auth','initier'])->controller(BanqueController::class)->grou
     Route::post('/banque/virement_modifier','virement_modifier')->name('banque.virement.modifier');
     Route::post('/banque/depot_modifier','depot_modifier')->name('banque.depot.modifier');
     Route::post('/banque/retrait_modifier','retrait_modifier')->name('banque.retrait.modifier');
-    
+
     Route::get('/banque/{id}/virement_supprimer','virement_supprimer')->name('banque.virement.delete');
     Route::get('/banque/{id}/depot_supprimer','depot_supprimer')->name('banque.depot.delete');
     Route::get('/banque/{id}/retrait_supprimer','retrait_supprimer')->name('banque.retrait.delete');
 
-    Route::post('/caisse/{id}/fermeture','fermeture')->name('caisse.fermeture');
+    Route::get('/banque/rapporchement','rapprochement')->name('banque.rapprochement');
 
-    Route::get('/caisse/rapport','rapport_caisse')->name('caisse.rapport');
+    Route::post('/banque/rapport','rapport_banque')->name('banque.rapport');
 });
 
 Route::middleware(['auth','initier'])->controller(CaisseController::class)->group(function(){
@@ -416,7 +416,7 @@ Route::middleware(['auth','initier'])->controller(RetraitInvestisseurController:
 });
 
 Route::middleware(['auth','initier'])->controller(RetraitDividendeController::class)->group(function(){
-    
+
     Route::get('/d_retrait','index')->name('d_retrait');
     Route::post('/d_retrait/dividende','retrait')->name('d_retrait.retrait');
     Route::post('/d_retrait/{id}/operation','operation')->name('d_retrait.operation');

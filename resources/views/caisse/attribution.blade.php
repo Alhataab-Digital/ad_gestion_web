@@ -128,13 +128,13 @@
                   <tr>
                     <!-- <th scope="row">{{ $operation->id}}</th> -->
                     <td>{{ $operation->commentaire}}</td>
-                    <td>{{ $operation->montant_operation}}</td>
+                    <td style="text-align:right">{{ number_format($operation->montant_operation,2,","," ").' '.$operation->caisse->agence->devise->unite}}</td>
                     <td>{{ $operation->caisse_destination->libelle}}</td>
                     <td>
-                        <a href="{{ route('caisse.attribution.edit',$operation->id) }}">
+                        <a href="{{ route('caisse.attribution.edit',encrypt($operation->id)) }}">
                             <button type="button" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
                         </a>
-                        <a href="{{ route('caisse.attribution.delete',$operation->id) }}">
+                        <a href="{{ route('caisse.attribution.delete',encrypt($operation->id)) }}">
                             <button type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                         </a>
                     </td>

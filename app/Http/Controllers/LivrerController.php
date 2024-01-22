@@ -36,10 +36,10 @@ class LivrerController extends Controller
     public function index()
     {
         $agence_id=Auth::user()->agence_id;
-        $livraisons=Livrer::where('agence_id',$agence_id)->get();
-        $livraisons_cs=Livrer::where('agence_id',$agence_id)->where('agence_id',$agence_id)->where('etat',Null)->get();
-        $livraisons_lv=Livrer::where('agence_id',$agence_id)->where('etat','valider')->get();
-        $livraisons_an=Livrer::where('agence_id',$agence_id)->where('etat','annuler')->get();
+        $livraisons=Livrer::where('agence_id',$agence_id)->orderBy('id','DESC')->get();
+        $livraisons_cs=Livrer::where('agence_id',$agence_id)->where('agence_id',$agence_id)->where('etat',Null)->orderBy('id','DESC')->get();
+        $livraisons_lv=Livrer::where('agence_id',$agence_id)->where('etat','valider')->orderBy('id','DESC')->get();
+        $livraisons_an=Livrer::where('agence_id',$agence_id)->where('etat','annuler')->orderBy('id','DESC')->get();
         return view('e-commerce.livraison',compact('livraisons','livraisons_cs','livraisons_lv','livraisons_an'));
     }
 
@@ -72,7 +72,7 @@ class LivrerController extends Controller
         // dd($commande);
         if(isset(Livrer::where('commande_id',$request->commande_id)->first(['id'])->id))
         {
-        
+
             return redirect('detail_commande/'.encrypt($request->commande_id).'/show');
         }else{
 
@@ -81,7 +81,7 @@ class LivrerController extends Controller
             $agence_id=Auth::user()->agence_id;
             $societe_id=Auth::user()->societe_id;
 
-       
+
             if($commande->etat=='valider')
             {
                 return back()->with('danger','La commande deja valider');
@@ -102,9 +102,9 @@ class LivrerController extends Controller
                     }
                     else
                     {
-                        
+
                         $activite_investissement=ActiviteInvestissement::find($request->activite);
-                        
+
                         if($activite_investissement->compte_activite < $request->montant_ht)
                         {
                             return back()->with('danger',"La montant de l'activite est insuffisant");
@@ -121,7 +121,7 @@ class LivrerController extends Controller
                             $montant_operation=$request->montant_ht;
 
                             $compte=$compte_caisse-$montant_operation;
-                        
+
                             $caisse=Caisse::find($caisse_id);
 
                             MouvementCaisse::create([
@@ -157,19 +157,19 @@ class LivrerController extends Controller
                                 ]);
 
                             return redirect('detail_commande/'.encrypt($request->commande_id).'/show');
-                            
+
                         }
                     }
 
                 }
                 return back()->with('danger',"Verifier votre caisse si c'est operationnel");
             }
-            
-        
-        }
-        
 
-        
+
+        }
+
+
+
 
     }
 
@@ -193,7 +193,7 @@ class LivrerController extends Controller
     public function edit(string $id)
     {
         $id=decrypt($id);
-        
+
         $agence_id=Auth::user()->agence_id;
         if(isset(EntrepotStock::where("agence_id",$agence_id)->first(['id'])->id))
         {
@@ -208,7 +208,7 @@ class LivrerController extends Controller
                 return view('e-commerce.livraison_encours', compact('commande','detail_commandes','total_ht','livraison','entrepots',
                 // 'activite_investissements'
                 ));
-        
+
             // }
         // return back()->with('danger',"Vous n'avez pas d'activité en cours");
         }
@@ -233,6 +233,6 @@ class LivrerController extends Controller
 
     public function print()
     {
-        
+
     }
 }

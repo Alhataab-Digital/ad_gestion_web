@@ -29,7 +29,7 @@
               <div class="row mb-3">
                   <label class="col-sm-3 col-form-label">Banque</label>
                   <div class="col-sm-9">
-                    <select class="form-select" aria-label="Default select example" name="source" required> 
+                    <select class="form-select" aria-label="Default select example" name="source" required>
                       <option selected>Choix compte banque</option>
                       @foreach ($banques as $banque )
                         <option value="{{ $banque->id }}">{{$banque->libelle.' : '.$banque->numero_compte_banque }}</option>
@@ -49,9 +49,9 @@
                     <div class="form-check">
                       <input class="form-check-input" type="radio" name="destination" id="gridRadios2" value="autre">
                       <label class="form-check-label" for="gridRadios2">
-                        Simple
+                        Autres
                       </label>
-                    </div>  
+                    </div>
                   </div>
                 </fieldset>
                 <div class="row mb-3">
@@ -106,7 +106,7 @@
                   <tr>
                     <th scope="col">Banque Destination</th>
                     <th scope="col">Montant</th>
-                    <th scope="col">Source </th>
+                    <th scope="col">Destination </th>
                     <th scope="col">Commentaire </th>
                     <th scope="col">Date operation</th>
                     <th scope="col">Action</th>
@@ -117,7 +117,7 @@
                     @foreach ($operations as $operation )
                   <tr>
                     <td>{{ $operation->banque->libelle.' - '.$operation->banque->numero_compte_banque}}</td>
-                    <td>{{ $operation->montant_operation}}</td>
+                    <td style="text-align:right">{{ number_format($operation->montant_operation,2,","," ").' '.$operation->banque->agence->devise->unite}}</td>
                     <td>{{ $operation->source}}</td>
                     <td>{{ $operation->description}}</td>
                     <th scope="row">{{ $operation->date_comptable}}</th>

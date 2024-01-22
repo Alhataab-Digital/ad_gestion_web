@@ -25,7 +25,7 @@ use App\Models\MouvementBanque;
 
 class BanqueController extends Controller
 {
-    
+
     public function index()
     {
 
@@ -99,7 +99,7 @@ class BanqueController extends Controller
          * donnee a ajouté dans la table
          */
         $data=$request->all();
-        
+
         $banque=Banque::find($id);
         $banque->update([
             'agence_id'=>$data['agence_id'],
@@ -113,7 +113,7 @@ class BanqueController extends Controller
     public function depot()
     {
         $user_id=Auth::user()->id;
-        
+
         if(isset(Caisse::where('user_id',$user_id)->first(['id'])->id)){
 
             $agence_id=Auth::user()->agence_id;
@@ -127,13 +127,13 @@ class BanqueController extends Controller
             return view('banque.depot_banque', compact('banques','agences','operations','caisse'));
         }
         return view('investissement.message');
-        
+
     }
 
     public function retrait(Request $request)
     {
         $user_id=Auth::user()->id;
-        
+
         if(isset(Caisse::where('user_id',$user_id)->first(['id'])->id)){
 
             $agence_id=Auth::user()->agence_id;
@@ -147,12 +147,12 @@ class BanqueController extends Controller
             return view('banque.retrait_banque', compact('banques','agences','operations','caisse'));
         }
         return view('investissement.message');
-    
+
     }
 
     public function virement(Request $request)
     {
-        
+
         $user_id=Auth::user()->user_id;
         $agence_id=Auth::user()->agence_id;
         $societe_id=Auth::user()->societe_id;
@@ -161,16 +161,15 @@ class BanqueController extends Controller
         $banques_d=Banque::where('agence_id','!=',$agence_id)->where('societe_id',$societe_id)->get();
         $operations=OperationInterBanque::where('user_id',$user_id)->get();
         $taux=DeviseAgence::where('agence_id',$caisse->agence_id)->where('devise_id',$caisse_destination->agence->devise_id)->first()->taux;
-                
-        return view('banque.virement_banque', compact('banques_s','banques_d','agences','operations'));
-    
-    
-    }
 
+        return view('banque.virement_banque', compact('banques_s','banques_d','agences','operations'));
+
+
+    }
 
     public function depot_create(Request $request)
     {
-        
+
         if($request->source == "caisse" ){
             $user_id=Auth::user()->id;
             if(Caisse::where('user_id',$user_id)->first(['compte'])->compte >= $request->montant){
@@ -186,7 +185,7 @@ class BanqueController extends Controller
                 /**
                  * donnee a ajouté dans la table
                  */
-    
+
                 $data=$request->all();
                 // dd('operation effecteur');
 
@@ -196,7 +195,7 @@ class BanqueController extends Controller
                 $banque->update([
                     'compte'=>$solde_banque,
                 ]);
-                
+
                 OperationBanque::create([
                     'source'=>$data['source'],
                     'banque_id'=>$data['destination'],
@@ -240,8 +239,8 @@ class BanqueController extends Controller
 
                 dd('montant caisse insufissant');
             }
-           
-          
+
+
         }else{
             $user_id=Auth::user()->id;
             $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
@@ -265,7 +264,7 @@ class BanqueController extends Controller
                     $banque->update([
                         'compte'=>$solde_banque,
                     ]);
-                    
+
                     OperationBanque::create([
                         'source'=>$data['source'],
                         'banque_id'=>$data['destination'],
@@ -288,9 +287,9 @@ class BanqueController extends Controller
 
                     return redirect('/banque/depot')->with('success',"Operation effectuée avec succès ");
         }
-     
-       
-        
+
+
+
     }
 
     public function depot_supprimer($id)
@@ -313,7 +312,7 @@ class BanqueController extends Controller
                 $banque->update([
                     'compte'=>$solde_banque,
                 ]);
-                
+
                 MouvementBanque::create([
                     'banque_id'=> $operation->banque_id,
                     'user_id'=>$user_id,
@@ -340,8 +339,8 @@ class BanqueController extends Controller
                         $caisse->update([
                             'compte'=>$compte,
                         ]);
-                    
-                
+
+
                         $operation->delete();
 
                 return redirect('/banque/depot')->with('success',"Operation effectuée avec succès ");
@@ -349,8 +348,8 @@ class BanqueController extends Controller
 
                 dd('montant banque insufissant');
             }
-           
-          
+
+
         }else{
 
             if(Banque::where('id',$operation->banque_id)->first(['compte'])->compte >= $operation->montant_operation){
@@ -379,7 +378,7 @@ class BanqueController extends Controller
             }else{
 
                 dd('montant banque insufissant');
-                
+
             }
         }
 
@@ -387,9 +386,9 @@ class BanqueController extends Controller
 
     public function retrait_create(Request $request)
     {
-        
+
         if($request->destination == "caisse" ){
-         
+
             // $banque=Banque::where('id',$request->source)->first(['compte'])->compte;
             // dd($request->destination,$request->montant,$request->source,$banque);
             $user_id=Auth::user()->id;
@@ -406,7 +405,7 @@ class BanqueController extends Controller
                 /**
                  * donnee a ajouté dans la table
                  */
-    
+
                 $data=$request->all();
                 // dd('operation effecteur');
 
@@ -416,7 +415,7 @@ class BanqueController extends Controller
                 $banque->update([
                     'compte'=>$solde_banque,
                 ]);
-                
+
                 OperationBanque::create([
                     'source'=>$data['destination'],
                     'banque_id'=>$data['source'],
@@ -460,8 +459,8 @@ class BanqueController extends Controller
 
                 dd('montant banque insufissant');
             }
-           
-          
+
+
         }else{
 
             if(Banque::where('id',$request->source)->first(['compte'])->compte >= $request->montant){
@@ -488,7 +487,7 @@ class BanqueController extends Controller
                     $banque->update([
                         'compte'=>$solde_banque,
                     ]);
-                    
+
                     OperationBanque::create([
                         'source'=>$data['destination'],
                         'banque_id'=>$data['source'],
@@ -504,7 +503,7 @@ class BanqueController extends Controller
                         'banque_id'=>$data['source'],
                         'user_id'=>$user_id,
                         'description'=>'retrait banque ',
-                        'entree'=>$data['montant'],
+                        'sortie'=>$data['montant'],
                         'solde'=>$solde_banque,
                         'date_comptable'=>$date_comptable,
                     ]);
@@ -515,9 +514,9 @@ class BanqueController extends Controller
                     dd('montant caisse insufissant');
                 }
         }
-     
-       
-        
+
+
+
     }
 
     public function retrait_supprimer($id)
@@ -540,7 +539,7 @@ class BanqueController extends Controller
                 $banque->update([
                     'compte'=>$solde_banque,
                 ]);
-                
+
                 MouvementBanque::create([
                     'banque_id'=> $operation->banque_id,
                     'user_id'=>$user_id,
@@ -567,8 +566,8 @@ class BanqueController extends Controller
                         $caisse->update([
                             'compte'=>$compte,
                         ]);
-                    
-                
+
+
                         $operation->delete();
 
                 return redirect('/banque/retrait')->with('success',"Operation effectuée avec succès ");
@@ -576,8 +575,8 @@ class BanqueController extends Controller
 
                 dd('montant caisse insufissant');
             }
-           
-          
+
+
         }else{
 
             $user_id=Auth::user()->id;
@@ -602,6 +601,26 @@ class BanqueController extends Controller
 
                     return redirect('/banque/retrait')->with('success',"Operation effectuée avec succès ");
         }
+
+    }
+
+    public function rapprochement()
+    {
+        $agence_id=Auth::user()->agence_id;
+        $agence=Agence::find($agence_id);
+        $banques=Banque::where('agence_id',$agence_id)->get();
+        $rapprochement_bancaires=MouvementBanque::where('banque_id',NULL)->orderBy('id', 'DESC')->get();
+        return view('banque.rapport_banque',compact('banques','rapprochement_bancaires','agence'));
+
+    }
+
+    public function rapport_banque(Request $request)
+    {
+        $agence_id=Auth::user()->agence_id;
+        $agence=Agence::find($agence_id);
+        $banques=Banque::where('agence_id',$agence_id)->get();
+        $rapprochement_bancaires=MouvementBanque::where('banque_id',$request->banque)->orderBy('id', 'DESC')->get();
+        return view('banque.rapport_banque',compact('banques','rapprochement_bancaires','agence'));
 
     }
 }
