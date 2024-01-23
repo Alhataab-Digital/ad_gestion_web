@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('devise_id');
             $table->string('agence_id');
-            $table->string('taux');
+            $table->float('taux')->default(0);
             $table->timestamps();
         });
     }

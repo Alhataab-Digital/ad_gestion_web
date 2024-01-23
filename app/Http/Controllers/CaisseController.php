@@ -125,7 +125,7 @@ class CaisseController extends Controller
          * donnee a ajouté dans la table
          */
         $data=$request->all();
-        
+
         $caisse=Caisse::find($id);
         $caisse->update([
             'agence_id'=>$data['agence_id'],
@@ -187,13 +187,18 @@ class CaisseController extends Controller
             $caisse_destination=Caisse::find($data['caisse_destination']);
             // dd($caisse_destination->agence->devise_id, $caisse_destination->agence_id, $devise_agence);
             if(isset(DeviseAgence::where('agence_id',$caisse->agence_id)->where('devise_id',$caisse_destination->agence->devise_id)->first()->taux)){
-                
+
                 $taux=DeviseAgence::where('agence_id',$caisse->agence_id)->where('devise_id',$caisse_destination->agence->devise_id)->first()->taux;
-                
+
                 if($montant_caisse->compte <$data['montant_operation']){
                     return redirect('/caisse/attribution_externe')->with('danger','montant caisse insuffisant pour effectuer cette operation');
                 }else{
-                     /**
+
+                    if(!isset($taux) || $taux==0){
+                        return redirect('/caisse/attribution_externe')->with('danger',"la devise de l'agence est null ");;
+                    }
+                    else{
+                /*
                  * insertion des données dans la table user
                  */
                 OperationInterCaisse::create([
@@ -206,7 +211,10 @@ class CaisseController extends Controller
                     'date_comptable'=>$date_comptable,
                 ]);
                 return redirect('/caisse/attribution_externe')->with('success','operation crée avec succès');
-                }
+
+
+                    }
+                 }
             }else{
 
                 return redirect('/caisse/attribution_externe')->with('danger','Il faut definir le taux de la devise');
@@ -256,12 +264,17 @@ class CaisseController extends Controller
             $caisse_destination=Caisse::find($data['caisse_destination']);
             // dd($caisse_destination->agence->devise_id, $caisse_destination->agence_id, $devise_agence);
             if(isset(DeviseAgence::where('agence_id',$caisse->agence_id)->where('devise_id',$caisse_destination->agence->devise_id)->first()->taux)){
-                
+
                 $taux=DeviseAgence::where('agence_id',$caisse->agence_id)->where('devise_id',$caisse_destination->agence->devise_id)->first()->taux;
-                
+
                 if($montant_caisse->compte <$data['montant_operation']){
                     return redirect('/caisse/attribution')->with('danger','montant caisse insuffisant pour effectuer cette operation');
                 }else{
+
+                    if(!isset($taux) || $taux==0){
+                        return redirect('/caisse/attribution')->with('danger',"la devise de l'agence est null ");
+                    }
+                    else{
                      /**
                  * insertion des données dans la table user
                  */
@@ -275,12 +288,13 @@ class CaisseController extends Controller
                     'date_comptable'=>$date_comptable,
                     ]);
                     return redirect('/caisse/attribution')->with('success','operation crée avec succès');
+                    }
                 }
             }else{
 
                 return redirect('/caisse/attribution')->with('danger','Il faut definir le taux de la devise');
             }
-           
+
 
     }
 
@@ -321,9 +335,9 @@ class CaisseController extends Controller
                     $montant_operation_recepteur=round($operation->montant_operation/$operation->taux);
                     $montant_operation_emetteur=$operation->montant_operation;
 
-                    
+
                 // dd($montant_operation);
-                
+
                 /**
                  * on verifie si la de emmetrice est ouverte
                  */
@@ -425,7 +439,7 @@ class CaisseController extends Controller
         $caisse_destinations=Caisse::where('user_id','!=',$user_id)->where('id','!=',$operation->caisse_destination->id)->where('agence_id',$agence_id)->get();
         $devise_agences=DeviseAgence::all();
         return view('caisse.attribution_edit', compact('caisse_destinations','operation','devise_agences'));
-        
+
     }
 
     public function attribution_modifier( Request $request)
@@ -478,13 +492,13 @@ class CaisseController extends Controller
                             'date_comptable'=>$date_comptable,
                         ]);
                         return redirect('/caisse/attribution')->with('success','modification effectuée avec succès');
-                        
+
                     }
                 }
             }
              return redirect('/caisse/attribution')->with('success',"Vous n'avez pas defini le taux de la devise");
 
-        
+
     }
 
     public function attribution_externe_edit($id)
@@ -496,7 +510,7 @@ class CaisseController extends Controller
         $caisse_destinations=Caisse::where('user_id','!=',$user_id)->where('id','!=',$operation->caisse_destination->id)->where('agence_id','!=',$agence_id)->get();
         $devise_agences=DeviseAgence::all();
         return view('caisse.attribution_externe_edit', compact('caisse_destinations','operation','devise_agences'));
-        
+
     }
 
     public function attribution_externe_modifier( Request $request)
@@ -549,12 +563,12 @@ class CaisseController extends Controller
                             'date_comptable'=>$date_comptable,
                         ]);
                         return redirect('/caisse/attribution_externe')->with('success','modification effectuée avec succès');
-                        
+
                     }
                 }
             }
             return redirect('/caisse/attribution_externe')->with('success',"Vous n'avez pas defini le taux de la devise");
-        
+
     }
 
     public function attribution_supprimer($id)
@@ -562,8 +576,8 @@ class CaisseController extends Controller
         $id=decrypt($id);
         $operation=OperationInterCaisse::find($id);
         $operation->delete();
-        return back(); 
-        
+        return back();
+
     }
 
     public function operation()
@@ -584,7 +598,7 @@ class CaisseController extends Controller
         }
         return redirect('/auth')->with('danger',"Session expirée");
     }
-    
+
     public function ouverture(Request $request, $id)
     {
         $id=decrypt($id);
@@ -613,7 +627,7 @@ class CaisseController extends Controller
         }
 
     }
-    
+
     public function fermeture(Request $request,$id)
     {
         $id=decrypt($id);

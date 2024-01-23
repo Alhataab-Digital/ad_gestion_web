@@ -75,7 +75,7 @@
                     <label for="validationDefault04" class="form-label">Devise par defaut</label>
                     <select class="form-select" id="validationDefault04" name="devise_id" required>
                     <option value="{{ $agence->devise->id }}">{{  $agence->devise->devise }}</option>
-                     
+
                     @foreach ( $devises as $devise )
                         @if($agence->devise->id!=$devise->id)
                             <option value="{{ $devise->id }}">{{ $devise->devise }}</option>
@@ -107,6 +107,7 @@
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#smallModal">
                             <i class="bi bi-plus"></i> Ajouter devise d'echange
                             </button>
+                            <p> 1 devise etrangère = combien devise local  </p>
                         <!-- Vertical Form -->
                             <form class="row g-3" method="post" action="{{ route('agence.devise') }}" >
                                 @csrf
@@ -136,7 +137,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <label for="inputAddress" class="form-label">Taux</label>
-                                                <input type="text" name="taux"  class="form-control" id="inputAddress" placeholder="1234">
+                                                <input type="number" step="0.00001" name="taux"  class="form-control" id="inputAddress" placeholder="1234">
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -166,7 +167,7 @@
                                             <input type="hidden" name="id"  class="form-control" id="id" readonly>
                                         </th>
                                         <th>
-                                            <input type="text" name="taux" id="devise_t" class="form-control"  >
+                                            <input type="text"  name="taux" id="devise_t" class="form-control"  >
                                         </th>
                                         <th><button type="submit" class="btn btn-primary"> <i class="bi bi-pencil"></i></button></th>
                                     </form>
@@ -241,7 +242,6 @@
     {
         table.rows[rIndex].cells[0].innerHtml=document.getElementById("id").value;
         table.rows[rIndex].cells[2].innerHtml=document.getElementById("devise_t").value;
-
 
         var id=document.getElementById("id").value;
 

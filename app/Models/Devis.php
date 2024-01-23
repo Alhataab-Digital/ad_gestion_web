@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ActiviteInvestissement;
 use App\Models\Client;
+use App\Models\Agence;
 class Devis extends Model
 {
     use HasFactory;
@@ -26,5 +27,10 @@ class Devis extends Model
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+
+    public function agence()
+    {
+        return $this->belongsTo(Agence::class);
     }
 }

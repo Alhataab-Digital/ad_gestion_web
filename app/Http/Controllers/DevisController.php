@@ -25,12 +25,14 @@ class DevisController extends Controller
      */
     public function index()
     {
-         $agence_id=Auth::user()->agence_id;
+        $agence_id=Auth::user()->agence_id;
         $deviss=Devis::where('agence_id',$agence_id)->orderBy('id','DESC')->get();
+        $deviss_nv=Devis::where('etat',NULL)->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
         $deviss_cs=Devis::where('etat','en cours')->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
+        $deviss_vd=Devis::where('etat','valider')->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
         $deviss_lv=Devis::where('etat','livrer')->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
         $deviss_an=Devis::where('etat','annuler')->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
-        return view('e-commerce.devis',compact('deviss','deviss_cs','deviss_lv','deviss_an'));
+        return view('e-commerce.devis',compact('deviss','deviss_nv','deviss_cs','deviss_vd','deviss_lv','deviss_an'));
 
     }
 

@@ -141,10 +141,19 @@ class AgenceUserController extends Controller
     {
         $devise=DeviseAgence::find($request->id);
             if(isset($devise)){
+
+            $taux=$request->taux;
+
+            // La fonction pour remplacer la virgule en un point
+            $taux=  str_replace(',', '.', $taux);
+            // dd($taux);
+            if((float)$taux==$taux){
                 $devise->update([
-                    'taux'=>$request->taux,
+                    'taux'=>$taux,
                 ]);
                 return back()->with('success','taux modifier');
+            }
+            return back();
             }
         return back();
     }

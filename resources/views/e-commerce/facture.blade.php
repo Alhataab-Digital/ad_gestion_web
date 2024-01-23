@@ -22,17 +22,17 @@
                 <div class="card-body">
                     <h5 class="card-title">Facture de produit et service
                         <p class="text-end">
-                            
+
                         </p>
 
                     </h5>
 
                   <!-- Pills Tabs -->
                   <ul class="nav nav-pills nav-tabs-bordered" id="pills-tab" role="tablist">
-                    
+
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#facture-non-valider" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
-                        facture non valider
+                        facture non validée
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -62,7 +62,7 @@
                     </li>
                   </ul>
                   <div class="tab-content pt-2" id="myTabContent">
-                    
+
                     <div class="tab-pane fade show active" id="facture-non-valider" role="tabpanel" aria-labelledby="profile-tab">
                          <!-- Table with stripped rows -->
                          <table class="table table-borderless datatable">
