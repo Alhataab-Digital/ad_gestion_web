@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('description');
             $table->string('montant_operation');
             $table->string('sens_operation');
-            $table->string('piece')->nullable;
+            $table->string('piece')->nullable();
             $table->string('date_comptable');
             $table->string('user_id');
             $table->timestamps();

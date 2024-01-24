@@ -23,7 +23,7 @@
 
               <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <i class="bi bi-exclamation-octagon me-1"></i>
-                Vous n'avez pas de caisse
+                Verifiez l'usage du montant des investisseurs
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>
 

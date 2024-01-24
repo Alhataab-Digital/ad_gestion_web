@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\client;
 use App\Models\EntrepotStock;
 use App\Models\Commande;
+use App\Models\Agence;
 
 class Livrer extends Model
 {
@@ -35,5 +36,10 @@ class Livrer extends Model
     public function commande()
     {
         return $this->belongsTo(Commande::class);
+    }
+
+    public function agence()
+    {
+        return $this->belongsTo(Agence::class);
     }
 }

@@ -110,7 +110,7 @@
                     <div class="text-end">
                         <button type="submit" class="btn btn-success">Valider</button>
                         @if(!$activite_investissement->total_depense!=NULL)
-                          <a href="{{ route('activite_investissement.delete',$activite_investissement->id) }}">
+                          <a href="{{ route('activite_investissement.delete',encrypt($activite_investissement->id)) }}">
                             <button type="button" class="btn btn-danger">Supprimer</button>
                           </a>
                         @endif

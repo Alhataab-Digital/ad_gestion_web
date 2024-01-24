@@ -26,27 +26,69 @@
 
                   <div class="card-body">
                     <h5 class="card-title">
-                       <div class="col-sm-12">
+                       <div class="col-sm-6">
                        {{'Activite N° '.$activite_investissement->id.' : '.$activite_investissement->type_activite->type_activite }}
 
-                                <p>
-                                    @if ($message=Session::get('success'))
-                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    <i class="bi bi-check-circle me-1"></i>
-                                    {{ $message }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
-                                    @endif
-                                    @if ($message=Session::get('danger'))
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    <i class="bi bi-exclamation-octagon me-1"></i>
-                                    {{ $message }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
-                                    @endif
-                                </p>
+                     <button type="button" class="btn btn-secondary text-end" data-bs-toggle="modal" data-bs-target="#basicModal">
+                     <i class="bi bi-eye"></i>
+                     </button>
+                     </div>
+                     <p>
+                        @if ($message=Session::get('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle me-1"></i>
+                        {{ $message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                    </h5>
+                        @endif
+                        @if ($message=Session::get('danger'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-octagon me-1"></i>
+                        {{ $message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        @endif
+                    </p>
+                   </h5>
+                     <!-- Basic Modal -->
+                     <div class="modal fade" id="basicModal" tabindex="-1">
+                       <div class="modal-dialog">
+                         <div class="modal-content" >
+                           <div class="modal-header">
+                             <h5 class="modal-title">Produit disponible de l'activité</h5>
+                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                           </div>
+                            <div class="modal-body" >
+
+                                <table class="table table-borderless ">
+                                    <thead >
+                                      <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Produit</th>
+                                        <th scope="col">quantite en stock</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($inventaire_stocks as $inventaire_stock )
+                                      <tr>
+
+                                        <th scope="row">{{ $inventaire_stock->id}}</th>
+                                        <td>{{ $inventaire_stock->produit->nom_produit}}</td>
+                                        <td>{{ $inventaire_stock->quantite_en_stock}}</td>
+
+                                      </tr>
+                                      @endforeach
+                                    </tbody>
+                                </table>
+
+                            </div>
+                           <div class="modal-footer">
+                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                             {{-- <button type="submit" class="btn btn-primary">Save changes</button> --}}
+                           </div>
+                         </div>
+                       </div>
+                     </div>
                     <hr>
                     <h5 class="bg-secondary text-white">
                         <table>
@@ -260,50 +302,51 @@
                         <div class="bg-secondary text-white " style="text-align: center">
                           <hr>FACTURE(S) IMPAYER<hr>
                           </div>
-                        @if($facture_montant_total != $facture_montant_regler)
-                         <!-- Table with stripped rows -->
-                        <table class="table table-borderless">
-                            <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Date operation</th>
-                                <th scope="col">Client</th>
-                                <th scope="col">Montant facture</th>
-                                <th scope="col">Montant reglé</th>
-                                <th scope="col">Montant restant</th>
-                                <!-- <th scope="col">Status</th>
-                                <th scope="col">Action</th> -->
-                            </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($factures as $facture)
-                                @if(($facture->montant_total-$facture->montant_regle)!=0)
-                            <tr>
-                                <th scope="row"><a href="#">{{ $facture->id }}</a></th>
-                                <td>{{ $facture->updated_at }}</td>
-                                <td> {{$facture->client->nom_client}} : <a href="{{route('reglement.facture')}}" class="text-primary">{{$facture->client->telephone}}</a></td>
-                                <td>{{number_format($facture->montant_total,2,","," ")  }}</td>
-                                <td>{{ number_format(($facture->montant_regle),2,","," ")}}</td>
-                                <td>{{ number_format(($facture->montant_total-$facture->montant_regle),2,","," ")}}</td>
-                                <!-- <td><span class="badge bg-success">{{ $facture->etat }}</span></td>
-                                <td>
-                                    <a href="{{ route('reglement.paiement',encrypt($facture->id)) }}">
-                                        <button type="button" class="btn btn-warning"><i class="bi bi-cart-plus"></i></button>
-                                    </a>
-                                </td> -->
-                            </tr>
+                            @if($facture_montant_total != $facture_montant_regler)
+                                <!-- Table with stripped rows -->
+                                <table class="table table-borderless">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Date operation</th>
+                                        <th scope="col">Client</th>
+                                        <th scope="col">Montant facture</th>
+                                        <th scope="col">Montant reglé</th>
+                                        <th scope="col">Montant restant</th>
+                                        <!-- <th scope="col">Status</th>
+                                        <th scope="col">Action</th> -->
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($factures as $facture)
+                                        @if(($facture->montant_total-$facture->montant_regle)!=0)
+                                    <tr>
+                                        <th scope="row"><a href="#">{{ $facture->id }}</a></th>
+                                        <td>{{ $facture->updated_at }}</td>
+                                        <td> {{$facture->client->nom_client}} : <a href="{{route('reglement.facture')}}" class="text-primary">{{$facture->client->telephone}}</a></td>
+                                        <td>{{number_format($facture->montant_total,2,","," ")  }}</td>
+                                        <td>{{ number_format(($facture->montant_regle),2,","," ")}}</td>
+                                        <td>{{ number_format(($facture->montant_total-$facture->montant_regle),2,","," ")}}</td>
+                                        <!-- <td><span class="badge bg-success">{{ $facture->etat }}</span></td>
+                                        <td>
+                                            <a href="{{ route('reglement.paiement',encrypt($facture->id)) }}">
+                                                <button type="button" class="btn btn-warning"><i class="bi bi-cart-plus"></i></button>
+                                            </a>
+                                        </td> -->
+                                    </tr>
+                                    @endif
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                                <!-- End Table with stripped rows -->
                             @endif
-                            @endforeach
-                            </tbody>
-                        </table>
-                        <!-- End Table with stripped rows -->
-                        @endif
-                        </table>
                             <br>
                             @if($activite_investissement->total_recette > $activite_investissement->total_depense)
                             @if($facture_montant_total == $facture_montant_regler)
                             @if($produit_stock->total==0)
+                            @if($devis)
                             <button type="submit" class="btn btn-primary">Cloturer l'activité</button>
+                            @endif
                             @endif
                             @endif
                             @endif

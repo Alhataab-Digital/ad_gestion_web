@@ -69,9 +69,9 @@
                             <thead class="bg-primary text-white ">
                                 <tr>
                                     <th scope="col">Date operation</th>
-                                    <th scope="col">Montant facturé</th>
-                                    <th scope="col">Montant payé</th>
-                                    <th scope="col">Montant à payer</th>
+                                    <th scope="col" style="text-align:right">Montant facturé</th>
+                                    <th scope="col" style="text-align:right">Montant payé</th>
+                                    <th scope="col" style="text-align:right">Montant à payer</th>
                                     <th scope="col">Etat</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -80,9 +80,9 @@
                                 @foreach ($factures_nvs as $facture)
                                 <tr>
                                         <th scope="row">{{ $facture->updated_at }}</th>
-                                        <th scope="row">{{ $facture->montant_total }}</th>
-                                        <th scope="row" >{{number_format($facture->montant_regle,2,","," ")  }}</th>
-                                        <th scope="row" >{{number_format(($facture->montant_total-$facture->montant_regle),2,","," ")  }}</th>
+                                        <th scope="row" style="text-align:right">{{ number_format($facture->montant_total,2,","," ")}}{{ $facture->agence->devise->unite }}</th>
+                                        <th scope="row" style="text-align:right">{{ number_format($facture->montant_regle,2,","," ")}}{{ $facture->agence->devise->unite }}</th>
+                                        <th scope="row" style="text-align:right">{{ number_format(($facture->montant_total-$facture->montant_regle),2,","," ")}}{{ $facture->agence->devise->unite }}</th>
                                         <th scope="row">{{ $facture->etat }}</th>
                                         <td>
                                            @if($facture->etat==Null)
@@ -112,9 +112,9 @@
                                <tr>
                                    <th scope="col">Date operation</th>
                                    <th scope="col">client</th>
-                                   <th scope="col">Montant facturé</th>
-                                    <th scope="col">Montant payé</th>
-                                    <th scope="col">Montant à payer</th>
+                                   <th scope="col" style="text-align:right">Montant facturé</th>
+                                   <th scope="col" style="text-align:right">Montant payé</th>
+                                   <th scope="col" style="text-align:right">Montant à payer</th>
                                    <th scope="col">Etat</th>
                                    <th scope="col">Action</th>
                                </tr>
@@ -124,9 +124,9 @@
                                 <tr>
                                     <th scope="row">{{ $facture->updated_at }}</th>
                                     <th scope="row">{{ $facture->client->nom_client.' '.$facture->client->telephone }}</th>
-                                    <th scope="row">{{ $facture->montant_total }}</th>
-                                    <th scope="row" >{{number_format($facture->montant_regle,2,","," ")  }}</th>
-                                    <th scope="row" >{{number_format(($facture->montant_total-$facture->montant_regle),2,","," ")  }}</th>
+                                    <th scope="row" style="text-align:right">{{ number_format($facture->montant_total,2,","," ")}}{{ $facture->agence->devise->unite }}</th>
+                                    <th scope="row" style="text-align:right">{{ number_format($facture->montant_regle,2,","," ")}}{{ $facture->agence->devise->unite }}</th>
+                                    <th scope="row" style="text-align:right">{{ number_format(($facture->montant_total-$facture->montant_regle),2,","," ")}}{{ $facture->agence->devise->unite }}</th>
                                     <th scope="row">{{ $facture->etat }}</th>
                                     <td>
                                            @if($facture->etat==Null)
@@ -156,9 +156,9 @@
                                <tr>
                                    <th scope="col">Date operation</th>
                                    <th scope="col">client</th>
-                                   <th scope="col">Montant facturé</th>
-                                    <th scope="col">Montant payé</th>
-                                    <th scope="col">Montant à payer</th>
+                                   <th scope="col" style="text-align:right">Montant facturé</th>
+                                   <th scope="col" style="text-align:right">Montant payé</th>
+                                   <th scope="col" style="text-align:right">Montant à payer</th>
                                    <th scope="col">Etat</th>
                                    <th scope="col">Action</th>
                                </tr>
@@ -168,9 +168,10 @@
                                 <tr>
                                     <th scope="row">{{ $facture->updated_at }}</th>
                                     <th scope="row">{{ $facture->client->nom_client.' '.$facture->client->telephone }}</th>
-                                    <th scope="row">{{ $facture->montant_total }}</th>
-                                    <th scope="row" >{{number_format($facture->montant_regle,2,","," ")  }}</th>
-                                    <th scope="row" >{{number_format(($facture->montant_total-$facture->montant_regle),2,","," ")  }}</th>
+                                    <th scope="row" style="text-align:right">{{ number_format($facture->montant_total,2,","," ")}}{{ $facture->agence->devise->unite }}</th>
+                                    <th scope="row" style="text-align:right">{{ number_format($facture->montant_regle,2,","," ")}}{{ $facture->agence->devise->unite }}</th>
+                                    <th scope="row" style="text-align:right">{{ number_format(($facture->montant_total-$facture->montant_regle),2,","," ")}}{{ $facture->agence->devise->unite }}</th>
+
                                     <th scope="row">{{ $facture->etat }}</th>
                                     < <td>
                                            @if($facture->etat==Null)
@@ -200,9 +201,9 @@
                                <tr>
                                    <th scope="col">Date operation</th>
                                    <th scope="col">client</th>
-                                   <th scope="col">Montant facturé</th>
-                                    <th scope="col">Montant payé</th>
-                                    <th scope="col">Montant à payer</th>
+                                   <th scope="col" style="text-align:right">Montant facturé</th>
+                                   <th scope="col" style="text-align:right">Montant payé</th>
+                                   <th scope="col" style="text-align:right">Montant à payer</th>
                                    <th scope="col">Etat</th>
                                    <th scope="col">Action</th>
                                </tr>
@@ -212,9 +213,9 @@
                                 <tr>
                                     <th scope="row">{{ $facture->updated_at }}</th>
                                     <th scope="row">{{ $facture->client->nom_client.' '.$facture->client->telephone }}</th>
-                                    <th scope="row">{{ $facture->montant_total }}</th>
-                                    <th scope="row" >{{number_format($facture->montant_regle,2,","," ")  }}</th>
-                                    <th scope="row" >{{number_format(($facture->montant_total-$facture->montant_regle),2,","," ")  }}</th>
+                                    <th scope="row" style="text-align:right">{{ number_format($facture->montant_total,2,","," ")}}{{ $facture->agence->devise->unite }}</th>
+                                    <th scope="row" style="text-align:right">{{ number_format($facture->montant_regle,2,","," ")}}{{ $facture->agence->devise->unite }}</th>
+                                    <th scope="row" style="text-align:right">{{ number_format(($facture->montant_total-$facture->montant_regle),2,","," ")}}{{ $facture->agence->devise->unite }}</th>
                                     <th scope="row">{{ $facture->etat }}</th>
                                     <td>
                                            @if($facture->etat==Null)
@@ -244,9 +245,9 @@
                             <tr>
                                 <th scope="col">Date operation</th>
                                 <th scope="col">client</th>
-                                <th scope="col">Montant facturé</th>
-                                <th scope="col">Montant payé</th>
-                                <th scope="col">Montant à payer</th>
+                                <th scope="col" style="text-align:right">Montant facturé</th>
+                                <th scope="col" style="text-align:right">Montant payé</th>
+                                <th scope="col" style="text-align:right">Montant à payer</th>
                                 <th scope="col">Etat</th>
                                 <th scope="col">Action</th>
                             </tr>
@@ -256,9 +257,9 @@
                             <tr>
                                     <th scope="row">{{ $facture->updated_at }}</th>
                                     <th scope="row">{{ $facture->client->nom_client.' '.$facture->client->telephone }}</th>
-                                    <th scope="row">{{ $facture->montant_total }}</th>
-                                    <th scope="row" >{{number_format($facture->montant_regle,2,","," ")  }}</th>
-                                    <th scope="row" >{{number_format(($facture->montant_total-$facture->montant_regle),2,","," ")  }}</th>
+                                    <th scope="row" style="text-align:right">{{ number_format($facture->montant_total,2,","," ")}}{{ $facture->agence->devise->unite }}</th>
+                                    <th scope="row" style="text-align:right">{{ number_format($facture->montant_regle,2,","," ")}}{{ $facture->agence->devise->unite }}</th>
+                                    <th scope="row" style="text-align:right">{{ number_format(($facture->montant_total-$facture->montant_regle),2,","," ")}}{{ $facture->agence->devise->unite }}</th>
                                     <th scope="row">{{ $facture->etat }}</th>
                                     <td>
                                            @if($facture->etat==Null)
@@ -290,9 +291,9 @@
                                     {{-- <th scope="col">client</th> --}}
                                     <!-- <th>N° Cmd</th> -->
                                     <th scope="col">Date operation</th>
-                                    <th scope="col">Montant  facturé</th>
-                                    <th scope="col">Montant payé</th>
-                                    <th scope="col">Montant à payer</th>
+                                    <th scope="col" style="text-align:right">Montant facturé</th>
+                                    <th scope="col" style="text-align:right">Montant payé</th>
+                                    <th scope="col" style="text-align:right">Montant à payer</th>
                                     <th scope="col">Etat</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -301,11 +302,9 @@
                                 @foreach ($factures as $facture)
                                     <tr>
                                         <th scope="row">{{ $facture->updated_at }}</th>
-                                        {{-- <th scope="row">{{ $facture->client->nom_client.' '.$facture->client->telephone }}</th> --}}
-                                        <!-- <th scope="row">000{{ $facture->id }}</th> -->
-                                        <th scope="row" >{{number_format($facture->montant_total,2,","," ")  }}</th>
-                                        <th scope="row" >{{number_format($facture->montant_regle,2,","," ")  }}</th>
-                                        <th scope="row" >{{number_format(($facture->montant_total-$facture->montant_regle),2,","," ")  }}</th>
+                                        <th scope="row" style="text-align:right">{{ number_format($facture->montant_total,2,","," ")}}{{ $facture->agence->devise->unite }}</th>
+                                        <th scope="row" style="text-align:right">{{ number_format($facture->montant_regle,2,","," ")}}{{ $facture->agence->devise->unite }}</th>
+                                        <th scope="row" style="text-align:right">{{ number_format(($facture->montant_total-$facture->montant_regle),2,","," ")}}{{ $facture->agence->devise->unite }}</th>
                                         <th scope="row">{{ $facture->etat }}</th>
                                         <td>
                                            @if($facture->etat==Null)

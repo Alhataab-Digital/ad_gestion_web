@@ -13,7 +13,7 @@
     </a>
     <ul id="components-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
      <li>
-       <a href="{{ route('workspace.show',Auth::user()->societe_id) }}">
+       <a href="{{ route('workspace.show',encrypt(Auth::user()->societe_id)) }}">
          <i class="bi bi-circle"></i><span>Institution</span>
        </a>
      </li>

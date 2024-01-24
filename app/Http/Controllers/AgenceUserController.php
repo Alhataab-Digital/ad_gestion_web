@@ -129,6 +129,10 @@ class AgenceUserController extends Controller
     {
 
                 $user=Utilisateur::find($id);
+        if(isset(Caisse::where('user_id',$id)->first()->id)){
+            $caisse=Caisse::where('user_id',$id)->first();
+            return redirect('/agence_user')->with('danger',"Veillez deconnecter ce utilisateur a la caisse $caisse->libelle ");
+        }
 
                 $user->update([
                     'agence_id'=>0,

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\EntrepotStock;
 use App\Models\Devis;
 use App\Models\Client;
+use App\Models\Agence;
 
 
 class Facture extends Model
@@ -37,5 +38,10 @@ class Facture extends Model
     public function devis()
     {
         return $this->belongsTo(Devis::class,'devis_id');
+    }
+
+    public function agence()
+    {
+        return $this->belongsTo(Agence::class);
     }
 }

@@ -119,7 +119,7 @@ class ActiviteInvestissementController extends Controller
         $data=$request->all();
         // dd($data);
         $user_id=Auth::user()->id;
-        if(Caisse::where('user_id',$user_id)->first(['id'])->id)
+        if(isset(Caisse::where('user_id',$user_id)->first(['id'])->id))
         {
                 $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
                 $caisse=Caisse::find($caisse_id);
@@ -136,6 +136,10 @@ class ActiviteInvestissementController extends Controller
                         $taux=DeviseAgence::where('devise_id',$investisseur->agence->devise_id)->where('agence_id',$agence_id)->get();
                         foreach($taux as $tx)
                         {
+                            if(!isset($tx->taux)){
+                                return back()->with('danger',"Le taux de la devise n'est pas creer");
+                            }
+
                             $capital_investisseurs=Investisseur::where('etat','1')->where('societe_id',$societe_id)->selectRaw('sum(compte_investisseur) as total')->get();
                                 // $somme_total=0;
                             foreach($capital_investisseurs as $capital_investisseur)
@@ -143,6 +147,9 @@ class ActiviteInvestissementController extends Controller
 
                                 //  dd($capital_investisseur->total,$tx->taux);
                                     $somme_total=round($capital_investisseur->total*$tx->taux);
+                                if($somme_total==0){
+                                    return back()->with('danger','Le taux de la devise est null ');
+                                }
                                 // dd($somme_total);
                                     $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
 

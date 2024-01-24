@@ -182,9 +182,11 @@ class DetailActiviteInvestissementController extends Controller
 
 
 
+        $inventaire_stocks=StockProduitActivite::where('activite_id',$id)->where('quantite_en_stock','!=','0')->get();
         $produit_stock=StockProduitActivite::where('activite_id',$id)->selectRaw('sum(quantite_en_stock) as total')->first();
         // dd($produit_stock->total);
 
+        $devis=Devis::where('activite_id',$id)->where('etat','Facture')->orWhere('etat','annuler')->first()->id;
         $factures=Facture::where('activite_id',$id)->where('client_id','!=', NULL)->get();
         $facture_montant_total=Facture::where('activite_id',$id)->where('client_id','!=', NULL)->selectRaw('sum(montant_total) as total')->get();
         $facture_montant_regler=Facture::where('activite_id',$id)->where('client_id','!=', NULL)->selectRaw('sum(montant_regle) as total')->get();
@@ -196,7 +198,7 @@ class DetailActiviteInvestissementController extends Controller
         return view('investissement.detail_activite_investissement', compact('activite_investissement','produit_stock',
         'caisse','detail_activite_investissements','secteur_depenses',
         'operation_depenses','devise','commandes', 'reglements',
-        'facture_montant_total','facture_montant_regler','factures'
+        'facture_montant_total','facture_montant_regler','factures','inventaire_stocks','devis',
         ));
     }
 

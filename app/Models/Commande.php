@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ActiviteInvestissement;
 use App\Models\Fournisseur;
+use App\Models\Agence;
 
 class Commande extends Model
 {
@@ -27,5 +28,10 @@ class Commande extends Model
     public function fournisseur()
     {
         return $this->belongsTo(Fournisseur::class);
+    }
+
+    public function agence()
+    {
+        return $this->belongsTo(Agence::class);
     }
 }

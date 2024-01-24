@@ -72,7 +72,7 @@
                                <tr>
                                    {{-- <th scope="col">Fournisseur</th> --}}
                                    <th scope="col">Date operation</th>
-                                   <th scope="col">Montant devis</th>
+                                   <th scope="col" style="text-align:right">Montant devis</th>
                                    <th scope="col">Etat</th>
                                    <th scope="col">Action</th>
                                </tr>
@@ -82,7 +82,7 @@
                                <tr>
                                         {{-- <th scope="row">{{ $devis->fournisseur->nom_fournisseur.' '.$devis->fournisseur->telephone }}</th> --}}
                                         <th scope="row">{{ $devis->updated_at }}</th>
-                                       <th scope="row">{{ number_format($devis->montant_total,2,","," ")}}{{ $devis->agence->devise->unite }}</th>
+                                       <th scope="row" style="text-align:right">{{ number_format($devis->montant_total,2,","," ")}}{{ $devis->agence->devise->unite }}</th>
                                        <th scope="row">{{ $devis->etat }}</th>
                                    <td>
                                     @if($devis->etat==Null)
@@ -156,8 +156,8 @@
                             <thead class="bg-primary text-white ">
                                 <tr>
                                     {{-- <th scope="col">Fournisseur</th> --}}
-                                    <th scope="col">Montant devis</th>
-                                    <th scope="col">Date operation</th>
+                                   <th scope="col">Date operation</th>
+                                   <th scope="col" style="text-align:right">Montant devis</th>
                                     <th scope="col">Etat</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -166,8 +166,8 @@
                             @foreach ($deviss_vd as $devis)
                                 <tr>
                                     {{-- <th scope="row">{{ $devis->fournisseur->nom_fournisseur.' '.$devis->fournisseur->telephone }}</th> --}}
-                                    <th scope="row">{{ number_format($devis->montant_total,2,","," ")}}{{ $devis->agence->devise->unite }}</th>
-                                    <th scope="row">{{ $devis->updated_at }}</th>
+                                        <th scope="row">{{ $devis->updated_at }}</th>
+                                        <th scope="row" style="text-align:right">{{ number_format($devis->montant_total,2,","," ")}}{{ $devis->agence->devise->unite }}</th>
                                     <th scope="row">{{ $devis->etat }}</th>
                                     <td>
                                         @if($devis->etat==Null)
@@ -199,8 +199,8 @@
                                <tr>
                                    {{-- <th scope="col">#</th>
                                    <th scope="col">Fournisseur</th> --}}
-                                   <th scope="col">Montant devis</th>
                                    <th scope="col">Date operation</th>
+                                   <th scope="col" style="text-align:right">Montant devis</th>
                                    <th scope="col">Etat</th>
                                    <th scope="col">Action</th>
                                </tr>
@@ -209,9 +209,8 @@
                                 @foreach ($deviss_lv as $devis)
                                 <tr>
                                     {{-- <th scope="row">{{ $devis->fournisseur->nom_fournisseur.' '.$devis->fournisseur->telephone }}</th> --}}
-                                    <th scope="row">{{ number_format($devis->montant_total,2,","," ")}}{{ $devis->agence->devise->unite }}</th>
-                                    <th scope="row">{{ $devis->montant_total }}</th>
-                                    <th scope="row">{{ $devis->updated_at }}</th>
+                                        <th scope="row">{{ $devis->updated_at }}</th>
+                                        <th scope="row" style="text-align:right">{{ number_format($devis->montant_total,2,","," ")}}{{ $devis->agence->devise->unite }}</th>
                                     <th scope="row">{{ $devis->etat }}</th>
                                     <td>
                                         @if($devis->etat==Null)
@@ -242,8 +241,8 @@
                             <thead class="bg-primary text-white ">
                                 <tr>
                                     {{-- <th scope="col">Fournisseur</th> --}}
-                                    <th scope="col">Montant devis</th>
-                                    <th scope="col">Date operation</th>
+                                   <th scope="col">Date operation</th>
+                                   <th scope="col" style="text-align:right">Montant devis</th>
                                     <th scope="col">Etat</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -252,8 +251,8 @@
                             @foreach ($deviss_an as $devis)
                                 <tr>
                                     {{-- <th scope="row">{{ $devis->fournisseur->nom_fournisseur.' '.$devis->fournisseur->telephone }}</th> --}}
-                                    <th scope="row">{{ number_format($devis->montant_total,2,","," ")}}{{ $devis->agence->devise->unite }}</th>
-                                    <th scope="row">{{ $devis->updated_at }}</th>
+                                        <th scope="row">{{ $devis->updated_at }}</th>
+                                        <th scope="row" style="text-align:right">{{ number_format($devis->montant_total,2,","," ")}}{{ $devis->agence->devise->unite }}</th>
                                     <th scope="row">{{ $devis->etat }}</th>
                                     <td>
                                         @if($devis->etat==Null)
@@ -285,9 +284,9 @@
                             <thead class="bg-primary text-white ">
                                 <tr>
                                     {{-- <th scope="col">Fournisseur</th> --}}
-                                    <th>N° Cmd</th>
-                                    <th scope="col">Montant  devis</th>
+                                    <th scope="col">N°</th>
                                     <th scope="col">Date operation</th>
+                                    <th scope="col" style="text-align:right">Montant devis</th>
                                     <th scope="col">Etat</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -296,9 +295,9 @@
                                 @foreach ($deviss as $devis)
                                     <tr>
                                         {{-- <th scope="row">{{ $devis->fournisseur->nom_fournisseur.' '.$devis->fournisseur->telephone }}</th> --}}
-                                        <th scope="row">000{{ $devis->id }}</th>
+                                        <th scope="row">{{ $devis->id }}</th>
                                         <th scope="row">{{ $devis->updated_at }}</th>
-                                        <th scope="row" >{{ number_format($devis->montant_total,2,","," ")}}{{ $devis->agence->devise->unite }}</th>
+                                       <th scope="row style="text-align:right"">{{ number_format($devis->montant_total,2,","," ")}}{{ $devis->agence->devise->unite }}</th>
                                         <th scope="row">{{ $devis->etat }}</th>
                                         <td>
                                            @if($devis->etat==Null)
