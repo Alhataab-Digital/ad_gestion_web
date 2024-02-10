@@ -327,12 +327,12 @@
                                         <td>{{number_format($facture->montant_total,2,","," ")  }}</td>
                                         <td>{{ number_format(($facture->montant_regle),2,","," ")}}</td>
                                         <td>{{ number_format(($facture->montant_total-$facture->montant_regle),2,","," ")}}</td>
-                                        <!-- <td><span class="badge bg-success">{{ $facture->etat }}</span></td>
+                                        {{-- <td><span class="badge bg-success">{{ $facture->etat }}</span></td> --}}
                                         <td>
                                             <a href="{{ route('reglement.paiement',encrypt($facture->id)) }}">
                                                 <button type="button" class="btn btn-warning"><i class="bi bi-cart-plus"></i></button>
                                             </a>
-                                        </td> -->
+                                        </td>
                                     </tr>
                                     @endif
                                     @endforeach
@@ -344,7 +344,7 @@
                             @if($activite_investissement->total_recette > $activite_investissement->total_depense)
                             @if($facture_montant_total == $facture_montant_regler)
                             @if($produit_stock->total==0)
-                            @if($devis)
+                            @if(isset($devis))
                             <button type="submit" class="btn btn-primary">Cloturer l'activité</button>
                             @endif
                             @endif

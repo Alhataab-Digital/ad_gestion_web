@@ -25,15 +25,15 @@ class DevisController extends Controller
      */
     public function index()
     {
-        $agence_id=Auth::user()->agence_id;
-        $deviss=Devis::where('agence_id',$agence_id)->orderBy('id','DESC')->get();
-        $deviss_nv=Devis::where('etat',NULL)->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
-        $deviss_cs=Devis::where('etat','en cours')->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
-        $deviss_vd=Devis::where('etat','valider')->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
-        $deviss_lv=Devis::where('etat','Facture')->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
-        $deviss_an=Devis::where('etat','annuler')->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
-        return view('e-commerce.devis',compact('deviss','deviss_nv','deviss_cs','deviss_vd','deviss_lv','deviss_an'));
-
+        $agence_id = Auth::user()->agence_id;
+        $id = Auth::user()->id;
+        $deviss = Devis::where('agence_id', $agence_id)->where('user_id', $id)->orderBy('id', 'DESC')->get();
+        $deviss_nv = Devis::where('etat', NULL)->where('agence_id', $agence_id)->orderBy('id', 'DESC')->get();
+        $deviss_cs = Devis::where('etat', 'en cours')->where('agence_id', $agence_id)->where('user_id', $id)->orderBy('id', 'DESC')->get();
+        $deviss_vd = Devis::where('etat', 'valider')->where('agence_id', $agence_id)->where('user_id', $id)->orderBy('id', 'DESC')->get();
+        $deviss_lv = Devis::where('etat', 'Facture')->where('agence_id', $agence_id)->orderBy('id', 'DESC')->get();
+        $deviss_an = Devis::where('etat', 'annuler')->where('agence_id', $agence_id)->orderBy('id', 'DESC')->get();
+        return view('e-commerce.devis', compact('deviss', 'deviss_nv', 'deviss_cs', 'deviss_vd', 'deviss_lv', 'deviss_an'));
     }
 
     /**
@@ -42,20 +42,19 @@ class DevisController extends Controller
     public function create()
     {
         //
-         //
-         if(Auth::check()){
-            $id=Auth::user()->id;
-            $agence_id=Auth::user()->agence_id;
+        //
+        if (Auth::check()) {
+            $id = Auth::user()->id;
+            $agence_id = Auth::user()->agence_id;
             Devis::create([
-                'user_id'=>$id,
-                'agence_id'=>$agence_id,
+                'user_id' => $id,
+                'agence_id' => $agence_id,
             ]);
-        $devis=Devis::where('user_id',$id)->where('agence_id',$agence_id)->latest('id')->first();
+            $devis = Devis::where('user_id', $id)->where('agence_id', $agence_id)->latest('id')->first();
 
-        return redirect('devis/'.encrypt($devis->id).'/edit');
-
+            return redirect('devis/' . encrypt($devis->id) . '/edit');
         }
-        return redirect('/auth')->with('danger',"Session expirée");
+        return redirect('/auth')->with('danger', "Session expirée");
     }
 
     /**
@@ -63,22 +62,22 @@ class DevisController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->montant_ht && $request->nom_client && $request->adresse){
-            $client=Client::find($request->client_id);
+        if ($request->montant_ht && $request->nom_client && $request->adresse) {
+            $client = Client::find($request->client_id);
             // dd($client);
-            $devis=Devis::find($request->devis_id);
+            $devis = Devis::find($request->devis_id);
 
-                    $devis->update([
-                        'client_id' =>$request->client_id,
-                        'montant_total' =>$request->montant_ht,
-                        'etat' =>'en cours',
-                    ]);
+            $devis->update([
+                'client_id' => $request->client_id,
+                'montant_total' => $request->montant_ht,
+                'etat' => 'en cours',
+            ]);
 
             $client->update([
-                'nom_client' =>$request->nom_client,
-                'adresse' =>$request->adresse,
+                'nom_client' => $request->nom_client,
+                'adresse' => $request->adresse,
             ]);
-            return redirect('detail_devis/'.encrypt($devis->id).'/show');
+            return redirect('detail_devis/' . encrypt($devis->id) . '/show');
         }
         return back();
     }
@@ -96,31 +95,37 @@ class DevisController extends Controller
      */
     public function edit(string $id)
     {
-        $id=decrypt($id);
-        $devis=Devis::find($id);
-        $agence_id=Auth::user()->agence_id;
-        $activite_investissements=ActiviteInvestissement::where("agence_id",$agence_id)->where('etat_activite','valider')->get();
-        $produit_stocks=StockProduitActivite::where('agence_id',$agence_id)->where('activite_id',$devis->activite_id)->where('quantite_en_stock','>','0')->get();
+        $id = decrypt($id);
+        $devis = Devis::find($id);
+        $agence_id = Auth::user()->agence_id;
+        $activite_investissements = ActiviteInvestissement::where("agence_id", $agence_id)->where('etat_activite', 'valider')->get();
+        $produit_stocks = StockProduitActivite::where('agence_id', $agence_id)->where('activite_id', $devis->activite_id)->where('quantite_en_stock', '>', '0')->get();
         // $produits=Produit::where('agence_id',$agence_id)->get();
-        $clients=Client::all();
-        $detail_deviss=DetailDevis::where('devis_id',$devis->id)->get();
-        $total_ht=DetailDevis::where('devis_id',$devis->id)->selectRaw('sum(quantite_demandee*prix_unitaire_demande) as total')->first('total');
+        $clients = Client::all();
+        $detail_deviss = DetailDevis::where('devis_id', $devis->id)->get();
+        $total_ht = DetailDevis::where('devis_id', $devis->id)->selectRaw('sum(quantite_demandee*prix_unitaire_demande) as total')->first('total');
         return view('e-commerce.nouveau_devis', compact(
             // 'produits',
-            'clients','devis','produit_stocks','detail_deviss','total_ht','activite_investissements'));
+            'clients',
+            'devis',
+            'produit_stocks',
+            'detail_deviss',
+            'total_ht',
+            'activite_investissements'
+        ));
     }
 
-    public function activite_devis(Request $request ,$id)
+    public function activite_devis(Request $request, $id)
     {
         // dd($request->activite);
-        $id=decrypt($id);
-        $devis=Devis::find($id);
-        $agence_id=Auth::user()->agence_id;
+        $id = decrypt($id);
+        $devis = Devis::find($id);
+        $agence_id = Auth::user()->agence_id;
         $devis->update([
-            'activite_id' =>$request->activite,
+            'activite_id' => $request->activite,
         ]);
 
-        return redirect('devis/'.encrypt($devis->id).'/edit');
+        return redirect('devis/' . encrypt($devis->id) . '/edit');
     }
 
     /**
@@ -139,20 +144,16 @@ class DevisController extends Controller
         //
     }
 
-    public function select_produit(Request $request){
-        if(Auth::check()){
-            $agence_id=Auth::user()->agence_id;
+    public function select_produit(Request $request)
+    {
+        if (Auth::check()) {
+            $agence_id = Auth::user()->agence_id;
 
-            $data['produits']=Produit::select('prix_unitaire_vente')
-            ->where('id',$request->id)->get(['prix_unitaire_vente']);
+            $data['produits'] = Produit::select('prix_unitaire_vente')
+                ->where('id', $request->id)->get(['prix_unitaire_vente']);
 
             return response()->json($data);
-
         }
-            return redirect('/auth')->with('success',"Vous n'êtes pas autorisé à accéder");
-
-
+        return redirect('/auth')->with('success', "Vous n'êtes pas autorisé à accéder");
     }
-
-
 }

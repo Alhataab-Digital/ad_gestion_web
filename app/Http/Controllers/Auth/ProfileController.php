@@ -20,7 +20,10 @@ class ProfileController extends Controller
      */
     public function index()
     {
+        if(Auth::check()){
         return view('auth.profile');
+        }
+        return redirect('/')->with('danger',"Session expirée");
     }
 
     /**
@@ -60,7 +63,7 @@ class ProfileController extends Controller
             return redirect('/auth');
         }
         return redirect('/')->with('danger',"Session expirée");
-        
+
     }
 
     /**
