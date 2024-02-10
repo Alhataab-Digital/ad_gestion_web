@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('user_id')->default('0');
             $table->string('etat')->default('0');
             $table->string('agence_id');
+            $table->string('societe_id');
             $table->timestamps();
         });
     }

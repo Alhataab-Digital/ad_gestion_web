@@ -22,6 +22,7 @@ class Caisse extends Model
         'user_id',
         'etat',
         'agence_id',
+        'societe_id',
     ];
 
     public function agence()

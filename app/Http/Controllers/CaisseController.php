@@ -67,6 +67,7 @@ class CaisseController extends Controller
              */
 
             $data=$request->all();
+            $societe_id=Auth::user()->societe_id;
             if(Auth::check()){
             /**
              * insertion des données dans la table user
@@ -77,6 +78,7 @@ class CaisseController extends Controller
                 'montant_max'=>$data['montant_max'],
                 'compte'=>$data['compte'],
                 'agence_id'=>$data['agence_id'],
+                'societe_id'=>$societe_id,
             ]);
             return redirect('/caisse')->with('success','caisse crée avec succès');
         }
@@ -151,8 +153,9 @@ class CaisseController extends Controller
             $user_id=Auth::user()->id;
             $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
             $agence_id=Auth::user()->agence_id;
+            $societe_id=Auth::user()->societe_id;
             $caisse=Caisse::find($caisse_id);
-            $caisse_destinations=Caisse::where('user_id','!=',$user_id)->where('agence_id','!=',$agence_id)->get();
+            $caisse_destinations=Caisse::where('user_id','!=',$user_id)->where('agence_id','!=',$agence_id)->where('societe_id',$societe_id)->get();
             $devise_agences=DeviseAgence::all();
             $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
             $operations=OperationInterCaisse::where('caisse_id',$caisse_id)->where('taux','!=',1)->where('etat',NULL)->get();

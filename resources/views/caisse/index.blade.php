@@ -72,7 +72,8 @@
                 </form><!-- Vertical Form -->
                   </div>
                 </div>
-              </div><!-- End Basic Modal-->
+              </div>
+              <!-- End Basic Modal-->
               <P>
 
                 @if ($message=Session::get('success'))
