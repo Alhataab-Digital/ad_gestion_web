@@ -1,57 +1,41 @@
-
-
 <!-- ======= Sidebar ======= -->
 <aside id="sidebar" class="sidebar bg-primary">
     <ul class="sidebar-nav" id="sidebar-nav">
 
-        @if(Auth::user()->gestion->gestion=='Change')
+        @if (Auth::user()->gestion->gestion == 'Magasin')
+            @include('layouts.menu.menu_magasin')
+        @endif
 
+        @if (Auth::user()->gestion->gestion == 'Change')
         @include('layouts.menu.menu_change')
+    @endif
 
+        @if (Auth::user()->gestion->gestion == 'Hotel')
+            @include('layouts.menu.menu_hotel')
         @endif
 
-        @if(Auth::user()->gestion->gestion=='Hotel')
-
-        @include('layouts.menu.menu_hotel')
-
-        @endif
-
-        @if(Auth::user()->gestion->gestion=='Stock')
-
+        @if (Auth::user()->gestion->gestion == 'Stock')
             @include('layouts.menu.menu_stock')
-
         @endif
 
-        @if(Auth::user()->gestion->gestion=='Parc Auto')
-
+        @if (Auth::user()->gestion->gestion == 'Parc Auto')
             @include('layouts.menu.menu_parc_auto')
-
         @endif
 
-        @if(Auth::user()->gestion->gestion=='Investissement')
-
+        @if (Auth::user()->gestion->gestion == 'Investissement')
             @include('layouts.menu.menu_investissement')
-
         @endif
 
-        @if(Auth::user()->gestion->gestion=='Scolaire')
-
+        @if (Auth::user()->gestion->gestion == 'Scolaire')
             @include('layouts.menu.menu_scolaire')
-
         @endif
 
-        @if(Auth::user()->gestion->gestion=='Cabinet Medical')
-
-        @include('layouts.menu.menu_cabinet_medical')
-
+        @if (Auth::user()->gestion->gestion == 'Cabinet Medical')
+            @include('layouts.menu.menu_cabinet_medical')
         @endif
 
-        @if(Auth::user()->gestion->gestion=='Gestion Detenu')
-
-        @include('layouts.menu.menu_detenu')
-
+        @if (Auth::user()->gestion->gestion == 'Gestion Detenu')
+            @include('layouts.menu.menu_detenu')
         @endif
-
-
     </ul>
-  </aside><!-- End Sidebar-->
+</aside><!-- End Sidebar-->

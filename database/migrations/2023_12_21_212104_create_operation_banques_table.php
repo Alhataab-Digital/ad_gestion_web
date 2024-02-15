@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('operation_banques', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('banque_id')->constrained();
             $table->string('source');
-            $table->string('banque_id');
-            $table->string('description');
-            $table->string('montant_operation');
+            $table->text('description');
+            $table->float('montant_operation');
             $table->string('sens_operation');
             $table->string('piece')->nullable();
-            $table->string('date_comptable');
-            $table->string('user_id');
+            $table->date('date_comptable');
             $table->timestamps();
         });
     }

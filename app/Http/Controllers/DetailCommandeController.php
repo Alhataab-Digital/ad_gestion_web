@@ -39,38 +39,37 @@ class DetailCommandeController extends Controller
      */
     public function store(Request $request)
     {
-       
 
-        if(Auth::check()){
+
+        if (Auth::check()) {
 
             $request->validate([
-                'commande_id'=>'required',
-                'produit'=>'required',
-                'qte'=>'required',
-                'prix'=>'required',
+                'commande_id' => 'required',
+                'produit' => 'required',
+                'qte' => 'required',
+                'prix' => 'required',
             ]);
 
-                
-        // dd($request->commande_id,
-        // $request->produit,
-        // $request->qte,
-        // $request->prix,);
-        if(isset(DetailCommande::where('commande_id',$request->commande_id)->where('produit_id',$request->produit)->first(['id'])->id))
-        {
-            return back()->with('danger',"Produit deja enregistrer");
-        }else{
-            
-         $data=[
-                'commande_id'              =>$request->commande_id,
-                'produit_id'               =>$request->produit,
-                'quantite_commandee'       =>$request->qte,
-                'prix_unitaire_commande'  =>$request->prix,
-            ];
-            DetailCommande::create($data);
-            return back();
-        }
-        
-            
+
+            // dd($request->commande_id,
+            // $request->produit,
+            // $request->qte,
+            // $request->prix,);
+            if (isset(DetailCommande::where('commande_id', $request->commande_id)->where('produit_id', $request->produit)->first(['id'])->id)) {
+                return back()->with('danger', "Produit deja enregistrer");
+            } else {
+
+                $data = [
+                    'commande_id'              => $request->commande_id,
+                    'produit_id'               => $request->produit,
+                    'quantite_commandee'       => $request->qte,
+                    'prix_unitaire_commande'  => $request->prix,
+                ];
+                DetailCommande::create($data);
+                return back();
+            }
+
+
 
             // $commande=Commande::find($request->commande_id);
 
@@ -83,11 +82,7 @@ class DetailCommandeController extends Controller
             // return redirect('detail_commande/'.$commande->id.'/show');
 
         }
-        return redirect('/auth')->with('danger',"Session expirée");
-
-
-
-
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**
@@ -95,16 +90,18 @@ class DetailCommandeController extends Controller
      */
     public function show(string $id)
     {
-        //
-        $id=decrypt($id);
-        $commande=Commande::find($id);
-        
-        
-        $agence_id=Auth::user()->agence_id;
-        $activite_investissements=ActiviteInvestissement::where("agence_id",$agence_id)->where('etat_activite','valider')->get();
-        $detail_commandes=DetailCommande::where('commande_id',$commande->id)->get();
-        $total_ht=DetailCommande::where('commande_id',$commande->id)->selectRaw('sum(quantite_commandee*prix_unitaire_commande) as total')->first('total');
-        return view('e-commerce.commande_encours', compact('commande','detail_commandes','total_ht','activite_investissements'));
+        if (Auth::check()) {
+            $id = decrypt($id);
+            $commande = Commande::find($id);
+
+
+            $agence_id = Auth::user()->agence_id;
+            $activite_investissements = ActiviteInvestissement::where("agence_id", $agence_id)->where('etat_activite', 'valider')->get();
+            $detail_commandes = DetailCommande::where('commande_id', $commande->id)->get();
+            $total_ht = DetailCommande::where('commande_id', $commande->id)->selectRaw('sum(quantite_commandee*prix_unitaire_commande) as total')->first('total');
+            return view('e-commerce.commande_encours', compact('commande', 'detail_commandes', 'total_ht', 'activite_investissements'));
+        }
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**
@@ -112,16 +109,17 @@ class DetailCommandeController extends Controller
      */
     public function edit(string $id)
     {
-        //
-        $id=decrypt($id);
-        $commande=Commande::find($id);
-        $agence_id=Auth::user()->agence_id;
-        $produits=Produit::where('agence_id',$agence_id)->get();
-        $fournisseurs=Fournisseur::all();
-        $detail_commandes=DetailCommande::where('commande_id',$commande->id)->get();
-        $total_ht=DetailCommande::where('commande_id',$commande->id)->selectRaw('sum(quantite_commandee*prix_unitaire_commande) as total')->first('total');
-        return view('e-commerce.edit_commande', compact('produits','fournisseurs','commande','detail_commandes','total_ht'));
-
+        if (Auth::check()) {
+            $id = decrypt($id);
+            $commande = Commande::find($id);
+            $agence_id = Auth::user()->agence_id;
+            $produits = Produit::where('agence_id', $agence_id)->get();
+            $fournisseurs = Fournisseur::all();
+            $detail_commandes = DetailCommande::where('commande_id', $commande->id)->get();
+            $total_ht = DetailCommande::where('commande_id', $commande->id)->selectRaw('sum(quantite_commandee*prix_unitaire_commande) as total')->first('total');
+            return view('e-commerce.edit_commande', compact('produits', 'fournisseurs', 'commande', 'detail_commandes', 'total_ht'));
+        }
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**
@@ -137,41 +135,44 @@ class DetailCommandeController extends Controller
      */
     public function destroy(string $id)
     {
-        // dd($id);
-        $produit=DetailCommande::find($id);
-        $produit->delete();
+        if (Auth::check()) {
+            // dd($id);
+            $produit = DetailCommande::find($id);
+            $produit->delete();
 
-        return back();
+            return back();
+        }
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     public function fournisseur_commande(Request $request)
     {
-        
-        $societe_id=Auth::user()->societe_id;
-        $tel=$request->id;
-       
-        if(isset(Fournisseur::where('telephone' ,$tel)->where('societe_id',$societe_id)->first(['id'])->id)){
+        if (Auth::check()) {
+            $societe_id = Auth::user()->societe_id;
+            $tel = $request->id;
 
-            $agence_id=Auth::user()->agence_id;
+            if (isset(Fournisseur::where('telephone', $tel)->where('societe_id', $societe_id)->first(['id'])->id)) {
 
-            $id=Fournisseur::where('telephone' ,$tel)->first(['id'])->id;
-           
-            $data['fournisseur']=Fournisseur::where('id',$id)->get();
-            return response()->json($data);
+                $agence_id = Auth::user()->agence_id;
 
-        }else{
+                $id = Fournisseur::where('telephone', $tel)->first(['id'])->id;
 
-            Fournisseur::create([
-                'telephone'=>$tel,
-                'societe_id'=>$societe_id,
-            ]);
-            /**
-             * si le telephone existe afficher le client
-             */
-            $id=Fournisseur::where('telephone' ,$tel)->where('societe_id',$societe_id)->first(['id'])->id;
-            $data['fournisseur']=Fournisseur::where('id',$id)->get();
-            return response()->json($data);
+                $data['fournisseur'] = Fournisseur::where('id', $id)->get();
+                return response()->json($data);
+            } else {
 
+                Fournisseur::create([
+                    'telephone' => $tel,
+                    'societe_id' => $societe_id,
+                ]);
+                /**
+                 * si le telephone existe afficher le client
+                 */
+                $id = Fournisseur::where('telephone', $tel)->where('societe_id', $societe_id)->first(['id'])->id;
+                $data['fournisseur'] = Fournisseur::where('id', $id)->get();
+                return response()->json($data);
+            }
         }
+        return redirect('/')->with('danger', "Session expirée");
     }
 }

@@ -13,25 +13,25 @@ return new class extends Migration
     {
         Schema::create('operation_transferts', function (Blueprint $table) {
             $table->id();
-            $table->string('client_id');
-            $table->string('montant');
+            $table->foreignId('client_id')->constrained();
+            $table->float('montant');
             $table->string('type_envoi');
-            $table->string('frais_envoi');
-            $table->string('montant_ttc');
-            $table->string('taux_echange')->nullable();
-            $table->string('agence_id');
+            $table->float('frais_envoi');
+            $table->float('montant_ttc');
+            $table->float('taux_echange')->default(0);
+            $table->foreignId('agence_id')->constrained();
             $table->string('code_envoi');
-            $table->string('devise_id');
-            $table->string('envoi_user_id');
+            $table->foreignId('devise_id')->constrained();
+            $table->foreignId('envoi_user_id')->constrained();
             $table->date('date_envoi');
 
-            $table->string('region_id');
+            $table->foreignId('region_id')->constrained();
             $table->string('nom_destinataire');
             $table->string('telephone_destinataire');
 
-            $table->string('type_piece_id')->nullable();
+            $table->integer('type_piece_id')->default(0);
             $table->string('numero_piece')->nullable();
-            $table->string('retrait_user_id')->nullable();
+            $table->integer('retrait_user_id')->default(0);
             $table->date('date_retrait')->nullable();
 
             $table->string('etat')->default(0);

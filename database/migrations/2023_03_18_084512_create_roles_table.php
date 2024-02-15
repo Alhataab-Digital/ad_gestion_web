@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\Role;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,10 +18,18 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        $roles=['Super Administratreur','PDG','Administrateur','Directeur Général','Office Manager','Responsable Agence','Gérant Boutique',];
-        foreach($roles as $role){
+        $roles = [
+            'Super Administratreur',
+            'PDG',
+            'Administrateur',
+            'DG',
+            'Office Manager',
+            'Responsable Agence',
+            'Gérant',
+        ];
+        foreach ($roles as $role) {
             Role::create([
-                'role'=>$role,
+                'role' => $role,
             ]);
         }
     }

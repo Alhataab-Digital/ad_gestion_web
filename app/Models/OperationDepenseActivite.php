@@ -10,7 +10,7 @@ class OperationDepenseActivite extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'activite_investissement_id',
+        'activite_id',
         'secteur_depense_id',
         'montant_depense',
     ];

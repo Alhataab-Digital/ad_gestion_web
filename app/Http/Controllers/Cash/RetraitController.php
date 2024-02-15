@@ -28,16 +28,16 @@ class RetraitController extends Controller
     public function index()
     {
         //
-        $id=Auth::user()->id;
-        if(isset(Caisse::where('user_id',$id)->first(['id'])->id)){
-            $date=date('Y-m-d');
-            $caisse_id=Caisse::where('user_id',$id)->first(['id'])->id;
-            $caisse=Caisse::find($caisse_id);
-            $agence_id=Auth::user()->agence_id;
-            $agence=Agence::find( $agence_id);
-            $operations=OperationTransfert::where('retrait_user_id',$id)->where('etat',1)->where('date_retrait',$date)->get();
-            $pieces=TypePiece::all();
-            return view('transfert.retrait', compact('caisse','agence','operations','pieces'));
+        $id = Auth::user()->id;
+        if (isset(Caisse::where('user_id', $id)->first(['id'])->id)) {
+            $date = date('Y-m-d');
+            $caisse_id = Caisse::where('user_id', $id)->first(['id'])->id;
+            $caisse = Caisse::find($caisse_id);
+            $agence_id = Auth::user()->agence_id;
+            $agence = Agence::find($agence_id);
+            $operations = OperationTransfert::where('retrait_user_id', $id)->where('etat', 1)->where('date_retrait', $date)->get();
+            $pieces = TypePiece::all();
+            return view('transfert.retrait', compact('caisse', 'agence', 'operations', 'pieces'));
         }
         return view('devise.message');
     }
@@ -64,14 +64,14 @@ class RetraitController extends Controller
     public function show(string $id)
     {
         //
-        $operation= OperationTransfert::find($id);
-        $agence_id=Auth::user()->agence_id;
-        $agence=Agence::find( $agence_id);
-        $devise=DeviseAgence::where('agence_id',$agence_id)
-                                ->where('devise_id',$operation->devise_id)
-                                        ->first(['devise_id','taux']);
-        $pieces=TypePiece::all();
-        return view('transfert.show_retrait', compact('operation','agence','devise','pieces'));
+        $operation = OperationTransfert::find($id);
+        $agence_id = Auth::user()->agence_id;
+        $agence = Agence::find($agence_id);
+        $devise = DeviseAgence::where('agence_id', $agence_id)
+            ->where('devise_id', $operation->devise_id)
+            ->first(['devise_id', 'taux']);
+        $pieces = TypePiece::all();
+        return view('transfert.show_retrait', compact('operation', 'agence', 'devise', 'pieces'));
     }
 
     /**
@@ -80,14 +80,14 @@ class RetraitController extends Controller
     public function edit(string $id)
     {
         //
-        $operation= OperationTransfert::find($id);
-        $agence_id=Auth::user()->agence_id;
-        $agence=Agence::find($agence_id);
-        $devise=DeviseAgence::where('agence_id',$agence_id)
-                                ->where('devise_id',$operation->devise_id)
-                                        ->first(['devise_id','taux']);
-        $pieces=TypePiece::all();
-        return view('transfert.edit_retrait', compact('operation','agence','devise','pieces'));
+        $operation = OperationTransfert::find($id);
+        $agence_id = Auth::user()->agence_id;
+        $agence = Agence::find($agence_id);
+        $devise = DeviseAgence::where('agence_id', $agence_id)
+            ->where('devise_id', $operation->devise_id)
+            ->first(['devise_id', 'taux']);
+        $pieces = TypePiece::all();
+        return view('transfert.edit_retrait', compact('operation', 'agence', 'devise', 'pieces'));
     }
 
     /**
@@ -97,81 +97,74 @@ class RetraitController extends Controller
     {
         //
 
-        $operation=OperationTransfert::find($id);
+        $operation = OperationTransfert::find($id);
 
         $data = $request->validate([
-            'type_piece'=>'required',
-            'numero_piece'=>'required',
+            'type_piece' => 'required',
+            'numero_piece' => 'required',
         ]);
-        $data=$request->all();
-        $user_id=Auth::user()->id;
-        $agence_id=Auth::user()->agence_id;
-        $agence=Agence::find($agence_id);
-        $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
+        $data = $request->all();
+        $user_id = Auth::user()->id;
+        $agence_id = Auth::user()->agence_id;
+        $agence = Agence::find($agence_id);
+        $caisse_id = Caisse::where('user_id', $user_id)->first(['id'])->id;
 
-                        /**
-                         * si le frais d'envoi et inclus
-                         */
-                        if(OperationTransfert::where('id',$id)->where('etat',0 )->first(['id'])
-                        ){
-                            $montant_operation=$request->montant;
+        /**
+         * si le frais d'envoi et inclus
+         */
+        if (OperationTransfert::where('id', $id)->where('etat', 0)->first(['id'])) {
+            $montant_operation = $request->montant;
 
-                            if(Caisse::where('user_id',$user_id)->first(['compte'])->compte < $montant_operation)
-                            {
+            if (Caisse::where('user_id', $user_id)->first(['compte'])->compte < $montant_operation) {
 
-                                 return redirect()->route('retrait.edit',$id)->with('danger','Le montant de votre caisse est insuffisant ');
+                return redirect()->route('retrait.edit', $id)->with('danger', 'Le montant de votre caisse est insuffisant ');
+            } else {
+                $date_retrait = Caisse::where('user_id', $user_id)->first(['date_comptable'])->date_comptable;
+                /**
+                 * execution de la mise a jour operation
+                 */
+                $operation->update([
+                    'type_piece_id' => $data['type_piece'],
+                    'numero_piece' => $data['numero_piece'],
+                    'taux_echange' => $request->taux,
+                    'retrait_user_id' => $user_id,
+                    'date_retrait' => $date_retrait,
+                    'etat' => 1,
+                ]);
 
-                            }else{
-                                $date_retrait=Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
-                                /**
-                                 * execution de la mise a jour operation
-                                 */
-                                $operation->update([
-                                    'type_piece_id'=>$data['type_piece'],
-                                    'numero_piece'=>$data['numero_piece'],
-                                    'taux_echange'=>$request->taux,
-                                    'retrait_user_id'=>$user_id,
-                                    'date_retrait'=>$date_retrait,
-                                    'etat'=>1,
-                                ]);
+                /**
+                 * execution de la mise a jour caisse
+                 */
 
-                                 /**
-                                 * execution de la mise a jour caisse
-                                 */
+                $caisse_id = Caisse::where('user_id', $user_id)->first(['id'])->id;
+                $compte_caisse = Caisse::where('user_id', $user_id)->first(['compte'])->compte;
 
-                                $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
-                                $compte_caisse= Caisse::where('user_id',$user_id)->first(['compte'])->compte;
+                $compte = $compte_caisse - $montant_operation;
 
-                                $compte=$compte_caisse - $montant_operation;
+                $caisse = Caisse::find($caisse_id);
+                /**
+                 * mise a jour dU mouvement caisse
+                 */
+                $user_id = Auth::user()->id;
+                MouvementCaisse::create([
+                    'caisse_id' => $caisse->id,
+                    'user_id' => $user_id,
+                    'description' => 'Retrait change',
+                    'sortie' => $montant_operation,
+                    'solde' => $compte,
+                    'date_comptable' => $date_retrait,
 
-                                $caisse=Caisse::find($caisse_id);
-                                /**
-                                 * mise a jour dU mouvement caisse
-                                 */
-                                $user_id=Auth::user()->id;
-                                MouvementCaisse::create([
-                                    'caisse_id'=>$caisse->id,
-                                    'user_id'=>$user_id,
-                                    'description'=>'Retrait change',
-                                    'sortie'=> $montant_operation,
-                                    'solde'=>$compte,
-                                    'date_comptable'=>$date_retrait,
+                ]);
 
-                                ]);
+                $caisse->update([
+                    'compte' => $compte,
+                ]);
 
-                                $caisse->update([
-                                    'compte'=>$compte,
-                                ]);
-
-                                return redirect()->route('retrait.show',$id)->with('success','Opération effectuée avec succes ');
-
-                            }
-                        }else{
-                            return redirect()->route('retrait.show',$id)->with('success','Opération effectuée avec succes ');
-                        }
-
-
-
+                return redirect()->route('retrait.show', $id)->with('success', 'Opération effectuée avec succes ');
+            }
+        } else {
+            return redirect()->route('retrait.show', $id)->with('success', 'Opération effectuée avec succes ');
+        }
     }
 
     /**
@@ -185,12 +178,12 @@ class RetraitController extends Controller
     public function code_envoi(Request $request)
     {
         $data = $request->validate([
-            'code_envoi'=>'required',
+            'code_envoi' => 'required',
         ]);
-        $data=$request->all();
-        $id=Auth::user()->id;
-        $agence_id=Auth::user()->agence_id;
-        $agence=Agence::find($agence_id);
+        $data = $request->all();
+        $id = Auth::user()->id;
+        $agence_id = Auth::user()->agence_id;
+        $agence = Agence::find($agence_id);
 
 
 
@@ -198,68 +191,56 @@ class RetraitController extends Controller
         /**
          * si la code existe et l'etat est zero
          */
-        if(isset(OperationTransfert::where('code_envoi' ,$code_envoi)->where('etat' ,0)->first(['id'])->id))
-        {
+        if (isset(OperationTransfert::where('code_envoi', $code_envoi)->where('etat', 0)->first(['id'])->id)) {
 
             /**
              * si le retrait est effectuer par l'agent qui à envoyer
              */
-            if(isset(OperationTransfert::where('code_envoi' ,$code_envoi)->where('envoi_user_id' ,$id)->where('etat' ,0)->first(['id'])->id))
-            {
-                return redirect('/retrait')->with('danger',' vous ne pouvez pas retirer une opération effectuée par vous-même ');
-
-            }else{
+            if (isset(OperationTransfert::where('code_envoi', $code_envoi)->where('envoi_user_id', $id)->where('etat', 0)->first(['id'])->id)) {
+                return redirect('/retrait')->with('danger', ' vous ne pouvez pas retirer une opération effectuée par vous-même ');
+            } else {
 
                 /**
                  * si le retrait est effectuer dans la region de desination
                  */
-                if(isset(OperationTransfert::where('code_envoi' ,$code_envoi)->where('region_id' ,$agence->region_id)->where('etat' ,0)->first(['id'])->id))
-                {
+                if (isset(OperationTransfert::where('code_envoi', $code_envoi)->where('region_id', $agence->region_id)->where('etat', 0)->first(['id'])->id)) {
 
-                    $devise_operation=OperationTransfert::where('code_envoi' ,$code_envoi)->where('region_id' ,$agence->region_id)->where('etat' ,0)->first(['id','devise_id','montant']);
+                    $devise_operation = OperationTransfert::where('code_envoi', $code_envoi)->where('region_id', $agence->region_id)->where('etat', 0)->first(['id', 'devise_id', 'montant']);
                     /**
-                    * si la devise d'echange exist  dans l'agence
-                    */
-                    if(DeviseAgence::where('agence_id',$agence_id)->where('devise_id',$devise_operation->devise_id)->first(['devise_id','taux']))
-                    {
+                     * si la devise d'echange exist  dans l'agence
+                     */
+                    if (DeviseAgence::where('agence_id', $agence_id)->where('devise_id', $devise_operation->devise_id)->first(['devise_id', 'taux'])) {
 
-                        $devise=DeviseAgence::where('agence_id',$agence_id)->where('devise_id',$devise_operation->devise_id)->first(['devise_id','taux']);
+                        $devise = DeviseAgence::where('agence_id', $agence_id)->where('devise_id', $devise_operation->devise_id)->first(['devise_id', 'taux']);
 
-                        $operation=OperationTransfert::where('code_envoi' ,$code_envoi)->where('region_id' ,$agence->region_id)->where('devise_id' ,$devise->devise_id)->where('etat' ,0)->first(['id'])->id;
-                        return redirect()->route('retrait.edit',$operation);
+                        $operation = OperationTransfert::where('code_envoi', $code_envoi)->where('region_id', $agence->region_id)->where('devise_id', $devise->devise_id)->where('etat', 0)->first(['id'])->id;
+                        return redirect()->route('retrait.edit', $operation);
+                    } else {
 
-                    }else{
-
-                        return redirect('/retrait')->with('danger',' La devise est inexistante');
-
+                        return redirect('/retrait')->with('danger', ' La devise est inexistante');
                     }
+                } else {
 
-
-                }else{
-
-                    return redirect('/retrait')->with('danger',' Opération non destinée à votre région');
+                    return redirect('/retrait')->with('danger', ' Opération non destinée à votre région');
                 }
-
-
             }
-
-        }else{
-            return redirect('/retrait')->with('danger',' Aucune opération trouvée');
+        } else {
+            return redirect('/retrait')->with('danger', ' Aucune opération trouvée');
         }
     }
 
-    public function print( $id)
+    public function print($id)
     {
-        $operation= OperationTransfert::find($id);
-        $agence_id=Auth::user()->agence_id;
-        $agence=Agence::find( $agence_id);
-        $devise=DeviseAgence::where('agence_id',$agence_id)
-                                ->where('devise_id',$operation->devise_id)
-                                        ->first(['devise_id','taux']);
-        $pieces=TypePiece::all();
+        $operation = OperationTransfert::find($id);
+        $agence_id = Auth::user()->agence_id;
+        $agence = Agence::find($agence_id);
+        $devise = DeviseAgence::where('agence_id', $agence_id)
+            ->where('devise_id', $operation->devise_id)
+            ->first(['devise_id', 'taux']);
+        $pieces = TypePiece::all();
         // return view('transfert.show_retrait', compact('operation','agence','devise','pieces'));
-        $pdf=PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
-        ->loadView('print.recu_retrait',compact('operation','agence','devise','pieces'));
+        $pdf = PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
+            ->loadView('print.recu_retrait', compact('operation', 'agence', 'devise', 'pieces'));
 
         return $pdf->download('recu_retrait_change.pdf');
     }

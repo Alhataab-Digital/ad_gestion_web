@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('detail_livrers', function (Blueprint $table) {
             $table->id();
-            $table->string('livrer_id');
-            $table->string('produit_id');
-            $table->string('quantite_livree');
-            $table->string('prix_unitaire_livre');
+            $table->foreignId('livrer_id')->constrained();
+            $table->foreignId('produit_id')->constrained();
+            $table->integer('quantite_livree');
+            $table->float('prix_unitaire_livre');
             $table->timestamps();
         });
     }

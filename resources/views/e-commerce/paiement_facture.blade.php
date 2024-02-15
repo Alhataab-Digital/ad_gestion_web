@@ -39,7 +39,7 @@ hello
                   <div class="col mb-3">
                     <table  class="table table-borderless ">
                             <tr>
-                                        
+
                               <th>
                                 <label for="inputText" class="col-sm-2 col-form-label">Entrepot </label>
                                 <div class="">
@@ -51,29 +51,29 @@ hello
                                   <div class="">
                                       <input class="form-control"  type="text" name="" value="{{ 'Activite N°  '. $facture->devis->activite_id.' : '.$facture->devis->activite->type_activite->type_activite  }}" class="form-control">
                                   </div>
-                              </th>          
+                              </th>
                             </tr>
                       </table>
                     </div>
                     <div class="bg-secondary text-white " style="text-align: center">
                           <hr>Info client<hr>
                </div>
-                          
+
                           <table  class="table table-borderless ">
                             <tr>
-                                        
+
                               <th>
                                   <label for="inputText" class="col-sm-6 col-form-label">Client</label>
-                                  <input class="form-control"  type="text"  value="{{ $facture->client->nom_client }}" class="form-control">            
+                                  <input class="form-control"  type="text"  value="{{ $facture->client->nom_client }}" class="form-control">
                               </th>
                               <th>
                                   <label for="inputText" class="col-sm-6 col-form-label">Telephone</label>
-                                  <input class="form-control"  type="text"  value="{{ $facture->client->telephone  }}" class="form-control">            
+                                  <input class="form-control"  type="text"  value="{{ $facture->client->telephone  }}" class="form-control">
                               </th>
                               <th>
                                   <label for="inputText" class="col-sm-6 col-form-label">Adresse</label>
-                                  <input class="form-control"  type="text"  value="{{ $facture->client->adresse  }}" class="form-control">             
-                              </th>           
+                                  <input class="form-control"  type="text"  value="{{ $facture->client->adresse  }}" class="form-control">
+                              </th>
                             </tr>
                           </table>
                     <div class="bg-secondary text-white " style="text-align: center">
@@ -137,7 +137,7 @@ hello
                           <td></td>
                           <td></td>
                           <th style="text-align: right">
-                            Montant  Avance 
+                            Montant  Avance
                            </th>
                           <td >
                             <input type="text" name="" value='{{ number_format(($reglement_facture->montant_regle),2,","," ")}}' class="form-control" readonly>
@@ -148,14 +148,14 @@ hello
                           <td></td>
                           <td></td>
                           <th style="text-align: right">
-                            Montant à regler 
+                            Montant à regler
                            </th>
                           <td >
-                          <input type="text"  value='{{ number_format(($facture->montant_total-$reglement_facture->montant_regle),2,","," ")}}' class="form-control" readonly>
+                          <input type="text"  value='{{ number_format(($facture->montant_total-$facture->montant_regle),2,","," ")}}' class="form-control" readonly>
                             </td>
                           <td></td>
                         </tr>
-                    @endif      
+                    @endif
                       </table>
                       <!-- End Table with stripped rows -->
                     @if(($facture->montant_total-$reglement_facture->montant_regle)!=0)
@@ -168,25 +168,25 @@ hello
                             <tr>
                             <th>
                             <input type="hidden" name="facture_id" value="{{$facture->id}}" class="form-control" placeholder="Paiement">
-                            <input type="hidden" name="activite" class="form-control" value="{{$facture->devis->activite_id}}" > 
-                             
-                             </th> 
-                             <th>
-                              
+                            <input type="hidden" name="activite" class="form-control" value="{{$facture->devis->activite_id}}" >
+
                              </th>
                              <th>
-                              
+
                              </th>
                              <th>
-                              
+
                              </th>
                              <th>
-                              
-                             </th>     
+
+                             </th>
+                             <th>
+
+                             </th>
                             <th>
                              <label for="inputText" >Saisie le montant </label>
-                                  <input type="text" name="montant" class="form-control" placeholder="Montant versé" required> 
-                              </th>   
+                                  <input type="text" name="montant" class="form-control" placeholder="Montant versé" required>
+                              </th>
                               <th>
                                     <label for="">Type de reglement</label>
                                     <select id="inputState" class="form-select" name="reglement" required>
@@ -197,7 +197,7 @@ hello
 
                                         @endforeach
                                     </select>
-                              </th>        
+                              </th>
                             </tr>
                           </table>
                       <br>
@@ -212,7 +212,7 @@ hello
                     @endif
                   </div>
                 <!-- End Browser Default Validation -->
-               
+
               <div class="text-end" >
 
               </div>
@@ -255,7 +255,7 @@ hello
                     <td >{{ number_format($operation->montant_operation,2,","," ")}}</td>
 
                     <td>{{ $operation->created_at}}</td>
-                    
+
                     </tr>
                     @endforeach
                 </tbody>

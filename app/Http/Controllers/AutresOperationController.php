@@ -26,14 +26,17 @@ class AutresOperationController extends Controller
      */
     public function index()
     {
-        $user_id=Auth::user()->id;
-        if(isset(Caisse::where('user_id',$user_id)->first(['id'])->id)){
-            $caisse=Caisse::where('user_id',$user_id)->first();
-            $nature_operations=NatureOperationCharge::all();
-            $operations=Operation::where('user_id',$user_id)->orderBy('id','DESC')->get();
-            return view('operation.index', compact('nature_operations','operations','caisse'));
+        if (Auth::check()) {
+            $user_id = Auth::user()->id;
+            if (isset(Caisse::where('user_id', $user_id)->first(['id'])->id)) {
+                $caisse = Caisse::where('user_id', $user_id)->first();
+                $nature_operations = NatureOperationCharge::all();
+                $operations = Operation::where('user_id', $user_id)->orderBy('id', 'DESC')->get();
+                return view('operation.index', compact('nature_operations', 'operations', 'caisse'));
+            }
+            return view('investissement.message');
         }
-        return view('investissement.message');
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**
@@ -53,87 +56,86 @@ class AutresOperationController extends Controller
         // dd($request->nature_operation_id,
         // $request->montant_operation,
         // $request->commentaire,);
+        if (Auth::check()) {
+            $user_id = Auth::user()->id;
+            $agence_id = Auth::user()->agence_id;
+            $societe_id = Auth::user()->societe_id;
 
-        $user_id=Auth::user()->id;
-        $agence_id=Auth::user()->agence_id;
-        $societe_id=Auth::user()->societe_id;
+            if (Caisse::where('user_id', $user_id)->first(['id'])->id) {
 
-        if(Caisse::where('user_id',$user_id)->first(['id'])->id)
-        {
+                /**
+                 * validation des champs de saisie
+                 */
+                $request->validate([
+                    'nature_operation_id' => 'required',
+                    'montant_operation' => 'required',
+                    'commentaire' => 'required',
+                ]);
 
-             /**
-            * validation des champs de saisie
-            */
-            $request->validate([
-                'nature_operation_id'=>'required',
-                'montant_operation'=>'required',
-                'commentaire'=>'required',
-            ]);
+                $data = $request->all();
 
-            $data=$request->all();
+                $caisse_id = Caisse::where('user_id', $user_id)->first(['id'])->id;
+                $compte_societe = Societe::where('id', $societe_id)->first(['compte_societe'])->compte_societe;
+                $compte_caisse = Caisse::where('user_id', $user_id)->first(['compte'])->compte;
+                $date_comptable = Caisse::where('user_id', $user_id)->first(['date_comptable'])->date_comptable;
+                $montant_operation = $data['montant_operation'];
 
-            $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
-            $compte_societe= Societe::where('id',$societe_id)->first(['compte_societe'])->compte_societe;
-            $compte_caisse= Caisse::where('user_id',$user_id)->first(['compte'])->compte;
-            $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
-            $montant_operation=$data['montant_operation'];
-
-            if($compte_societe < $montant_operation){
-                return redirect()->route('operation')->with('danger',"Le montant compte agence est insuffisant");
-            }else{
-                if($compte_caisse < $montant_operation){
-                    return redirect()->route('operation')->with('danger',"Le montant caisse est insuffisant");
-                }else{
+                if ($compte_societe < $montant_operation) {
+                    return redirect()->route('operation')->with('danger', "Le montant compte agence est insuffisant");
+                } else {
+                    if ($compte_caisse < $montant_operation) {
+                        return redirect()->route('operation')->with('danger', "Le montant caisse est insuffisant");
+                    } else {
 
                         /**
                          * insertion des données dans la table user
                          */
                         Operation::create([
-                            'montant_operation'=>$data['montant_operation'],
-                            'commentaire'=>$data['commentaire'],
-                            'sens_operation'=>'sortie',
-                            'nature_operation_charge_id'=>$data['nature_operation_id'],
-                            'caisse_id'=>$caisse_id,
-                            'agence_id'=>$agence_id,
-                            'user_id'=>$user_id,
-                            'date_comptable'=>$date_comptable,
+                            'montant_operation' => $data['montant_operation'],
+                            'commentaire' => $data['commentaire'],
+                            'sens_operation' => 'sortie',
+                            'nature_operation_charge_id' => $data['nature_operation_id'],
+                            'caisse_id' => $caisse_id,
+                            'agence_id' => $agence_id,
+                            'user_id' => $user_id,
+                            'date_comptable' => $date_comptable,
                         ]);
 
                         /**
                          * mise a jour de la caisse
-                        */
-                        $compte=$compte_caisse-$montant_operation;
-                        $compte_societe=$compte_societe-$montant_operation;
+                         */
+                        $compte = $compte_caisse - $montant_operation;
+                        $compte_societe = $compte_societe - $montant_operation;
 
-                        $societe=Societe::find($societe_id);
-                        $caisse=Caisse::find($caisse_id);
-                        $nature_operation=NatureOperationCharge::find($data['nature_operation_id']);
+                        $societe = Societe::find($societe_id);
+                        $caisse = Caisse::find($caisse_id);
+                        $nature_operation = NatureOperationCharge::find($data['nature_operation_id']);
 
-                        $user_id=Auth::user()->id;
+                        $user_id = Auth::user()->id;
 
                         MouvementCaisse::create([
-                            'caisse_id'=>$caisse->id,
-                            'user_id'=>$user_id,
-                            'description'=> $nature_operation->nature_operation_charge,
-                            'sortie'=>$montant_operation,
-                            'solde'=>$compte,
-                            'date_comptable'=>$date_comptable,
+                            'caisse_id' => $caisse->id,
+                            'user_id' => $user_id,
+                            'description' => $nature_operation->nature_operation_charge,
+                            'sortie' => $montant_operation,
+                            'solde' => $compte,
+                            'date_comptable' => $date_comptable,
 
                         ]);
 
                         $caisse->update([
-                            'compte'=>$compte,
+                            'compte' => $compte,
                         ]);
                         $societe->update([
-                            'compte_societe'=>$compte_societe,
+                            'compte_societe' => $compte_societe,
                         ]);
 
-                        return redirect()->route('operation')->with('success',"Operation effectuée avec succès");
-
+                        return redirect()->route('operation')->with('success', "Operation effectuée avec succès");
+                    }
                 }
             }
         }
-
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**
@@ -141,10 +143,12 @@ class AutresOperationController extends Controller
      */
     public function show(string $id)
     {
-        $id=decrypt($id);
-            $operation=Operation::find($id);
+        if (Auth::check()) {
+            $id = decrypt($id);
+            $operation = Operation::find($id);
             return view('operation.show', compact('operation'));
-       
+        }
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**
@@ -168,50 +172,52 @@ class AutresOperationController extends Controller
      */
     public function destroy(string $id)
     {
-        $id=decrypt($id);
-        $agence_id=Auth::user()->agence_id;
-        $societe_id=Auth::user()->societe_id;
-        $operation=Operation::find($id);
-        $user_id=$operation->user_id;
+        if (Auth::check()) {
+            $id = decrypt($id);
+            $agence_id = Auth::user()->agence_id;
+            $societe_id = Auth::user()->societe_id;
+            $operation = Operation::find($id);
+            $user_id = $operation->user_id;
 
-        if(Caisse::where('user_id',$user_id)->first(['id'])->id)
-        {
+            if (Caisse::where('user_id', $user_id)->first(['id'])->id) {
 
-            $caisse_id=Caisse::where('user_id',$user_id)->first(['id'])->id;
-            $compte_societe= Societe::where('id',$societe_id)->first(['compte_societe'])->compte_societe;
-            $compte_caisse= Caisse::where('user_id',$user_id)->first(['compte'])->compte;
-            $date_comptable= Caisse::where('user_id',$user_id)->first(['date_comptable'])->date_comptable;
-            $montant_operation=$operation->montant_operation;  
-                          
-                        /**
-                         * mise a jour de la caisse
-                        */
-                        $compte=$compte_caisse+$montant_operation;
-                        $compte_societe=$compte_societe+$montant_operation;
+                $caisse_id = Caisse::where('user_id', $user_id)->first(['id'])->id;
+                $compte_societe = Societe::where('id', $societe_id)->first(['compte_societe'])->compte_societe;
+                $compte_caisse = Caisse::where('user_id', $user_id)->first(['compte'])->compte;
+                $date_comptable = Caisse::where('user_id', $user_id)->first(['date_comptable'])->date_comptable;
+                $montant_operation = $operation->montant_operation;
 
-                        $societe=Societe::find($societe_id);
-                        $caisse=Caisse::find($caisse_id);
-                        $nature_operation=NatureOperationCharge::find($operation->nature_operation_charge_id);
+                /**
+                 * mise a jour de la caisse
+                 */
+                $compte = $compte_caisse + $montant_operation;
+                $compte_societe = $compte_societe + $montant_operation;
 
-                        MouvementCaisse::create([
-                            'caisse_id'=>$caisse->id,
-                            'user_id'=>$user_id,
-                            'description'=> 'Supprimer '.$nature_operation->nature_operation_charge,
-                            'entree'=>$montant_operation,
-                            'solde'=>$compte,
-                            'date_comptable'=>$date_comptable,
+                $societe = Societe::find($societe_id);
+                $caisse = Caisse::find($caisse_id);
+                $nature_operation = NatureOperationCharge::find($operation->nature_operation_charge_id);
 
-                        ]);
+                MouvementCaisse::create([
+                    'caisse_id' => $caisse->id,
+                    'user_id' => $user_id,
+                    'description' => 'Supprimer ' . $nature_operation->nature_operation_charge,
+                    'entree' => $montant_operation,
+                    'solde' => $compte,
+                    'date_comptable' => $date_comptable,
 
-                        $caisse->update([
-                            'compte'=>$compte,
-                        ]);
-                        $societe->update([
-                            'compte_societe'=>$compte_societe,
-                        ]);
+                ]);
 
-                        $operation->delete();
-                        return redirect()->route('operation')->with('success',"Operation effectuée avec succès");
+                $caisse->update([
+                    'compte' => $compte,
+                ]);
+                $societe->update([
+                    'compte_societe' => $compte_societe,
+                ]);
+
+                $operation->delete();
+                return redirect()->route('operation')->with('success', "Operation effectuée avec succès");
+            }
         }
+        return redirect('/')->with('danger', "Session expirée");
     }
 }

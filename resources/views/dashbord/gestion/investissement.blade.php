@@ -30,7 +30,7 @@
         <!-- Left side columns -->
         <div class="col-lg-12">
           <div class="row">
-          @if(Auth::user()->role_id=="0"||Auth::user()->role_id=="1"||Auth::user()->role_id=="2")
+          @if(Auth::user()->role_id=="0"||Auth::user()->role_id=="1"||Auth::user()->role_id=="2"|| Auth::user()->role_id=="4")
             <!-- Sales Card -->
             <div class="col-xxl-3 col-md-12">
               <div class="card info-card sales-card">
@@ -243,7 +243,7 @@
             </div>
             <!-- End Sales Card -->
           @endif
-          @if(Auth::user()->role_id=="3"||Auth::user()->role_id=="4"||Auth::user()->role_id=="5"||Auth::user()->role_id=="6"||Auth::user()->role_id=="7")
+          @if(Auth::user()->role_id=="3"|| Auth::user()->role_id=="5"||Auth::user()->role_id=="6"||Auth::user()->role_id=="7")
             <!-- Sales Card -->
             <div class="col-xxl-3 col-md-12">
               <div class="card info-card sales-card">
@@ -280,10 +280,10 @@
             </div><!-- End Sales Card -->
 
           @endif
-          @if(Auth::user()->role_id=="0"||Auth::user()->role_id=="1"||Auth::user()->role_id=="2"||Auth::user()->role_id=="3"||Auth::user()->role_id=="4")
+          @if(Auth::user()->role_id=="0"||Auth::user()->role_id=="1"||Auth::user()->role_id=="2"||Auth::user()->role_id=="3")
             <!-- Sales Card -->
 
-{{--
+            {{--
             <div class="col-lg-12">
               <div class="card bg-primary">
                   <div class="divider">
@@ -367,98 +367,6 @@
             <!-- End Sales Card -->
           @endif
 
-          <!-- <div class="col-lg-12">
-          <div class="card bg-primary">
-            <div class="divider">
-              <hr>
-            </div>
-          </div>
-        </div>
-
-          <div class="col-lg-6">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Statistique des dividendes</h5>
-
-                <canvas id="doughnutChart" style="max-height: 400px;"></canvas>
-                <script>
-                  document.addEventListener("DOMContentLoaded", () => {
-                    new Chart(document.querySelector('#doughnutChart'), {
-                      type: 'doughnut',
-                      data: {
-                        labels: [
-                          'Red',
-                          'Blue',
-                          'Yellow'
-                        ],
-                        datasets: [{
-                          label: 'My First Dataset',
-                          data: [300, 50, 100],
-                          backgroundColor: [
-                            'rgb(255, 99, 132)',
-                            'rgb(54, 162, 235)',
-                            'rgb(255, 205, 86)'
-                          ],
-                          hoverOffset: 4
-                        }]
-                      }
-                    });
-                  });
-                </script>
-
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title"> Statistique des activits</h5>
-
-                <canvas id="barChart" style="max-height: 400px;"></canvas>
-                <script>
-                  document.addEventListener("DOMContentLoaded", () => {
-                    new Chart(document.querySelector('#barChart'), {
-                      type: 'bar',
-                      data: {
-                        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                        datasets: [{
-                          label: 'Bar Chart',
-                          data: [65, 59, 80, 81, 56, 55, 40],
-                          backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(255, 159, 64, 0.2)',
-                            'rgba(255, 205, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(201, 203, 207, 0.2)'
-                          ],
-                          borderColor: [
-                            'rgb(255, 99, 132)',
-                            'rgb(255, 159, 64)',
-                            'rgb(255, 205, 86)',
-                            'rgb(75, 192, 192)',
-                            'rgb(54, 162, 235)',
-                            'rgb(153, 102, 255)',
-                            'rgb(201, 203, 207)'
-                          ],
-                          borderWidth: 1
-                        }]
-                      },
-                      options: {
-                        scales: {
-                          y: {
-                            beginAtZero: true
-                          }
-                        }
-                      }
-                    });
-                  });
-                </script>
-              </div>
-            </div>
-          </div> -->
       </div>
 
     @endif

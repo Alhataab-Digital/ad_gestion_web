@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('detail_reception_produits', function (Blueprint $table) {
             $table->id();
-            $table->string('reception_produit_id');
-            $table->string('produit_id');
-            $table->string('quantite_recu');
-            $table->string('prix_unitaire_recu');
+            $table->foreignId('reception_produit_id')->constrained();
+            $table->foreignId('produit_id')->constrained();
+            $table->integer('quantite_recu');
+            $table->float('prix_unitaire_recu');
             $table->timestamps();
         });
     }

@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('benefice_activites', function (Blueprint $table) {
+        Schema::create('entrepot_stocks', function (Blueprint $table) {
             $table->id();
-            $table->string('montant_investisseur');
-            $table->string('taux_repartition');
-            $table->string('activite_id');
-            $table->date('date_operation');
+            $table->foreignId('agence_id')->constrained();
+            $table->string('nom_entrepot')->constrained();
+            $table->string('adresse_entrepot')->nullable();
+            $table->integer('capacite_entrepot')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('benefice_activites');
+        Schema::dropIfExists('entrepot_stocks');
     }
 };

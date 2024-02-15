@@ -110,21 +110,25 @@
                   <td>{{ $operation->operation_vehicule_achete->marque}}</td>
                   <td>{{ $operation->operation_vehicule_achete->model}}</td>
                   <td>{{ $operation->operation_vehicule_achete->chassis}}</td>
-                  <td style="text-align:right">{{ number_format($operation->operation_vehicule_achete->prix_achat,2,","," ")}}</td>
-                  <td style="text-align:right">{{ number_format($operation->operation_vehicule_achete->charge_usa,2,","," ")}}</td>
+                  <td style="text-align:right">{{ number_format($operation->operation_vehicule_achete->prix_achat*$operation->taux_devise,2,","," ")}}</td>
+                  <td style="text-align:right">{{ number_format($operation->operation_vehicule_achete->charge_usa*$operation->taux_devise,2,","," ")}}</td>
                   <td style="text-align:right">{{ number_format($operation->prix_vente,2,","," ")}}</td>
-                  <td style="text-align:right">{{ number_format($operation->marge,2,","," ")}}</td>
+                  <td style="text-align:right">{{ number_format($operation->marge*$operation->taux_devise,2,","," ")}}</td>
 
                   <td>{{ $operation->date_comptable}}</td>
                   <td>
-                  <a href="{{ route('vente_vehicule.show',encrypt($operation->id)) }}">
-                          <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
-                      </a>
+
                     @if($operation->etat==NULL)
+                    <a href="{{ route('vente_vehicule.edit',encrypt($operation->id)) }}">
+                        <button type="button" class="btn btn-primary"><i class="bi bi-pencil"></i></button>
+                    </a>
                       <a href="{{ route('vente_vehicule.valider',encrypt($operation->id)) }}">
                           <button type="button" class="btn btn-success"><i class="bi bi-check-circle"></i></button>
                       </a>
                     @elseif($operation->etat=='payer')
+                    <a href="{{ route('vente_vehicule.show',encrypt($operation->id)) }}">
+                        <button type="button" class="btn btn-secondary"><i class="bi bi-collection"></i></button>
+                    </a>
                       <a href="{{ route('vente_vehicule.annuler',encrypt($operation->id)) }}">
                           <button type="button" class="btn btn-danger"><i class="bi bi-exclamation-octagon"></i></button>
                       </a>

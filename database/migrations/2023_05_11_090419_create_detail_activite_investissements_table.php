@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('detail_activite_investissements', function (Blueprint $table) {
             $table->id();
-            $table->string('activite_investissement_id');
-            $table->string('investisseur_id');
-            $table->string('montant_investis');
-            $table->string('taux')->nullable();
+            $table->foreignId('activite_id')->constrained();
+            $table->foreignId('investisseur_id')->constrained();
+            $table->float('montant_investis');
+            $table->float('taux')->nullable();
             $table->timestamps();
         });
     }

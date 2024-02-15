@@ -18,10 +18,23 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        $type_gestions=['Change','Stock','Scolaire','Parc Informatique','Magasin','Hotel','Parc Auto','Cabinet Assurance','Cabinet Medical','Atelier de couture','Investissement','Gestion Detenu'];
-        foreach($type_gestions as $type_gestion){
+        $type_gestions = [
+            'Echange d\'argent',
+            'Stock',
+            'Magasin',
+            'Scolaire',
+            'Parc Informatique',
+            'Parc Auto',
+            'Hotel',
+            'Cabinet Assurance',
+            'Cabinet Medical',
+            'Couture',
+            'Investissement',
+            'Gestion Detenu',
+        ];
+        foreach ($type_gestions as $type_gestion) {
             TypeGestion::create([
-                'gestion'=>$type_gestion,
+                'gestion' => $type_gestion,
             ]);
         }
     }

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\Region;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,8 +13,7 @@ class Societe extends Model
         'raison_sociale',
         'activite',
         'forme_juridique',
-        'region',
-        'pays',
+        'region_id',
         'telephone',
         'email',
         'code_postal',
@@ -26,4 +25,9 @@ class Societe extends Model
         'compte_securite',
         'admin_id',
     ];
+
+    public function region()
+    {
+        return $this->belongsTo(Region::class);
+    }
 }

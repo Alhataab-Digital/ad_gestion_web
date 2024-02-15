@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('commandes', function (Blueprint $table) {
             $table->id();
-            $table->string('fournisseur_id')->nullable();
-            $table->string('user_id');
-            $table->string('montant_total')->default('0');
-            $table->string('activite_id')->nullable();
-            $table->string('agence_id');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('agence_id')->constrained();
+            $table->integer('fournisseur_id')->default(0);
+            $table->integer('activite_id')->default(0);
+            $table->float('montant_total')->default(0);
             $table->string('etat')->nullable();
             $table->timestamps();
         });

@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('ventes', function (Blueprint $table) {
             $table->id();
-            $table->string('client_id');
-            $table->string('user_id');
-            $table->string('montant_total');
-            $table->string('agence_id');
+            $table->foreignId('client_id')->constrained();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('agence_id')->constrained();
+            $table->float('montant_total');
             $table->timestamps();
         });
     }

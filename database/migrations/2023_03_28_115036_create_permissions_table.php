@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\Permission;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,10 +18,16 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        $permissions=['Ajouter','Modifier','Supprimer','Voir detail','imprimer',];
-        foreach($permissions as $permission){
+        $permissions = [
+            'Ajouter',
+            'Modifier',
+            'Supprimer',
+            'Detail',
+            'Imprimer',
+        ];
+        foreach ($permissions as $permission) {
             Permission::create([
-                'permission'=>$permission,
+                'permission' => $permission,
             ]);
         }
     }

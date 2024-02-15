@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('operation_dividendes', function (Blueprint $table) {
             $table->id();
-            $table->string('montant_operation');
-            $table->string('solde')->default(0);
+            $table->foreignId('investisseur_id')->constrained();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('reglement_id')->constrained();
+            $table->foreignId('caisse_id')->constrained();
+            $table->float('montant_operation');
+            $table->float('solde')->default(0);
             $table->string('sens_operation');
-            $table->string('reglement_id');
-            $table->string('caisse_id');
-            $table->string('investisseur_id');
-            $table->string('user_id');
             $table->string('valider')->default("non");
             $table->date('date_comptable');
             $table->timestamps();

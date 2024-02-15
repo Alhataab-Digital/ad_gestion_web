@@ -22,12 +22,14 @@ class InventaireStockController extends Controller
      */
     public function index()
     {
-        //
-        $agence_id=Auth::user()->agence_id;
-        $entrepots=EntrepotStock::where('agence_id',$agence_id)->get();
-        $inventaire_stocks=StockProduit::where('entrepot_id',Null)->where('agence_id',$agence_id)->get();
+        if (Auth::check()) {
+            $agence_id = Auth::user()->agence_id;
+            $entrepots = EntrepotStock::where('agence_id', $agence_id)->get();
+            $inventaire_stocks = StockProduit::where('entrepot_id', Null)->where('agence_id', $agence_id)->get();
 
-        return view('e-commerce.inventaire_stock',compact('entrepots','inventaire_stocks'));
+            return view('e-commerce.inventaire_stock', compact('entrepots', 'inventaire_stocks'));
+        }
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**
@@ -43,13 +45,13 @@ class InventaireStockController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $agence_id=Auth::user()->agence_id;
-        $entrepots=EntrepotStock::where('agence_id',$agence_id)->get();
-        $inventaire_stocks=StockProduit::where('entrepot_id',$request->entrepot)->where('agence_id',$agence_id)->get();
-        return view('e-commerce.inventaire_stock',compact('entrepots','inventaire_stocks'));
-
-
+        if (Auth::check()) {
+            $agence_id = Auth::user()->agence_id;
+            $entrepots = EntrepotStock::where('agence_id', $agence_id)->get();
+            $inventaire_stocks = StockProduit::where('entrepot_id', $request->entrepot)->where('agence_id', $agence_id)->get();
+            return view('e-commerce.inventaire_stock', compact('entrepots', 'inventaire_stocks'));
+        }
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**

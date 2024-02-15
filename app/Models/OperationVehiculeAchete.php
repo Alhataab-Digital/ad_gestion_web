@@ -35,9 +35,9 @@ class OperationVehiculeAchete extends Model
     }
 
 
-    public function caisses()
+    public function caisse()
     {
-        return $this->belongsToMany(Caisse::class);
+        return $this->belongsTo(Caisse::class,'caisse_id');
     }
 
     public function user()

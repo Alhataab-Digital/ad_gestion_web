@@ -35,21 +35,21 @@ class LoginController extends Controller
     {
         $request->validated();
 
-        $user=Utilisateur::where('email',$request->email)->first();
+        $user = Utilisateur::where('email', $request->email)->first();
 
-        if(!$user || !Hash::check($request->password, $user->password)){
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response([
-                'message'=>'login ou mot de passe incorrect'
-            ],422);
+                'message' => 'login ou mot de passe incorrect'
+            ], 422);
         }
         $token = $user->createToken('ad_gestion')->plainTextToken;
         return response(
             [
-              'user'=> $user,
-              'token'=>$token,
-            ], 200
+                'user' => $user,
+                'token' => $token,
+            ],
+            200
         );
-
     }
 
     /**

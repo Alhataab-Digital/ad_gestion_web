@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('raison_sociale');
             $table->string('activite');
             $table->string('forme_juridique');
-            $table->string('region');
-            $table->string('pays');
             $table->string('telephone');
             $table->string('email')->nullable();
             $table->string('code_postal')->nullable();
@@ -25,9 +23,10 @@ return new class extends Migration
             $table->string('complement')->nullable();
             $table->string('site_web')->nullable();
             $table->string('logo')->nullable();
-            $table->string('compte_societe')->default('0');
-            $table->string('compte_securite')->default('0');
-            $table->string('admin_id');
+            $table->float('compte_societe')->default(0);
+            $table->float('compte_securite')->default(0);
+            $table->foreignId('region_id')->constrained();
+            $table->foreignId('admin_id')->constrained();
             $table->timestamps();
         });
     }

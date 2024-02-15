@@ -13,16 +13,17 @@ return new class extends Migration
     {
         Schema::create('operation_vehicule_vendus', function (Blueprint $table) {
             $table->id();
-            $table->string('prix_vente')->nullable();
-            $table->string('marge')->nullable();
-            $table->string('client_id');
-            $table->string('date_comptable');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('caisse_id')->constrained();
+            $table->foreignId('activite_id')->constrained();
+            $table->foreignId('operation_vehicule_achete_id')->constrained();
+            $table->foreignId('client_id')->constrained();
+            $table->float('prix_vente')->nullable();
+            $table->float('marge')->nullable();
+            $table->float('taux_devise')->nullable();
+            $table->date('date_comptable');
             $table->string('sens_operation');
             $table->string('etat')->nullable();
-            $table->string('activite_id');
-            $table->string('operation_vehicule_achete_id');
-            $table->string('caisse_id');
-            $table->string('user_id');
             $table->timestamps();
         });
     }

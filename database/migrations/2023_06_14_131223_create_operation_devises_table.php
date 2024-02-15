@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('operation_devises', function (Blueprint $table) {
             $table->id();
-            $table->string('montant_operation');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('caisse_id')->constrained();
+            $table->integer('reglement_id')->default(0);
+            $table->integer('client_id')->default(0);
+            $table->integer('devise_id')->default(0);
+            $table->float('montant_operation');
             $table->string('sens_operation');
-            $table->string('client_id')->nullable();
-            $table->string('devise_id')->nullable();
-            $table->string('taux')->nullable();
-            $table->string('reglement_id')->nullable();
-            $table->string('date_comptable');
-            $table->string('caisse_id');
-            $table->string('user_id');
+            $table->float('taux')->nullable();
+            $table->date('date_comptable');
             $table->timestamps();
         });
     }

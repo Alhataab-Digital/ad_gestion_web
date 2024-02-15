@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use App\Models\Societe;
-use App\Models\Utilisateur;
+use App\Models\Region;
 use App\Models\Agence;
 use Socket;
 
@@ -18,7 +18,8 @@ class SocieteController extends Controller
      */
     public function index()
     {
-        return view('gestion.societe');
+        $regions = Region::all();
+        return view('gestion.societe', compact('regions'));
     }
 
     /**
@@ -35,54 +36,53 @@ class SocieteController extends Controller
     public function store(Request $request)
     {
         /**
-             * validation des champs de saisie
-             */
-            $request->validate([
-                'raison_sociale'=>'required',
-                'activite'=>'required',
-                'forme_juridique'=>'required',
-                'region'=>'required',
-                'pays'=>'required',
-                'telephone'=>'required',
-                'email'=>'required|email|unique:societes',
-            ]);
-            /**
-             * donnee a ajouté dans la table
-             */
+         * validation des champs de saisie
+         */
+        $request->validate([
+            'raison_sociale' => 'required',
+            'activite' => 'required',
+            'forme_juridique' => 'required',
+            'region_id' => 'required',
+            'telephone' => 'required',
+            'email' => 'required|email|unique:societes',
+        ]);
+        /**
+         * donnee a ajouté dans la table
+         */
 
-            $data=$request->all();
+        $data = $request->all();
 
 
-            /**
-             * insertion des données dans la table user
-             */
-            Societe::create([
-                'raison_sociale'=>$data['raison_sociale'],
-                'activite'=>$data['activite'],
-                'forme_juridique'=>$data['forme_juridique'],
-                'region'=>$data['region'],
-                'pays'=>$data['pays'],
-                'telephone'=>$data['telephone'],
-                'email'=>$data['email'],
-                'code_postal'=>$data['code_postal'],
-                'adresse'=>$data['adresse'],
-                'complement'=>$data['complement'],
-                'site_web'=>$data['site_web'],
-                'admin_id'=>Auth::user()->id,
-            ]);
-            return redirect('/home')->with('success','societé enregistré avec succès');
+        /**
+         * insertion des données dans la table user
+         */
+        Societe::create([
+            'raison_sociale' => $data['raison_sociale'],
+            'activite' => $data['activite'],
+            'forme_juridique' => $data['forme_juridique'],
+            'region_id' => $data['region_id'],
+            'telephone' => $data['telephone'],
+            'email' => $data['email'],
+            'code_postal' => $data['code_postal'],
+            'adresse' => $data['adresse'],
+            'complement' => $data['complement'],
+            'site_web' => $data['site_web'],
+            'admin_id' => Auth::user()->id,
+        ]);
+        return redirect('/home')->with('success', 'societé enregistré avec succès');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show( $id)
+    public function show($id)
     {
-        $id=decrypt($id);
-        $societe=Societe::findOrFail($id);
-        $agence_id=Auth::user()->agence_id;
-        $agence=Agence::find($agence_id);
-        return view('gestion.societe_show',compact('societe','agence'));
+        $id = decrypt($id);
+        $societe = Societe::findOrFail($id);
+        $agence_id = Auth::user()->agence_id;
+        $agence = Agence::find($agence_id);
+        $regions = Region::all();
+        return view('gestion.societe_show', compact('societe', 'agence','regions'));
     }
 
     /**
@@ -90,55 +90,58 @@ class SocieteController extends Controller
      */
     public function edit($id)
     {
-        $id=decrypt($id);
-        $societe=Societe::findOrFail($id);
-        return view('gestion.societe_edit',compact('societe'));
+        $id = decrypt($id);
+        $societe = Societe::findOrFail($id);
+        return view('gestion.societe_edit', compact('societe'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,Societe $societe, $id)
+    public function update(Request $request, Societe $societe, $id)
     {
-        $id=decrypt($id);
-        $societe=Societe::find($id);
+        if (Auth::check()) {
+            $id = decrypt($id);
+            $societe = Societe::find($id);
 
 
-        /**
+            /**
              * validation des champs de saisie
              */
-            $data=$request->validate([
-                'raison_sociale'=>'required',
-                'activite'=>'required',
-                'forme_juridique'=>'required',
-                'region'=>'required',
-                'pays'=>'required',
-                'telephone'=>'required',
-                'email'=>'required',
-                'code_postal'=>'',
-                'adresse'=>'',
-                'complement'=>'',
-                'site_web'=>'',
+            $data = $request->validate([
+                'raison_sociale' => 'required',
+                'activite' => 'required',
+                'forme_juridique' => 'required',
+                'region' => 'required',
+                'pays' => 'required',
+                'telephone' => 'required',
+                'email' => 'required',
+                'code_postal' => '',
+                'adresse' => '',
+                'complement' => '',
+                'site_web' => '',
             ]);
 
 
-           /**
+            /**
              * insertion des données dans la table user
              */
             $societe->update([
-                'raison_sociale'=>$data['raison_sociale'],
-                'activite'=>$data['activite'],
-                'forme_juridique'=>$data['forme_juridique'],
-                'region'=>$data['region'],
-                'pays'=>$data['pays'],
-                'telephone'=>$data['telephone'],
-                'email'=>$data['email'],
-                'code_postal'=>$data['code_postal'],
-                'adresse'=>$data['adresse'],
-                'complement'=>$data['complement'],
-                'site_web'=>$data['site_web'],
+                'raison_sociale' => $data['raison_sociale'],
+                'activite' => $data['activite'],
+                'forme_juridique' => $data['forme_juridique'],
+                'region' => $data['region'],
+                'pays' => $data['pays'],
+                'telephone' => $data['telephone'],
+                'email' => $data['email'],
+                'code_postal' => $data['code_postal'],
+                'adresse' => $data['adresse'],
+                'complement' => $data['complement'],
+                'site_web' => $data['site_web'],
             ]);
-            return back()->with('success','societé Modifier avec succès');
+            return back()->with('success', 'societé Modifier avec succès');
+        }
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**
@@ -149,11 +152,12 @@ class SocieteController extends Controller
         //
     }
 
-    public function update_logo(Request $request, Societe $societe, $id ){
+    public function update_logo(Request $request, Societe $societe, $id)
+    {
 
-        $id=decrypt($id);
-        if(Auth::check()){
-            $societe=Societe::findOrFail($id);
+        $id = decrypt($id);
+        if (Auth::check()) {
+            $societe = Societe::findOrFail($id);
             /**
              * validation des champs de saisie
              */
@@ -161,7 +165,7 @@ class SocieteController extends Controller
                 'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
 
-            $imageName = time().'.'.$request->logo->extension();
+            $imageName = time() . '.' . $request->logo->extension();
 
             $request->logo->move(public_path('images/logo'), $imageName);
 
@@ -170,10 +174,10 @@ class SocieteController extends Controller
              * insertion des données dans la table user
              */
             $societe->update([
-                'logo'=>$imageName,
+                'logo' => $imageName,
             ]);
-            return back()->with('success','Logo mise à jour avec succès');
+            return back()->with('success', 'Logo mise à jour avec succès');
         }
-            return redirect('/')->with('danger',"Session expirée");
+        return redirect('/')->with('danger', "Session expirée");
     }
 }

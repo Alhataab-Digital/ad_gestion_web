@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('type_services', function (Blueprint $table) {
             $table->id();
             $table->string('nom_type_service');
-            $table->string('prix');
-            $table->string('societe_id');
+            $table->float('prix');
+            $table->foreignId('societe_id')->constrained();
             $table->timestamps();
         });
     }

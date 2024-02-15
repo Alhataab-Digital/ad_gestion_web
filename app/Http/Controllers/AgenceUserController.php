@@ -20,7 +20,6 @@ class AgenceUserController extends Controller
     public function index()
     {
         if (Auth::check()) {
-
             if (isset(Auth::user()->role->id)) {
                 $societe_id = Auth::user()->societe_id;
                 $role = Auth::user()->role->id;
@@ -37,7 +36,7 @@ class AgenceUserController extends Controller
             }
             return redirect('/home')->with('danger', "l'utilisateur n'as pas de role");
         }
-        return redirect('/auth')->with('success', "Session expirée");
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**
@@ -66,16 +65,18 @@ class AgenceUserController extends Controller
          */
 
         $data = $request->all();
-
-        $utilisateur = Utilisateur::find($data['user_id']);
-        /**
-         * insertion des données dans la table user
-         */
-        //dd($utilisateur);
-        $utilisateur->update([
-            'agence_id' => $data['agence_id'],
-        ]);
-        return redirect('/agence_user')->with('success', 'Agence associé avec succès');
+        if (Auth::check()) {
+            $utilisateur = Utilisateur::find($data['user_id']);
+            /**
+             * insertion des données dans la table user
+             */
+            //dd($utilisateur);
+            $utilisateur->update([
+                'agence_id' => $data['agence_id'],
+            ]);
+            return redirect('/agence_user')->with('success', 'Agence associé avec succès');
+        }
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     public function listUser(Request $request)
@@ -90,7 +91,7 @@ class AgenceUserController extends Controller
                 ->get(['nom', 'prenom', 'id']);
             return response()->json($data);
         }
-        return redirect('/auth')->with('danger', "Vous n'êtes pas autorisé à accéder");
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**
@@ -126,38 +127,43 @@ class AgenceUserController extends Controller
     }
     public function asso_agence_annuler(Request $request, $id)
     {
+        if (Auth::check()) {
+            $user = Utilisateur::find($id);
+            if (isset(Caisse::where('user_id', $id)->first()->id)) {
+                $caisse = Caisse::where('user_id', $id)->first();
+                return redirect('/agence_user')->with('danger', "Veillez deconnecter ce utilisateur a la caisse $caisse->libelle ");
+            }
 
-        $user = Utilisateur::find($id);
-        if (isset(Caisse::where('user_id', $id)->first()->id)) {
-            $caisse = Caisse::where('user_id', $id)->first();
-            return redirect('/agence_user')->with('danger', "Veillez deconnecter ce utilisateur a la caisse $caisse->libelle ");
+            $user->update([
+                'agence_id' => 0,
+            ]);
+            return redirect('/agence_user')->with('success', 'Association annuler avec succès');
         }
-
-        $user->update([
-            'agence_id' => 0,
-        ]);
-        return redirect('/agence_user')->with('success', 'Association annuler avec succès');
+        return redirect('/')->with('danger', "Session expirée");
     }
 
 
     public function edit_devise(Request $request)
     {
-        $devise = DeviseAgence::find($request->id);
-        if (isset($devise)) {
+        if (Auth::check()) {
+            $devise = DeviseAgence::find($request->id);
+            if (isset($devise)) {
 
-            $taux = $request->taux;
+                $taux = $request->taux;
 
-            // La fonction pour remplacer la virgule en un point
-            $taux =  str_replace(',', '.', $taux);
-            // dd($taux);
-            if ((float)$taux == $taux) {
-                $devise->update([
-                    'taux' => $taux,
-                ]);
-                return back()->with('success', 'taux modifier');
+                // La fonction pour remplacer la virgule en un point
+                $taux =  str_replace(',', '.', $taux);
+                // dd($taux);
+                if ((float)$taux == $taux) {
+                    $devise->update([
+                        'taux' => $taux,
+                    ]);
+                    return back()->with('success', 'taux modifier');
+                }
+                return back();
             }
             return back();
         }
-        return back();
+        return redirect('/')->with('danger', "Session expirée");
     }
 }

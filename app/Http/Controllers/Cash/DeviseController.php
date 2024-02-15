@@ -17,10 +17,10 @@ class DeviseController extends Controller
      */
     public function index()
     {
-        $id=Auth::user()->societe_id;
+        $id = Auth::user()->societe_id;
         // $devises=Devise::where('societe_id',$id)->get();
-        $devises=Devise::all();
-        return view('devise.index' , compact('devises'));
+        $devises = Devise::all();
+        return view('devise.index', compact('devises'));
     }
 
     /**
@@ -37,33 +37,33 @@ class DeviseController extends Controller
     public function store(Request $request)
     {
 
-       /**
-             * validation des champs de saisie
-             */
-            $request->validate([
-                'monnaie'=>'required',
-                'devise'=>'required',
-                'unite'=>'required|unique:devises',
-                // 'taux'=>'required',
-                'societe_id'=>'required',
-            ]);
-            /**
-             * donnee a ajouté dans la table
-             */
+        /**
+         * validation des champs de saisie
+         */
+        $request->validate([
+            'monnaie' => 'required',
+            'devise' => 'required',
+            'unite' => 'required|unique:devises',
+            // 'taux'=>'required',
+            'societe_id' => 'required',
+        ]);
+        /**
+         * donnee a ajouté dans la table
+         */
 
-            $data=$request->all();
-            //dd($data);
-            /**
-             * insertion des données dans la table user
-             */
-            Devise::create([
-                'monnaie'=>$data['monnaie'],
-                'devise'=>$data['devise'],
-                'unite'=>$data['unite'],
-                // 'taux'=>$data['taux'],
-                'societe_id'=>$data['societe_id'],
-            ]);
-            return redirect('/devise')->with('success','Devise ajouté avec succès');
+        $data = $request->all();
+        //dd($data);
+        /**
+         * insertion des données dans la table user
+         */
+        Devise::create([
+            'monnaie' => $data['monnaie'],
+            'devise' => $data['devise'],
+            'unite' => $data['unite'],
+            // 'taux'=>$data['taux'],
+            'societe_id' => $data['societe_id'],
+        ]);
+        return redirect('/devise')->with('success', 'Devise ajouté avec succès');
     }
 
     /**
@@ -80,11 +80,11 @@ class DeviseController extends Controller
     public function edit(string $id)
     {
         $id = decrypt($id);
-        if(Auth::check()){
-            $devise= Devise::find($id);
-            return view('devise.edit',compact('devise'));
+        if (Auth::check()) {
+            $devise = Devise::find($id);
+            return view('devise.edit', compact('devise'));
         }
-        return redirect('/auth')->with('success',"Session expirée");
+        return redirect('/auth')->with('success', "Session expirée");
     }
 
     /**
@@ -92,31 +92,31 @@ class DeviseController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $devise=Devise::find($id);
+        $devise = Devise::find($id);
         /**
-             * validation des champs de saisie
-             */
-            $data=$request->validate([
-                'monnaie'=>'required',
-                'devise'=>'required',
-                'unite'=>'required',
-                // 'taux'=>'required',
-            ]);
-            /**
-             * donnee a ajouté dans la table
-             */
+         * validation des champs de saisie
+         */
+        $data = $request->validate([
+            'monnaie' => 'required',
+            'devise' => 'required',
+            'unite' => 'required',
+            // 'taux'=>'required',
+        ]);
+        /**
+         * donnee a ajouté dans la table
+         */
 
 
-            /**
-             * insertion des données dans la table user
-             */
-            $devise->update([
-                'monnaie'=>$data['monnaie'],
-                'devise'=>$data['devise'],
-                'unite'=>$data['unite'],
-                // 'taux'=>$data['taux'],
-            ]);
-            return redirect('/devise')->with('success','Devise modifier avec succès');
+        /**
+         * insertion des données dans la table user
+         */
+        $devise->update([
+            'monnaie' => $data['monnaie'],
+            'devise' => $data['devise'],
+            'unite' => $data['unite'],
+            // 'taux'=>$data['taux'],
+        ]);
+        return redirect('/devise')->with('success', 'Devise modifier avec succès');
     }
 
     /**

@@ -20,10 +20,10 @@ return new class extends Migration
             $table->string('password');
             $table->string('terms');
             $table->string('etat')->default('1');
-            $table->string('societe_id')->default('0');
-            $table->string('role_id')->default('0');
-            $table->string('agence_id')->default('0');
-            $table->string('gestion_id');
+            $table->integer('societe_id')->default(0);
+            $table->integer('role_id')->default(0);
+            $table->integer('agence_id')->default(0);
+            $table->foreignId('gestion_id')->constrained();
             $table->timestamps();
         });
     }

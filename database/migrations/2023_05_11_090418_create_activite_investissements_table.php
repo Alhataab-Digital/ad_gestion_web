@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('activite_investissements', function (Blueprint $table) {
             $table->id();
-            $table->string('type_activite_id');
-            $table->string('capital_activite');
-            $table->string('montant_decaisse');
-            $table->string('total_depense')->nullable();
-            $table->string('total_recette')->nullable();
-            $table->string('compte_activite')->nullable();
-            $table->string('montant_benefice')->nullable();
-            $table->string('taux_devise');
-            $table->string('commentaire')->nullable();
-            $table->string('user_id');
-            $table->string('caisse_id');
-            $table->string('agence_id');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('caisse_id')->constrained();
+            $table->foreignId('agence_id')->constrained();
+            $table->foreignId('type_activite_id')->constrained();
+            $table->float('capital_activite');
+            $table->float('montant_decaisse');
+            $table->float('total_depense')->default(0);
+            $table->float('total_recette')->default(0);
+            $table->float('compte_activite')->default(0);
+            $table->float('montant_benefice')->default(0);
+            $table->float('taux_devise');
+            $table->text('commentaire')->nullable();
             $table->string('etat_activite')->default('en cours');
             $table->date('date_comptable');
             $table->timestamps();

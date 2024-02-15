@@ -28,7 +28,20 @@
                         </p>
 
                     </h5>
-
+                    @if ($message=Session::get('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle me-1"></i>
+                        {{ $message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                  @endif
+                  @if ($message=Session::get('danger'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-octagon me-1"></i>
+                        {{ $message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                  @endif
                   <!-- Pills Tabs -->
                   <ul class="nav nav-pills nav-tabs-bordered" id="pills-tab" role="tablist">
 

@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('operations', function (Blueprint $table) {
             $table->id();
-            $table->string('montant_operation');
+            $table->float('montant_operation');
             $table->string('sens_operation');
-            $table->string('nature_operation_charge_id');
-            $table->string('commentaire')->nullable();
+            $table->foreignId('nature_operation_charge_id')->constrained();
+            $table->text('commentaire')->nullable();
             $table->string('fichier')->nullable();
-            $table->string('date_comptable');
-            $table->string('caisse_id');
-            $table->string('agence_id');
-            $table->string('user_id');
+            $table->date('date_comptable');
+            $table->foreignId('caisse_id')->constrained();
+            $table->foreignId('agence_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }

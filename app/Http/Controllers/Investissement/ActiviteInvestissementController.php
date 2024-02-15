@@ -35,8 +35,9 @@ class ActiviteInvestissementController extends Controller
     public function index()
     {
         //
-        $id = Auth::user()->id;
+
         if (Auth::check()) {
+            $id = Auth::user()->id;
             if (isset(Caisse::where('user_id', $id)->first(['id'])->id)) {
                 $caisse_id = Caisse::where('user_id', $id)->first(['id'])->id;
                 $caisse = Caisse::find($caisse_id);
@@ -53,8 +54,9 @@ class ActiviteInvestissementController extends Controller
     public function valider()
     {
         //
-        $id = Auth::user()->id;
+
         if (Auth::check()) {
+            $id = Auth::user()->id;
             if (isset(Caisse::where('user_id', $id)->first(['id'])->id)) {
                 $caisse_id = Caisse::where('user_id', $id)->first(['id'])->id;
                 $caisse = Caisse::find($caisse_id);
@@ -71,8 +73,9 @@ class ActiviteInvestissementController extends Controller
     public function terminer()
     {
         //
-        $id = Auth::user()->id;
+
         if (Auth::check()) {
+            $id = Auth::user()->id;
             if (isset(Caisse::where('user_id', $id)->first(['id'])->id)) {
                 $caisse_id = Caisse::where('user_id', $id)->first(['id'])->id;
                 $caisse = Caisse::find($caisse_id);
@@ -91,19 +94,20 @@ class ActiviteInvestissementController extends Controller
      */
     public function create()
     {
-        $id = Auth::user()->id;
-
-        $societe_id = Auth::user()->societe_id;
-
-        if (isset(Caisse::where('user_id', $id)->first(['id'])->id)) {
-            $caisse_id = Caisse::where('user_id', $id)->first(['id'])->id;
-            $caisse = Caisse::find($caisse_id);
-            $agence_id = Auth::user()->agence_id;
-            $agence = Agence::find($agence_id);
-            $type_activites = TypeActiviteInvestissement::where('societe_id', $societe_id)->get();
-            return view('investissement.activite_investissement', compact('type_activites', 'caisse'));
+        if (Auth::check()) {
+            $id = Auth::user()->id;
+            $societe_id = Auth::user()->societe_id;
+            if (isset(Caisse::where('user_id', $id)->first(['id'])->id)) {
+                $caisse_id = Caisse::where('user_id', $id)->first(['id'])->id;
+                $caisse = Caisse::find($caisse_id);
+                $agence_id = Auth::user()->agence_id;
+                $agence = Agence::find($agence_id);
+                $type_activites = TypeActiviteInvestissement::where('societe_id', $societe_id)->get();
+                return view('investissement.activite_investissement', compact('type_activites', 'caisse'));
+            }
+            return view('devise.message');
         }
-        return view('devise.message');
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**
@@ -127,8 +131,9 @@ class ActiviteInvestissementController extends Controller
 
         $data = $request->all();
         // dd($data);
-        $user_id = Auth::user()->id;
+
         if (Auth::check()) {
+            $user_id = Auth::user()->id;
             if (isset(Caisse::where('user_id', $user_id)->first(['id'])->id)) {
                 $caisse_id = Caisse::where('user_id', $user_id)->first(['id'])->id;
                 $caisse = Caisse::find($caisse_id);
@@ -208,8 +213,8 @@ class ActiviteInvestissementController extends Controller
             $agence_id = Auth::user()->agence_id;
             $agence = Agence::find($activite_investissement->agence_id);
             $devise = Devise::where('id', $agence->devise_id)->first();
-            $detail_activite_investissements = DetailActiviteInvestissement::where('activite_investissement_id', $activite_investissement->id)->get();
-            $operation_depenses = OperationDepenseActivite::where('activite_investissement_id', $activite_investissement->id)->get();
+            $detail_activite_investissements = DetailActiviteInvestissement::where('activite_id', $activite_investissement->id)->get();
+            $operation_depenses = OperationDepenseActivite::where('activite_id', $activite_investissement->id)->get();
             $commandes = Commande::where('activite_id', $activite_investissement->id)->get();
             $reglements = OperationReglementFacture::where('activite_id', $activite_investissement->id)->get();
             return view('investissement.activite_investissement_show', compact(
@@ -341,7 +346,7 @@ class ActiviteInvestissementController extends Controller
 
                         $investisseur_id   = $request->investisseur_id[$i];
                         $montant_investis  = round((($request->montant_investis[$i] / $taux_devise) + $investisseur->compte_investisseur), -3);
-                        $dividende_gagner  = (($request->taux[$i]) * (round($dividende_investisseur / $taux_devise))) + $investisseur->compte_dividende;
+                        $dividende_gagner  = (($request->taux[$i]) * (round($dividende_investisseur / $taux_devise, 2))) + $investisseur->compte_dividende;
 
                         //     dd(
                         // $investisseur_id,
@@ -437,11 +442,11 @@ class ActiviteInvestissementController extends Controller
             $devise = Devise::where('id', $agence->devise_id)->first();
             $activite_investissement = ActiviteInvestissement::find($id);
 
-            $detail_activite_investissements = DetailActiviteInvestissement::where('activite_investissement_id', $id)->get();
+            $detail_activite_investissements = DetailActiviteInvestissement::where('activite_id', $id)->get();
 
             $secteur_depenses = SecteurDepense::all();
 
-            $operation_depenses = OperationDepenseActivite::where('activite_investissement_id', $activite_investissement->id)->get();
+            $operation_depenses = OperationDepenseActivite::where('activite_id', $activite_investissement->id)->get();
             $livraisons = Livrer::where('activite_id', $activite_investissement->id)->get();
             $reglements = OperationReglementFacture::where('activite_id', $activite_investissement->id)->get();
 
@@ -472,7 +477,7 @@ class ActiviteInvestissementController extends Controller
         $date_comptable = Caisse::where('user_id', $id)->first(['date_comptable'])->date_comptable;
 
         $activite_investissement = ActiviteInvestissement::find($request->activite_id);
-        $detail_activite_investissement = DetailActiviteInvestissement::where('activite_investissement_id', $request->activite_id)->get();
+        $detail_activite_investissement = DetailActiviteInvestissement::where('activite_id', $request->activite_id)->get();
         if (Auth::check()) {
             if ($activite_investissement->total_depense > $request->montant_decaisse) {
                 return back()->with('danger', " oups vous avez deja depense $activite_investissement->total_depense le capital activite doit etre superieur ou egale à $activite_investissement->total_depense");
@@ -528,7 +533,7 @@ class ActiviteInvestissementController extends Controller
                         ]);
 
                         foreach ($detail_activite_investissement as $sup) {
-                            $sup->delete('activite_investissement_id', $activite_investissement->id);
+                            $sup->delete('activite_id', $activite_investissement->id);
                         }
 
                         return redirect('/' . encrypt($activite_investissement->id) . '/activite_investissement/repartition');
@@ -569,7 +574,7 @@ class ActiviteInvestissementController extends Controller
                         if ($request->secteur_id) {
 
                             $data = [
-                                'activite_investissement_id'   => $id,
+                                'activite_id'   => $id,
                                 'secteur_depense_id'           => $request->secteur_id,
                                 'montant_depense'              => $request->montant_depense,
                             ];
@@ -615,7 +620,7 @@ class ActiviteInvestissementController extends Controller
         $id = decrypt($id);
 
         $depense_activite = OperationDepenseActivite::find($id);
-        $activite_investissement = ActiviteInvestissement::find($depense_activite->activite_investissement_id);
+        $activite_investissement = ActiviteInvestissement::find($depense_activite->activite_id);
 
 
         $user_id = Auth::user()->id;

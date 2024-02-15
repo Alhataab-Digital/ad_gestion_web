@@ -19,13 +19,13 @@ class RegionController extends Controller
      */
     public function index()
     {
-        if(Auth::check()){
+        if (Auth::check()) {
 
-            $regions=Region::all();
+            $regions = Region::all();
 
-        return view('region.index', compact('regions'));
+            return view('region.index', compact('regions'));
         }
-        return redirect('/auth')->with('danger',"Session expirée");
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**

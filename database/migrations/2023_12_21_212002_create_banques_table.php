@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('banques', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('agence_id')->constrained();
+            $table->foreignId('societe_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->string('libelle');
             $table->string('numero_compte_banque');
-            $table->string('compte')->default(0);
-            $table->string('user_id');
+            $table->float('compte')->default(0);
             $table->string('etat');
-            $table->string('agence_id');
-            $table->string('societe_id');
             $table->timestamps();
         });
     }

@@ -2,6 +2,22 @@
 
 @section('content')
 
+
+@if(isset(Auth::user()->gestion->gestion) AND Auth::user()->gestion->gestion=='Magasin')
+
+        @if(Auth::user()->societe_id=="0")
+
+        @if(isset($societe->admin_id) AND $societe->admin_id==Auth::user()->id)
+            @include('gestion.activer_environnement')
+            @else
+                @include('gestion.societe')
+            @endif
+        @else
+            @include('dashbord.gestion.magasin')
+        @endif
+
+@endif
+
 @if(isset(Auth::user()->gestion->gestion) AND Auth::user()->gestion->gestion=='Change')
 
         @if(Auth::user()->societe_id=="0")

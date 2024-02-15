@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('monnaie');
             $table->string('devise');
             $table->string('unite');
-            $table->string('societe_id');
+            $table->foreignId('societe_id')->constrained();
             $table->timestamps();
         });
     }

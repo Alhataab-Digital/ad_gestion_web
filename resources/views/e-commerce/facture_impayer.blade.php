@@ -53,7 +53,18 @@
                         <td>{{number_format($facture->montant_total,2,","," ")  }}</td>
                         <td>{{ number_format(($facture->montant_regle),2,","," ")}}</td>
                         <td>{{ number_format(($facture->montant_total-$facture->montant_regle),2,","," ")}}</td>
-                        <td><span class="badge bg-success">{{ $facture->etat }}</span></td>
+                        <td>
+                            @if($facture->etat=='valider')
+                            <span class="badge bg-success">{{ $facture->etat }}</span>
+                            @endif
+
+                            @if($facture->etat=='echeance')
+                            <span class="badge bg-secondary">{{ $facture->etat }}</span>
+                            @endif
+                            @if($facture->etat=='terminer')
+                            <span class="badge bg-danger">{{ $facture->etat }}</span>
+                            @endif
+                        </td>
                         <td>
                             <a href="{{ route('reglement.paiement',encrypt($facture->id)) }}">
                                 <button type="button" class="btn btn-warning"><i class="bi bi-cart-plus"></i></button>
@@ -64,7 +75,7 @@
                     </tbody>
                   </table>
                     <!-- End Table with stripped rows -->
-                   
+
                </div>
                   </div><!-- End Pills Tabs -->
 

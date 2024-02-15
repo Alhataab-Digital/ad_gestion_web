@@ -57,15 +57,17 @@
                     <label for="validationDefault03" class="form-label">Forme juridique <span style="color:red">*</span></label>
                     <input type="text" name="forme_juridique" value="{{$societe->forme_juridique }}" class="form-control" >
                   </div>
-                  <div class="col-md-3">
-                    <label for="validationDefault03" class="form-label">Region <span style="color:red">*</span></label>
-                    <input type="text" name="region" value="{{$societe->region }}" class="form-control" >
-                  </div>
-                  <div class="col-md-3">
-                    <label for="validationDefault03" class="form-label">Pays <span style="color:red">*</span></label>
-                    <input type="text" name="pays" value="{{$societe->pays }}" class="form-control" >
-                  </div>
 
+                  <div class="col-md-3">
+                    <label for="validationDefault04" class="form-label">Pays <span
+                            style="color:red">*</span></label>
+                    <select class="form-select" id="validationDefault04" name="pays" required>
+                        <option value="$societe->region_id">{{$societe->region->nom }}</option>
+                        @foreach ($regions as $region)
+                        <option value="{{ $region->id }}">{{ $region->nom }}</option>
+                        @endforeach
+                    </select>
+                </div>
                   <div class="col-md-3">
                     <label for="validationDefault05" class="form-label">Téléphone<span style="color:red">*</span></label>
                     <input type="text" name="telephone" value="{{old('telephone')?? $societe->telephone }}" class="form-control" >
@@ -87,7 +89,7 @@
                     <label  class="form-label">Complement</label>
                     <input type="text" name="complement" value="{{$societe->complement }}" class="form-control"  >
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-9">
                     <label  class="form-label">site web</label>
                     <input type="text" name="site_web" value="{{$societe->site_web }}" class="form-control"  >
                   </div>

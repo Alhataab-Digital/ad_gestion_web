@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('commande_id')->nullable();
             $table->string('fournisseur_id')->nullable();
             $table->string('entrepot_id')->nullable();
-            $table->string('user_id');
-            $table->string('montant_total')->default('0');
-            $table->string('agence_id');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('agence_id')->constrained();
+            $table->float('montant_total')->default(0);
             $table->timestamps();
         });
     }

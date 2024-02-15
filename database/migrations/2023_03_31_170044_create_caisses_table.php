@@ -14,16 +14,15 @@ return new class extends Migration
         Schema::create('caisses', function (Blueprint $table) {
             $table->id();
             $table->string('libelle');
-            $table->string('montant_min');
-            $table->string('montant_max');
-            $table->string('compte')->default('0');
-            $table->string('compte_dividende_societe')->nullable();
+            $table->float('montant_min');
+            $table->float('montant_max');
+            $table->float('compte');
             $table->date('date_comptable')->nullable();
-            $table->string('devise_id')->default('0');
-            $table->string('user_id')->default('0');
-            $table->string('etat')->default('0');
-            $table->string('agence_id');
-            $table->string('societe_id');
+            $table->integer('devise_id')->default(0);
+            $table->integer('user_id')->default(0);
+            $table->char('etat')->default(0);
+            $table->foreignId('agence_id')->constrained();
+            $table->foreignId('societe_id')->constrained();
             $table->timestamps();
         });
     }

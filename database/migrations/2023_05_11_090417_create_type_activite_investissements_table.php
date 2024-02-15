@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('type_activite_investissements', function (Blueprint $table) {
             $table->id();
-            $table->string('type_activite');
-            $table->string('societe_id');
+            $table->foreignId('societe_id')->constrained();
+            $table->string('type_activite')->constrained();
             $table->timestamps();
         });
     }

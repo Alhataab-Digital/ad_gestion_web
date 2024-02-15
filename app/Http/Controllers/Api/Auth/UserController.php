@@ -17,15 +17,15 @@ class UserController extends Controller
      */
     public function index()
     {
-        if(Auth::check()){
-            $id=Auth::user()->societe_id;
-            $utilisateurs=Utilisateur::where('societe_id',$id)->get();
+        if (Auth::check()) {
+            $id = Auth::user()->societe_id;
+            $utilisateurs = Utilisateur::where('societe_id', $id)->get();
             return response(
                 [
-                  'user'=>  $utilisateurs,
-                ], 200
+                    'user' =>  $utilisateurs,
+                ],
+                200
             );
-            
         }
     }
 
@@ -44,27 +44,28 @@ class UserController extends Controller
     {
         $request->validated();
 
-        $data=$request->all();
+        $data = $request->all();
         // $societe_id=Auth::user()->societe_id;
         // $gestion_id=Auth::user()->gestion_id;
         /**
          * insertion des données dans la table user
          */
         Utilisateur::create([
-            'nom'=>$data['nom'],
-            'prenom'=>$data['prenom'],
-            'email'=>$data['email'],
-            'adresse'=>$data['adresse'],
-            'password'=>Hash::make($data['password']),
-            'terms'=>1,
-            'gestion_id'=>1,
-            'societe_id'=>1,
+            'nom' => $data['nom'],
+            'prenom' => $data['prenom'],
+            'email' => $data['email'],
+            'adresse' => $data['adresse'],
+            'password' => Hash::make($data['password']),
+            'terms' => 1,
+            'gestion_id' => 1,
+            'societe_id' => 1,
         ]);
 
         return response(
             [
-              'message'=>  'success',
-            ], 201
+                'message' =>  'success',
+            ],
+            201
         );
     }
 

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('permissions_users', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id');
-            $table->string('permission_id');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('permission_id')->constrained();
             $table->timestamps();
         });
     }

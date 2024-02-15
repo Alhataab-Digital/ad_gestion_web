@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('mouvement_banques', function (Blueprint $table) {
             $table->id();
-            $table->string('banque_id');
-            $table->string('user_id');
-            $table->string('description');
-            $table->string('entree')->nullable();
-            $table->string('sortie')->nullable();
-            $table->string('solde');
-            $table->string('date_comptable');
+            $table->foreignId('banque_id')->constrained();
+            $table->foreignId('user_id')->constrained();
+            $table->text('description');
+            $table->string('entree')->default(0);
+            $table->string('sortie')->default(0);
+            $table->float('solde');
+            $table->date('date_comptable');
             $table->timestamps();
         });
     }

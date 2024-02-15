@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('mouvement_stocks', function (Blueprint $table) {
             $table->id();
-            $table->string('produit_id');
-            $table->string('quantite');
+            $table->foreignId('produit_id')->constrained();
+            $table->foreignId('entrepot_id')->constrained();
+            $table->integer('quantite');
+            $table->float('prix_unitaire_produit');
             $table->string('type_mouvement');
-            $table->string('entrepot_id');
-            $table->string('prix_unitaire_produit');
             $table->timestamps();
         });
     }

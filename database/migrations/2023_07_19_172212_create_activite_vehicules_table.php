@@ -13,19 +13,19 @@ return new class extends Migration
     {
         Schema::create('activite_vehicules', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('caisse_id')->constrained();
+            $table->foreignId('agence_id')->constrained();
+            $table->foreignId('societe_id')->constrained();
             $table->string('intitule');
-            $table->string('capital_activite');
-            $table->string('montant_ouverture');
-            $table->string('montant_vente')->nullable();
-            $table->string('total_depense')->nullable();
-            $table->string('montant_benefice')->nullable();
-            $table->string('taux_devise');
-            $table->string('detail')->nullable();
-            $table->string('user_id');
-            $table->string('caisse_id');
-            $table->string('agence_id');
-            $table->string('societe_id');
-            $table->string('etat_activite')->nullable();;
+            $table->float('capital_activite');
+            $table->float('montant_ouverture');
+            $table->float('montant_vente')->nullable();
+            $table->float('total_depense')->nullable();
+            $table->float('montant_benefice')->nullable();
+            $table->float('taux_devise');
+            $table->text('detail')->nullable();
+            $table->string('etat_activite')->nullable();
             $table->date('date_comptable');
             $table->timestamps();
         });

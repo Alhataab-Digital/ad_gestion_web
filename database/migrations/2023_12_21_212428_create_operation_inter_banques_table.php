@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('operation_inter_banques', function (Blueprint $table) {
             $table->id();
-            $table->string('montant_operation');
-            $table->string('commentaire');
-            $table->string('banque_id');
-            $table->string('banque_destination_id');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('banque_id')->constrained();
+            $table->foreignId('banque_destination_id')->constrained();
+            $table->integer('user_destination_id')->default(0);
+            $table->float('montant_operation');
+            $table->text('commentaire');
             $table->float('taux');
-            $table->string('date_comptable');
-            $table->string('date_comptable_reception')->nullable();
-            $table->string('user_id');
-            $table->string('user_destination_id')->nullable();
+            $table->date('date_comptable');
+            $table->date('date_comptable_reception')->nullable();
             $table->string('etat')->nullable();
             $table->timestamps();
         });

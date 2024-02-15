@@ -17,14 +17,15 @@ class CategorieProduitController extends Controller
      */
     public function index()
     {
-        
-            $categories=CategorieProduit::all();
-        
-            return response(
-                [
-                'categories'=>  $categories,
-                ], 200
-            );
+
+        $categories = CategorieProduit::all();
+
+        return response(
+            [
+                'categories' =>  $categories,
+            ],
+            200
+        );
     }
 
     /**
@@ -46,38 +47,33 @@ class CategorieProduitController extends Controller
         /**
          * donnee a ajouté dans la table
          */
-        $data=[
-            'nom_categorie_produit'=>$request->nom,
-            'description_categorie_produit'=>$request->description,
-            'agence_id'=>$request->agence_id,
+        $data = [
+            'nom_categorie_produit' => $request->nom,
+            'description_categorie_produit' => $request->description,
+            'agence_id' => $request->agence_id,
         ];
 
         /**
          * insertion des données dans la table user
          */
-        if($request->agence_id==0)
-        {
-            $message=" L'utilisateur n'est pas affecté à une agence";
+        if ($request->agence_id == 0) {
+            $message = " L'utilisateur n'est pas affecté à une agence";
             return response(
                 [
-                  'message'=>  $message,
-                ], 200
+                    'message' =>  $message,
+                ],
+                200
             );
-       
-        }
-        else{
+        } else {
             $categorie = CategorieProduit::create($data);
             // $token = $user->createToken('ad_gestion')->plainTextToken;
             return response(
                 [
-                  'categorie'=>  $categorie,
-                ], 201
+                    'categorie' =>  $categorie,
+                ],
+                201
             );
-            
         }
-        
-        
-
     }
 
     /**

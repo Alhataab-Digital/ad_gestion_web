@@ -27,7 +27,7 @@ class Caisse extends Model
 
     public function agence()
     {
-        return $this->belongsTo(Agence::class);
+        return $this->belongsTo(Agence::class,'agence_id');
     }
 
     public function user()

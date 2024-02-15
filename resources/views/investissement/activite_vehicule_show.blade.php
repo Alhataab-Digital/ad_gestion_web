@@ -21,7 +21,7 @@
         <div class="row">
 
             <div class="col-lg-12">
-            
+
                 <div class="card recent-sales overflow-auto">
                   <div class="card-body">
                     <h5 class="card-title">
@@ -32,7 +32,7 @@
                                     <button type="button" class="btn btn-secondary">Quitter</button>
                                 </a>
                        </div>
-                                
+
                         </div>
                     </h5>
                     <hr>
@@ -57,7 +57,7 @@
                                 <td>
                                     <input type="text" class="form-control" name="montant" id="" value='{{ number_format(($activite_vehicule->total_depense),2,","," ")." ".$activite_vehicule->user->agence->devise->unite  }}'>
                                 </td>
-                                
+
                                <td>
                                 <input type="text" class="form-control" name="benefice" id="" value='{{ number_format($activite_vehicule->montant_benefice,2,","," ")." ".$activite_vehicule->user->agence->devise->unite }}'>
                                </td>
@@ -114,9 +114,9 @@
                                         <option value="">{{'Vente vehicule CH :'.$operation_vente->operation_vehicule_achete->chassis }}</option>
                                     </select></td>
                                 <td scope="row">
-                                <input class="form-control"  value='{{ number_format($operation_vente->prix_vente,2,","," ")." ".$devise->unite}}' readonly>
+                                <input class="form-control"  value='{{ number_format(round($operation_vente->prix_vente/$operation_vente->taux_devise),2,","," ")." ".$devise->unite}}' readonly>
                                 </td>
-                               
+
                             </tr>
                             @endforeach
                         </tbody>
@@ -149,7 +149,7 @@
                                 <input class="form-control" type="text"  id="" value='{{ number_format($detail_activite_vehicule->montant_investis,2,","," ")." ".$devise->unite}}'>
                             </td>
                             <td scope="row">
-                                <input class="form-control" type="text"  id="" value='{{  number_format(round((((($detail_activite_vehicule->taux)/100)*($activite_vehicule->montant_benefice/2))-((($detail_activite_vehicule->taux)/100)*($activite_vehicule->montant_benefice/2))*0.1)),2,","," ")." ".$devise->unite }}'>
+                                <input class="form-control" type="text"  id="" value='{{  number_format(round((((($detail_activite_vehicule->taux)/100)*($activite_vehicule->montant_benefice/2))-((($detail_activite_vehicule->taux)/100)*($activite_vehicule->montant_benefice/2))*0.1),2),2,","," ")." ".$devise->unite }}'>
                             </td>
                             {{-- <td scope="row">
                                 <input type="text"  id="" value='{{  number_format(($detail_activite_vehicule->taux),2,","," ")." ".$detail_activite_vehicule->activite_vehicule->user->agence->devise->unite }}'>

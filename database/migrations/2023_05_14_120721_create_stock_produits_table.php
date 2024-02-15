@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('stock_produits', function (Blueprint $table) {
             $table->id();
-            $table->string('produit_id');
-            $table->string('entrepot_id');
-            $table->string('quantite_en_stock');
-            $table->string('agence_id');
+            $table->foreignId('produit_id')->constrained();
+            $table->foreignId('entrepot_id')->constrained();
+            $table->foreignId('agence_id')->constrained();
+            $table->integer('quantite_en_stock');
             $table->timestamps();
         });
     }

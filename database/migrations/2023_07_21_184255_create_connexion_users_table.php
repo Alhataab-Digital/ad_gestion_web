@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('connexion_users', function (Blueprint $table) {
             $table->id();
-            $table->string('utilisateur_id');
+            $table->foreignId('utilisateur_id')->constrained();
             $table->string('etat');
             $table->timestamps();
         });

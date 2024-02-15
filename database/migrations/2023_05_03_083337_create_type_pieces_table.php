@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\TypePiece;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,10 +18,16 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        $pieces=['CARTE IDENTITE NATIONAL','PASSPORT','PERMIS DE CONDUIRE','AUTRES'];
-        foreach($pieces as $piece){
+        $pieces = [
+            'CARTE IDENTITE NATIONAL',
+            'PASSPORT',
+            'PERMIS DE CONDUIRE',
+            'AUTRES'
+        ];
+
+        foreach ($pieces as $piece) {
             TypePiece::create([
-                'type_piece'=>$piece,
+                'type_piece' => $piece,
             ]);
         }
     }

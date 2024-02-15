@@ -21,11 +21,12 @@ class TypeActiviteInvestissementController extends Controller
      */
     public function index()
     {
-        //
-       $societe_id=Auth::user()->societe_id;
-            $type_activites=TypeActiviteInvestissement::where('societe_id',$societe_id)->get();
-        return view('investissement.type_activite',compact('type_activites'));
-
+        if (Auth::check()) {
+            $societe_id = Auth::user()->societe_id;
+            $type_activites = TypeActiviteInvestissement::where('societe_id', $societe_id)->get();
+            return view('investissement.type_activite', compact('type_activites'));
+        }
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**
@@ -42,26 +43,28 @@ class TypeActiviteInvestissementController extends Controller
     public function store(Request $request)
     {
         /**
-        * validation des champs de saisie
-        */
-       $request->validate([
-           'type_activite'=>'required',
-       ]);
-       /**
-        * donnee a ajouté dans la table
-        */
-
-       $data=$request->all();
-       $societe_id=Auth::user()->societe_id;
-       //dd($data);
-       /**
-        * insertion des données dans la table user
-        */
-        TypeActiviteInvestissement::create([
-            'type_activite'=>$data['type_activite'],
-            'societe_id'=>$societe_id,
-       ]);
-       return redirect('/type_activite_investissement')->with('success',"Type d'investissement ajouté avec succès");
+         * validation des champs de saisie
+         */
+        $request->validate([
+            'type_activite' => 'required',
+        ]);
+        /**
+         * donnee a ajouté dans la table
+         */
+        if (Auth::check()) {
+            $data = $request->all();
+            $societe_id = Auth::user()->societe_id;
+            //dd($data);
+            /**
+             * insertion des données dans la table user
+             */
+            TypeActiviteInvestissement::create([
+                'type_activite' => $data['type_activite'],
+                'societe_id' => $societe_id,
+            ]);
+            return redirect('/type_activite_investissement')->with('success', "Type d'investissement ajouté avec succès");
+        }
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**
@@ -77,9 +80,12 @@ class TypeActiviteInvestissementController extends Controller
      */
     public function edit(string $id)
     {
-        $id=decrypt($id);
-            $type_activite=TypeActiviteInvestissement::find($id);
-        return view('investissement.type_activite_edit',compact('type_activite'));
+        if (Auth::check()) {
+            $id = decrypt($id);
+            $type_activite = TypeActiviteInvestissement::find($id);
+            return view('investissement.type_activite_edit', compact('type_activite'));
+        }
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**
@@ -87,16 +93,19 @@ class TypeActiviteInvestissementController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $id=decrypt($id);
-        $request->validate([
-            'type_activite'=>'required',
-        ]);
-        $data=$request->all();
-        $type_activite=TypeActiviteInvestissement::find($id);
-        $type_activite->update([
-            'type_activite'=>$data['type_activite'],
-       ]);
-       return redirect('/type_activite_investissement')->with('success',"Type d'investissement modifier avec succès");
+        if (Auth::check()) {
+            $id = decrypt($id);
+            $request->validate([
+                'type_activite' => 'required',
+            ]);
+            $data = $request->all();
+            $type_activite = TypeActiviteInvestissement::find($id);
+            $type_activite->update([
+                'type_activite' => $data['type_activite'],
+            ]);
+            return redirect('/type_activite_investissement')->with('success', "Type d'investissement modifier avec succès");
+        }
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**

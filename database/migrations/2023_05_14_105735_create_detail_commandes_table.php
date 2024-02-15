@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('detail_commandes', function (Blueprint $table) {
             $table->id();
-            $table->string('commande_id');
-            $table->string('produit_id');
-            $table->string('quantite_commandee');
-            $table->string('prix_unitaire_commande');
+            $table->foreignId('commande_id')->constrained();
+            $table->foreignId('produit_id')->constrained();
+            $table->integer('quantite_commandee');
+            $table->float('prix_unitaire_commande');
             $table->timestamps();
         });
     }

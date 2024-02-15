@@ -18,14 +18,12 @@ class FournisseurController extends Controller
     public function index()
     {
         //
-        if(Auth::check()){
-            $id=Auth::user()->societe_id;
-            $fournisseurs=Fournisseur::all();
+        if (Auth::check()) {
+            $id = Auth::user()->societe_id;
+            $fournisseurs = Fournisseur::all();
             return view('fournisseur.index', compact('fournisseurs'));
-
         }
-        return redirect('/auth')->with('danger',"Session expirée");
-
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**

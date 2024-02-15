@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('remises', function (Blueprint $table) {
+        Schema::create('reglement_factures', function (Blueprint $table) {
             $table->id();
-            $table->string('vente_id');
-            $table->string('type_remise_id');
-            $table->string('montant_remise');
+            $table->foreignId('facture_id')->constrained();
+            $table->float('montant_regle')->default(0);
+            $table->float('montant_non_regle')->default(0);
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('remises');
+        Schema::dropIfExists('reglement_factures');
     }
 };

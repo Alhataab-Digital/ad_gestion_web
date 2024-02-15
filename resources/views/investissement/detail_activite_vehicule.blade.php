@@ -126,7 +126,7 @@
                                         <option value="">{{'Vente vehicule CH :'.$operation_vente->operation_vehicule_achete->chassis }}</option>
                                     </select></td>
                                 <td scope="row">
-                                <input class="form-control"  value='{{ number_format($operation_vente->prix_vente,2,","," ")." ".$devise->unite}}' readonly>
+                                <input class="form-control"  value='{{ number_format(round($operation_vente->prix_vente/$operation_vente->taux_devise),2,","," ")." ".$devise->unite}}' readonly>
                                 </td>
                                 <td>
                                         <button type="button" class="btn btn-danger" ><i class="bi bi-trash"></i></button>
@@ -198,7 +198,7 @@
           $(".add_item_btn").click(function(e){
               e.preventDefault();
               $("#show_item").prepend(`
-                
+
               `);
 
             });

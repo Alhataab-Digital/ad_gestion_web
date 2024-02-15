@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('devise_agences', function (Blueprint $table) {
             $table->id();
-            $table->string('devise_id');
-            $table->string('agence_id');
-            $table->float('taux')->default(0);
+            $table->foreignId('devise_id')->constrained();
+            $table->foreignId('agence_id')->constrained();
+            $table->float('taux');
             $table->timestamps();
         });
     }

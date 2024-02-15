@@ -15,14 +15,12 @@ class ClientController extends Controller
      */
     public function index()
     {
-        if(Auth::check()){
-            $id=Auth::user()->societe_id;
-            $clients=Client::all();
+        if (Auth::check()) {
+            $id = Auth::user()->societe_id;
+            $clients = Client::all();
             return view('client.index', compact('clients'));
-
         }
-        return redirect('/auth')->with('danger',"Session expirée");
-
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**

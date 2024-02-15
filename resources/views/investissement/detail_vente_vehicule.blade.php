@@ -50,8 +50,8 @@
               <hr>
               <div class="col-md-12">
                   <label for="inputName5" class="form-label">Activite ouverte</label>
-                  <input type="hidden" name="activite_id" value="{{ $activite_ouverte->id }}" class="form-control" id="telephone" >
-                  <input type="text" name="activite" value="{{ $activite_ouverte->intitule }}" class="form-control" id="telephone" readonly>
+                  <div class="col-4" id="activite_id">
+                </div>
               </div>
               <hr>
               <div class="col-md-3" >
@@ -66,7 +66,7 @@
               </div>
               <div class="col-md-4" id="model">
               </div>
-              
+
               <div class="col-4" id="charge_usa">
               </div>
               <div class="col-md-4" id="prix_achat">
@@ -75,7 +75,7 @@
               </div>
               <div class="col-md-4" id="prix_vente">
               </div>
-              
+
               <div class="text-center" id="valider">
               </div>
 
@@ -84,7 +84,7 @@
               </div>
           </div>
         </div>
- 
+
       </div>
 
     </div>
@@ -112,13 +112,14 @@
                       //$("#taux").html(' <input type="text" name="taux" class="form-control" >');
                       $.each(response.chassis,function(client,val){
                   // alert(val);
+                  $("#activite_id").append(' <input type="hidden" name="activite_id" value="'+val.activite_id+'" class="form-control" id="telephone" >')
                   $("#id").append('<input  type="hidden" name="id_vente" id="" class="form-control"  value="'+val.id+'">');
                   $("#annee").append('<label for="inputAddress2" class="form-label">Annee</label> <input  type="text" name="annee" id="" class="form-control"  value="'+val.annee+'">');
                   $("#marque").append('<label for="inputAddress2" class="form-label">Marque</label> <input  type="text" name="marque" id="" class="form-control"  value="'+val.marque+'">');
                   $("#model").append('<label for="inputAddress2" class="form-label">Model</label> <input  type="text" name="model" id="" class="form-control"  value="'+val.model+'">');
-                  $("#charge_usa").append('<label for="inputAddress2" class="form-label">Charge USA</label> <input  type="text" name="charge_usa" id="" class="form-control"  value="'+val.charge_usa+'">');
-                  $("#prix_achat").append('<label for="inputAddress2" class="form-label">Prix Achat</label> <input  type="text" name="prix_achat" id="" class="form-control"  value="'+val.prix_achat+'">');
-                  $("#prix_revient").append('<label for="inputAddress2" class="form-label">Prix Revient</label> <input  type="text" name="prix_revient" id="" class="form-control"  value="'+val.prix_revient+'">');
+                  $("#charge_usa").append('<label for="inputAddress2" class="form-label"> </label> <input  type="hidden" name="charge_usa" id="" class="form-control"  value="'+val.charge_usa+'">');
+                  $("#prix_achat").append('<label for="inputAddress2" class="form-label"> </label> <input  type="hidden" name="prix_achat" id="" class="form-control"  value="'+val.prix_achat+'">');
+                  $("#prix_revient").append('<label for="inputAddress2" class="form-label"> </label> <input  type="hidden" name="prix_revient" id="" class="form-control"  value="'+val.prix_revient+'">');
                   $("#prix_vente").append('<label for="inputAddress2" class="form-label">Prix de vente</label> <input  type="text" name="prix_vente" id="" class="form-control" >');
                   $("#valider").append('<button type="submit" class="btn btn-primary">Valider</button> ');
                   $("#annuler").append('<a href="{{route('vente_vehicule')}}"><button class="btn btn-secondary">Annuler</button></a>');

@@ -15,8 +15,8 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        $gestions=TypeGestion::orderBy('gestion')->get();
-        return view('auth.registre',compact('gestions'));
+        $gestions = TypeGestion::orderBy('gestion')->get();
+        return view('auth.registre', compact('gestions'));
     }
 
     /**
@@ -33,34 +33,34 @@ class RegisterController extends Controller
     public function store(Request $request)
     {
         /**
-             * validation des champs de saisie
-             */
-            $request->validate([
-                'nom'=>'required',
-                'prenom'=>'required',
-                'email'=>'required|email|unique:utilisateurs',
-                'adresse'=>'required',
-                'password'=>'required|min:4',
-                'terms'=>'required',
-                'gestion'=>'required',
-            ]);
-            /**
-             * donnee a ajouté dans la table
-             */
-            $data=$request->all();
-            /**
-             * insertion des données dans la table user
-             */
-            Utilisateur::create([
-                'nom'=>$data['nom'],
-                'prenom'=>$data['prenom'],
-                'email'=>$data['email'],
-                'adresse'=>$data['adresse'],
-                'password'=>Hash::make($data['password']),
-                'terms'=>$data['terms'],
-                'gestion_id'=>$data['gestion'],
-            ]);
-            return redirect('/registre')->with('success','Utilisateur ajouté avec succès connectez vous avec votre mail et votre mot de passe');
+         * validation des champs de saisie
+         */
+        $request->validate([
+            'nom' => 'required',
+            'prenom' => 'required',
+            'email' => 'required|email|unique:utilisateurs',
+            'adresse' => 'required',
+            'password' => 'required|min:4',
+            'terms' => 'required',
+            'gestion' => 'required',
+        ]);
+        /**
+         * donnee a ajouté dans la table
+         */
+        $data = $request->all();
+        /**
+         * insertion des données dans la table user
+         */
+        Utilisateur::create([
+            'nom' => $data['nom'],
+            'prenom' => $data['prenom'],
+            'email' => $data['email'],
+            'adresse' => $data['adresse'],
+            'password' => Hash::make($data['password']),
+            'terms' => $data['terms'],
+            'gestion_id' => $data['gestion'],
+        ]);
+        return redirect('/registre')->with('success', 'Utilisateur ajouté avec succès connectez vous avec votre mail et votre mot de passe');
     }
 
     /**

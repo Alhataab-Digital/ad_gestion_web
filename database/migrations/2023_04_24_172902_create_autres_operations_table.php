@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('autres_operations', function (Blueprint $table) {
             $table->id();
-            $table->string('montant_operation');
+            $table->float('montant_operation');
             $table->string('sens_operation');
-            $table->string('type_operation_id');
-            $table->string('reglement_id');
-            $table->string('caisse_id');
-            $table->string('user_id');
+            $table->foreignId('reglement_id')->constrained();
+            $table->foreignId('caisse_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }

@@ -20,10 +20,10 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        if(Auth::check()){
-        return view('auth.profile');
+        if (Auth::check()) {
+            return view('auth.profile');
         }
-        return redirect('/')->with('danger',"Session expirée");
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**
@@ -40,30 +40,28 @@ class ProfileController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'password'=>'required|confirmed|min:4',
+            'password' => 'required|confirmed|min:4',
         ]);
         /**
          * donnee a ajouté dans la table
          */
-        $data=$request->all();
+        $data = $request->all();
 
-        $utilisateur= Utilisateur::find(Auth::user()->id);
-        if(isset($utilisateur)){
-            if(isset(UserEnLigne::where('utilisateur_id',$utilisateur->id)->first()->id))
-            {
-            $deconnexion=UserEnLigne::where('utilisateur_id',$utilisateur->id)->first();
-            $deconnexion->delete('utilisateur_id',$utilisateur->id);
-            $utilisateur->update([
-                'password'=>Hash::make($data['password']),
-            ]);
-            Session::flush();
-            Auth::logout();
-            return redirect('/auth')->with('success',"Mot de passe modifier avec succès reconnectez vous");
+        $utilisateur = Utilisateur::find(Auth::user()->id);
+        if (isset($utilisateur)) {
+            if (isset(UserEnLigne::where('utilisateur_id', $utilisateur->id)->first()->id)) {
+                $deconnexion = UserEnLigne::where('utilisateur_id', $utilisateur->id)->first();
+                $deconnexion->delete('utilisateur_id', $utilisateur->id);
+                $utilisateur->update([
+                    'password' => Hash::make($data['password']),
+                ]);
+                Session::flush();
+                Auth::logout();
+                return redirect('/auth')->with('success', "Mot de passe modifier avec succès reconnectez vous");
             }
             return redirect('/auth');
         }
-        return redirect('/')->with('danger',"Session expirée");
-
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**

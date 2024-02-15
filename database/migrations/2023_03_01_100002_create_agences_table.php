@@ -14,14 +14,12 @@ return new class extends Migration
         Schema::create('agences', function (Blueprint $table) {
             $table->id();
             $table->string('nom');
-            $table->string('adresse')->default('');
-            $table->string('telephone')->default('');
-            $table->string('email')->default('');
-            $table->string('compte_societe')->default('0');
-            $table->string('compte_securite')->default('0');
-            $table->string('societe_id');
-            $table->string('devise_id');
-            $table->string('region_id');
+            $table->string('adresse')->nullable();
+            $table->string('telephone')->nullable();
+            $table->string('email')->nullable();
+            $table->foreignId('societe_id')->constrained();
+            $table->foreignId('devise_id')->constrained();
+            $table->foreignId('region_id')->constrained();
             $table->timestamps();
         });
     }

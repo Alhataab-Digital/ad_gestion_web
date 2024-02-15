@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
-            $table->string('montant')->default('0');
-            $table->string('devise_id');
-            $table->string('caisse_id');
+            $table->float('montant')->default(0);
+            $table->foreignId('devise_id')->constrained();
+            $table->foreignId('caisse_id')->constrained();
             $table->timestamps();
         });
     }

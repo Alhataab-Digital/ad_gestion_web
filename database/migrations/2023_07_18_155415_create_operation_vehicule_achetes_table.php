@@ -13,20 +13,20 @@ return new class extends Migration
     {
         Schema::create('operation_vehicule_achetes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('fournisseur_id')->constrained();
+            $table->foreignId('activite_id')->constrained();
+            $table->foreignId('caisse_id')->constrained();
             $table->string('annee');
             $table->string('marque');
             $table->string('model');
             $table->string('chassis');
-            $table->string('prix_achat');
-            $table->string('charge_usa');
-            $table->string('prix_revient');
-            $table->string('fournisseur_id');
-            $table->string('date_comptable');
+            $table->float('prix_achat');
+            $table->float('charge_usa');
+            $table->float('prix_revient');
+            $table->date('date_comptable');
             $table->string('sens_operation');
             $table->string('etat')->nullable();
-            $table->string('activite_id');
-            $table->string('caisse_id');
-            $table->string('user_id');
             $table->timestamps();
         });
     }

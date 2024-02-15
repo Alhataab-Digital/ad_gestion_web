@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('telephone');
             $table->string('adresse')->nullable();
             $table->string('piece_identite')->nullable();
-            $table->string('societe_id')->nullable();
+            $table->foreignId('societe_id')->constrained();
             $table->timestamps();
         });
     }

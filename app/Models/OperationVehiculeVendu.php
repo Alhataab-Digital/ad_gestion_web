@@ -15,6 +15,7 @@ class OperationVehiculeVendu extends Model
     protected $fillable = [
         'prix_vente',
         'marge',
+        'taux_devise',
         'client_id',
         'date_comptable',
         'sens_operation',

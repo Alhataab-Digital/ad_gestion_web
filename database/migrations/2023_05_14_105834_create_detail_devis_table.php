@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('detail_devis', function (Blueprint $table) {
             $table->id();
-            $table->string('devis_id');
-            $table->string('produit_id');
-            $table->string('quantite_demandee');
-            $table->string('prix_unitaire_demande');
+            $table->foreignId('devis_id')->constrained();
+            $table->foreignId('produit_id')->constrained();
+            $table->integer('quantite_demandee');
+            $table->float('prix_unitaire_demande');
             $table->timestamps();
         });
     }

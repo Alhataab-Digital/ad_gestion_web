@@ -26,15 +26,17 @@ class FactureController extends Controller
      */
     public function index()
     {
-        $agence_id=Auth::user()->agence_id;
-        $factures=Facture::orderBy('updated_at','DESC')->where('agence_id',$agence_id)->get();
-        $factures_nvs=Facture::where('etat',NULL)->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
-        $factures_imps=Facture::where('etat','valider')->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
-        $factures_ech=Facture::where('etat','echeance')->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
-        $factures_pays=Facture::where('etat','terminer')->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
-        $factures_anns=Facture::where('etat','annuler')->where('agence_id',$agence_id)->orderBy('id','DESC')->get();
-        return view('e-commerce.facture',compact('factures','factures_nvs','factures_imps','factures_ech','factures_pays','factures_anns'));
-
+        if (Auth::check()) {
+            $agence_id = Auth::user()->agence_id;
+            $factures = Facture::orderBy('updated_at', 'DESC')->where('agence_id', $agence_id)->get();
+            $factures_nvs = Facture::where('etat', NULL)->where('agence_id', $agence_id)->orderBy('id', 'DESC')->get();
+            $factures_imps = Facture::where('etat', 'valider')->where('agence_id', $agence_id)->orderBy('id', 'DESC')->get();
+            $factures_ech = Facture::where('etat', 'echeance')->where('agence_id', $agence_id)->orderBy('id', 'DESC')->get();
+            $factures_pays = Facture::where('etat', 'terminer')->where('agence_id', $agence_id)->orderBy('id', 'DESC')->get();
+            $factures_anns = Facture::where('etat', 'annuler')->where('agence_id', $agence_id)->orderBy('id', 'DESC')->get();
+            return view('e-commerce.facture', compact('factures', 'factures_nvs', 'factures_imps', 'factures_ech', 'factures_pays', 'factures_anns'));
+        }
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**
@@ -50,47 +52,48 @@ class FactureController extends Controller
      */
     public function store(Request $request)
     {
+        if (Auth::check()) {
 
+            $facture = Facture::where('devis_id', $request->devis_id)->first();
+            if (isset($facture)) {
 
-        $facture=Facture::where('devis_id',$request->devis_id)->first();
+                $facture = Facture::where('devis_id', $request->devis_id)->latest('id')->first();
 
-            if(isset($facture)){
+                $devis = Devis::find($request->devis_id);
 
-                $facture=Facture::where('devis_id',$request->devis_id)->latest('id')->first();
+                $devis->update([
+                    'activite_id' => $request->activite,
+                    'etat' => 'valider',
+                ]);
 
-                $devis=Devis::find($request->devis_id);
-
-                    $devis->update([
-                        'activite_id' =>$request->activite,
-                        'etat' =>'valider',
-                    ]);
-
-                return redirect('facture/'.encrypt($facture->id).'/edit');
-            }else{
-                $devis=Devis::find($request->devis_id);
-                $id=Auth::user()->id;
-                $agence_id=Auth::user()->agence_id;
+                return redirect('facture/' . encrypt($facture->id) . '/edit');
+            } else {
+                $devis = Devis::find($request->devis_id);
+                $id = Auth::user()->id;
+                $agence_id = Auth::user()->agence_id;
 
                 Facture::create([
                     'devis_id'  => $request->devis_id,
                     'activite_id'  => $request->activite,
-                    'client_id'  => $request->client,
-                    'montant_total'=>$devis->montant_total,
+                    'client_id'  => $request->client_id,
+                    'montant_total' => $devis->montant_total,
                     'user_id'      => $id,
                     'agence_id'    => $agence_id,
                 ]);
 
-                $devis=Devis::find($request->devis_id);
+                $devis = Devis::find($request->devis_id);
 
-                    $devis->update([
-                        'activite_id' =>$request->activite,
-                        'etat' =>'valider',
-                    ]);
+                $devis->update([
+                    'activite_id' => $request->activite,
+                    'etat' => 'valider',
+                ]);
 
-                $facture=Facture::where('user_id',$id)->where('agence_id',$agence_id)->latest('id')->first();
+                $facture = Facture::where('user_id', $id)->where('agence_id', $agence_id)->latest('id')->first();
 
-                return redirect('facture/'.encrypt($facture->id).'/edit');
+                return redirect('facture/' . encrypt($facture->id) . '/edit');
             }
+        }
+        return redirect('/')->with('danger', "Session expirée");
     }
     /**
      * Display the specified resource.
@@ -105,26 +108,26 @@ class FactureController extends Controller
      */
     public function edit(string $id)
     {
-            $id=decrypt($id);
-            $facture=Facture::find($id);
-            if($facture->entrepot_id==NULL)
-            {
-                $entrepots=EntrepotStock::where("agence_id",$facture->agence_id)->get();
-                $devis=Devis::where('id',$facture->devis_id)->first();
-                $detail_deviss=DetailDevis::where('devis_id',$facture->devis_id)->get();
-                $detail_factures=DetailFacture::where('facture_id',$facture->id)->get();
-                $total_ht=DetailFacture::where('facture_id',$facture->id)->selectRaw('sum(quantite_vendue*prix_unitaire_vendu) as total')->first('total');
-                return view('e-commerce.facture_encours', compact('devis','detail_deviss','total_ht','facture','entrepots','detail_factures'));
-
+        if (Auth::check()) {
+            $id = decrypt($id);
+            $facture = Facture::find($id);
+            if ($facture->entrepot_id == NULL) {
+                $entrepots = EntrepotStock::where("agence_id", $facture->agence_id)->get();
+                $devis = Devis::where('id', $facture->devis_id)->first();
+                $detail_deviss = DetailDevis::where('devis_id', $facture->devis_id)->get();
+                $detail_factures = DetailFacture::where('facture_id', $facture->id)->get();
+                $total_ht = DetailFacture::where('facture_id', $facture->id)->selectRaw('sum(quantite_vendue*prix_unitaire_vendu) as total')->first('total');
+                return view('e-commerce.facture_encours', compact('devis', 'detail_deviss', 'total_ht', 'facture', 'entrepots', 'detail_factures'));
             }
 
-            $devis=Devis::where('id',$facture->devis_id)->first();
-            $detail_deviss=DetailDevis::where('devis_id',$facture->devis_id)->get();
-            $detail_factures=DetailFacture::where('facture_id',$facture->id)->get();
-            $entrepots=EntrepotStock::where('id','!=',$facture->entrepot_id)->where("agence_id",$facture->agence_id)->get();
-            $total_ht=DetailFacture::where('facture_id',$facture->id)->selectRaw('sum(quantite_vendue*prix_unitaire_vendu) as total')->first('total');
-            return view('e-commerce.facture_encours', compact('devis','detail_deviss','total_ht','facture','entrepots','detail_factures'));
-
+            $devis = Devis::where('id', $facture->devis_id)->first();
+            $detail_deviss = DetailDevis::where('devis_id', $facture->devis_id)->get();
+            $detail_factures = DetailFacture::where('facture_id', $facture->id)->get();
+            $entrepots = EntrepotStock::where('id', '!=', $facture->entrepot_id)->where("agence_id", $facture->agence_id)->get();
+            $total_ht = DetailFacture::where('facture_id', $facture->id)->selectRaw('sum(quantite_vendue*prix_unitaire_vendu) as total')->first('total');
+            return view('e-commerce.facture_encours', compact('devis', 'detail_deviss', 'total_ht', 'facture', 'entrepots', 'detail_factures'));
+        }
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**
@@ -132,26 +135,28 @@ class FactureController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // dd($request->client_id);
-        $id=decrypt($id);
-        $facture=Facture::find($id);
-        // dd($facture,$request->montant_ht);
-        if($request->montant_ht==NULL)
-        {
-            return back();
+        if (Auth::check()) {
+            // dd($request->client_id);
+            $id = decrypt($id);
+            $facture = Facture::find($id);
+            // dd($facture,$request->montant_ht);
+            if ($request->montant_ht == NULL) {
+                return back();
+            }
+            $facture->update([
+                'montant_total' => $request->montant_ht,
+                'client_id' => $request->client_id,
+                'etat' => 'valider',
+            ]);
+
+            $devis = devis::find($facture->devis_id);
+            $devis->update([
+                'etat' => 'Facture',
+            ]);
+
+            return redirect('detail_facture/' . encrypt($id) . '/show');
         }
-                    $facture->update([
-                        'montant_total' =>$request->montant_ht,
-                        'client_id' =>$request->client_id,
-                        'etat' =>'valider',
-                    ]);
-
-        $devis=devis::find($facture->devis_id);
-                    $devis->update([
-                        'etat' =>'Facture',
-                    ]);
-
-        return redirect('detail_facture/'.encrypt($id).'/show');
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     /**
@@ -162,22 +167,19 @@ class FactureController extends Controller
         //
     }
 
-    public function select_produit(Request $request){
-        if(Auth::check()){
-            $agence_id=Auth::user()->agence_id;
+    public function select_produit(Request $request)
+    {
+        if (Auth::check()) {
+            $agence_id = Auth::user()->agence_id;
 
-            $data['produits']=DetailDevis::where('devis_id',$request->devis_id)->where('produit_id',$request->id)->get();
+            $data['produits'] = DetailDevis::where('devis_id', $request->devis_id)->where('produit_id', $request->id)->get();
 
             return response()->json($data);
-
         }
-            return redirect('/auth')->with('success',"Vous n'êtes pas autorisé à accéder");
-
-
+        return redirect('/')->with('danger', "Session expirée");
     }
 
     public function print()
     {
-
     }
 }

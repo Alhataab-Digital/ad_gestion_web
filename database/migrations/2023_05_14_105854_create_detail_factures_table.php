@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('detail_factures', function (Blueprint $table) {
             $table->id();
-            $table->string('facture_id');
-            $table->string('produit_id');
-            $table->string('quantite_vendue');
-            $table->string('prix_unitaire_vendu');
+            $table->foreignId('facture_id')->constrained();
+            $table->foreignId('produit_id')->constrained();
+            $table->integer('quantite_vendue');
+            $table->float('prix_unitaire_vendu');
             $table->timestamps();
         });
     }

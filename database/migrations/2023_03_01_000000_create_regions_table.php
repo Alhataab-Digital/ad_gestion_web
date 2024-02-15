@@ -21,13 +21,13 @@ return new class extends Migration
         });
 
         $regions=[
-            
+
             //https://www.alao.ch/fr/blogs/indicatifs-telephoniques-internationaux/
 
-        //Zone 1 : Amérique du Nord et Caraïbes
+            //Zone 1 : Amérique du Nord et Caraïbes
 
-           ["+1XXX","🇺🇸","États-Unis et ses territoires"], 
-           ["+1XXX","🇨🇦","Canada"],
+           ["+1","🇺🇸","États-Unis"],
+           ["+1","🇨🇦","Canada"],
            ["+1242","🇧🇸","Bahamas"],
            ["+1246","🇧🇧","Barbade"],
            ["+1264","🇦🇮","Anguilla"],
@@ -56,7 +56,7 @@ return new class extends Migration
            ["+1876","🇯🇲","Jamaïque"],
            ["+1939","🇵🇷","Porto Rico"],
 
-        //Zone 2 : Afrique et Groenland
+            //Zone 2 : Afrique et Groenland
             ["+20","🇪🇬", "Égypte"],
             ["+211","🇸🇸", "Sud Soudan"],
             ["+212","🇲🇦", "Maroc"],
@@ -126,7 +126,7 @@ return new class extends Migration
             ["+298","🇫🇴","Îles Féroé"],
             ["+299","🇬🇱","Groenland"],
 
-        //Zone 3 : Europe   
+            //Zone 3 : Europe
             ["+30","🇬🇷"," Grèce"],
             ["+31","🇳🇱"," Pays-Bas"],
             ["+32","🇧🇪"," Belgique"],
@@ -166,7 +166,7 @@ return new class extends Migration
             ["+389","🇲🇰"," Macédoine du Nord"],
             ["+39","🇮🇹"," Italie"],
 
-        //Zone 4 : Europe du Nord et de l'Est
+            //Zone 4 : Europe du Nord et de l'Est
             ["+40","🇷🇴","Roumanie"],
             ["+41","🇨🇭"," Suisse"],
             ["+420","🇨🇿"," République tchèque"],
@@ -180,7 +180,7 @@ return new class extends Migration
             ["+48","🇵🇱"," Pologne"],
             ["+49","🇩🇪"," Allemagne"],
 
-        //Zone 5 : Amérique centrale et du Sud
+            //Zone 5 : Amérique centrale et du Sud
             ["+500","🇫🇰"," Îles Falkland"],
             ["+501","🇧🇿 ","Belize"],
             ["+502","🇬🇹 ","Guatemala"],
@@ -211,8 +211,8 @@ return new class extends Migration
             ["+597","🇸🇷"," Suriname"],
             ["+598","🇺🇾"," Uruguay"],
             ["+599","🇧🇶"," Bonaire, 🇨🇼 Curaçao, 🇧🇶 Saba et 🇧🇶 Sint Eustatius"],
-        
-        //Zone 6 : Asie du Sud-Est, Australie et Océanie
+
+            //Zone 6 : Asie du Sud-Est, Australie et Océanie
 
             ["+60","🇲🇾"," Malaisie"],
             ["+61","🇦🇺"," Australie (y compris 🇨🇨 Îles Cocos et 🇨🇽 Île Christmas)"],
@@ -246,11 +246,11 @@ return new class extends Migration
             ["+691","🇫🇲"," États fédérés de Micronésie"],
             ["+692","🇲🇭"," Îles Marshall"],
 
-        //Zone 7 : Russie, territoires occupés par la Russie et Kazakhstan
+            //Zone 7 : Russie, territoires occupés par la Russie et Kazakhstan
 
            [ "+7","🇷🇺"," Russie"],
 
-        //Zone 8 : Asie du Sud-Est et de l'Est et numéros spéciaux
+            //Zone 8 : Asie du Sud-Est et de l'Est et numéros spéciaux
 
             ["+81","🇯🇵"," Japon"],
             ["+82","🇰🇷 ","Corée du Sud (République de Corée)"],
@@ -268,7 +268,7 @@ return new class extends Migration
 
             ["+886","🇹🇼"," Taïwan"],
 
-        //Zone 9 : Moyen-Orient, Asie occidentale, centrale et du Sud
+            //Zone 9 : Moyen-Orient, Asie occidentale, centrale et du Sud
 
             ["+90","🇹🇷 ","Turquie, République turque de Chypre du Nord"],
             ["+91","🇮🇳 ","Inde"],
@@ -308,6 +308,218 @@ return new class extends Migration
 
 
         ];
+
+    // $region =[
+
+    //     ["AFGHANISTAN","+93"]
+    //     [AFRIQUE DU SUD 	+27]
+    //     ALBANIE 	+355
+    //     ALGERIE 	+213
+    //     ALLEMAGNE 	+49
+    //     ANDORRE 	+376
+    //     ANGOLA 	+244
+    //     ANTIGUA ET BARBUDA 	+1
+    //     ARABIE SAOUDITE 	+966
+    //     ARGENTINE 	+54
+    //     ARMENIE 	+374
+    //     AUSTRALIE 	+61
+    //     AUTRICHE 	+43
+    //     AZERBAIDJAN 	+994
+    //     BAHAMAS 	+1
+    //     BAHREIN 	+973
+    //     BALEARES 	+871
+    //     +971
+    //     BANGLADESH 	+880
+    //     BARBADE 	+1
+    //     BELGIQUE 	+32
+    //     BELIZE 	+501
+    //     BENIN 	+229
+    //     BHOUTAN 	+975
+    //     BIELORUSSIE 	+375
+    //     BOLIVIE 	+591
+    //     BOSNIE-HERZEGOVINE 	+387
+    //     BOTSWANA 	+267
+    //     BRESIL 	+55
+    //     BRUNEI 	+673
+    //     BULGARIE 	+359
+    //     BURKINA FASO 	+226
+    //     BURUNDI 	+257
+    //     CAMBODGE 	+855
+    //     CAMEROUN 	+237
+    //     CANADA 	+1
+    //     CANARIES 	+34
+    //     CAP VERT 	+238
+    //     CENTAFRIQUE 	+236
+    //     CHILI 	+56
+    //     CHINE 	+86
+    //     CHYPRE 	+357
+    //     COLOMBIE 	+57
+    //     COMORES 	+269
+    //     CONGO BRAZZAVILLE 	+242
+    //     CONGO KINSHASA 	+243
+    //     COREE DU NORD 	+850
+    //     COREE DU SUD 	+82
+    //     COSTA RICA 	+506
+    //     COTE D'IVOIRE 	+225
+    //     CROATIE 	+385
+    //     CUBA 	+53
+    //     DANEMARK 	+45
+    //     DJIBOUTI 	+253
+    //     DOMINIQUE 	+1
+    //     EGYPTE 	+20
+    //     EMIRATS ARABE UNIS 	+971
+    //     EQUATEUR 	+593
+    //     ERYTHREE 	+291
+    //     ESPAGNE 	+34
+    //     ESTONIE 	+372
+    //     ETATS-UNIS 	+1
+    //     ETHIOPIE 	+251
+    //     FIDJI (Iles) 	+679
+    //     FINLANDE 	+358
+    //     FRANCE 	+33
+    //     GABON 	+241
+    //     GAMBIE 	+220
+    //     GEORGIE 	+995
+    //     GHANA 	+233
+    //     GRECE 	+30
+    //     GRENADE 	+1
+    //     GUADELOUPE 	+590
+    //     GUATEMALA 	+502
+    //     GUERNESEY 	+44-1481
+    //     GUINEE BISSAU 	+245
+    //     GUINEE EQUATORIALE 	+240
+    //     GUINEE 	+224
+    //     GUYANE 	+592
+    //     HAITI 	+509
+    //     HONDURAS 	+504
+    //     HONGRIE 	+36
+    //     ILE DE MAN 	+44
+    //     ILE MAURICE 	+230
+    //     ILE DE LA REUNION 	+262
+    //     ILES COOK 	+682
+    //     INDE 	+91
+    //     INDONESIE 	+62
+    //     IRAK 	+964
+    //     IRAN 	+98
+    //     IRLANDE 	+353
+    //     ISLANDE 	+354
+    //     ISRAEL 	+972
+    //     ITALIE 	+39
+    //     JAMAIQUE 	+1
+    //     JAPON 	+81
+    //     JERSEY 	+44-1534
+    //     JORDANIE 	+962
+    //     KAZAKHSTAN 	+7
+    //     KENYA 	+254
+    //     KIRGHIZISTAN 	+996
+    //     KIRIBATI 	+686
+    //     KOSOVO 	+381
+    //     KOWEIT 	+965
+    //     LAOS 	+856
+    //     LESOTHO 	+266
+    //     LETTONIE 	+371
+    //     LIBAN 	+961
+    //     LIBERIA 	+231
+    //     LIBYE 	+218
+    //     LIECHTENSTEIN 	+423
+    //     LITUANIE 	+370
+    //     LUXEMBOURG 	+352
+    //     MACEDOINE 	+389
+    //     MADAGASCAR 	+261
+    //     MALAISIE 	+60
+    //     MALAWI 	+265
+    //     MALDIVES 	+960
+    //     MALI 	+223
+    //     MALTE 	+356
+    //     MAROC 	+212
+    //     MARSHALL (ILES) 	+692
+    //     MARTINIQUE 	+596
+    //     MAURITANIE 	+222
+    //     MEXIQUE 	+52
+    //     MICRONESIE 	+961
+    //     MOLDAVIE 	+373
+    //     MONACO 	+377
+    //     MONGOLIE 	+976
+    //     MONTENEGRO 	+382
+    //     MOZAMBIQUE 	+258
+    //     MYANMAR (BIRMANIE) 	+95
+    //     NAMIBIE 	+264
+    //     NAURU 	+674
+    //     NEPAL 	+977
+    //     NICARAGUA 	+505
+    //     NIGER 	+227
+    //     NIGERIA 	+234
+    //     NIUE 	+86
+    //     NORVEGE 	+47
+    //     NOUVELLE CALEDONIE 	+687
+    //     NOUVELLE ZELANDE 	+64
+    //     OMAN 	+968
+    //     OUGANDA 	+256
+    //     OUZBEKISTAN 	+998
+    //     PAKISTAN 	+92
+    //     PALAOS 	+680
+    //     PANAMA 	+507
+    //     PAPOUASIE NOUVELLE GUINEE 	+675
+    //     PARAGUAY 	+595
+    //     PAYS BAS 	+31
+    //     PEROU 	+51
+    //     PHILIPPINES 	+63
+    //     POLOGNE 	+48
+    //     POLYNESIE 	+689
+    //     PORTUGAL 	+351
+    //     QATAR 	+974
+    //     REPUBLIQUE DOMINICAINE 	+1 809
+    //     REPUBLIQUE TCHEQUE 	+420
+    //     ROUMANIE 	+40
+    //     ROYAUME-UNI 	+44
+    //     RUSSIE 	+7
+    //     RWANDA 	+250
+    //     SAINT CHRISTOPHE ET NIEVES 	+1
+    //     SAINT MARTIN 	+590
+    //     SAINT VINCENT LES GRENADINES 	+53
+    //     SAINTE LUCIE 	+1
+    //     SALVADOR 	+503
+    //     SAMOA 	+685
+    //     SAO TOME-ET-PRINCIPE 	+239
+    //     SENEGAL 	+221
+    //     SERBIE 	+381
+    //     SEYCHELLES 	+248
+    //     SIERRA LEONE 	+232
+    //     SINGAPOUR 	+65
+    //     SLOVAQUIE 	+421
+    //     SLOVENIE 	+386
+    //     SOMALIE 	+252
+    //     SOUDAN 	+249
+    //     SRI LANKA 	+94
+    //     SUEDE 	+46
+    //     SUISSE 	+41
+    //     SURINAME 	+597
+    //     SWAZILAND 	+268
+    //     SYRIE 	+963
+    //     TADJIKISTAN 	+992
+    //     TAIWAN 	+886
+    //     TANZANIE 	+255
+    //     TCHAD 	+235
+    //     THAILANDE 	+66
+    //     TIMOR ORIENTAL 	+670
+    //     TOGO 	+228
+    //     TONGA 	+676
+    //     TRINITE TOBAGO 	+1
+    //     TUNISIE 	+216
+    //     TURKMENISTAN 	+993
+    //     TURQUIE 	+90
+    //     TUVALU 	+688
+    //     UKRAINE 	+380
+    //     URUGUAY 	+598
+    //     VANUATU 	+678
+    //     VATICAN 	+39
+    //     VENEZUELA 	+58
+    //     VIETNAM 	+84
+    //     YEMEN 	+967
+    //     ZAMBIE 	+260
+    //     ZIMBABWE 	+263
+
+    // ]
 
         foreach($regions as $region){
             Region::create([

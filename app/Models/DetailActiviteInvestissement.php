@@ -11,7 +11,7 @@ class DetailActiviteInvestissement extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'activite_investissement_id',
+        'activite_id',
         'investisseur_id',
         'montant_investis',
         'taux',

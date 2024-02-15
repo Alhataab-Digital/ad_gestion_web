@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('operation_depense_activites', function (Blueprint $table) {
             $table->id();
-            $table->string('activite_investissement_id');
-            $table->string('secteur_depense_id');
-            $table->string('montant_depense');
+            $table->foreignId('activite_id')->constrained();
+            $table->foreignId('secteur_depense_id')->constrained();
+            $table->float('montant_depense');
             $table->timestamps();
         });
     }

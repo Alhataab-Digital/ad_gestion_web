@@ -84,7 +84,7 @@ use App\Http\Controllers\Detenu\DetenuController;
 */
 Route::controller(LoginController::class)->group(function(){
     Route::get('/','index');
-    Route::get('/auth','login')->name('login');
+    Route::get('/login','login')->name('login');
     Route::post('/store','store')->name('login.store');
     Route::get('/logout','logout')->name('logout');
     Route::get('/user_connexion','user_connexion')->name('users.user_connexion');

@@ -16,7 +16,7 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        $gestions=TypeGestion::all();
+        $gestions = TypeGestion::all();
         return response()->json($gestions);
     }
 
@@ -35,15 +35,15 @@ class RegisterController extends Controller
     {
         $request->validated();
 
-        $data=[
-            'nom'=>$request->nom,
-            'prenom'=>$request->prenom,
-            'email'=>$request->email,
-            'adresse'=>$request->adresse,
-            'password'=>Hash::make($request->password),
-            'terms'=>1,
-            'gestion_id'=>1,
-            'societe_id'=>1,
+        $data = [
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'email' => $request->email,
+            'adresse' => $request->adresse,
+            'password' => Hash::make($request->password),
+            'terms' => 1,
+            'gestion_id' => 1,
+            'societe_id' => 1,
         ];
         /**
          * insertion des données dans la table user
@@ -52,9 +52,10 @@ class RegisterController extends Controller
         $token = $user->createToken('ad_gestion')->plainTextToken;
         return response(
             [
-              'user'=>  $user,
-              'token'=>$token,
-            ], 201
+                'user' =>  $user,
+                'token' => $token,
+            ],
+            201
         );
     }
 

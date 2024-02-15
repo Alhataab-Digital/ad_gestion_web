@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('produits', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('categorie_produit_id')->constrained();
+            $table->foreignId('agence_id')->constrained();
             $table->string('nom_produit');
-            $table->string('description_produit');
-            $table->string('prix_unitaire_achat');
-            $table->string('prix_unitaire_revient')->default(0);
-            $table->string('prix_unitaire_vente');
-            $table->string('stock_min');
-            $table->string('categorie_produit_id');
-            $table->string('agence_id');
+            $table->text('description_produit');
+            $table->float('prix_unitaire_achat');
+            $table->float('prix_unitaire_revient')->default(0);
+            $table->float('prix_unitaire_vente');
+            $table->integer('stock_min');
             $table->timestamps();
         });
     }

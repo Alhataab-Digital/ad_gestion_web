@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\TypeReglement;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,10 +18,16 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        $reglements=['Espece','Cheque','Virement','Carte',];
-        foreach($reglements as $reglement){
+        $reglements = [
+            'Espece',
+            'Cheque',
+            'Virement',
+            'Carte',
+        ];
+
+        foreach ($reglements as $reglement) {
             TypeReglement::create([
-                'reglement'=>$reglement,
+                'reglement' => $reglement,
             ]);
         }
     }

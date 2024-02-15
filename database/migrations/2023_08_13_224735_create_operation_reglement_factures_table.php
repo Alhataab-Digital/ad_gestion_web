@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('operation_reglement_factures', function (Blueprint $table) {
             $table->id();
-            $table->string('facture_id');
-            $table->string('type_reglement_id');
-            $table->string('activite_id');
-            $table->string('montant_operation');
+            $table->foreignId('facture_id')->constrained();
+            $table->foreignId('type_reglement_id')->constrained();
+            $table->foreignId('activite_id')->constrained();
+            $table->foreignId('reglement_facture_id')->constrained();
+            $table->float('montant_operation');
             $table->timestamps();
         });
     }
