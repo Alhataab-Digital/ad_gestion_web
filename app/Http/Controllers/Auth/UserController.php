@@ -7,13 +7,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
-use App\Models\Utilisateur;
-use App\Models\ConnexionUser;
-use App\Models\UserEnLigne;
-use App\Models\Role;
-use App\Models\Permission;
-use App\Models\RolesUser;
-use App\Models\Caisse;
+use App\Models\Users\Utilisateur;
+use App\Models\Users\ConnexionUser;
+use App\Models\Users\UserEnLigne;
+use App\Models\Users\Role;
+use App\Models\Users\Permission;
 
 class UserController extends Controller
 {

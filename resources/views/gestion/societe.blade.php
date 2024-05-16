@@ -78,7 +78,7 @@
                             <div class="col-md-3">
                                 <label for="validationDefault05" class="form-label">Téléphone<span
                                         style="color:red">*</span></label>
-                                <input type="text" name="telephone" class="form-control" id="validationDefault05"
+                                <input type="text" name="telephone" value="{{ $region->indicatif }}" class="form-control" id="validationDefault05"
                                     required>
                             </div>
 

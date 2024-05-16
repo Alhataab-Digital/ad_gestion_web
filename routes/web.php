@@ -1,6 +1,11 @@
 <?php
 
+// use App\Http\Controllers\ProfileController;
+
+use App\Http\Controllers\Agence\AgenceController as AgenceAgenceController;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -11,24 +16,35 @@ use App\Http\Controllers\SocieteController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\AgenceController;
-use App\Http\Controllers\AgenceUserController;
-use App\Http\Controllers\CaisseController;
-use App\Http\Controllers\CaisseUserController;
+use App\Http\Controllers\Agence\AgenceController;
+use App\Http\Controllers\Agence\AgenceUserController;
+use App\Http\Controllers\Caisse\CaisseController;
+use App\Http\Controllers\Caisse\CaisseUserController;
+use App\Http\Controllers\Banque\BanqueController;
+use App\Http\Controllers\CabinetAssurance\CategorieController;
+use App\Http\Controllers\CabinetAssurance\ClasseController;
+use App\Http\Controllers\CabinetAssurance\DureeController;
+use App\Http\Controllers\CabinetAssurance\EnergieController;
+use App\Http\Controllers\CabinetAssurance\GenreController;
+use App\Http\Controllers\CabinetAssurance\GroupeController;
+use App\Http\Controllers\CabinetAssurance\MarqueController;
+use App\Http\Controllers\CabinetAssurance\PrimeNetController;
+use App\Http\Controllers\CabinetAssurance\PuissanceController;
+use App\Http\Controllers\CabinetAssurance\UsageController;
+use App\Http\Controllers\CabinetAssurance\ZoneController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\FournisseurController;
-use App\Http\Controllers\AutresOperationController;
+use App\Http\Controllers\Caisse\AutresOperationController;
 use App\Http\Controllers\CategorieProduitController;
 use App\Http\Controllers\ProduitController;
 
 
-use App\Http\Controllers\Cash\TrancheTarifController;
-use App\Http\Controllers\Cash\DeviseController;
-use App\Http\Controllers\Cash\AchatDeviseController;
-use App\Http\Controllers\Cash\VenteDeviseController;
-use App\Http\Controllers\Cash\EnvoiController;
-use App\Http\Controllers\Cash\RetraitController;
+use App\Http\Controllers\MoneyChange\TrancheTarifController;
+use App\Http\Controllers\MoneyChange\DeviseController;
+use App\Http\Controllers\MoneyChange\AchatDeviseController;
+use App\Http\Controllers\MoneyChange\VenteDeviseController;
+use App\Http\Controllers\MoneyChange\EnvoiController;
+use App\Http\Controllers\MoneyChange\RetraitController;
 
 
 
@@ -46,7 +62,15 @@ use App\Http\Controllers\Investissement\AchatVehiculeController;
 use App\Http\Controllers\Investissement\VenteVehiculeController;
 use App\Http\Controllers\Investissement\ActiviteVehiculeController;
 use App\Http\Controllers\Investissement\DetailActiviteVehiculeController;
-
+use App\Http\Controllers\Investissement\CommandeController;
+use App\Http\Controllers\Investissement\DetailCommandeController;
+use App\Http\Controllers\Investissement\LivrerController;
+use App\Http\Controllers\Investissement\DetailLivrerController;
+use App\Http\Controllers\Investissement\DevisController;
+use App\Http\Controllers\Investissement\DetailDevisController;
+use App\Http\Controllers\Investissement\FactureController;
+use App\Http\Controllers\Investissement\DetailFactureController;
+use App\Http\Controllers\Investissement\ReglementFactureController;
 
 
 use App\Http\Controllers\Hotel\TypeChambreController;
@@ -58,19 +82,61 @@ use App\Http\Controllers\Stock\EntrepotController;
 use App\Http\Controllers\Stock\InventaireStockController;
 
 
-use App\Http\Controllers\CommandeController;
-use App\Http\Controllers\DetailCommandeController;
-use App\Http\Controllers\LivrerController;
-use App\Http\Controllers\DetailLivrerController;
-use App\Http\Controllers\DevisController;
-use App\Http\Controllers\DetailDevisController;
-use App\Http\Controllers\FactureController;
-use App\Http\Controllers\DetailFactureController;
-use App\Http\Controllers\ReglementFactureController;
-use App\Http\Controllers\BanqueController;
-
-
 use App\Http\Controllers\Detenu\DetenuController;
+/*
+ --------------------------
+|Controller livewire
+---------------------------
+*/
+
+use App\Livewire\CabinetMedical\TarifMedical;
+use App\Livewire\CabinetMedical\TarifMedicalEdit;
+use App\Livewire\CabinetMedical\Medecin;
+use App\Livewire\CabinetMedical\MedecinDossier;
+use App\Livewire\CabinetMedical\MedecinEdit;
+use App\Livewire\CabinetMedical\Patient;
+use App\Livewire\CabinetMedical\PatientDossier;
+use App\Livewire\CabinetMedical\PatientEdit;
+use App\Livewire\CabinetMedical\Consultation;
+use App\Livewire\CabinetMedical\DossierConsultation;
+use App\Livewire\CabinetMedical\PlanificationMedecin;
+use App\Livewire\CabinetMedical\RecuConsultation;
+
+/*
+ --------------------------
+|Controller livewire end
+---------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
+// });
+
+// Route::get('/dashboard', function () {
+//     return Inertia::render('Dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Route::middleware('auth')->group(function () {
+//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
 
 /*
 |--------------------------------------------------------------------------
@@ -90,6 +156,7 @@ Route::controller(LoginController::class)->group(function(){
     Route::get('/user_connexion','user_connexion')->name('users.user_connexion');
     Route::post('/restore_connexion','restore_connexion')->name('users.restore_connexion');
 });
+
 
 Route::controller(RegisterController::class)->group(function(){
 
@@ -154,6 +221,7 @@ Route::middleware(['auth','initier'])->controller(AgenceController::class)->grou
     Route::get('/agence/{id}/edit','edit')->name('agence.edit');
     Route::post('/agence/{id}/update','update')->name('agence.update');
     Route::post('/agence/devise','devise')->name('agence.devise');
+    Route::post('/agence/code','region_code')->name('agence_region.code');
 });
 
 Route::middleware(['auth','initier'])->controller(BanqueController::class)->group(function(){
@@ -270,6 +338,7 @@ Route::middleware(['auth','initier'])->controller(EnvoiController::class)->group
     Route::get('/envoi/{id}/detail','show')->name('envoi.show');
     Route::post('/envoi/info','info_destination')->name('envoi.info');
     Route::get('/envoi/{id}/print','print')->name('envoi.print');
+    Route::post('/envoi/region/code','region_code')->name('envoi_devise.code');
 });
 
 Route::middleware(['auth','initier'])->controller(RetraitController::class)->group(function(){
@@ -279,6 +348,7 @@ Route::middleware(['auth','initier'])->controller(RetraitController::class)->gro
     Route::get('/retrait/{id}/edit','edit')->name('retrait.edit');
     Route::get('/retrait/{id}/detail','show')->name('retrait.show');
     Route::get('/retrait/{id}/print','print')->name('retrait.print');
+    Route::post('/retrait/region/code','region_code')->name('retrait_devise.code');
 });
 
 Route::middleware(['auth','initier'])->controller(AutresOperationController::class)->group(function(){
@@ -314,7 +384,7 @@ Route::middleware(['auth','initier'])->controller(ProduitController::class)->gro
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| controller de cash
+| controller de money_change
 |
 */
 
@@ -347,6 +417,7 @@ Route::middleware(['auth','initier'])->controller(AchatDeviseController::class)-
     Route::post('/taux/achat_devise','taux_devise')->name('achat_devise.taux');
     Route::post('/stock/achat_devise','stock_devise')->name('achat_devise.stock');
     Route::post('/creer/achat_devise','store')->name('achat_devise.store');
+    Route::post('/achat/region/code','region_code')->name('achat_devise.code');
 
 });
 
@@ -362,6 +433,7 @@ Route::middleware(['auth','initier'])->controller(VenteDeviseController::class)-
     Route::post('/taux/vente_devise','taux_devise')->name('vente_devise.taux');
     Route::post('/stock/vente_devise','stock_devise')->name('vente_devise.stock');
     Route::post('/creer/ventet_devise','store')->name('vente_devise.store');
+    Route::post('/vente/region/code','region_code')->name('vente_devise.code');
 
 });
 
@@ -767,6 +839,7 @@ Route::middleware(['auth','initier'])->controller(ReglementFactureController::cl
 });
 
 
+
 /**
  * GESTION DES DETENUE
  */
@@ -779,3 +852,89 @@ Route::middleware(['auth','initier'])->controller(ReglementFactureController::cl
     Route::get('/detention/detenu/{id}','edit')->name('edit.detenu');
 
 });
+
+/**
+ * CABINET ASSURANCE
+ */
+
+ Route::middleware(['auth','initier'])->prefix('assurance')->controller(GroupeController::class)->group(function(){
+    Route::get('/groupe/index','index')->name('index.groupe');
+});
+
+Route::middleware(['auth','initier'])->prefix('assurance')->controller(ZoneController::class)->group(function(){
+    Route::get('/zone/index','index')->name('index.zone');
+
+});
+
+Route::middleware(['auth','initier'])->prefix('assurance')->controller(ClasseController::class)->group(function(){
+    Route::get('/classe/index','index')->name('index.classe');
+
+});
+Route::middleware(['auth','initier'])->prefix('assurance')->controller(PuissanceController::class)->group(function(){
+    Route::get('/puissance/index','index')->name('index.puissance');
+
+});
+Route::middleware(['auth','initier'])->prefix('assurance')->controller(EnergieController::class)->group(function(){
+    Route::get('/energie/index','index')->name('index.energie');
+
+});
+Route::middleware(['auth','initier'])->prefix('assurance')->controller(UsageController::class)->group(function(){
+    Route::get('/usage/index','index')->name('index.usage');
+
+});
+Route::middleware(['auth','initier'])->prefix('assurance')->controller(DureeController::class)->group(function(){
+    Route::get('/duree/index','index')->name('index.duree');
+
+});
+Route::middleware(['auth','initier'])->prefix('assurance')->controller(GenreController::class)->group(function(){
+    Route::get('/genre/index','index')->name('index.genre');
+
+});
+Route::middleware(['auth','initier'])->prefix('assurance')->controller(CategorieController::class)->group(function(){
+    Route::get('/categorie/index','index')->name('index.categorie');
+
+});
+Route::middleware(['auth','initier'])->prefix('assurance')->controller(MarqueController::class)->group(function(){
+    Route::get('/marque/index','index')->name('index.marque');
+
+});
+
+Route::middleware(['auth','initier'])->prefix('assurance')->controller(PrimeNetController::class)->group(function(){
+    Route::get('/prime_net/index','index')->name('index.prime_net');
+
+});
+/**
+ * GESTION CABINET MEDICAL
+ */
+ Route::group([
+    "middleware"=>['auth','initier'],
+    "as"=>'ad.'
+],function(){
+        Route::group([
+            'prefixe'=>'cabinet_medical',
+            'as'=>'sante.'
+        ],function(){
+            Route::get('ad/sante/tarif',TarifMedical::class,)->name('index.tarif_medical');
+            Route::get('ad/sante/tarif/{id}/edit',TarifMedicalEdit::class)->name('edit.tarif_medical');
+            Route::get('ad/sante/patient',Patient::class)->name('index.patient');
+            Route::get('ad/sante/patient/{id}/edit',PatientEdit::class)->name('edit.patient');
+            Route::get('ad/sante/{id}/dossier',PatientDossier::class)->name('dossier');
+            Route::get('ad/sante/medecin',Medecin::class)->name('index.medecin');
+            Route::get('ad/sante/medecin/{id}/edit',MedecinEdit::class)->name('edit.medecin');
+            Route::get('ad/sante/{id}/dossier/medecin',MedecinDossier::class)->name('dossier.medecin');
+            Route::get('ad/sante/planification/medecin',PlanificationMedecin::class)->name('index.planification.medecin');
+            Route::get('ad/sante/consultation',Consultation::class)->name('index.consultation');
+            Route::get('ad/sante/consultation/{id}/Dossier',DossierConsultation::class)->name('dossier.consultation');
+            Route::get('ad/sante/consultation/{id}/Recu',RecuConsultation::class)->name('recu.consultation');
+        });
+       //
+    });
+
+
+
+
+
+
+
+
+require __DIR__.'/auth.php';

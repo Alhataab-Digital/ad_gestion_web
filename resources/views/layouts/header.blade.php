@@ -5,21 +5,23 @@
         <a href="{{ route('home') }}" class="logo d-flex align-items-center">
             @if (isset(Auth::user()->societe->logo))
                 <img src="{{ asset('/images/logo/' . Auth::user()->societe->logo) }}" alt="">
-            @endif
+                <span class="d-none d-lg-block">{{ Auth::user()->societe->raison_sociale }}</span>
+            @else
             <span class="d-none d-lg-block">{{ Auth::user()->gestion->gestion }}</span>
+            @endif
         </a>
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
     <div class="search-bar">
         @if (isset(Auth::user()->agence->nom))
-            @if (App\Models\Caisse::where('user_id', Auth::user()->id)->where('etat', 1)->first(['id']))
+            @if (App\Models\Caisse\Caisse::where('user_id', Auth::user()->id)->where('etat', 1)->first(['id']))
 
                 <div style="text-transform: uppercase"> {{ Auth::user()->agence->nom }} :
                     {{ Auth::user()->agence->region->nom }}
                 </div>
                 <div> Date operation
-                    :<strong>{{ App\Models\Caisse::where('user_id', Auth::user()->id)->first(['date_comptable'])->date_comptable }}</strong>
+                    :<strong>{{ App\Models\Caisse\Caisse::where('user_id', Auth::user()->id)->first(['date_comptable'])->date_comptable }}</strong>
                 </div>
 
                 {{-- <form class="search-form d-flex align-items-center" method="POST" action="#">
@@ -28,11 +30,11 @@
       </form> --}}
     </div><!-- End Search Bar -->
     <div class="">
-        <div>{{ App\Models\Caisse::where('user_id', Auth::user()->id)->first(['libelle'])->libelle }} :
-            <strong>{{ number_format(App\Models\Caisse::where('user_id', Auth::user()->id)->first(['compte'])->compte, 2, ',', ' ') }}
+        <div>{{ App\Models\Caisse\Caisse::where('user_id', Auth::user()->id)->first(['libelle'])->libelle }} :
+            <strong>{{ number_format(App\Models\Caisse\Caisse::where('user_id', Auth::user()->id)->first(['compte'])->compte, 2, ',', ' ') }}
                 {{ Auth::user()->agence->devise->unite }}</strong>
         </div>
-        @if (App\Models\Caisse::where('user_id', Auth::user()->id)->where('etat', 1)->where('compte_dividende_societe', '!=', '0')->first(['id']))
+        @if (App\Models\Caisse\Caisse::where('user_id', Auth::user()->id)->where('etat', 1)->first(['id']))
             {{-- <div>Dividende Societe :
             <strong>{{ number_format(App\Models\Caisse::where('user_id',Auth::user()->id)->first(['compte_dividende_societe'])->compte_dividende_societe,2,","," ") }} {{ Auth::user()->agence->devise->unite; }}</strong>
         </div> --}}

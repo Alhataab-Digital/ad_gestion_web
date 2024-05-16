@@ -4,24 +4,26 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 use App\Models\Societe;
-use App\Models\Utilisateur;
-use App\Models\Devise;
-use App\Models\Investisseur;
-use App\Models\ActiviteInvestissement;
-use App\Models\ActiviteVehicule;
+use App\Models\Users\Utilisateur;
+use App\Models\MoneyChange\Devise;
+use App\Models\Investissement\Investisseur;
+use App\Models\Investissement\ActiviteInvestissement;
+use App\Models\Investissement\ActiviteVehicule;
 use App\Models\Operation;
-use App\Models\Caisse;
+use App\Models\Caisse\Caisse;
 use App\Models\Banque;
-use App\Models\Facture;
-use App\Models\Agence;
-use App\Models\Devis;
+use App\Models\Investissement\Facture;
+use App\Models\Agences\Agence;
+use App\Models\CabinetMedical\Consultation;
+use App\Models\CabinetMedical\Medecin;
+use App\Models\CabinetMedical\Patient;
+use App\Models\CabinetMedical\Rdv;
+use App\Models\CabinetMedical\RendezVous;
 use App\Models\Region;
 
-use App\Models\OperationVehiculeAchete;
-use App\Models\OperationVehiculeVendu;
+use App\Models\Investissement\OperationVehiculeAchete;
+use App\Models\Investissement\OperationVehiculeVendu;
 
 class HomeController extends Controller
 {
@@ -126,9 +128,14 @@ class HomeController extends Controller
 
             $count_vehicule_achete = OperationVehiculeAchete::where('etat', NULL)->where('user_id', $id)->count();
             $total_vehicule_achete = OperationVehiculeAchete::where('etat', NULL)->where('user_id', $id)->selectRaw('sum(prix_revient) as total')->first('total');
-
-
             $activite_vehicule = ActiviteVehicule::where('agence_id', $agence_id)->where('etat_activite', '!=', 'annuler')->count();
+
+
+            $patient_count = Patient::where('societe_id', $societe_id)->count();
+            $medecin_count = Medecin::where('societe_id', $societe_id)->count();
+            $consultation_count = Consultation::where('societe_id', $societe_id)->count();
+            $rdv_count = Rdv::where('societe_id', $societe_id)->count();
+            $liste_attentes=Consultation::all();
 
             return view(
                 'home',
@@ -169,7 +176,13 @@ class HomeController extends Controller
                     'total_vehicule_vendu',
                     'count_activite_vehicule',
                     'total_activite_vehicule',
-                    'regions'
+                    'regions',
+
+                    'patient_count',
+                    'medecin_count',
+                    'consultation_count',
+                    'rdv_count',
+                    'liste_attentes'
                 )
 
             );

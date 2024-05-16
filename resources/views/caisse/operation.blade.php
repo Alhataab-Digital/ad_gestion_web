@@ -62,12 +62,12 @@
                           </button>
                         </h5>
                          <!-- Vertical Form -->
-                         <form class="row g-3" method="post" action="{{ route('caisse.fermeture',encrypt($caisse->id)) }}" >
+                         <form class="row g-0" method="post" action="{{ route('caisse.fermeture',encrypt($caisse->id)) }}" >
                                     @csrf
                           <div class="modal fade" id="Fermer" tabindex="-1">
                             <div class="modal-dialog">
-                              <div class="modal-content" style="background-color: silver">
-                                <div class="modal-header">
+                              <div class="modal-content" >
+                                <div class="modal-header" style="background-color: silver">
                                   <h5 class="modal-title">Ajouter caisse</h5>
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
@@ -77,12 +77,12 @@
                                         <input type="text" name="date" value="{{ $caisse->date_comptable }}" class="form-control" id="inputEmail4" readonly>
                                     </div>
                                 </div>
-                                <div class="modal-footer">
+                                <div class="modal-footer" style="background-color: silver">
                                   <button type="submit" class="btn btn-danger">Valider</button>
                                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Quitter</button>
 
                                 </div>
-                            
+
                               </div>
                             </div>
                           </div>
@@ -109,24 +109,25 @@
                                     @csrf
                           <div class="modal fade" id="Fermer" tabindex="-1">
                             <div class="modal-dialog">
-                              <div class="modal-content" style="background-color: silver">
-                                <div class="modal-header">
+                              <div class="modal-content" >
+                                <div class="modal-header" style="background-color: silver">
                                   <h5 class="modal-title">Ajouter caisse</h5>
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
 
-                                
+
                                 <div class="modal-body" >
                                    <div class="col-12">
                                         <label for="inputEmail4" class="form-label">Date d'ouverture</label>
                                         <input type="date" name="date" value="{{ date('Y-m-d') }}" class="form-control" id="inputEmail4">
                                     </div>
                                 </div>
-                                <div class="modal-footer"> <button type="submit" class="btn btn-success">Valider</button>
+                                <div class="modal-footer" style="background-color: silver">
+                                    <button type="submit" class="btn btn-success">Valider</button>
                                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Quitter</button>
 
                                 </div>
-                            
+
                               </div>
                             </div>
                           </div><!-- End Basic Modal-->
@@ -142,7 +143,7 @@
             </div><!-- End Card with an image on left -->
 
             </div>
-@if(Auth::user()->gestion->gestion=="Change")
+@if(Auth::user()->gestion->gestion=="Echange d'argent")
             <div class="col-lg-6">
 
             <!-- Special title treatmen -->

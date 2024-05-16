@@ -6,11 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
-use App\Models\Utilisateur;
-use App\Models\ConnexionUser;
-use App\Models\UserEnLigne;
+use App\Models\Users\UserEnLigne;
 
 class Initialiser
 {

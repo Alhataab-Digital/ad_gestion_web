@@ -5,9 +5,6 @@ namespace App\Http\Controllers\Api\Stock;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategorieProduitRequeste;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 use App\Models\CategorieProduit;
 
 class CategorieProduitController extends Controller

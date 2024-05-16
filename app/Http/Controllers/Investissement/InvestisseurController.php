@@ -5,12 +5,7 @@ namespace App\Http\Controllers\Investissement;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
-use App\Models\Caisse;
-use App\Models\Societe;
-use App\Models\Devise;
-use App\Models\Investisseur;
+use App\Models\Investissement\Investisseur;
 
 class InvestisseurController extends Controller
 {
@@ -137,7 +132,7 @@ class InvestisseurController extends Controller
             $investisseur = Investisseur::find($id);
 
             $investisseur->update([
-                'password' => $request->password,
+                'password' => encrypt($request->password),
             ]);
             return back()->with('success', 'mot de passe investisseur modifier avec succès');
         }

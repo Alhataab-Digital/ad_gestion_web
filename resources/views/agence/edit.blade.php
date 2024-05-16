@@ -52,11 +52,6 @@
                                     id="inputNanme4">
                             </div>
                             <div class="col-12">
-                                <label for="inputNanme4" class="form-label">Telephone</label>
-                                <input type="text" name="telephone" value="{{ $agence->telephone }}"
-                                    class="form-control" id="inputNanme4">
-                            </div>
-                            <div class="col-12">
                                 <label for="inputEmail4" class="form-label">Email</label>
                                 <input type="email" name="email" value="{{ $agence->email }}" class="form-control"
                                     id="inputEmail4">
@@ -66,16 +61,21 @@
                                 <input type="text" name="adresse" value="{{ $agence->adresse }}" class="form-control"
                                     id="inputAddress" placeholder="1234 Main St">
                             </div>
-                            <div class="col-12">
+                            <div class="col-12" id="region">
                                 <label for="validationDefault04" class="form-label">Pays / Region </label>
-                                <select class="form-select" id="validationDefault04" name="region_id" required>
+                                <select class="form-select" id="region" name="region_id" required>
                                     <option value="{{ $agence->region_id }}">
-                                        {{ $agence->region->code . ' ' . $agence->region->nom }}</option>
+                                        {{ $agence->region->nom . ' ' . $agence->region->code }}</option>
                                     @foreach ($regions as $region)
-                                    <option value="{{ $region->id }}">{{ $region->code . ' ' . $region->nom }}
+                                    <option value="{{ $region->id }}">{{ $region->nom . ' ' . $region->code }}
                                     </option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="col-12" id="telephone">
+                                <label for="inputNanme4" class="form-label">Telephone</label>
+                                <input type="text" name="telephone" value="{{ $agence->telephone }}"
+                                    class="form-control" id="inputNanme4">
                             </div>
                             <div class="col-12">
                                 <label for="validationDefault04" class="form-label">Devise par defaut</label>

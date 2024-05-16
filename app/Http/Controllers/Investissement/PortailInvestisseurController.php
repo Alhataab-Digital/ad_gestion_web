@@ -3,17 +3,13 @@
 namespace App\Http\Controllers\Investissement;
 
 use App\Http\Controllers\Controller;
-use App\Models\Investisseur;
+use App\Models\Investissement\Investisseur;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use App\Models\TypeReglement;
-use App\Models\OperationInvestisseur;
-use App\Models\OperationDividende;
-use App\Models\MouvementCaisse;
-use App\Models\DeviseAgence;
-use App\Models\Agence;
-use App\Models\Caisse;
+use App\Models\Investissement\OperationInvestisseur;
+use App\Models\Investissement\OperationDividende;
+use App\Models\Caisse\MouvementCaisse;
+use App\Models\Agences\Agence;
+use App\Models\Caisse\Caisse;
 
 class PortailInvestisseurController extends Controller
 {
@@ -51,20 +47,20 @@ class PortailInvestisseurController extends Controller
             'email' => 'required',
             'password' => 'required',
         ]);
-        $investisseurs = Investisseur::where('email', $request->email)->first();
-        $connection = $request->only('email', 'password');
-
-        if (isset($investisseurs->email) == $connection['email'] && isset($investisseurs->password) == Hash::make($connection['password'])) {
-
-            $investisseurs = Investisseur::where('email', $request->email)->get();
-            foreach ($investisseurs as $investisseur) {
+        $investisseur = Investisseur::where('email', $request->email)->first();
+        if (Investisseur::where('email', $request->email)->count() == 1) {
+            if($investisseur->password==NULL){
+                return redirect('/portail')->with('danger', 'Compte non crée');
+            }
+            if ($investisseur->email == $request->email && decrypt($investisseur->password) == $request->password) {
                 if ($investisseur->etat != 0) {
                     return redirect('profile/' . encrypt($investisseur->id) . '/investisseur');
                 }
                 return redirect('/portail')->with('danger', 'Compte inactif');
             }
+            return redirect('/portail')->with('danger', 'Login ou mots de passe invalide');
         }
-        return redirect('/portail')->with('danger', 'Login ou mots de passe invalide');
+        return redirect('/portail')->with('danger', 'Compte introuvable');
     }
     /**
      * Show the form for creating a new resource.
@@ -97,7 +93,7 @@ class PortailInvestisseurController extends Controller
              * insertion des données dans la table user
              */
             $investisseur->update([
-                'password' => Hash::make($data['password']),
+                'password' => encrypt($data['password']),
             ]);
 
             return redirect('/portail');

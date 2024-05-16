@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 use App\Models\Societe;
 use App\Models\Region;
-use App\Models\Agence;
+use App\Models\Agences\Agence;
 use Socket;
 
 class SocieteController extends Controller
@@ -78,6 +76,7 @@ class SocieteController extends Controller
     public function show($id)
     {
         $id = decrypt($id);
+
         $societe = Societe::findOrFail($id);
         $agence_id = Auth::user()->agence_id;
         $agence = Agence::find($agence_id);
@@ -91,6 +90,7 @@ class SocieteController extends Controller
     public function edit($id)
     {
         $id = decrypt($id);
+
         $societe = Societe::findOrFail($id);
         return view('gestion.societe_edit', compact('societe'));
     }
@@ -101,7 +101,9 @@ class SocieteController extends Controller
     public function update(Request $request, Societe $societe, $id)
     {
         if (Auth::check()) {
+
             $id = decrypt($id);
+            // dd($id);
             $societe = Societe::find($id);
 
 
@@ -112,8 +114,7 @@ class SocieteController extends Controller
                 'raison_sociale' => 'required',
                 'activite' => 'required',
                 'forme_juridique' => 'required',
-                'region' => 'required',
-                'pays' => 'required',
+                'region_id' => 'required',
                 'telephone' => 'required',
                 'email' => 'required',
                 'code_postal' => '',
@@ -130,8 +131,7 @@ class SocieteController extends Controller
                 'raison_sociale' => $data['raison_sociale'],
                 'activite' => $data['activite'],
                 'forme_juridique' => $data['forme_juridique'],
-                'region' => $data['region'],
-                'pays' => $data['pays'],
+                'region_id' => $data['region_id'],
                 'telephone' => $data['telephone'],
                 'email' => $data['email'],
                 'code_postal' => $data['code_postal'],

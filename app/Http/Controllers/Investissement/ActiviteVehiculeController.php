@@ -5,27 +5,17 @@ namespace App\Http\Controllers\Investissement;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
-use App\Models\Fournisseur;
-use App\Models\Caisse;
-use App\Models\Devise;
-use App\Models\TypeReglement;
-use App\Models\Stock;
-use App\Models\Operation;
-use App\Models\OperationDevise;
-use App\Models\OperationVehiculeAchete;
-use App\Models\OperationVehiculeVendu;
-use App\Models\OperationDividende;
-use App\Models\Agence;
+use App\Models\Caisse\Caisse;
+use App\Models\MoneyChange\Devise;
+use App\Models\Investissement\OperationVehiculeAchete;
+use App\Models\Investissement\OperationVehiculeVendu;
+use App\Models\Investissement\OperationDividende;
+use App\Models\Agences\Agence;
 use App\Models\Societe;
-use App\Models\DeviseAgence;
-use App\Models\MouvementCaisse;
-use App\Models\Investisseur;
-use App\Models\ActiviteVehicule;
-use App\Models\DetailActiviteVehicule;
-use App\Models\OperationDepenseActivite;
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Agences\DeviseAgence;
+use App\Models\Investissement\Investisseur;
+use App\Models\Investissement\ActiviteVehicule;
+use App\Models\Investissement\DetailActiviteVehicule;
 
 class ActiviteVehiculeController extends Controller
 {

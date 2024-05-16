@@ -21,6 +21,8 @@ return new class extends Migration
             $table->float('montant_operation');
             $table->string('sens_operation');
             $table->float('taux')->nullable();
+            $table->float('coefficient')->nullable();
+            $table->float('benefice')->nullable();
             $table->date('date_comptable');
             $table->timestamps();
         });

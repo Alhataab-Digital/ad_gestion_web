@@ -33,11 +33,10 @@
                 <div class="modal fade" id="basicModal" tabindex="-1">
                   <div class="modal-dialog">
                     <div class="modal-content">
-                      <div class="modal-header">
+                      <div class="modal-header" style="background-color: silver">
                         <h5 class="modal-title">Ajouter utilisateur</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
-
                       <div class="modal-body" >
                           <div class="col-12">
                               <input type="hidden" name="societe" value="{{ Auth::user()->societe_id }}" class="form-control" id="inputNanme4">
@@ -74,9 +73,9 @@
                           </div>
 
                       </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                      <div class="modal-footer" style="background-color: silver">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-primary">Valider</button>
                       </div>
 
                     </div>

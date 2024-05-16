@@ -6,9 +6,9 @@
             @include('layouts.menu.menu_magasin')
         @endif
 
-        @if (Auth::user()->gestion->gestion == 'Change')
+        @if (Auth::user()->gestion->gestion == "Echange d'argent")
         @include('layouts.menu.menu_change')
-    @endif
+        @endif
 
         @if (Auth::user()->gestion->gestion == 'Hotel')
             @include('layouts.menu.menu_hotel')
@@ -36,6 +36,10 @@
 
         @if (Auth::user()->gestion->gestion == 'Gestion Detenu')
             @include('layouts.menu.menu_detenu')
+        @endif
+
+        @if (Auth::user()->gestion->gestion == 'Cabinet Assurance')
+            @include('layouts.menu.menu_cabinet_assurance')
         @endif
     </ul>
 </aside><!-- End Sidebar-->

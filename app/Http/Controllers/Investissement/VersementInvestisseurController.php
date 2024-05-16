@@ -5,15 +5,11 @@ namespace App\Http\Controllers\Investissement;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
-use App\Models\Caisse;
-use App\Models\Societe;
-use App\Models\Devise;
+use App\Models\Caisse\Caisse;
 use App\Models\TypeReglement;
-use App\Models\Investisseur;
-use App\Models\OperationInvestisseur;
-use App\Models\MouvementCaisse;
+use App\Models\Investissement\Investisseur;
+use App\Models\Investissement\OperationInvestisseur;
+use App\Models\Caisse\MouvementCaisse;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class VersementInvestisseurController extends Controller

@@ -27,43 +27,40 @@
                                 Nouvelle association utilisateur
                             </button>
                         </h5>
+                        <!-- Vertical Form -->
+                        <form class="row g-3" method="post" action="{{ route('agence_user.store') }}">
+                        @csrf
                         <div class="modal fade" id="basicModal" tabindex="-1">
                             <div class="modal-dialog">
-                                <div class="modal-content" style="background-color: silver">
-                                    <div class="modal-header">
+                                <div class="modal-content" >
+                                    <div class="modal-header" style="background-color: silver">
                                         <h5 class="modal-title">Associer utilisateur </h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
-
-                                    <!-- Vertical Form -->
-                                    <form class="row g-3" method="post" action="{{ route('agence_user.store') }}">
-                                        @csrf
-                                        <div class="modal-body">
-                                            <div class="col-12">
-                                                <label for="validationDefault04" class="form-label">Agence</label>
+                                    <div class="modal-body">
+                                        <div class="col-12">
+                                            <label for="validationDefault04" class="form-label">Agence</label>
                                                 <select class="form-select" id="agence" name="agence_id" required>
                                                     <option selected disabled value="">Choose...</option>
                                                     @foreach ($agences as $agence)
                                                     <option value="{{ $agence->id }}">{{ $agence->nom }}</option>
                                                     @endforeach
                                                 </select>
-                                            </div>
-                                            <div class="col-12">
-                                                <label for="validationDefault04" class="form-label">Utilisateur</label>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="validationDefault04" class="form-label">Utilisateur</label>
                                                 <select class="form-select" id="user" name="user_id" required>
                                                 </select>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Save changes</button>
-                                            </div>
-                                    </form><!-- Vertical Form -->
-                                </div>
+                                        </div>
+                                        <div class="modal-footer" style="background-color: silver">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </div>
                             </div>
                         </div><!-- End Basic Modal-->
-
+                    </form><!-- Vertical Form -->
                     </div>
                     <div>
                         <P>

@@ -33,7 +33,7 @@
                             <div class="modal fade" id="basicModal" tabindex="-1">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                        <div class="modal-header">
+                                        <div class="modal-header" style="background-color: silver">
                                             <h5 class="modal-title">Ajouter agence</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
@@ -54,11 +54,7 @@
                                                 <label for="inputNanme4" class="form-label">Adresse</label>
                                                 <input type="text" name="adresse" class="form-control" id="inputNanme4">
                                             </div>
-                                            <div class="col-12">
-                                                <label for="inputAddress" class="form-label">Telephone</label>
-                                                <input type="text" name="telephone" class="form-control"
-                                                    id="inputAddress">
-                                            </div>
+
                                             <div class="col-12">
                                                 <label for="inputEmail4" class="form-label">Email</label>
                                                 <input type="email" name="email" class="form-control" id="inputEmail4">
@@ -66,13 +62,18 @@
                                             <div class="col-12">
                                                 <label for="validationDefault04" class="form-label">Pays /
                                                     Region</label>
-                                                <select class="form-select" id="validationDefault04" name="region_id"
+                                                <select class="form-select" id="region" name="region_id"
                                                     required>
                                                     <option selected disabled value="">Choose...</option>
                                                     @foreach ($regions as $region)
-                                                    <option value="{{ $region->id }}">{{ $region->nom }}</option>
+                                                    <option value="{{ $region->id }}">{{ $region->nom . ' ' .$region->code}}</option>
                                                     @endforeach
                                                 </select>
+                                            </div>
+                                            <div class="col-12 " id="telephone" >
+                                                <label for="inputAddress" class="form-label">Telephone</label>
+                                                <input type="text" name="telephone" class="form-control"
+                                                    id="telephone">
                                             </div>
                                             <div class="col-12">
                                                 <label for="validationDefault04" class="form-label">Devise</label>
@@ -86,7 +87,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="modal-footer">
+                                        <div class="modal-footer" style="background-color: silver">
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Close</button>
                                             <button type="submit" class="btn btn-primary">Save changes</button>
@@ -125,6 +126,7 @@
                                     <th scope="col">adresse</th>
                                     <th scope="col">Telephone</th>
                                     <th scope="col">Email</th>
+                                    <th scope="col">Compte Agence</th>
                                     <th scope="col">Pays / Region </th>
                                     <th scope="col">Societe</th>
                                     <th scope="col">Action</th>
@@ -139,6 +141,8 @@
                                     <td>{{ $agence->adresse }}</td>
                                     <td>{{ $agence->telephone }}</td>
                                     <td>{{ $agence->email }}</td>
+                                    <td style="text-align:right">{{ number_format($agence->compte_agence,2,","," ").' '.$agence->devise->unite}}</td>
+
                                     <td>{{ $agence->region->nom }}</td>
                                     <td>{{ $agence->societe->raison_sociale }}</td>
                                     <td>
@@ -167,4 +171,38 @@
     </section>
 
 </main><!-- End #main -->
+
+<script src="{{ asset('assets/js/jquery.js') }}"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+            $('#region').change(function(event) {
+
+                var region_id = this.value;
+
+            //    alert(region_id);
+
+                $('#telephone').html('');
+                $.ajax({
+                    url: "{{ route('agence_region.code') }}",
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        id: region_id,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    //alert(data);
+                    success: function(response) {
+                        console.log(response);
+                        $.each(response.code, function(index, val) {
+                            // alert(val);
+                            $("#telephone").append('<label for="inputAddress" class="form-label">Telephone</label><input type="text" name="telephone" value='+val.indicatif+' class="form-control" id="telephone">');
+                        })
+                    }
+                })
+
+            });
+
+        });
+</script>
+
 @endsection

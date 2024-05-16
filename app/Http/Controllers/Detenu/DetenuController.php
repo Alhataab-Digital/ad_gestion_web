@@ -4,10 +4,7 @@ namespace App\Http\Controllers\Detenu;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 use App\Models\Detenu\DetenuModel;
 
 class DetenuController extends Controller

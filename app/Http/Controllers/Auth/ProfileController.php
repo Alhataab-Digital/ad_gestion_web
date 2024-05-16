@@ -7,11 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-use App\Models\Agence;
-use App\Models\Devise;
-use App\Models\Region;
-use App\Models\UserEnLigne;
-use App\Models\Utilisateur;
+use App\Models\Users\UserEnLigne;
+use App\Models\Users\Utilisateur;
 
 class ProfileController extends Controller
 {

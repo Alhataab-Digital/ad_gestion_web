@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequeste;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
-use App\Models\Utilisateur;
+use App\Models\Users\Utilisateur;
 
 class LoginController extends Controller
 {

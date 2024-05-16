@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\TypeGestion;
-use App\Models\Utilisateur;
+use App\Models\Users\Utilisateur;
 
 class RegisterController extends Controller
 {

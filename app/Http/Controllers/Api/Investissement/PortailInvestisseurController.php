@@ -6,17 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\PortailInvestisseur;
 use App\Http\Requests\RequestLoginPortailInvestisseur;
-use App\Models\Investisseur;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
-use App\Models\Caisse;
-use App\Models\Societe;
-use App\Models\Devise;
-use App\Models\TypeReglement;
-use App\Models\OperationInvestisseur;
-use App\Models\OperationDividende;
-use App\Models\MouvementCaisse;
+use App\Models\Investissement\Investisseur;
+use App\Models\Investissement\OperationInvestisseur;
+use App\Models\Investissement\OperationDividende;
 
 class PortailInvestisseurController extends Controller
 {
@@ -50,37 +42,44 @@ class PortailInvestisseurController extends Controller
     public function connect(RequestLoginPortailInvestisseur $request)
     {
         $request->validated();
+
         $investisseurs = Investisseur::where('email', $request->email)->first();
-
-        if (!$investisseurs || Hash::check($request->password, $investisseurs->password) != 1) {
-
-            return response(
-                [
-                    'message' =>  'Login ou mots de passe invalide',
-                ],
-                200
-            );
-        } else {
-
-            if ($investisseurs->etat != 0) {
-                $investisseur = Investisseur::where('email', $request->email)->first(['id'])->id;
-                $token = $investisseurs->createToken('ad_gestion')->plainTextToken;
+        if (Investisseur::where('email', $request->email)->count() == 1) {
+            if ($investisseurs->email == $request->email && decrypt($investisseurs->password) === $request->password) {
+                if ($investisseurs->etat != 0) {
+                    $investisseurs = Investisseur::where('email', $request->email)->first();
+                    //$token = $investisseurs->createToken('ad_gestion')->plainTextToken;
+                    return response(
+                        [
+                            'investisseur' => $investisseurs,
+                            //'token' => $token,
+                        ],
+                        200
+                    );
+                }
                 return response(
                     [
-                        'investisseur' => $investisseurs,
-                        'token' => $token,
+                        'message' =>  'Compte inactif',
+                    ],
+                    200
+
+                );
+            } else {
+
+                return response(
+                    [
+                        'message' =>  'Login ou mots de passe invalide',
                     ],
                     200
                 );
             }
-            return response(
-                [
-                    'message' =>  'Compte inactif',
-                ],
-                200
-
-            );
         }
+        return response(
+            [
+                'message' =>  'Compte introuvable',
+            ],
+            200
+        );
     }
     /**
      * Show the form for creating a new resource.
@@ -108,19 +107,20 @@ class PortailInvestisseurController extends Controller
          * donnee a ajouté dans la table
          */
         $data = $request->all();
-        if (isset(Investisseur::where('code', $code)->where('password', NULL)->first(['id'])->id)) {
+
+        if (isset(Investisseur::where('code', $code)->where('password', Null)->first(['id'])->id)) {
 
             $investisseur = Investisseur::where('code', $code)->where('password', NULL)->first();
             /**
              * insertion des données dans la table user
              */
             $investisseur->update([
-                'password' => Hash::make($data['password']),
+                'password' => encrypt($data['password']),
             ]);
 
             return response(
                 [
-                    'message' => "Compte creé avec siccess",
+                    'message' => "Compte creé avec success",
                 ],
                 200
             );

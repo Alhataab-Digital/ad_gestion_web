@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use App\Models\Client;
 

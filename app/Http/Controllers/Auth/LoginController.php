@@ -5,11 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-use App\Models\Utilisateur;
-use App\Models\ConnexionUser;
-use App\Models\UserEnLigne;
+use App\Models\Users\Utilisateur;
+use App\Models\Users\ConnexionUser;
+use App\Models\Users\UserEnLigne;
 use Stevebauman\Location\Facades\Location;
 
 
@@ -173,7 +172,7 @@ class LoginController extends Controller
                 $deconnexion->delete('utilisateur_id', $user->id);
                 Session::flush();
                 Auth::logout();
-                return redirect('/')->with('danger', 'Utilisateur débloqué');
+                return redirect('/')->with('success', 'Utilisateur débloqué');
             }
             return redirect('/')->with('success', " L'utilisateur n'est pas en cours d'utilisation");
         }

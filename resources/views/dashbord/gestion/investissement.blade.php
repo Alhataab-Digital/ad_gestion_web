@@ -12,7 +12,7 @@
 
     <section class="section dashboard">
     @if(Auth::user()->agence_id!="0")
-      <div class="row">
+    <div class="row">
                 @if ($message=Session::get('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <i class="bi bi-check-circle me-1"></i>
@@ -65,7 +65,6 @@
                 </div>
               </div>
             </div><!-- End Sales Card -->
-
             <!-- Revenue Card -->
               <div class="col-xxl-3 col-md-12">
                 <div class="card info-card revenue-card">
@@ -83,7 +82,6 @@
                   </div>
                 </div>
               </div><!-- End Revenue Card -->
-
             <!-- Customers Card -->
             <div class="col-xxl-3 col-xl-12">
               <div class="card info-card customers-card">
@@ -367,7 +365,8 @@
             <!-- End Sales Card -->
           @endif
 
-      </div>
+
+        </div>
 
     @endif
     @if(Auth::user()->agence_id=="0")
