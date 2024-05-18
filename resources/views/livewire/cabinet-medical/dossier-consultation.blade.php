@@ -121,10 +121,6 @@
                                 <option value="{{$planification->id}}">{{$planification->medecin->nom}}</option>
                                 @endforeach
                             </select>
-                            @error('planification')
-                                <span class="text-danger">{{$message}}</span>
-                                @enderror
-
                           <br class="bg-secondary text-white"><br>
                         </div>
 

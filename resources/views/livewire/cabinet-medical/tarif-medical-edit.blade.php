@@ -13,8 +13,6 @@
         </div><!-- End Page Title -->
         <section class="section">
             <div class="row">
-
-
                 <div class="col-lg-6">
                     <div class="card">
                         <div class="card-body">
@@ -37,7 +35,7 @@
                                 @endif
                             </h5>
                             <!-- Vertical Form -->
-                            <form wire:submit='Update' class="row g-3">
+                            <form wire:submit='update' class="row g-3">
                                 <div class="col-12">
                                     <label for="inputNanme4" class="form-label">Libelle</label>
                                     <input type="text" wire:model="libelle_tarif" class="form-control" id="inputNanme4">

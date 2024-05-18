@@ -73,9 +73,9 @@ class AutresOperationController extends Controller
                 $date_comptable = Caisse::where('user_id', $user_id)->first(['date_comptable'])->date_comptable;
                 $montant_operation = $data['montant_operation'];
 
-                if ($compte_societe < $montant_operation) {
-                    return redirect()->route('operation')->with('danger', "Le montant compte agence est insuffisant");
-                } else {
+                // if ($compte_societe < $montant_operation) {
+                //     return redirect()->route('operation')->with('danger', "Le montant compte agence est insuffisant");
+                // } else {
                     if ($compte_caisse < $montant_operation) {
                         return redirect()->route('operation')->with('danger', "Le montant caisse est insuffisant");
                     } else {
@@ -90,6 +90,7 @@ class AutresOperationController extends Controller
                             'nature_operation_charge_id' => $data['nature_operation_id'],
                             'caisse_id' => $caisse_id,
                             'agence_id' => $agence_id,
+                            'societe_id' => $societe_id,
                             'user_id' => $user_id,
                             'date_comptable' => $date_comptable,
                         ]);
@@ -125,7 +126,7 @@ class AutresOperationController extends Controller
 
                         return redirect()->route('operation')->with('success', "Operation effectuée avec succès");
                     }
-                }
+                //}
             }
         }
         return redirect('/')->with('danger', "Session expirée");

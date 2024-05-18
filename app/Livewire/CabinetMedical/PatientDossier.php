@@ -2,6 +2,7 @@
 
 namespace App\Livewire\CabinetMedical;
 
+use App\Models\CabinetMedical\Consultation;
 use App\Models\CabinetMedical\Facturation;
 use App\Models\CabinetMedical\Patient;
 use Livewire\Component;
@@ -21,13 +22,19 @@ class PatientDossier extends Component
     public $poid;
     public $mail ;
     public $password;
-    public $consutlations;
+    public $consultations=[];
+    public $facturations=[];
+    public $consutlation_traiters=[];
 
     public function mount(Patient $patients, $id)
     {
         $id = decrypt($id);
 
         $patients = Patient::where('id', $id)->first();
+
+        $this->consultations = Consultation::where('patient_id', $id)->where('etat', '0')->get();
+        $this->facturations = Facturation::where('patient_id', $id)->get();
+        $this->consutlation_traiters = Consultation::where('patient_id', $id)->where('etat', '1')->get();
 
         $this->patients = $patients->id;
         $this->civilite = $patients->civilite;
@@ -46,7 +53,6 @@ class PatientDossier extends Component
     public function render()
     {
         $patient = Patient::where('id',  $this->patients)->first();
-        $consultations = Facturation::where('patient_id', $this->patients)->get();
-        return view('livewire.cabinet-medical.patient-dossier',compact('patient','consultations'));
+        return view('livewire.cabinet-medical.patient-dossier',compact('patient'));
     }
 }

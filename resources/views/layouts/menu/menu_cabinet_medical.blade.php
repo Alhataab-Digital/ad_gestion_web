@@ -5,7 +5,7 @@
     </a>
 </li><!-- End Dashboard Nav -->
 @if(Auth::user()->societe_id!="0")
-
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0")
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
         <i class="bi bi-gear-wide-connected"></i><span>Parametre</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -68,10 +68,16 @@
                 <i class="bi bi-circle"></i><span>Tarifs</span>
             </a>
         </li>
+        <li>
+            <a href="{{route('ad.sante.index.planification.medecin')}}">
+                <i class="bi bi-circle"></i><span>Planification</span>
+            </a>
+        </li>
 
     </ul>
 </li>
-
+@endif
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="4"|| Auth::user()->role_id =="5")
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#caisse-nav" data-bs-toggle="collapse" href="#">
         <i class="bi bi-journal-text"></i><span>Gestion Caisse</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -121,6 +127,8 @@
 
     </ul>
 </li><!-- End Tables Nav -->
+@endif
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="4"|| Auth::user()->role_id =="5")
 <li class="nav-item">
     <a class="nav-link collapse" data-bs-target="#banque-nav" data-bs-toggle="collapse" href="#">
         <i class="ri ri-building-line"></i><span>Gestion banque</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -150,6 +158,8 @@
     </ul>
 </li>
 <!-- End Forms Nav -->
+@endif
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="4"|| Auth::user()->role_id =="5")
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#donne-nav" data-bs-toggle="collapse" href="#">
         <i class="bi bi-gear-wide-connected"></i><span>Gestion patient</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -171,9 +181,11 @@
                 <i class="bi bi-circle"></i><span>Rendez-vous</span>
             </a>
         </li>
-
     </ul>
 </li>
+@endif
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"|| Auth::user()->role_id =="3"||Auth::user()->role_id =="4"|| Auth::user()->role_id =="5")
+
 <!-- End Charts Nav -->
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#plannification-nav" data-bs-toggle="collapse" href="#">
@@ -186,11 +198,7 @@
                 <i class="bi bi-circle"></i><span>Dossier medecin</span>
             </a>
         </li>
-        <li>
-            <a href="{{route('ad.sante.index.planification.medecin')}}">
-                <i class="bi bi-circle"></i><span>Planification</span>
-            </a>
-        </li>
+
         <li>
             <a href="">
                 <i class="bi bi-circle"></i><span> Rendez-vous</span>
@@ -201,6 +209,7 @@
 
     </ul>
 </li>
+@endif
 <!-- End Charts Nav -->
 {{-- <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#facturation-nav" data-bs-toggle="collapse" href="#">
@@ -247,7 +256,7 @@
 </li> --}}
 <!-- End Charts Nav -->
 
-<li class="nav-item">
+{{-- <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
         <i class="ri ri-list-check"></i><span>Rapport</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
@@ -273,7 +282,7 @@
             </a>
         </li>
     </ul>
-</li>
+</li> --}}
 <!-- End Icons Nav -->
 
 <li class="nav-heading">perso</li>

@@ -16,6 +16,7 @@ class Facturation extends Model
         'planification_id',
         'etat',
         'montant',
+        'date_operation',
         'user_id',
         'societe_id',
     ];
@@ -32,7 +33,7 @@ class Facturation extends Model
 
     public function tarif()
     {
-        return $this->belongsTo(TarifMedical::class);
+        return $this->belongsTo(TarifMedical::class,'tarif_id');
     }
 
     public function patient()

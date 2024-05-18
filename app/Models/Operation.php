@@ -1,13 +1,12 @@
 <?php
 
 namespace App\Models;
-use App\Models\Devise;
-use App\Models\Caisse;
-use App\Models\Utilisateur;
-use App\Models\Fournisseur;
-use App\Models\Client;
-use App\Models\reglement;
-use App\Models\Agence;
+
+use App\Models\Agences\Agence;
+use App\Models\Caisse\Caisse;
+use App\Models\Investissement\NatureOperationCharge;
+use App\Models\MoneyChange\Devise;
+use App\Models\Users\Utilisateur;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,6 +22,7 @@ class Operation extends Model
         'date_comptable',
         'caisse_id',
         'agence_id',
+        'societe_id',
         'user_id',
     ];
 

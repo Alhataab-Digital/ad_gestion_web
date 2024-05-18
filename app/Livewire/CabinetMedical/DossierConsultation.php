@@ -4,6 +4,7 @@ namespace App\Livewire\CabinetMedical;
 
 use App\Models\CabinetMedical\Consultation;
 use App\Models\CabinetMedical\Facturation;
+use App\Models\CabinetMedical\Medecin;
 use App\Models\CabinetMedical\Patient;
 use App\Models\CabinetMedical\PlanificationMedecin;
 use App\Models\CabinetMedical\TarifMedical;
@@ -94,9 +95,11 @@ if(isset(Facturation::where('patient_id',$this->patients)->where('etat','instanc
     return redirect()->route('ad.sante.index.consultation')->with('danger', "Ce patient à une consultation en instance");
 
 }else{
-
+    $medecin_planifier=PlanificationMedecin::where('id',$validated['planification'])->first();
+    $medecin_id=Medecin::where('id',$medecin_planifier->medecin->id )->first();
     Consultation::create([
         'patient_id' => $this->patients,
+        'medecin_id' =>$medecin_id->id,
         'planification_id' => $validated['planification'],
         'tarif_medical_id' => $this->tarifs->id,
         'user_id' => $user_id,

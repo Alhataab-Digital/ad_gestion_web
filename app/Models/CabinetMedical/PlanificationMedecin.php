@@ -37,6 +37,6 @@ class PlanificationMedecin extends Model
 
     public function medecin()
     {
-        return $this->belongsTo(Medecin::class);
+        return $this->belongsTo(Medecin::class,'medecin_id');
     }
 }

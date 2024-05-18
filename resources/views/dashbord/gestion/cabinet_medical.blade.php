@@ -80,14 +80,15 @@
                         </div>
                     </div>
                     <!-- End Revenue Card -->
-                    <div class="col-xxl-3 col-md-12">
+                    <div class="col-xxl-4 col-md-12">
                         <div class="card info-card sales-card">
                             <div class="card-body">
                                 <h5 class="card-title">Patients</h5>
                                 <div class="d-flex align-items-center">
                                     <div
                                         class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                        <a href="{{route('ad.sante.index.patient')}}"><i class="ri ri-user-add-line"></i></a>
+                                        <a href="{{route('ad.sante.index.patient')}}"><i
+                                                class="ri ri-user-add-line"></i></a>
                                     </div>
                                     <div class="ps-3">
                                         <h6>{{$patient_count}}</h6>
@@ -100,7 +101,7 @@
                     </div>
                     <!-- End Revenue Card -->
                     <!-- Sales Card -->
-                    <div class="col-xxl-3 col-md-12">
+                    <div class="col-xxl-4 col-md-12">
                         <div class="card info-card sales-card">
                             <div class="card-body">
                                 <h5 class="card-title">Consultations</h5>
@@ -118,7 +119,7 @@
                         </div>
                     </div><!-- End Sales Card -->
                     <!-- Sales Card -->
-                    <div class="col-xxl-3 col-md-12">
+                    {{-- <div class="col-xxl-3 col-md-12">
                         <div class="card info-card sales-card">
                             <div class="card-body">
                                 <h5 class="card-title">Rendez-vous</h5>
@@ -134,16 +135,18 @@
                                 </div>
                             </div>
                         </div>
-                    </div><!-- End Sales Card -->
+                    </div> --}}
+                    <!-- End Sales Card -->
                     <!-- End Revenue Card -->
-                    <div class="col-xxl-3 col-md-12">
+                    <div class="col-xxl-4 col-md-12">
                         <div class="card info-card sales-card">
                             <div class="card-body">
                                 <h5 class="card-title">Medecins</h5>
                                 <div class="d-flex align-items-center">
                                     <div
                                         class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                        <a href="{{route('ad.sante.index.medecin')}}"><i class="ri ri-team-line"></i></a>
+                                        <a href="{{route('ad.sante.index.medecin')}}"><i
+                                                class="ri ri-team-line"></i></a>
                                     </div>
                                     <div class="ps-3">
                                         <h6>{{$medecin_count}}</h6>
@@ -158,9 +161,33 @@
                     <!-- Reports -->
                     <div class="col-12">
                         <div class="card">
+                            @php
+                            $data_revenu= array();
+                            $date_revenu= array();
+                            @endphp
+                            @foreach ($rapport_revenus as $rapport_revenu)
+                            @php
+                            $data_revenu[]=$rapport_revenu->total;
+                            $date_revenu[]=\Carbon\Carbon::parse($rapport_revenu->date_operation)->format('d/m/Y');
+                            @endphp
+
+                            @endforeach
+
+                            @php
+                            $data_depense= array();
+                            $date_revenu= array();
+                            @endphp
+                            @foreach ($rapport_depenses as $rapport_depense)
+                            @php
+                            $data_depense[]=$rapport_depense->total;
+                            $date_depense[]=\Carbon\Carbon::parse($rapport_depense->date_comptable)->format('d/m/Y');
+                            @endphp
+
+                            @endforeach
+
 
                             <div class="card-body">
-                                <h5 class="card-title">Rapport</h5>
+                                <h5 class="card-title">Rapport de revenu et depense</h5>
 
                                 <!-- Line Chart -->
                                 <div id="reportsChart"></div>
@@ -168,16 +195,16 @@
                                 <script>
                                     document.addEventListener("DOMContentLoaded", () => {
                       new ApexCharts(document.querySelector("#reportsChart"), {
-                        series: [{
-                          name: 'Sales',
-                          data: [31, 40, 28, 51, 42, 82, 56],
-                        }, {
-                          name: 'Revenue',
-                          data: [11, 32, 45, 32, 34, 52, 41]
-                        }, {
-                          name: 'Customers',
-                          data: [15, 11, 32, 18, 9, 24, 11]
-                        }],
+                        series: [
+                        {
+                            name: 'Revenue',
+                            data:<?=json_encode($data_revenu)?>
+                        },
+                        {
+                            name: 'Depense',
+                            data: <?=json_encode($data_depense)?>
+                        }
+                    ],
                         chart: {
                           height: 350,
                           type: 'area',
@@ -188,7 +215,7 @@
                         markers: {
                           size: 4
                         },
-                        colors: ['#4154f1', '#2eca6a', '#ff771d'],
+                        colors: ['#2eca6a', '#ff771d', '#4154f1' ],
                         fill: {
                           type: "gradient",
                           gradient: {
@@ -207,7 +234,7 @@
                         },
                         xaxis: {
                           type: 'datetime',
-                          categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
+                          categories:["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
                         },
                         tooltip: {
                           x: {
@@ -243,7 +270,9 @@
                                 <div class="activite-label">{{$liste_attente->created_at->diffForHumans()}} </div>
                                 <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
                                 <div class="activity-content">
-                                    {{$liste_attente->patient->nom}} <a href="#" class="fw-bold text-dark">{{$liste_attente->patient->prenom}}</a> :=> {{$liste_attente->tarif->libelle_tarif}}
+                                    {{$liste_attente->patient->nom}} <a href="#"
+                                        class="fw-bold text-dark">{{$liste_attente->patient->prenom}}</a> :=>
+                                    {{$liste_attente->tarif->libelle_tarif}}
                                 </div>
                             </div><!-- End activity item-->
                             @endif
@@ -252,7 +281,9 @@
                                 <div class="activite-label">{{$liste_attente->created_at->diffForHumans()}} </div>
                                 <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
                                 <div class="activity-content">
-                                    {{$liste_attente->patient->nom}} <a href="#" class="fw-bold text-dark">{{$liste_attente->patient->prenom}}</a> :=> {{$liste_attente->tarif->libelle_tarif}}
+                                    {{$liste_attente->patient->nom}} <a href="#"
+                                        class="fw-bold text-dark">{{$liste_attente->patient->prenom}}</a> :=>
+                                    {{$liste_attente->tarif->libelle_tarif}}
                                 </div>
                             </div><!-- End activity item-->
                             @endif
@@ -261,7 +292,9 @@
                                 <div class="activite-label">{{$liste_attente->created_at->diffForHumans()}} </div>
                                 <i class='bi bi-circle-fill activity-badge text-secondary align-self-start'></i>
                                 <div class="activity-content">
-                                    {{$liste_attente->patient->nom}} <a href="#" class="fw-bold text-dark">{{$liste_attente->patient->prenom}}</a> :=> {{$liste_attente->tarif->libelle_tarif}}
+                                    {{$liste_attente->patient->nom}} <a href="#"
+                                        class="fw-bold text-dark">{{$liste_attente->patient->prenom}}</a> :=>
+                                    {{$liste_attente->tarif->libelle_tarif}}
                                 </div>
                             </div><!-- End activity item-->
                             @endif
@@ -275,44 +308,78 @@
                 <div class="card">
 
                     <div class="card-body pb-0">
-                        <h5 class="card-title">Les Rendez-vous</h5>
+                        <h5 class="card-title">Planification des medecins du jour</h5>
 
                         <div class="news">
+                            @foreach ($planifications as $planification )
                             <div class="post-item clearfix">
-                                <img src="assets/img/news-1.jpg" alt="">
-                                <h4><a href="#">Nihil blanditiis at in nihil autem</a></h4>
-                                <p>Sit recusandae non aspernatur laboriosam. Quia enim eligendi sed ut harum...</p>
+                                <img src="assets/img/medecin.jpg" alt="">
+                                {{-- <i class="ri ri-team-line"></i> --}}
+                                <h4><a href="#">
+                               </a> {{$planification->tarif->libelle_tarif}}</h4>
+                                <p> {{$planification->medecin->grade}} {{$planification->medecin->nom.'
+                                    '.$planification->medecin->prenom}}</p>
                             </div>
-
-                            <div class="post-item clearfix">
-                                <img src="assets/img/news-2.jpg" alt="">
-                                <h4><a href="#">Quidem autem et impedit</a></h4>
-                                <p>Illo nemo neque maiores vitae officiis cum eum turos elan dries werona nande...</p>
-                            </div>
-
-                            <div class="post-item clearfix">
-                                <img src="assets/img/news-3.jpg" alt="">
-                                <h4><a href="#">Id quia et et ut maxime similique occaecati ut</a></h4>
-                                <p>Fugiat voluptas vero eaque accusantium eos. Consequuntur sed ipsam et totam...</p>
-                            </div>
-
-                            <div class="post-item clearfix">
-                                <img src="assets/img/news-4.jpg" alt="">
-                                <h4><a href="#">Laborum corporis quo dara net para</a></h4>
-                                <p>Qui enim quia optio. Eligendi aut asperiores enim repellendusvel rerum cuder...</p>
-                            </div>
-
-                            <div class="post-item clearfix">
-                                <img src="assets/img/news-5.jpg" alt="">
-                                <h4><a href="#">Et dolores corrupti quae illo quod dolor</a></h4>
-                                <p>Odit ut eveniet modi reiciendis. Atque cupiditate libero beatae dignissimos eius...
-                                </p>
-                            </div>
+                            @endforeach
 
                         </div><!-- End sidebar recent posts-->
 
                     </div>
                 </div><!-- End News & Updates -->
+                <!-- Website Traffic -->
+                <div class="card">
+
+                    <div class="card-body pb-0">
+                        <h5 class="card-title">Statistique des consultations</h5>
+
+                        <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
+                        @foreach ($rapport_consultations as $rapport_consultation)
+                        @php
+                        $data[]=[
+                                'value'=>json_encode($rapport_consultation->total),
+                                'name'=> json_encode($rapport_consultation->tarif->libelle_tarif)
+                                ];
+                        @endphp
+                        @endforeach
+                        {{-- {{json_encode($data)}} --}}
+                <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                  echarts.init(document.querySelector("#trafficChart")).setOption({
+                    tooltip: {
+                      trigger: 'item'
+                    },
+                    legend: {
+                      top: '5%',
+                      left: 'center'
+                    },
+                    series: [{
+                      name: '',
+                      type: 'pie',
+                      radius: ['40%', '70%'],
+                      avoidLabelOverlap: false,
+                      label: {
+                        show: false,
+                        position: 'center'
+                      },
+                      emphasis: {
+                        label: {
+                          show: true,
+                          fontSize: '18',
+                          fontWeight: 'bold'
+                        }
+                      },
+                      labelLine: {
+                        show: false
+                      },
+                      data: <?=json_encode($data)?>,
+                    }]
+                  });
+                });
+                        </script>
+                    </div>
+                </div><!-- End Website Traffic -->
+
+
 
             </div><!-- End Right side columns -->
 

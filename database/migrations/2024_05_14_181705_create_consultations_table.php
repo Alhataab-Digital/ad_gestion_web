@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('societe_id')->constrained();
             $table->foreignId('patient_id')->constrained();
+            $table->foreignId('medecin_id')->constrained();
             $table->foreignId('planification_id')->constrained();
             $table->foreignId('tarif_medical_id')->constrained();
             $table->string('motif')->nullable();
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->text('examen_radiologique')->nullable();
             $table->text('diagnostique')->nullable();
             $table->text('traitement')->nullable();
+            $table->text('etat')->default(0);
             $table->timestamps();
         });
     }

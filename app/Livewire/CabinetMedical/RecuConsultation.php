@@ -49,6 +49,10 @@ class RecuConsultation extends Component
     {
         $societe_id = Auth::user()->societe_id;
         $user_id = Auth::user()->id;
+        $caisse_id = Caisse::where('user_id', $user_id)->first(['id'])->id;
+            $compte_caisse = Caisse::where('user_id', $user_id)->first(['compte'])->compte;
+            $date_comptable = Caisse::where('user_id', $user_id)->first(['date_comptable'])->date_comptable;
+            $caisse = Caisse::find($caisse_id);
 
         $validated = $this->validate(
             [
@@ -71,16 +75,14 @@ class RecuConsultation extends Component
 
 
             $recu->update([
-                'etat'=>'payé'
+                'etat'=>'payé',
+                'date_operation' =>$date_comptable,
             ]);
 
             /**
             * mise a jour de la caisse
             */
-            $caisse_id = Caisse::where('user_id', $user_id)->first(['id'])->id;
-            $compte_caisse = Caisse::where('user_id', $user_id)->first(['compte'])->compte;
-            $date_comptable = Caisse::where('user_id', $user_id)->first(['date_comptable'])->date_comptable;
-            $caisse = Caisse::find($caisse_id);
+
 
                          $compte = $compte_caisse + $validated['montant'];
 

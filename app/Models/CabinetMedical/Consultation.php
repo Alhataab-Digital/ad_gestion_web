@@ -18,10 +18,12 @@ class Consultation extends Model
         'diagnostique',
         'traitement',
         'patient_id',
+        'medecin_id',
         'planification_id',
         'tarif_medical_id',
         'user_id',
         'societe_id',
+        'etat',
     ];
 
     public function societe()
@@ -43,8 +45,14 @@ class Consultation extends Model
     {
         return $this->belongsTo(Patient::class);
     }
+
     public function planification()
     {
         return $this->belongsTo(PlanificationMedecin::class);
+    }
+
+    public function medecin()
+    {
+        return $this->belongsTo(Medecin::class);
     }
 }

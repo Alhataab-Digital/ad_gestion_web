@@ -101,6 +101,8 @@ use App\Livewire\CabinetMedical\Consultation;
 use App\Livewire\CabinetMedical\DossierConsultation;
 use App\Livewire\CabinetMedical\PlanificationMedecin;
 use App\Livewire\CabinetMedical\RecuConsultation;
+use App\Livewire\CabinetMedical\ResultatConsultation;
+use App\Livewire\CabinetMedical\TraitementConsultation;
 
 /*
  --------------------------
@@ -926,6 +928,8 @@ Route::middleware(['auth','initier'])->prefix('assurance')->controller(PrimeNetC
             Route::get('ad/sante/consultation',Consultation::class)->name('index.consultation');
             Route::get('ad/sante/consultation/{id}/Dossier',DossierConsultation::class)->name('dossier.consultation');
             Route::get('ad/sante/consultation/{id}/Recu',RecuConsultation::class)->name('recu.consultation');
+            Route::get('ad/sante/consultation/{id}/traitement',TraitementConsultation::class)->name('traitement.consultation');
+            Route::get('ad/sante/consultation/{id}/resultat',ResultatConsultation::class)->name('resultat.consultation');
         });
        //
     });

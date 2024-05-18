@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('facturations', function (Blueprint $table) {
             $table->id();
             $table->string('montant');
+            $table->date('date_operation')->nullable();
             $table->string('etat');
             $table->foreignId('patient_id')->constrained();
             $table->foreignId('tarif_id')->constrained();

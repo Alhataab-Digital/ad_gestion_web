@@ -28,7 +28,7 @@ public function mount()
 
         $validated = $this->validate(
             [
-                'telephone'=> 'required | min:8',
+                'telephone'=> 'required | min:8|max:12',
             ]
         );
 

@@ -175,7 +175,7 @@
                             {{-- <button type="reset" class="btn btn-secondary">Reset</button> --}}
                             @endif
                             @if($recu_consultations->etat!="instance")
-                            <button type="submit" class="btn btn-success">imprimer</button>
+                            <button type="submit" class="btn btn-secondary">imprimer</button>
                             @endif
                         </div>
                     </div>

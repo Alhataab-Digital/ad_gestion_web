@@ -15,15 +15,19 @@ use App\Models\Caisse\Caisse;
 use App\Models\Banque;
 use App\Models\Investissement\Facture;
 use App\Models\Agences\Agence;
+use App\Models\AutresOperation;
 use App\Models\CabinetMedical\Consultation;
+use App\Models\CabinetMedical\Facturation;
 use App\Models\CabinetMedical\Medecin;
 use App\Models\CabinetMedical\Patient;
+use App\Models\CabinetMedical\PlanificationMedecin;
 use App\Models\CabinetMedical\Rdv;
 use App\Models\CabinetMedical\RendezVous;
 use App\Models\Region;
 
 use App\Models\Investissement\OperationVehiculeAchete;
 use App\Models\Investissement\OperationVehiculeVendu;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -135,7 +139,22 @@ class HomeController extends Controller
             $medecin_count = Medecin::where('societe_id', $societe_id)->count();
             $consultation_count = Consultation::where('societe_id', $societe_id)->count();
             $rdv_count = Rdv::where('societe_id', $societe_id)->count();
-            $liste_attentes=Consultation::all();
+            $liste_attentes=Consultation::where('etat','0')->get();
+            $planifications=PlanificationMedecin::where('jour_semaine', date('Y-m-d'))->get();
+            // $rapport_consultations=Consultation::with('tarif')->get();
+            $libelle_tarif=array();
+            $count_tarif=array();
+            $data=array();
+            $rapport_consultations=Consultation::groupBy('tarif_medical_id')
+                        ->selectRaw('count(*) as total, tarif_medical_id')
+                        ->get();
+                        // \Carbon\Carbon::parse($commande->created_at)->format('d/m/Y')
+            $rapport_revenus=Facturation::where('etat', 'payé')->where('societe_id', $societe_id)->groupBy('date_operation')
+                        ->selectRaw('sum(montant) as total')
+                        ->get();
+            $rapport_depenses=Operation::where('societe_id', $societe_id)->groupBy('date_comptable')
+                        ->selectRaw('sum(montant_operation) as total')
+                        ->get();
 
             return view(
                 'home',
@@ -182,7 +201,14 @@ class HomeController extends Controller
                     'medecin_count',
                     'consultation_count',
                     'rdv_count',
-                    'liste_attentes'
+                    'liste_attentes',
+                    'planifications',
+                    'rapport_consultations',
+                    'libelle_tarif',
+                    'count_tarif',
+                    'data',
+                    'rapport_revenus',
+                    'rapport_depenses',
                 )
 
             );
