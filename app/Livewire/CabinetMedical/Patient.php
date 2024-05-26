@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use App\Models\CabinetMedical\Patient as Patients;
+use App\Models\Civilite;
+use App\Models\SituationMatrimoniale;
 use App\Models\Users\Utilisateur;
 use Livewire\Component;
 
@@ -15,22 +17,23 @@ class Patient extends Component
 {
     public $patients =[];
     public $utilisateur =[];
+    public $civilites =[];
+    public $situations =[];
 
     public $civilite ='';
     public $nom ='';
     public $prenom ='';
     public $situation ='';
-    public $age ='';
+    public $date_naissance ='';
+    public $lieu_naissance ='';
     public $telephone ='';
     public $adresse ='';
-    public $taille ='';
-    public $poid ='';
-    public $mail ='';
-    public $password ='';
 
     public function mount()
     {
-        $this->patients=Patients::all();
+        $this->patients=Patients::where('civilite_id','!=',null)->get();
+        $this->civilites=Civilite::all();
+        $this->situations=SituationMatrimoniale::all();
         $user_id = Auth::user()->id;
         $this->utilisateur=Utilisateur::where('id',$user_id)->first();
         $this->telephone=$this->utilisateur->agence->region->indicatif;
@@ -44,6 +47,7 @@ class Patient extends Component
 
     public function save()
     {
+        $numero_patient = mt_rand(1000, 9999);
 
         $validated = $this->validate(
             [
@@ -51,13 +55,10 @@ class Patient extends Component
                 'nom'=> 'required',
                 'prenom'=> 'required',
                 'situation'=> 'required',
-                'age'=> 'required',
+                'date_naissance'=> 'required',
+                'lieu_naissance'=> 'required',
                 'telephone'=> 'required | min:8 |unique:patients',
                 'adresse'=> 'required',
-                'taille'=> '',
-                'poid'=> '',
-                'mail'=> '',
-                'password'=> '',
 
             ]
         );
@@ -66,21 +67,28 @@ class Patient extends Component
         $user_id = Auth::user()->id;
 
         Patients::create([
-                'civilite'=> $validated['civilite'],
+                'civilite_id'=> $validated['civilite'],
                 'nom'=> $validated['nom'],
                 'prenom'=>$validated['prenom'],
-                'situation'=> $validated['situation'],
-                'age'=> $validated['age'],
+                'situation_matrimoniale_id'=> $validated['situation'],
+                'date_naissance'=> $validated['date_naissance'],
+                'lieu_naissance'=> $validated['lieu_naissance'],
                 'telephone'=> $validated['telephone'],
                 'adresse'=> $validated['adresse'],
-                'taille'=>$validated['taille'],
-                'poid'=>$validated['poid'],
-                'mail'=>$validated['mail'],
-                'password'=>$validated['password'],
+                'numero_patient'=> 'PAT/'.$numero_patient.'/'.date('dmY'),
                 'user_id'=> $user_id,
                 'societe_id' => $societe_id,
         ]);
 
-        return redirect()->with('success', 'Patient crée avec succès');
+        $this->civilite ='';
+        $this->nom ='';
+        $this->prenom ='';
+        $this->situation ='';
+        $this->date_naissance ='';
+        $this->lieu_naissance ='';
+        $this->telephone ='';
+        $this->adresse ='';
+
+        return redirect()->route('ad.sante.index.patient')->with('success', 'Patient crée avec succès');
     }
 }

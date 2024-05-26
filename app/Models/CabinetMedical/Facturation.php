@@ -11,14 +11,19 @@ class Facturation extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'rdv_id',
         'patient_id',
-        'tarif_id',
-        'planification_id',
-        'etat',
+        'medecin_id',
+        'tarif_consultation_id',
+        'taux_assurer',
         'montant',
-        'date_operation',
+        'montant_assurer',
+        'montant_patient',
+        'montant_paye',
+        'reste_a_payer',
         'user_id',
         'societe_id',
+        'etat',
     ];
 
     public function societe()
@@ -31,9 +36,13 @@ class Facturation extends Model
         return $this->belongsTo(Utilisateur::class);
     }
 
-    public function tarif()
+    public function tarif_consultation()
     {
-        return $this->belongsTo(TarifMedical::class,'tarif_id');
+        return $this->belongsTo(TarifConsultation::class);
+    }
+    public function rendez_vous()
+    {
+        return $this->belongsTo(Rdv::class,'rdv_id');
     }
 
     public function patient()
@@ -41,9 +50,9 @@ class Facturation extends Model
         return $this->belongsTo(Patient::class);
     }
 
-    public function planification()
+    public function medecin()
     {
-        return $this->belongsTo(PlanificationMedecin::class);
+        return $this->belongsTo(Medecin::class);
     }
 
 }

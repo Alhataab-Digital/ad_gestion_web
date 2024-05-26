@@ -13,14 +13,19 @@ return new class extends Migration
     {
         Schema::create('facturations', function (Blueprint $table) {
             $table->id();
-            $table->string('montant');
-            $table->date('date_operation')->nullable();
-            $table->string('etat');
+            $table->foreignId('rdv_id')->constrained();
             $table->foreignId('patient_id')->constrained();
-            $table->foreignId('tarif_id')->constrained();
-            $table->foreignId('planification_id')->constrained();
+            $table->foreignId('medecin_id')->constrained();
+            $table->foreignId('tarif_consultation_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('societe_id')->constrained();
+            $table->string('taux_assurer')->default(0);
+            $table->string('montant');
+            $table->string('montant_assurer')->default(0);
+            $table->string('montant_patient')->default(0);
+            $table->string('montant_paye')->default(0);
+            $table->string('reste_a_payer')->default(0);
+            $table->string('etat')->default(0);
             $table->timestamps();
         });
     }

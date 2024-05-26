@@ -15,7 +15,10 @@
             <div class="col-lg-12">
 
                 <div class="card">
-                    <div class="card-body " style="background-color: silver">
+                    <div class="card-header bg-secondary text-white">
+                        Information de votre societe
+                    </div>
+                    <div class="card-body " >
                         <h5 class="card-title">
 
                             @if ($message=Session::get('success'))
@@ -46,13 +49,6 @@
                                 <input type="text" name="raison_sociale" class="form-control" id="validationDefault01"
                                     required>
                             </div>
-                            <!-- <div class="col-md-2">
-                        <label for="validationDefault01" class="form-label">logo(image)</label>
-                        <input type="file" name="logo" class="form-control" id="validationDefault01"  >
-                    </div> -->
-                            <!-- <div class="col-md-2">
-                        <img src="assets/img/logo.png" alt="" style="width:35mm; height:30mm; border: 1px solid black;" >
-                    </div> -->
                             <div class="col-md-12">
                                 <label for="validationDefault01" class="form-label">Activité <span
                                         style="color:red">*</span></label>
@@ -65,21 +61,21 @@
                                 <input type="text" name="forme_juridique" class="form-control" id="validationDefault03"
                                     required>
                             </div>
-                            <div class="col-md-3">
-                                <label for="validationDefault04" class="form-label">Pays <span
-                                        style="color:red">*</span></label>
-                                <select class="form-select" id="validationDefault04" name="region_id" required>
-                                    <option selected disabled value="">Choix...</option>
+                            <div class="col-3">
+                                <label for="validationDefault04" class="form-label">Pays /
+                                    Region</label>
+                                <select class="form-select" id="region" name="region_id"
+                                    required>
+                                    <option selected disabled value="">Choose...</option>
                                     @foreach ($regions as $region)
-                                    <option value="{{ $region->id }}">{{ $region->nom }}</option>
+                                    <option value="{{ $region->id }}">{{ $region->nom . ' ' .$region->code}}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-3">
-                                <label for="validationDefault05" class="form-label">Téléphone<span
-                                        style="color:red">*</span></label>
-                                <input type="text" name="telephone" value="{{ $region->indicatif }}" class="form-control" id="validationDefault05"
-                                    required>
+                            <div class="col-3 " id="telephone" >
+                                <label for="inputAddress" class="form-label">Telephone</label>
+                                <input type="text" name="telephone" class="form-control"
+                                    id="telephone">
                             </div>
 
                             <div class="col-md-6">
@@ -102,12 +98,15 @@
                                 <label class="form-label">site web</label>
                                 <input type="text" name="site_web" class="form-control">
                             </div>
-                            <div class="col-12">
-                                <button class="btn btn-primary" type="submit">Valider</button>
-                            </div>
-                        </form>
+
                         <!-- End Browser Default Validation -->
 
+                    </div>
+                    <div class="card-footer bg-secondary">
+                        <div class="col-12">
+                            <button class="btn btn-primary" type="submit">Valider</button>
+                        </div>
+                    </form>
                     </div>
                 </div>
 
@@ -115,4 +114,36 @@
 
         </div>
     </section>
+    <script src="{{ asset('assets/js/jquery.js') }}"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+            $('#region').change(function(event) {
+
+                var region_id = this.value;
+
+            //    alert(region_id);
+
+                $('#telephone').html('');
+                $.ajax({
+                    url: "{{ route('agence_region.code') }}",
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        id: region_id,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    //alert(data);
+                    success: function(response) {
+                        console.log(response);
+                        $.each(response.code, function(index, val) {
+                            // alert(val);
+                            $("#telephone").append('<label for="inputAddress" class="form-label">Telephone</label><input type="text" name="telephone" value='+val.indicatif+' class="form-control" id="telephone">');
+                        })
+                    }
+                })
+
+            });
+
+        });
+</script>
 </main><!-- End #main -->

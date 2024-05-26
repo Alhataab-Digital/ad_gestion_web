@@ -19,12 +19,13 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">
-                                <!-- Basic Modal -->
+
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#addTarifModal">
                                     Ajouter tarif
                                 </button>
                             </h5>
+                            <!-- Basic Modal -->
                             <div wire:ignore.self class="modal fade" id="addTarifModal" tabindex="-1">
                                 <div class="modal-dialog">
                                     <div class="modal-content">

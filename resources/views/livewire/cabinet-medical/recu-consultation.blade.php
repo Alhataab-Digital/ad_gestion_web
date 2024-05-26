@@ -18,9 +18,17 @@
 
                 <!-- Card with header and footer -->
                 <div class="card">
+                    @if($recu_consultations->etat=="instance")
                     <div class="card-header bg-dark text-white ">
                        REGLEMENT CONSULTATION CLINIQUE
                     </div>
+                    @endif
+                    @if($recu_consultations->etat!="instance")
+                    <div class="card-header bg-dark text-white ">
+                       RECU DE CONSULTATION
+                       {{-- <div class="text-end"><button wire:click='recuPrint({{$recu_consultations->id}})'  class="btn btn-secondary"><i class="bx bx-printer"></i></button></div> --}}
+                    </div>
+                    @endif
                     @if ($caisse->etat==1 && $caisse->date_comptable!= date("Y-m-d") )
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <i class="bi bi-exclamation-octagon me-1"></i>
@@ -54,7 +62,7 @@
                                 <tr>
                                     <td colspan="6">
                                         <table class="table mb-0">
-                                            <th>Recu n° {{ $recu_consultations->id }}</th>
+                                            <th>Recu n° {{ \Carbon\Carbon::parse($recu_consultations->created_at)->format('dmy').''.$recu_consultations->id }}</th>
                                         </table>
                                     </td>
                                 </tr>
@@ -90,7 +98,8 @@
                                 </tr>
                                 <td colspan="2"> {{ $recu_consultations->patient->nom }}</td>
                                 <td> {{ $recu_consultations->patient->prenom }}</td>
-                                <td>{{ $recu_consultations->patient->age }}</td>
+
+                                <td>{{\Carbon\Carbon::parse($recu_consultations->patient->date_naissance)->age }}</td>
                                 <td>{{ $recu_consultations->patient->telephone }}</td>
                                 <td>{{ $recu_consultations->patient->adresse }}</td>
                             </tbody>
@@ -124,19 +133,26 @@
 
                                 </tr>
 
-                                <td colspan="2">{{ $recu_consultations->planification->medecin->nom }}</td>
-                                <td>{{ $recu_consultations->planification->medecin->prenom }}</td>
-                                <td>{{ $recu_consultations->planification->medecin->telephone }}</td>
-                                <td>{{ $recu_consultations->planification->tarif->libelle_tarif }}</td>
-                                <td>{{ number_format($recu_consultations->montant, 2, ',', ' ') .
-                                    '
-                                                                    ' .
-                                    $recu_consultations->tarif->user->agence->devise->unite }}
+                                <td colspan="2">{{ $recu_consultations->medecin->nom }}</td>
+                                <td>{{ $recu_consultations->medecin->prenom }}</td>
+                                <td>{{ $recu_consultations->medecin->telephone }}</td>
+                                <td>{{ $recu_consultations->rendez_vous->planification->tarif_consultation->type_consultation->type_consultation }}</td>
+                                @if($recu_consultations->etat==0)
+                                <td>{{ number_format($recu_consultations->reste_a_payer, 2, ',', ' ') .
+                                    ' ' .
+                                    $recu_consultations->user->agence->devise->unite }}
                                 </td>
+                                @endif
+                                @if($recu_consultations->etat==1)
+                                <td>{{ number_format($recu_consultations->montant_paye, 2, ',', ' ') .
+                                    ' ' .
+                                    $recu_consultations->user->agence->devise->unite }}
+                                </td>
+                                @endif
                             </tbody>
                         </table>
                     </div>
-                    @if($recu_consultations->etat=="instance")
+                    @if($recu_consultations->etat==0)
                     <div class="card-body">
                         <form wire:submit.prevent='paiement'>
                             <div class="col-md-6">
@@ -169,13 +185,15 @@
                     @endif
                     <div class="card-footer bg-dark text-white">
                         <div class="text-end">
-                            @if($recu_consultations->etat=="instance")
+                            @if($recu_consultations->etat==0)
                             <button type="submit" class="btn btn-success">Valider</button>
 
                             {{-- <button type="reset" class="btn btn-secondary">Reset</button> --}}
                             @endif
-                            @if($recu_consultations->etat!="instance")
-                            <button type="submit" class="btn btn-secondary">imprimer</button>
+                            @if($recu_consultations->etat!=0)
+
+                                <button wire:click='recuPrint({{$recu_consultations->id}})'  class="btn btn-secondary"><i class="bx bx-printer"></i></button>
+
                             @endif
                         </div>
                     </div>

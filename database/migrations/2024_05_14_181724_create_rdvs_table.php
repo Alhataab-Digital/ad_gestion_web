@@ -15,11 +15,15 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('societe_id')->constrained();
-            $table->foreignId('patient_id')->constrained();
-            $table->foreignId('medecin_id')->constrained();
-            $table->string('etat');
+            $table->foreignId('patient_id')->nullable()->constrained();
+            $table->foreignId('medecin_id')->nullable()->constrained();
+            $table->foreignId('planification_id')->nullable()->constrained();
             $table->date('date_rdv');
-            $table->time('heure_rdv');
+            $table->time('heure_rdv')->nullable();
+            $table->string('etat')->default(0);
+            $table->string('motif')->nullable();
+            $table->float('taux_couverture')->default(0);
+            $table->float('montant');
             $table->timestamps();
         });
     }

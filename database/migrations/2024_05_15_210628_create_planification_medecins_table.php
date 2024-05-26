@@ -16,8 +16,9 @@ return new class extends Migration
             $table->date('jour_semaine');
             $table->time('heure_debut');
             $table->time('heure_fin');
+            $table->foreignId('specialite_id')->constrained();
             $table->foreignId('medecin_id')->constrained();
-            $table->foreignId('tarif_medical_id')->constrained();
+            $table->foreignId('tarif_consultation_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('societe_id')->constrained();
             $table->timestamps();

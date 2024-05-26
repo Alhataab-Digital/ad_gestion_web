@@ -19,6 +19,7 @@ use App\Models\AutresOperation;
 use App\Models\CabinetMedical\Consultation;
 use App\Models\CabinetMedical\Facturation;
 use App\Models\CabinetMedical\Medecin;
+use App\Models\CabinetMedical\PaiementRecu;
 use App\Models\CabinetMedical\Patient;
 use App\Models\CabinetMedical\PlanificationMedecin;
 use App\Models\CabinetMedical\Rdv;
@@ -135,21 +136,24 @@ class HomeController extends Controller
             $activite_vehicule = ActiviteVehicule::where('agence_id', $agence_id)->where('etat_activite', '!=', 'annuler')->count();
 
 
-            $patient_count = Patient::where('societe_id', $societe_id)->count();
+            $patient_count = Patient::where('societe_id', $societe_id)->where('civilite_id','!=',null)->count();
             $medecin_count = Medecin::where('societe_id', $societe_id)->count();
             $consultation_count = Consultation::where('societe_id', $societe_id)->count();
             $rdv_count = Rdv::where('societe_id', $societe_id)->count();
-            $liste_attentes=Consultation::where('etat','0')->get();
+            $nouveau_rdv_count = Rdv::where('societe_id', $societe_id)->where('etat', 0)->count();
+            $rdv_jour_count = Rdv::where('societe_id', $societe_id)->where('date_rdv',date('Y-m-d'))->count();
+            $liste_attentes=Consultation::where('etat',0)->get();
             $planifications=PlanificationMedecin::where('jour_semaine', date('Y-m-d'))->get();
             // $rapport_consultations=Consultation::with('tarif')->get();
-            $libelle_tarif=array();
+            $tarif_consultation=array();
             $count_tarif=array();
             $data=array();
-            $rapport_consultations=Consultation::groupBy('tarif_medical_id')
-                        ->selectRaw('count(*) as total, tarif_medical_id')
+            $rapport_consultations=Consultation::groupBy('tarif_consultation_id')
+                        ->selectRaw('count(*) as total, tarif_consultation_id')
+                        ->where('etat','!=',0)
                         ->get();
                         // \Carbon\Carbon::parse($commande->created_at)->format('d/m/Y')
-            $rapport_revenus=Facturation::where('etat', 'payé')->where('societe_id', $societe_id)->groupBy('date_operation')
+            $rapport_revenus=PaiementRecu::where('societe_id', $societe_id)->groupBy('date_operation')
                         ->selectRaw('sum(montant) as total')
                         ->get();
             $rapport_depenses=Operation::where('societe_id', $societe_id)->groupBy('date_comptable')
@@ -201,10 +205,12 @@ class HomeController extends Controller
                     'medecin_count',
                     'consultation_count',
                     'rdv_count',
+                    'nouveau_rdv_count',
+                    'rdv_jour_count',
                     'liste_attentes',
                     'planifications',
                     'rapport_consultations',
-                    'libelle_tarif',
+                    'tarif_consultation',
                     'count_tarif',
                     'data',
                     'rapport_revenus',

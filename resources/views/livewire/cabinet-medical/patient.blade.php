@@ -32,7 +32,6 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
-
                                     <div class="modal-body">
                                         <!-- Multi Columns Form -->
                                         <form class="row g-3" wire:submit.prevent='save'>
@@ -40,9 +39,9 @@
                                                 <label for="inputState" class="form-label">Civilité <span style="color: red">*</span></label>
                                                 <select id="inputState" class="form-select" wire:model='civilite'>
                                                     <option selected></option>
-                                                    <option value="Monsieur"> Monsieur </option>
-                                                    <option value="Madame"> Madame </option>
-                                                    <option value="Mademoiselle"> Mademoiselle </option>
+                                                    @foreach ($civilites as $civilite )
+                                                    <option value="{{$civilite->id}}"> {{$civilite->civilite}} </option>
+                                                    @endforeach
                                                 </select>
                                                 @error('civilite')
                                                 <span class="text-danger">{{$message}}</span>
@@ -68,20 +67,27 @@
                                                 <label for="inputState" class="form-label">Situation <span style="color: red">*</span></label>
                                                 <select id="inputState" class="form-select" wire:model='situation'>
                                                     <option selected></option>
-                                                    <option value="Celibataire">Celibataire</option>
-                                                    <option value="Marié(e)">Marié(e)</option>
-                                                    <option value="Veuf(ve)">Veuf(ve)</option>
-                                                    <option value="Divorcé(e)">Divorcé(e)</option>
+                                                    @foreach ($situations as $situation )
+                                                    <option value="{{$situation->id}}"> {{$situation->situation_matrimoniale}} </option>
+                                                    @endforeach
                                                 </select>
                                                 @error('situation')
                                                 <span class="text-danger">{{$message}}</span>
                                                 @enderror
                                             </div>
-                                            <div class="col-md-2">
-                                                <label for="inputPassword5" class="form-label">Age <span style="color: red">*</span></label>
-                                                <input type="number" class="form-control" wire:model='age'
+                                            <div class="col-md-4">
+                                                <label for="inputPassword5" class="form-label">Date de naissance <span style="color: red">*</span></label>
+                                                <input type="date" class="form-control" wire:model='date_naissance'
                                                     id="inputPassword5">
-                                                @error('age')
+                                                @error('date_naissance')
+                                                <span class="text-danger">{{$message}}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="inputPassword5" class="form-label">Lieu de naissance <span style="color: red">*</span></label>
+                                                <input type="text" class="form-control" wire:model='lieu_naissance'
+                                                    id="inputPassword5">
+                                                @error('lieu_naissance')
                                                 <span class="text-danger">{{$message}}</span>
                                                 @enderror
                                             </div>
@@ -93,31 +99,13 @@
                                                 <span class="text-danger">{{$message}}</span>
                                                 @enderror
                                             </div>
-                                            <div class="col-12">
+                                            <div class="col-6">
                                                 <label for="inputAddress2" class="form-label">Addresse <span style="color: red">*</span></label>
                                                 <input type="text" class="form-control" wire:model='adresse'
                                                     id="inputAddress2">
                                                 @error('adresse')
                                                 <span class="text-danger">{{$message}}</span>
                                                 @enderror
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="inputCity" class="form-label">Taille</label>
-                                                <input type="text" class="form-control" wire:model='taille' id="inputCity">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="inputZip" class="form-label">Poid</label>
-                                                <input type="text" class="form-control" wire:model='poid' id="inputZip">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="inputEmail5" class="form-label">Email</label>
-                                                <input type="email" class="form-control" wire:model='mail'
-                                                    id="inputEmail5">
-
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="inputPassword5" class="form-label">Password</label>
-                                                <input type="password" class="form-control" wire:model='password' id="inputPassword5">
                                             </div>
                                     </div>
                                     <div class="modal-footer"  style="background-color: silver">
@@ -151,47 +139,35 @@
                         <table class="table datatable">
                             <thead class="bg-primary">
                                 <tr>
-                                    <!-- <th scope="col">#</th> -->
-                                    <th scope="col">Civilité</th>
+                                    <th scope="col">N° Dossier</th>
                                     <th scope="col">Nom patient </th>
                                     <th scope="col">Prenom patient</th>
+                                    <th scope="col">Age</th>
                                     <th scope="col">telephone patient</th>
-                                    {{-- <th scope="col">Age</th> --}}
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($patients as $patient )
                                 <tr>
-                                    <td>{{ $patient->civilite}}</td>
-                                    <td>{{ $patient->nom}}</td>
+                                    <td>{{ $patient->numero_patient}}</td>
+                                    @if ($patient->civilite_id !=null)
+                                    <td>{{ $patient->civilite->civilite.' '.$patient->prenom}}</td>
+                                    @else
                                     <td>{{ $patient->prenom}}</td>
-                                    <td>{{ $patient->telephone}}</td>
-                                    {{-- <td>{{ $patient->age}}</td> --}}
-                                    <td>
+                                    @endif
 
-                                        {{-- <a wire:navigate href="/patient/{{encrypt($patient->id)}}/consultation">
-                                            <button type="button" class="btn btn-warning"><i
-                                                    class="ri ri-user-unfollow-line"></i> Consultation</button>
-                                        </a>
-                                        <a wire:navigate href="/patient/{{encrypt($patient->id)}}/rdv">
-                                            <button type="button" class="btn btn-info"><i
-                                                    class="ri ri-user-shared-2-line"></i> Rendez vous</button>
-                                        </a>
-                                        <a wire:navigate href="/patient/{{encrypt($patient->id)}}/vaccin">
-                                            <button type="button" class="btn btn-dark"><i
-                                                    class="ri ri-syringe-line"></i> Vaccin</button>
-                                        </a>
-                                        <a wire:navigate href="/patient/{{encrypt($patient->id)}}/ordonnance">
-                                            <button type="button" class="btn btn-light"><i
-                                                    class="ri ri-file-add-line"></i> Ordonnance</button>
-                                        </a> --}}
-                                        <a wire:navigate href="{{route('ad.sante.dossier',encrypt($patient->id))}}">
+                                    <td>{{ $patient->nom}}</td>
+                                    <td>{{(\Carbon\Carbon::parse($patient->date_naissance)->age )}}</td>
+                                    <td>{{ $patient->telephone}}</td>
+
+                                    <td>
+                                        <a wire:navigate href="{{route('ad.sante.dossier.patient',encrypt($patient->id))}}">
                                             <button type="button" class="btn btn-secondary"><i
                                                     class="bx bx-folder-plus"></i></button>
                                         </a>
                                         <a wire:navigate href="{{route('ad.sante.edit.patient',encrypt($patient->id))}}">
-                                            <button type="button" class="btn btn-primary"><i
+                                            <button type="button" class="btn btn-info"><i
                                                     class="bi bi-pencil"></i></button>
                                         </a>
                                         <button type="button" class="btn btn-danger" data-bs-toggle="modal"
@@ -233,11 +209,3 @@
 
 </main>
 <!-- End #main -->
-@push('scripts')
-<script>
-    windows.addEventListner('show-delete-confirmation-modal', event=>{
-        $('#deleteModal').modal('show');
-    })
-</script>
-
-@endpush

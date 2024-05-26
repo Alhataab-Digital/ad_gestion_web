@@ -1,5 +1,6 @@
 <main id="main" class="main">
 
+
     <div class="pagetitle">
         <h1>Patients</h1>
         <nav>
@@ -36,13 +37,26 @@
                                     <div class="modal-body">
                                         <!-- Multi Columns Form -->
                                         <form class="row g-3" wire:submit.prevent='save'>
-                                            <div class="col-md-12">
+                                            <div class="col-md-6">
+                                                <label for="inputState" class="form-label">Specialite <span style="color: red">*</span></label>
+                                                <select id="inputState" class="form-select" wire:model.live='specialite'>
+                                                    <option selected></option>
+                                                    @foreach ($specialites as $specialite )
+                                                    <option value="{{$specialite->id}}"> {{$specialite->specialite_medecin}} </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('specialite')
+                                                <span class="text-danger">{{$message}}</span>
+                                                @enderror
+                                            </div>
+
+                                            <div class="col-md-6">
                                                 <label for="inputState" class="form-label">Medecin <span
                                                         style="color: red">*</span></label>
                                                 <select id="inputState" class="form-select" wire:model='medecin'>
                                                     <option selected>choisir le medecin</option>
                                                     @foreach ($medecins as $medecin )
-                                                    <option value="{{$medecin->id}}"> {{$medecin->grade.' : '.$medecin->prenom.' '.$medecin->nom}} </option>
+                                                    <option value="{{$medecin->id}}"> {{$medecin->prenom.' '.$medecin->nom}} </option>
                                                     @endforeach
                                                 </select>
                                                 @error('medecin')
@@ -50,15 +64,15 @@
                                                 @enderror
                                             </div>
                                             <div class="col-md-12">
-                                                <label for="inputState" class="form-label">Domaine d'intervention <span
+                                                <label for="inputState" class="form-label">Prestation <span
                                                         style="color: red">*</span></label>
-                                                <select id="inputState" class="form-select" wire:model='intervention'>
-                                                    <option selected>Choisir l'intervention</option>
-                                                    @foreach ($tarif_medicals as $tarif_medical )
-                                                    <option value="{{$tarif_medical->id}}"> {{$tarif_medical->libelle_tarif}} </option>
+                                                <select id="inputState" class="form-select" wire:model='tarif_consultation'>
+                                                    <option selected></option>
+                                                    @foreach ($tarif_consultations as $tarif_consultation )
+                                                    <option value="{{$tarif_consultation->id}}"> {{$tarif_consultation->type_consultation->type_consultation}} </option>
                                                     @endforeach
                                                 </select>
-                                                @error('intervention')
+                                                @error('tarif_consultation')
                                                 <span class="text-danger">{{$message}}</span>
                                                 @enderror
                                             </div>
@@ -137,7 +151,7 @@
                                 <tr>
                                     <td>{{ $planification->medecin->prenom}}</td>
                                     <td>{{ $planification->medecin->nom}}</td>
-                                    <td>{{ $planification->tarif->libelle_tarif}}</td>
+                                    <td>{{ $planification->tarif_consultation->tarif_consultation}}</td>
                                     <td>{{ $planification->jour_semaine}}</td>
                                     <td>{{ $planification->heure_debut}}</td>
                                     <td>{{ $planification->heure_fin}}</td>
@@ -182,8 +196,50 @@
                 </div>
 
             </div>
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="container">
+                            <div id="calendar">
+                                    Calendrier
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
-
+    <script>
+        $(document).ready(function() {
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                defaultDate: moment().format('YYYY-MM-DD'),
+                navLinks: true, // can click day/week names to navigate views
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
+                events: [
+                    {
+                        title: 'Event 1',
+                        start: '2023-05-20',
+                        end: '2023-05-24'
+                    },
+                    {
+                        title: 'Event 2',
+                        start: '2023-05-22',
+                        end: '2023-05-24'
+                    },
+                    {
+                        title: 'Event 3',
+                        start: '2023-05-29T10:30:00',
+                        end: '2023-05-29T12:30:00'
+                    }
+                ]
+            });
+        });
+    </script>
 </main>
 <!-- End #main -->

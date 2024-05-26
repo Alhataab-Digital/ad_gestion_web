@@ -15,6 +15,7 @@ class PaiementRecu extends Model
         'reglement_id',
         'facturation_id',
         'montant',
+        'date_operation',
         'user_id',
         'societe_id',
     ];
@@ -22,6 +23,10 @@ class PaiementRecu extends Model
     public function reglement()
     {
         return $this->belongsTo(TypeReglement::class);
+    }
+    public function facturation()
+    {
+        return $this->belongsTo(Facturation::class);
     }
 
     public function recu()

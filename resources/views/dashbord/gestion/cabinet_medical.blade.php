@@ -31,7 +31,9 @@
                                         <h6>{{$count_caisse_agence}}</h6>
                                         <span class="text-success small pt-1 fw-bold">{{
                                             number_format($montant_total_caisse_agence->total,2,","," ")}}</span> <span
-                                            class="text-muted small pt-2 ps-1">{{$agence->devise->unite}}</span>
+                                            class="text-muted small pt-2 ps-1">@if (isset($agence->devise->unite))
+                                            {{$agence->devise->unite}}
+                                            @endif</span>
                                     </div>
                                 </div>
                             </div>
@@ -52,7 +54,9 @@
                                         <h6>{{$count_banque_agence}}</h6>
                                         <span class="text-success small pt-1 fw-bold">{{
                                             number_format($montant_total_banque_agence->total,2,","," ")}}</span>
-                                        <span class="text-muted small pt-2 ps-1">{{$agence->devise->unite}}</span>
+                                        <span class="text-muted small pt-2 ps-1">@if (isset($agence->devise->unite))
+                                            {{$agence->devise->unite}}
+                                            @endif</span>
                                     </div>
                                 </div>
                             </div>
@@ -73,7 +77,9 @@
                                         <h6>{{ $count_charge_agence }}</h6>
                                         <span class="text-danger small pt-2 ps-1 fw-bold">{{
                                             number_format($montant_total_charge_agence->total,2,","," ")}}</span> <span
-                                            class="text-danger small pt-2 ps-1"> {{$agence->devise->unite}}</span>
+                                            class="text-danger small pt-2 ps-1">@if (isset($agence->devise->unite))
+                                            {{$agence->devise->unite}}
+                                            @endif</span>
                                     </div>
                                 </div>
                             </div>
@@ -100,45 +106,8 @@
                         </div>
                     </div>
                     <!-- End Revenue Card -->
-                    <!-- Sales Card -->
-                    <div class="col-xxl-4 col-md-12">
-                        <div class="card info-card sales-card">
-                            <div class="card-body">
-                                <h5 class="card-title">Consultations</h5>
-                                <div class="d-flex align-items-center">
-                                    <div
-                                        class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                        <a href=""><i class="ri ri-stethoscope-line"></i></a>
-                                    </div>
-                                    <div class="ps-3">
-                                        <h6>{{$consultation_count}}</h6>
-                                        <span class="text-primary small pt-1 fw-bold">voir plus</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!-- End Sales Card -->
-                    <!-- Sales Card -->
-                    {{-- <div class="col-xxl-3 col-md-12">
-                        <div class="card info-card sales-card">
-                            <div class="card-body">
-                                <h5 class="card-title">Rendez-vous</h5>
-                                <div class="d-flex align-items-center">
-                                    <div
-                                        class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                        <a href=""><i class="ri ri-calendar-todo-fill"></i></a>
-                                    </div>
-                                    <div class="ps-3">
-                                        <h6>{{$rdv_count}}</h6>
-                                        <span class="text-info small pt-1 fw-bold">voir plus</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
-                    <!-- End Sales Card -->
-                    <!-- End Revenue Card -->
-                    <div class="col-xxl-4 col-md-12">
+                     <!-- End Revenue Card -->
+                     <div class="col-xxl-4 col-md-12">
                         <div class="card info-card sales-card">
                             <div class="card-body">
                                 <h5 class="card-title">Medecins</h5>
@@ -158,6 +127,82 @@
                         </div>
                     </div>
                     <!-- End Revenue Card -->
+                    <!-- Sales Card -->
+                    <div class="col-xxl-4 col-md-12">
+                        <div class="card info-card sales-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Consultations</h5>
+                                <div class="d-flex align-items-center">
+                                    <div
+                                        class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <a href=""><i class="ri ri-stethoscope-line"></i></a>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6>{{$consultation_count}}</h6>
+                                        <span class="text-primary small pt-1 fw-bold">voir plus</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- End Sales Card -->
+                    <!-- Sales Card -->
+                    <div class="col-xxl-4 col-md-12">
+                        <div class="card info-card sales-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Totat rendez-vous</h5>
+                                <div class="d-flex align-items-center">
+                                    <div
+                                        class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <a href=""><i class="ri ri-calendar-todo-fill"></i></a>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6>{{$rdv_count}}</h6>
+                                        <span class="text-info small pt-1 fw-bold">voir plus</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Sales Card -->
+                    <!-- Sales Card -->
+                    <div class="col-xxl-4 col-md-12">
+                        <div class="card info-card sales-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Nouveau rendez-vous </h5>
+                                <div class="d-flex align-items-center">
+                                    <div
+                                        class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <a href=""><i class="ri ri-calendar-todo-fill"></i></a>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6>{{$nouveau_rdv_count}}</h6>
+                                        <span class="text-info small pt-1 fw-bold">voir plus</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Sales Card -->
+                    <!-- Sales Card -->
+                    <div class="col-xxl-4 col-md-12">
+                        <div class="card info-card sales-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Rendez-vous d'aujourd'hui </h5>
+                                <div class="d-flex align-items-center">
+                                    <div
+                                        class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <a href=""><i class="ri ri-calendar-todo-fill"></i></a>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6>{{$rdv_jour_count}}</h6>
+                                        <span class="text-info small pt-1 fw-bold">voir plus</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Sales Card -->
+
                     <!-- Reports -->
                     <div class="col-12">
                         <div class="card">
@@ -265,36 +310,36 @@
                         <h5 class="card-title">Salle d'attente</h5>
                         <div class="activity">
                             @foreach ($liste_attentes as $liste_attente )
-                            @if($liste_attente->patient->civilite=="Monsieur")
+                            @if($liste_attente->patient->civilite->civilite=="Mr")
                             <div class="activity-item d-flex">
                                 <div class="activite-label">{{$liste_attente->created_at->diffForHumans()}} </div>
                                 <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
                                 <div class="activity-content">
                                     {{$liste_attente->patient->nom}} <a href="#"
                                         class="fw-bold text-dark">{{$liste_attente->patient->prenom}}</a> :=>
-                                    {{$liste_attente->tarif->libelle_tarif}}
+                                    {{$liste_attente->tarif_consultation->type_consultation->type_consultation}}
                                 </div>
                             </div><!-- End activity item-->
                             @endif
-                            @if($liste_attente->patient->civilite=="Madame")
+                            @if($liste_attente->patient->civilite->civilite=="Mme")
                             <div class="activity-item d-flex">
                                 <div class="activite-label">{{$liste_attente->created_at->diffForHumans()}} </div>
                                 <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
                                 <div class="activity-content">
                                     {{$liste_attente->patient->nom}} <a href="#"
                                         class="fw-bold text-dark">{{$liste_attente->patient->prenom}}</a> :=>
-                                    {{$liste_attente->tarif->libelle_tarif}}
+                                    {{$liste_attente->tarif_consultation->type_consultation->type_consultation}}
                                 </div>
                             </div><!-- End activity item-->
                             @endif
-                            @if($liste_attente->patient->civilite=="Mademoiselle")
+                            @if($liste_attente->patient->civilite->civilite=="Mlle")
                             <div class="activity-item d-flex">
                                 <div class="activite-label">{{$liste_attente->created_at->diffForHumans()}} </div>
                                 <i class='bi bi-circle-fill activity-badge text-secondary align-self-start'></i>
                                 <div class="activity-content">
                                     {{$liste_attente->patient->nom}} <a href="#"
                                         class="fw-bold text-dark">{{$liste_attente->patient->prenom}}</a> :=>
-                                    {{$liste_attente->tarif->libelle_tarif}}
+                                    {{$liste_attente->tarif_consultation->type_consultation->type_consultation}}
                                 </div>
                             </div><!-- End activity item-->
                             @endif
@@ -308,7 +353,7 @@
                 <div class="card">
 
                     <div class="card-body pb-0">
-                        <h5 class="card-title">Planification des medecins du jour</h5>
+                        <h5 class="card-title">Agenda des medecins du jour</h5>
 
                         <div class="news">
                             @foreach ($planifications as $planification )
@@ -316,9 +361,27 @@
                                 <img src="assets/img/medecin.jpg" alt="">
                                 {{-- <i class="ri ri-team-line"></i> --}}
                                 <h4><a href="#">
-                               </a> {{$planification->tarif->libelle_tarif}}</h4>
-                                <p> {{$planification->medecin->grade}} {{$planification->medecin->nom.'
-                                    '.$planification->medecin->prenom}}</p>
+                                    {{$planification->medecin->titre}} {{$planification->medecin->nom.'
+                                    '.$planification->medecin->prenom}}</h4>
+                                <p>
+                                <strong>Specialite :</strong> {{$planification->medecin->specialite->specialite_medecin}}
+                                <br>
+                                <span><strong>Heure planifier :</strong>
+                                    {{
+                                            \Carbon\Carbon::parse($planification->heure_debut)->format('H:s').'
+                                            à
+                                            '.\Carbon\Carbon::parse($planification->heure_fin)->format('H:s')
+                                }}
+                                </span>
+                                <br>
+                                <span>
+                                <strong>Coût prestation :</strong>
+                                {{
+                                            number_format($planification->tarif_consultation->montant,2,","," ").'
+                                            '.$planification->user->agence->devise->unite}}
+                                </span>
+                                </p>
+
                             </div>
                             @endforeach
 
@@ -337,7 +400,7 @@
                         @php
                         $data[]=[
                                 'value'=>json_encode($rapport_consultation->total),
-                                'name'=> json_encode($rapport_consultation->tarif->libelle_tarif)
+                                'name'=> json_encode($rapport_consultation->tarif_consultation->type_consultation->type_consultation)
                                 ];
                         @endphp
                         @endforeach

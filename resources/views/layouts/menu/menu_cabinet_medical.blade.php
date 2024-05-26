@@ -30,7 +30,7 @@
         </li>
         <li>
             <a href="{{ route('nature_operation_charge') }}">
-                <i class="bi bi-circle"></i><span>Nature opération chargé </span>
+                <i class="bi bi-circle"></i><span>Nature opération charge </span>
             </a>
         </li>
         <li>
@@ -63,20 +63,12 @@
                 <i class="bi bi-circle"></i><span>Region / Pays </span>
             </a>
         </li>
-        <li>
-            <a href="{{route('ad.sante.index.tarif_medical')}}" wire:navigate >
-                <i class="bi bi-circle"></i><span>Tarifs</span>
-            </a>
-        </li>
-        <li>
-            <a href="{{route('ad.sante.index.planification.medecin')}}">
-                <i class="bi bi-circle"></i><span>Planification</span>
-            </a>
-        </li>
-
     </ul>
 </li>
 @endif
+
+<li class="nav-heading">Gestion tresorerie</li>
+
 @if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="4"|| Auth::user()->role_id =="5")
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#caisse-nav" data-bs-toggle="collapse" href="#">
@@ -114,7 +106,7 @@
 </li><!-- End Forms Nav -->
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-layout-text-window-reverse"></i><span>Autres opération caisse</span><i
+        <i class="bi bi-layout-text-window-reverse"></i><span>Opération des charges</span><i
             class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="tables-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
@@ -130,7 +122,7 @@
 @endif
 @if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="4"|| Auth::user()->role_id =="5")
 <li class="nav-item">
-    <a class="nav-link collapse" data-bs-target="#banque-nav" data-bs-toggle="collapse" href="#">
+    <a class="nav-link collapsed" data-bs-target="#banque-nav" data-bs-toggle="collapse" href="#">
         <i class="ri ri-building-line"></i><span>Gestion banque</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="banque-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
@@ -159,33 +151,77 @@
 </li>
 <!-- End Forms Nav -->
 @endif
+
+
+<li class="nav-heading">Gestion medicale</li>
 @if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="4"|| Auth::user()->role_id =="5")
 <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#donne-nav" data-bs-toggle="collapse" href="#">
+    <a class="nav-link collapsed" data-bs-target="#patient-nav" data-bs-toggle="collapse" href="#">
         <i class="bi bi-gear-wide-connected"></i><span>Gestion patient</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
-    <ul id="donne-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
-
+    <ul id="patient-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
         <li>
             <a href="{{route('ad.sante.index.patient')}}">
                 <i class="bi bi-circle"></i><span>Dossier Patient</span>
             </a>
         </li>
+    </ul>
+</li>
+<li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#rendez-vous-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-gear-wide-connected"></i><span>Gestion rendez-vous</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="rendez-vous-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
         <li>
-            <a href="{{route('ad.sante.index.consultation')}}">
-                <i class="bi bi-circle"></i><span>Consultation</span>
-            </a>
-        </li>
-        <li>
-            <a href="tables-general.html">
+            <a href="{{route('ad.sante.rendez-vous.consultation')}}">
                 <i class="bi bi-circle"></i><span>Rendez-vous</span>
             </a>
         </li>
     </ul>
 </li>
+<li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#facturation-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-gear-wide-connected"></i><span>Gestion facturation</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="facturation-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
+        <li>
+            <a href="{{route('ad.sante.facturation.consultation')}}">
+                <i class="bi bi-circle"></i><span>Facturation et paiement</span>
+            </a>
+        </li>
+    </ul>
+</li>
+<li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#consultation-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-gear-wide-connected"></i><span>Gestion consultation</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="consultation-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
+
+        <li>
+            <a href="{{route('ad.sante.index.consultation')}}">
+                <i class="bi bi-circle"></i><span>Consultation</span>
+            </a>
+        </li>
+
+    </ul>
+</li>
+<li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#hospitalisation-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-gear-wide-connected"></i><span>Gestion hospitalisation</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="hospitalisation-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
+
+        <li>
+            <a href="">
+                <i class="bi bi-circle"></i><span>Hospitalisation</span>
+            </a>
+        </li>
+
+    </ul>
+</li>
+
 @endif
 @if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"|| Auth::user()->role_id =="3"||Auth::user()->role_id =="4"|| Auth::user()->role_id =="5")
-
 <!-- End Charts Nav -->
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#plannification-nav" data-bs-toggle="collapse" href="#">
@@ -199,11 +235,17 @@
             </a>
         </li>
 
-        <li>
+        {{-- <li>
             <a href="">
                 <i class="bi bi-circle"></i><span> Rendez-vous</span>
             </a>
         </li>
+
+        <li>
+            <a href="">
+                <i class="bi bi-circle"></i><span> Consultation</span>
+            </a>
+        </li> --}}
 
 
 
@@ -211,80 +253,136 @@
 </li>
 @endif
 <!-- End Charts Nav -->
-{{-- <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#facturation-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-journal-text"></i><span>Facturation et paiements</span><i
-            class="bi bi-chevron-down ms-auto"></i>
+<li class="nav-heading">Configuration medicale</li>
+<li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#config-generale-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-gear-wide-connected"></i><span>Config génénale</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
-    <ul id="facturation-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
-        <!-- <li>
-    <a href="">
-    <i class="bi bi-circle"></i><span>Programmation hebdomadaire</span>
-    </a>
-    </li> -->
+    <ul id="config-generale-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
+        <li>
+            <a href="{{route('ad.sante.specialite.medicale')}}">
+                <i class="bx bxs-institution"></i><span>Specialite medecin</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{route('ad.sante.categorie.medicale')}}">
+                <i class="bx bxs-institution"></i><span>Categorie medecin</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{route('ad.sante.index.planification.medecin')}}">
+                <i class="bi bi-circle"></i><span>Agenda medecin</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{route('ad.sante.maison.assurance.medicale')}}">
+                <i class="bx bxs-institution"></i><span>Assureur</span>
+            </a>
+        </li>
         <li>
             <a href="">
-                <i class="bi bi-circle"></i><span>Facturation
-                </span>
+                <i class="bx bxs-institution"></i><span>Affection</span>
             </a>
         </li>
         <li>
             <a href="">
-                <i class="bi bi-circle"></i><span>Paiements
-                </span>
+                <i class="bx bxs-institution"></i><span>Type de prestation</span>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <i class="bx bxs-institution"></i><span>Vaccin</span>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <i class="bx bxs-institution"></i><span>Allergie</span>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <i class="bx bxs-institution"></i><span>Type examen</span>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <i class="bx bxs-institution"></i><span>Type soins</span>
             </a>
         </li>
     </ul>
-</li> --}}
-
-{{-- <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#personnel-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-journal-text"></i><span>Gestion du personnel</span><i class="bi bi-chevron-down ms-auto"></i>
+</li>
+<li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#config-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-gear-wide-connected"></i><span>Config consultation</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
-    <ul id="personnel-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
-        <li>
-            <a href="{{ route('commande') }}">
-                <i class="bi bi-circle"></i><span>Personnel Administratifs</span>
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('devis') }}">
-                <i class="bi bi-circle"></i><span>Corps medicale</span>
-            </a>
-        </li>
-    </ul>
-</li> --}}
-<!-- End Charts Nav -->
+    <ul id="config-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
 
-{{-- <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-        <i class="ri ri-list-check"></i><span>Rapport</span><i class="bi bi-chevron-down ms-auto"></i>
+
+        <li>
+            <a href="{{route('ad.sante.type.consultation')}}">
+                <i class="bx bxs-institution"></i><span>Type consultation</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{route('ad.sante.tarif.consultation')}}" wire:navigate >
+                <i class="bi bi-circle"></i><span>Tarifs consultation</span>
+            </a>
+        </li>
+
+
+
+    </ul>
+</li>
+<li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#config-h-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-gear-wide-connected"></i><span>Config hospitalisation</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
-    <ul id="icons-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
+    <ul id="config-h-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
+
+
         <li>
-            <a href="icons-bootstrap.html">
-                <i class="bi bi-circle"></i><span>Consultations</span>
+            <a href="{{route('ad.sante.index.tarif_medical')}}" wire:navigate >
+                <i class="bi bi-circle"></i><span>Tarifs hospitalisation</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="">
+                <i class="bx bxs-institution"></i><span>Lit</span>
             </a>
         </li>
         <li>
-            <a href="icons-remix.html">
-                <i class="bi bi-circle"></i><span>Examen clinique</span>
+            <a href="">
+                <i class="bx bxs-institution"></i><span>Type de lit</span>
             </a>
         </li>
         <li>
-            <a href="icons-boxicons.html">
-                <i class="bi bi-circle"></i><span>Examen biologique</span>
+            <a href="">
+                <i class="bx bxs-institution"></i><span>Salles</span>
             </a>
         </li>
         <li>
-            <a href="icons-boxicons.html">
-                <i class="bi bi-circle"></i><span>Examen radiologique</span>
+            <a href="">
+                <i class="bx bxs-institution"></i><span>Commodités</span>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <i class="bx bxs-institution"></i><span>Batiments</span>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <i class="bx bxs-institution"></i><span>Unités</span>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <i class="bx bxs-institution"></i><span>Départements</span>
             </a>
         </li>
     </ul>
-</li> --}}
-<!-- End Icons Nav -->
-
+</li>
 <li class="nav-heading">perso</li>
 
 

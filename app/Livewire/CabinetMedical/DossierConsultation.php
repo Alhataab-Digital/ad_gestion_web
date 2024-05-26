@@ -7,6 +7,7 @@ use App\Models\CabinetMedical\Facturation;
 use App\Models\CabinetMedical\Medecin;
 use App\Models\CabinetMedical\Patient;
 use App\Models\CabinetMedical\PlanificationMedecin;
+use App\Models\CabinetMedical\TarifConsultation;
 use App\Models\CabinetMedical\TarifMedical;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Rule;
@@ -34,7 +35,7 @@ class DossierConsultation extends Component
 
         $societe_id = Auth::user()->societe_id;
         $user_id = Auth::user()->id;
-        $this->tarifs = TarifMedical::where('societe_id', $societe_id)->get();
+        $this->tarifs = TarifConsultation::where('societe_id', $societe_id)->get();
         $patients = Patient::where('id', $id)->first();
 
         $this->patients = $patients->id;
@@ -78,7 +79,7 @@ class DossierConsultation extends Component
             ]
         );
         // dd($validated['consultation']);
-        $this->tarifs=TarifMedical::where("id",$validated['consultation'])->first();
+        $this->tarifs=TarifConsultation::where("id",$validated['consultation'])->first();
         $societe_id = Auth::user()->societe_id;
         $user_id = Auth::user()->id;
 
@@ -90,33 +91,33 @@ class DossierConsultation extends Component
             'age'=> $validated['age'],
             'adresse'=> $validated['adresse'],
         ]);
-if(isset(Facturation::where('patient_id',$this->patients)->where('etat','instance')->latest()->first()->id)){
+        if(isset(Facturation::where('patient_id',$this->patients)->where('etat','instance')->latest()->first()->id)){
 
-    return redirect()->route('ad.sante.index.consultation')->with('danger', "Ce patient à une consultation en instance");
+            return redirect()->route('ad.sante.index.consultation')->with('danger', "Ce patient à une consultation en instance");
 
-}else{
-    $medecin_planifier=PlanificationMedecin::where('id',$validated['planification'])->first();
-    $medecin_id=Medecin::where('id',$medecin_planifier->medecin->id )->first();
-    Consultation::create([
-        'patient_id' => $this->patients,
-        'medecin_id' =>$medecin_id->id,
-        'planification_id' => $validated['planification'],
-        'tarif_medical_id' => $this->tarifs->id,
-        'user_id' => $user_id,
-        'societe_id' => $societe_id,
-    ]);
+        }else{
+            $medecin_planifier=PlanificationMedecin::where('id',$validated['planification'])->first();
+            $medecin_id=Medecin::where('id',$medecin_planifier->medecin->id )->first();
+            Consultation::create([
+                'patient_id' => $this->patients,
+                'medecin_id' =>$medecin_id->id,
+                'planification_id' => $validated['planification'],
+                'tarif_medical_id' => $this->tarifs->id,
+                'user_id' => $user_id,
+                'societe_id' => $societe_id,
+            ]);
 
-    Facturation::create([
-        'etat' => 'instance',
-        'montant' => $this->tarifs->prix,
-        'patient_id' => $this->patients,
-        'planification_id' => $validated['planification'],
-        'tarif_id' => $this->tarifs->id,
-        'user_id' => $user_id,
-        'societe_id' => $societe_id,
-    ]);
-    $recu=Facturation::where('user_id',$user_id)->latest('id')->first();
-    return redirect()->route('ad.sante.recu.consultation',encrypt($recu->id))->with('succes');
+            Facturation::create([
+                'etat' => 'instance',
+                'montant' => $this->tarifs->prix,
+                'patient_id' => $this->patients,
+                'planification_id' => $validated['planification'],
+                'tarif_id' => $this->tarifs->id,
+                'user_id' => $user_id,
+                'societe_id' => $societe_id,
+            ]);
+            $recu=Facturation::where('user_id',$user_id)->latest('id')->first();
+            return redirect()->route('ad.sante.recu.consultation',encrypt($recu->id))->with('succes');
 }
 
 

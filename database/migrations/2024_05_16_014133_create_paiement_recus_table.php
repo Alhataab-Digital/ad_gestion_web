@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('paiement_recus', function (Blueprint $table) {
             $table->id();
+            $table->date('date_operation');
             $table->string('montant');
             $table->foreignId('facturation_id')->constrained();
             $table->foreignId('reglement_id')->constrained();

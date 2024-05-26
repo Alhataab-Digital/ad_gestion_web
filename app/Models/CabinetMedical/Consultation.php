@@ -11,16 +11,12 @@ class Consultation extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'motif',
-        'examen_clinique',
-        'examen_biologique',
-        'examen_radiologique',
-        'diagnostique',
-        'traitement',
         'patient_id',
         'medecin_id',
-        'planification_id',
-        'tarif_medical_id',
+        'diagnostique',
+        'traitement',
+        'rdv_id',
+        'tarif_consultation_id',
         'user_id',
         'societe_id',
         'etat',
@@ -36,19 +32,18 @@ class Consultation extends Model
         return $this->belongsTo(Utilisateur::class);
     }
 
-    public function tarif()
-    {
-        return $this->belongsTo(TarifMedical::class,'tarif_medical_id');
-    }
-
     public function patient()
     {
-        return $this->belongsTo(Patient::class);
+        return $this->belongsTo(Patient::class,'patient_id');
+    }
+    public function rendez_vous()
+    {
+        return $this->belongsTo(Rdv::class,'rdv_id');
     }
 
-    public function planification()
+    public function tarif_consultation()
     {
-        return $this->belongsTo(PlanificationMedecin::class);
+        return $this->belongsTo(TarifConsultation::class,'tarif_consultation_id');
     }
 
     public function medecin()

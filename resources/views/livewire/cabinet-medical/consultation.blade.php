@@ -13,57 +13,68 @@
 
     <section class="section">
         <div class="row">
-            <div class="form-signin w-80 m-auto col-lg-4">
-
-                <!-- Vertical Form -->
-                <form wire:submit='valider' class="row g-0">
-                <div class="card">
-                    <div class="card-header bg-dark text-white">
-                        CONSULTATION PATIENT
-                    </div>
-                    <p>
-                        @if ($message=Session::get('success'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <i class="bi bi-check-circle me-1"></i>
-                                {{ $message }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        @endif
-                        @if ($message=Session::get('danger'))
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <i class="bi bi-exclamation-octagon me-1"></i>
-                                {{ $message }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        @endif
-                    </p>
-                    <div class="card-body">
-                        <h5 class="card-title">
-                                <div class="col-12">
-                                    <label for="inputAddress5" class="form-label">Telephone <span
-                                            style="color: red">*</span></label>
-                                    <input type="text" class="form-control" wire:model='telephone' id="inputAddres5s">
-                                    @error('telephone')
-                                    <span class="text-danger">{{$message}}</span>
-                                    @enderror
-                                </div>
-
-
-
-                    </div>
-
-                    <div class="card-footer bg-dark text-white">
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Valider</button>
-                            <a href="">
-                                <button type="button" class="btn btn-secondary">Retour</button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </form><!-- Vertical Form -->
-
+            <div class="form-signin w-80 m-auto col-lg-12 bg-primary">
+                    <h5 class="card-title text-white text-center">GESTION CONSULTATION </h5>
             </div>
+            <div class="card">
+
+                <div class="card-body">
+
+
+                      <!-- Table with stripped rows -->
+                      <table class="table datatable">
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <!-- <th scope="col">#</th> -->
+                                <th scope="col">Patient</th>
+                                <th scope="col">Date prevus</th>
+                                <th scope="col">Type de consultation</th>
+                                <th scope="col">motif consultation</th>
+                                <th scope="col">Medecin</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($consultations as $consultation )
+                            <tr>
+                                <td>{{ $consultation->patient->nom}} {{ $consultation->patient->prenom}}</td>
+                                <td>{{ \Carbon\Carbon::parse($consultation->created_at)->format('d-m-Y')}}</td>
+                                <td>{{ $consultation->tarif_consultation->type_consultation->type_consultation}}</td>
+                                <td>{{ $consultation->rendez_vous->motif}}</td>
+                                <td>{{ $consultation->medecin->prenom.' '.$consultation->medecin->nom}}</td>
+                                <td>
+                                    @if($consultation->etat==0)
+                                    <span class="badge bg-danger">en cours</span>
+                                    @endif
+                                    @if($consultation->etat==1)
+                                    <span class="badge bg-info">Terminer</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    {{-- <a href="" > <button type="button" class="btn btn-primary btn-sm">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    </a> --}}
+                                    @if($consultation->etat==0)
+                                    <button class="btn btn-warning btn-sm" wire:click='facturerRendezVous({{$consultation->id}})'>
+                                        <i class="ri ri-bank-card-2-line"></i></button>
+                                    @endif
+                                    @if($consultation->etat==1)
+                                    <button class="btn btn-light btn-sm">
+                                        <i class="ri ri-file-earmark-text"></i></button>
+                                    @endif
+
+                                    <button class="btn btn-danger btn-sm"><i class="bx bx-trash"></i></button>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <!-- End Table with stripped rows -->
+
+                </div>
+              </div>
         </div>
     </section>
 

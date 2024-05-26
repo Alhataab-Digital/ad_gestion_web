@@ -13,20 +13,24 @@ return new class extends Migration
     {
         Schema::create('medecins', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('societe_id')->constrained();
-            $table->string('civilite');
+            $table->string('civilite_id')->constrained();
             $table->string('nom');
             $table->string('prenom');
-            $table->string('situation');
-            $table->integer('age');
+            $table->foreignId('situation_matrimoniale_id')->constrained();
+            $table->date('date_naissance');
+            $table->string('lieu_naissance');
+
+            $table->string('titre');
             $table->string('telephone');
             $table->string('adresse');
-            $table->string('taille');
-            $table->string('poid');
-            $table->string('grade');
             $table->string('mail');
-            $table->string('password');
+
+            $table->string('matricule');
+            $table->string('specialite_id')->constrained();
+            $table->string('categorie_medicale_id')->constrained();
+
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('societe_id')->constrained();
             $table->timestamps();
         });
     }

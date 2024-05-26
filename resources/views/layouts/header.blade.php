@@ -21,7 +21,7 @@
                     {{ Auth::user()->agence->region->nom }}
                 </div>
                 <div> Date operation
-                    :<strong>{{ App\Models\Caisse\Caisse::where('user_id', Auth::user()->id)->first(['date_comptable'])->date_comptable }}</strong>
+                    :<strong>{{ \Carbon\Carbon::parse(App\Models\Caisse\Caisse::where('user_id', Auth::user()->id)->first(['date_comptable'])->date_comptable)->format('d-m-Y')}}</strong>
                 </div>
 
                 {{-- <form class="search-form d-flex align-items-center" method="POST" action="#">

@@ -2,9 +2,14 @@
 
 namespace App\Livewire\CabinetMedical;
 
+use App\Models\CabinetMedical\CategorieMedecin;
 use App\Models\CabinetMedical\Consultation;
 use App\Models\CabinetMedical\Medecin;
 use App\Models\CabinetMedical\PlanificationMedecin;
+use App\Models\CabinetMedical\Specialite;
+use App\Models\CabinetMedical\SpecialiteMedecin;
+use App\Models\Civilite;
+use App\Models\SituationMatrimoniale;
 use Livewire\Component;
 
 class MedecinDossier extends Component
@@ -13,14 +18,17 @@ class MedecinDossier extends Component
     public $civilite ;
     public $nom ;
     public $prenom ;
-    public $situation;
-    public $age;
-    public $telephone;
-    public $adresse;
-    public $taille;
-    public $poid;
+    public $situation ;
+    public $date_naissance;
+    public $lieu_naissance ;
+    public $telephone ;
+    public $titre ;
+    public $specialite;
+    public $categorie;
+    public $adresse ;
     public $mail ;
-    public $password;
+    public $matricule;
+
     public $planifications=[];
     public $consutlations=[];
     public $consutlation_traiters=[];
@@ -30,6 +38,10 @@ class MedecinDossier extends Component
         $id = decrypt($id);
 
         $medecins = Medecin::where('id', $id)->first();
+        $civilite = Civilite::where('id', $medecins->civilite_id)->first();
+        $situation = SituationMatrimoniale::where('id', $medecins->situation_matrimoniale_id)->first();
+        $categorie = CategorieMedecin::where('id', $medecins->categorie_medicale_id)->first();
+        $specialite = SpecialiteMedecin::where('id', $medecins->specialite_id)->first();
 
         $this->planifications = PlanificationMedecin::where('medecin_id',$id)->where('jour_semaine', date('Y-m-d'))->get();
         $this->consutlations = Consultation::where('medecin_id', $id)->where('etat', '0')->get();
@@ -37,17 +49,39 @@ class MedecinDossier extends Component
 
 
         $this->medecins = $medecins->id;
-        $this->civilite = $medecins->civilite;
+        if(isset( $civilite->civilite)){
+            $this->civilite =     $civilite->civilite;
+        }else{
+            $this->civilite = '';
+        }
         $this->nom = $medecins->nom;
         $this->prenom = $medecins->prenom;
-        $this->situation = $medecins->situation;
-        $this->age = $medecins->age;
+        if(isset($situation->situation_matrimoniale))
+        {
+            $this->situation =  $situation->situation_matrimoniale;
+        }else{
+            $this->situation ='';
+        }
+        $this->date_naissance = $medecins->date_naissance;
+        $this->lieu_naissance = $medecins->lieu_naissance;
         $this->telephone = $medecins->telephone;
         $this->adresse = $medecins->adresse;
-        $this->taille = $medecins->taille;
-        $this->poid = $medecins->poid;
         $this->mail = $medecins->mail;
-        $this->password = $medecins->password;
+        $this->matricule = $medecins->matricule;
+        $this->titre = $medecins->titre;
+        if(isset($categorie->categorie_medecin))
+        {
+            $this->categorie =  $categorie->categorie_medecin;
+        }else{
+            $this->categorie ='';
+        }
+        if(isset($specialite->specialite_medecin))
+        {
+            $this->specialite =  $specialite->specialite_medecin;
+        }else{
+            $this->specialite ='';
+        }
+
     }
 
     public function render()
