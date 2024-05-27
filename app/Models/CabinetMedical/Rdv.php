@@ -16,6 +16,7 @@ class Rdv extends Model
         'montant',
         'patient_id',
         'medecin_id',
+        'contrat_id',
         'planification_id',
         'date_rdv',
         'heure_rdv',
@@ -46,6 +47,11 @@ class Rdv extends Model
     public function medecin()
     {
         return $this->belongsTo(Medecin::class,'medecin_id');
+    }
+
+    public function contrat_assurance()
+    {
+        return $this->belongsTo(ContratAssurance::class,'contrat_id');
     }
 
 }

@@ -104,11 +104,11 @@
                                         </a>
                                         @endif
                                         @if($facturation->etat==1)
-                                        <button class="btn btn-light btn-sm">
-                                            <i class="ri ri-file-earmark-text"></i></button>
+                                        <a href="{{route('ad.sante.recu.consultation',encrypt($facturation->id))}}">
+                                        <button class="btn btn-secondary btn-sm">
+                                            <i class="bx bx-printer"></i></button>
+                                        </a>
                                         @endif
-
-                                        <button class="btn btn-danger btn-sm"><i class="bx bx-trash"></i></button>
                                     </td>
                                 </tr>
                                 @endforeach

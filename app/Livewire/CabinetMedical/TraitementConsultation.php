@@ -53,20 +53,12 @@ class TraitementConsultation extends Component
         // dd($this->consultation->id);
         $validated = $this->validate(
             [
-                'motif' => 'required',
-                'examen_biologique' => 'required',
-                'examen_radiologique' => 'required',
-                'examen_clinique' => 'required',
                 'diagnostique' => 'required',
                 'traitement' => 'required',
             ]);
             $traitement=Consultation::where('id',$this->consultation->id)->first();
 
             $traitement->update([
-                'motif'=> $validated['motif'],
-                'examen_biologique'=> $validated['examen_biologique'],
-                'examen_radiologique'=>$validated['examen_radiologique'],
-                'examen_clinique'=> $validated['examen_clinique'],
                 'diagnostique'=> $validated['diagnostique'],
                 'traitement'=> $validated['traitement'],
                 'etat'=> 1,
@@ -74,7 +66,16 @@ class TraitementConsultation extends Component
 
             //
             return redirect()->route('ad.sante.dossier.medecin',encrypt($this->consultation->medecin_id))->with('succes');
-           
 
+
+    }
+    public function saveExamen()
+    {
+        dd('examen prescrit');
+    }
+
+    public function saveMedicament()
+    {
+        dd('medicament prescrit prescrit');
     }
 }

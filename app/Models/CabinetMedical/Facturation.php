@@ -6,6 +6,7 @@ use App\Models\Societe;
 use App\Models\Users\Utilisateur;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Facturation extends Model
 {
@@ -55,4 +56,8 @@ class Facturation extends Model
         return $this->belongsTo(Medecin::class);
     }
 
+    public function paiement()
+    {
+        return $this->hasMany(PaiementRecu::class);
+    }
 }

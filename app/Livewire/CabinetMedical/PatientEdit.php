@@ -160,7 +160,8 @@ class PatientEdit extends Component
             'personne_contact' => $validated['personne_contact'],
         ]);
 
-        return redirect()->with('success', 'Opération modifié avec succès');
+        return redirect()->route('ad.sante.edit.patient', encrypt($patients->id))->with('success', 'Opération modifié avec succès');
+   
     }
 
     public function updateInfoMedicale()

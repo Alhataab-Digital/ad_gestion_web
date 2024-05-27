@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('societe_id')->constrained();
             $table->foreignId('patient_id')->nullable()->constrained();
             $table->foreignId('medecin_id')->nullable()->constrained();
+            $table->foreignId('contrat_id')->default(0)->constrained();
             $table->foreignId('planification_id')->nullable()->constrained();
             $table->date('date_rdv');
             $table->time('heure_rdv')->nullable();

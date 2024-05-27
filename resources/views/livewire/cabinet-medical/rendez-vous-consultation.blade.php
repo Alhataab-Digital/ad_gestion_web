@@ -74,7 +74,7 @@
                         <li class="nav-item" role="facturation">
                             <button class="nav-link" id="facturation-tab" data-bs-toggle="tab"
                                 data-bs-target="#facturation" type="button" role="tab" aria-controls="facturation"
-                                aria-selected="false">FACTURE EN COURS</button>
+                                aria-selected="false">FACTURE EN COURS  <span class="badge bg-danger badge-number">{{$fac_en_cours}}</span></button>
                         </li>
                         <li class="nav-item" role="caisse">
                             <button class="nav-link" id="caisse-tab" data-bs-toggle="tab" data-bs-target="#caisse"
@@ -84,7 +84,9 @@
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact"
                                 type="button" role="tab" aria-controls="contact" aria-selected="false">SALLE
-                                D'ATTENTE</button>
+                                D'ATTENTE
+                                <span class="badge bg-danger badge-number">{{$nbr_consultation_attente}}</span>
+                            </button>
                         </li>
                     </ul>
                     <div class="tab-content pt-2" id="myTabContent">
@@ -122,13 +124,16 @@
                                         <td>{{ $rendez_vous->medecin->prenom.' '.$rendez_vous->medecin->nom}}</td>
                                         <td>
                                             @if($rendez_vous->etat==0)
-                                            <span class="badge bg-danger"> à venir</span>
+                                            <span class="badge bg-info"> à venir</span>
                                             @endif
                                             @if($rendez_vous->etat==1)
-                                            <span class="badge bg-warning">Facturé</span>
+                                            <span class="badge bg-danger">Facturé</span>
                                             @endif
                                             @if($rendez_vous->etat==2)
                                             <span class="badge bg-success">Payé</span>
+                                            @endif
+                                            @if($rendez_vous->etat==3)
+                                            <span class="badge bg-secondary">Pris</span>
                                             @endif
                                         </td>
                                         <td>
@@ -137,22 +142,22 @@
                                                 </button>
                                             </a> --}}
                                             @if($rendez_vous->etat==0)
-                                            <button class="btn btn-warning btn-sm"
+                                            <button class="btn btn-info btn-sm"
                                                 wire:click='facturerRendezVous({{$rendez_vous->id}})'>
                                                 <i class="ri ri-bank-card-2-line"></i></button>
                                             @endif
                                             @if($rendez_vous->etat==1)
-                                            <button class="btn btn-info btn-sm">
+                                            <button class="btn btn-danger btn-sm">
                                                 <i class="bx bxs-hide"></i></button>
                                             @endif
                                             @if($rendez_vous->etat==2)
-                                            <button class="btn btn-secondary btn-sm"
+                                            <button class="btn btn-success btn-sm"
                                             wire:click='IntroduireSalleAttente({{$rendez_vous->id}})'>
                                             <i class="ri ri-share-forward-line"></i></button>
                                             @endif
                                             @if($rendez_vous->etat==3)
-                                            <button class="btn btn-info btn-sm">
-                                            <i class="bx bx-share-alt"></i></button>
+                                            <button class="btn btn-secondary btn-sm">
+                                            <i class="bx bxs-hide"></i></button>
                                             @endif
                                         </td>
                                     </tr>
@@ -232,13 +237,15 @@
                                             </a> --}}
                                             @if($facturation->etat==0)
                                             <a href="{{route('ad.sante.recu.consultation',encrypt($facturation->id))}}">
-                                                <button class="btn btn-success btn-sm">
+                                                <button class="btn btn-danger btn-sm">
                                                     <i class="bi bi-wallet2"></i></button>
                                             </a>
                                             @endif
                                             @if($facturation->etat==1)
+                                            <a href="{{route('ad.sante.recu.consultation',encrypt($facturation->id))}}">
                                             <button class="btn btn-light btn-sm">
                                                 <i class="ri ri-file-earmark-text"></i></button>
+                                            </a>
                                             @endif
                                         </td>
                                     </tr>
@@ -298,7 +305,68 @@
                     <!-- End Table with stripped rows -->
                         </div>
                         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                            SALLE EN ATTENTE
+                          <!-- Table with stripped rows -->
+                          <table class="table datatable">
+                            <thead class="bg-primary text-white">
+                                <tr>
+                                    <!-- <th scope="col">#</th> -->
+                                    <th scope="col">Patient</th>
+                                    <th scope="col">Date prevus</th>
+                                    <th scope="col">Type consultation</th>
+                                    <th scope="col">motif rendez-vous</th>
+                                    <th scope="col">Medecin</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($consultations as $consultation )
+                                <tr>
+                                    <td>{{ $consultation->patient->nom}} {{ $consultation->patient->prenom}}</td>
+                                    <td>{{ \Carbon\Carbon::parse($consultation->rendez_vous->date_rdv)->format('d-m-Y')}}</td>
+                                    <td>{{
+                                        $consultation->rendez_vous->planification->tarif_consultation->type_consultation->type_consultation}}
+                                    </td>
+
+                                    <td>{{ $consultation->rendez_vous->motif}}</td>
+                                    <td>{{ $consultation->medecin->prenom.' '.$consultation->medecin->nom}}</td>
+
+                                    <td>
+                                        @if($consultation->etat==0)
+                                        <span class="badge bg-secondary"> attente</span>
+                                        @endif
+                                        @if($consultation->etat==1)
+                                        <span class="badge bg-danger">en cours</span>
+                                        @endif
+                                        @if($consultation->etat==2)
+                                        <span class="badge bg-success">Terminer</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        {{-- <a href=""> <button type="button" class="btn btn-primary btn-sm">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                        </a> --}}
+                                        @if($consultation->etat==0)
+                                        <a wire:navigate href="{{route('ad.sante.dossier.patient',encrypt($consultation->patient->id))}}">
+                                            <button type="button" class="btn btn-secondary btn-sm"><i
+                                                    class="bx bx-folder-plus"></i></button>
+                                        </a>
+                                        @endif
+                                        @if($consultation->etat==1)
+                                        <button class="btn btn-danger btn-sm">
+                                            <i class="bx bxs-hide"></i></button>
+                                        @endif
+                                        @if($consultation->etat==2)
+                                        <button class="btn btn-secondary btn-sm">
+                                        <i class="bx bxs-hide"></i></button>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <!-- End Table with stripped rows -->
                         </div>
                     </div><!-- End Default Tabs -->
 

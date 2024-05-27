@@ -18,7 +18,7 @@
                     <div class="card">
                         <div class="card-header bg-secondary text-white">
                             <li class="list-group-item d-flex justify-content-between align-items-center text-white">
-                                INFORMATION GENERAL DU PATIENT <strong>  <h2> {{$patient->prenom.' '.$patient->nom.' '.(\Carbon\Carbon::parse($patient->date_naissance)->age.' ans' )}}</h2></strong>
+                                  <h5> INFORMATION GENERAL DU PATIENT  <strong>{{$patient->prenom.' '.$patient->nom.' '.(\Carbon\Carbon::parse($patient->date_naissance)->age.' ans' )}}</strong></h5>
                                 <span class=" bg-secondary rounded-pill">
                                     <a wire:navigate href="{{route('ad.sante.index.patient')}}">
                                         <button class="btn btn-primary "><i class="bi bi-receipt"></i></button>
@@ -82,7 +82,6 @@
                         </div>
                     </div><!-- End Card with header and footer -->
                     <!-- Card with header and footer -->
-
                 </div>
                 <div class="col-lg-4">
                     <!-- Card with header and footer -->
@@ -164,523 +163,337 @@
                     <!-- Card with header and footer -->
 
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-12">
                     <div class="card">
-                        <div class="card-header bg-primary text-white">
-                            CONSULTATION PATIENT
-                        </div>
-
                         <div class="card-body">
-                            {{-- <h5 class="card-title">Card with header and footer</h5> --}}
-                            <table class="table table-borderless datatable">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Date</th>
-                                        <th scope="col">Realiser par</th>
-                                        <th scope="col">Type</th>
-                                        <th scope="col">Motif</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($consultations as $consultation )
-                                    <tr>
-                                        <th scope="row"><a href="#">{{$consultation->tarif->libelle_tarif}}</a></th>
-                                       <th>{{$consultation->created_at->diffForHumans()}}</th>
-                                        <th scope="row"><a href="#">{{$consultation->medecin->nom}}</a></th>
-                                        <th scope="row"><a href="#">{{$consultation->medecin->prenom}}</a></th>
-                                        {{-- <td style="text-align:right">{{ number_format($consultation->montant,2,","," ").'
-                                            '.$consultation->tarif->user->agence->devise->unite}}</td> --}}
-                                        <td>
-                                            @if($consultation->etat==0)
-                                            <span class="badge bg-danger">Instance</span>
-                                            @endif
-                                            @if($consultation->etat==1)
-                                            <span class="badge bg-success">Traité</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($consultation->etat==0)
-                                            <a href="{{route('ad.sante.traitement.consultation',encrypt($consultation->id))}}">
-                                                <button class="btn btn-dark btn-sm" > <i class="ri ri-user-unfollow-line"></i> </button>
-                                            </a>
-                                            @endif
-                                            @if($consultation->etat==1)
-                                            <a href="{{route('ad.sante.resultat.consultation',encrypt($consultation->id))}}">
-                                                <button class="btn btn-secondary btn-sm" > <i class="bx bx-printer"></i> </button>
-                                            </a>
-                                            @endif
+                          <!-- Default Tabs -->
+                          <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="synthese">
+                                <button class="nav-link active" id="synthese-tab" data-bs-toggle="tab" data-bs-target="#synthese" type="button" role="tab" aria-controls="synthese" aria-selected="true">
+                                  Synthese
+                              </button>
+                            </li>
+                            <li class="nav-item" role="rendez-vous">
+                                <button class="nav-link " id="rendez-vous-tab" data-bs-toggle="tab" data-bs-target="#rendez-vous" type="button" role="tab" aria-controls="rendez-vous" aria-selected="true">
+                                  Rendez-vous
+                              </button>
+                              </li>
+                            <li class="nav-item" role="hospitalisation">
+                                <button class="nav-link" id="consultation-tab" data-bs-toggle="tab" data-bs-target="#consultation" type="button" role="tab" aria-controls="consultation" aria-selected="false">
+                                    Consultation
+                                </button>
+                              </li>
+                              <li class="nav-item" role="hospitalisation">
+                                <button class="nav-link" id="hospitalisation-tab" data-bs-toggle="tab" data-bs-target="#hospitalisation" type="button" role="tab" aria-controls="hospitalisation" aria-selected="false">
+                                    Hospitalisation
+                                </button>
+                              </li>
+                              <li class="nav-item" role="soins">
+                                <button class="nav-link" id="soins-tab" data-bs-toggle="tab" data-bs-target="#soins" type="button" role="tab" aria-controls="soins" aria-selected="false">
+                                    Soins
+                                </button>
+                              </li>
+                              <li class="nav-item" role="caisse">
+                                <button class="nav-link" id="examen-tab" data-bs-toggle="tab" data-bs-target="#examen" type="button" role="tab" aria-controls="examen" aria-selected="false">
+                                    Examen
+                                </button>
+                              </li>
+                              <li class="nav-item" role="document">
+                                <button class="nav-link" id="document-tab" data-bs-toggle="tab" data-bs-target="#document" type="button" role="tab" aria-controls="document" aria-selected="false">
+                                  Documents
+                              </button>
+                              </li>
+                              <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="antecedent-tab" data-bs-toggle="tab" data-bs-target="#antecedent" type="button" role="tab" aria-controls="antecedent" aria-selected="false">
+                                Antecedent
+                              </button>
+                              </li>
+                          </ul>
+                          <div class="tab-content pt-2" id="myTabContent">
+                            <div class="tab-pane fade show active" id="synthese" role="tabpanel" aria-labelledby="synthese-tab">
+                                <div class="card">
+                                    <div class="card-header">
+                                        CONSULTATION
+                                    </div>
 
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                    <div class="card-body">
+                                        {{-- <h5 class="card-title">Card with header and footer</h5> --}}
+                                        <table class="table ">
+                                            <thead>
+                                                <tr  class="bg-secondary text-white">
+                                                    <th scope="col">Date</th>
+                                                    <th scope="col">Type</th>
+                                                    <th scope="col">Realiser par</th>
+                                                    <th scope="col">Motif</th>
+                                                    <th scope="col">Status</th>
+                                                    <th scope="col">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($consultations as $consultation )
+                                                <tr>
+                                                    <th>{{$consultation->created_at->diffForHumans()}}</th>
+                                                    <th scope="row"><a href="#">{{$consultation->tarif_consultation->type_consultation->type_consultation}}</a></th>
 
-                    </div><!-- End Card with header and footer -->
-                    <div class="card">
-                        <div class="card-header bg-primary text-white">
-                           EXAMENS
-                        </div>
+                                                    <th scope="row"><a href="#">{{$consultation->medecin->nom.' '.$consultation->medecin->prenom}}</a></th>
+                                                    <th scope="row"><a href="#">{{$consultation->rendez_vous->motif}}</a></th>
+                                                    {{-- <td style="text-align:right">{{ number_format($consultation->montant,2,","," ").'
+                                                        '.$consultation->user->agence->devise->unite}}</td> --}}
+                                                    <td>
+                                                        @if($consultation->etat==0)
+                                                        <span class="badge bg-danger">en cours</span>
+                                                        @endif
+                                                        @if($consultation->etat==1)
+                                                        <span class="badge bg-success">Terminer</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if($consultation->etat==0)
+                                                        <a href="{{route('ad.sante.traitement.consultation',encrypt($consultation->id))}}">
+                                                            <button class="btn btn-dark btn-sm" > <i class="ri ri-user-unfollow-line"></i> </button>
+                                                        </a>
+                                                        @endif
+                                                        @if($consultation->etat==1)
+                                                        <a href="{{route('ad.sante.resultat.consultation',encrypt($consultation->id))}}">
+                                                            <button class="btn btn-secondary btn-sm" > <i class="bx bx-printer"></i> </button>
+                                                        </a>
+                                                        @endif
 
-                        <div class="card-body">
-                            {{-- <h5 class="card-title">Card with header and footer</h5> --}}
-                            <table class="table table-borderless datatable">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Date</th>
-                                        <th scope="col">Prescris par</th>
-                                        <th scope="col">Type</th>
-                                        <th scope="col">Libelle</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($consultations as $consultation )
-                                    <tr>
-                                        <th scope="row"><a href="#">{{$consultation->tarif->libelle_tarif}}</a></th>
-                                       <th>{{$consultation->created_at->diffForHumans()}}</th>
-                                        <th scope="row"><a href="#">{{$consultation->medecin->nom}}</a></th>
-                                        <th scope="row"><a href="#">{{$consultation->medecin->prenom}}</a></th>
-                                        {{-- <td style="text-align:right">{{ number_format($consultation->montant,2,","," ").'
-                                            '.$consultation->tarif->user->agence->devise->unite}}</td> --}}
-                                        <td>
-                                            @if($consultation->etat==0)
-                                            <span class="badge bg-danger">Instance</span>
-                                            @endif
-                                            @if($consultation->etat==1)
-                                            <span class="badge bg-success">Traité</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($consultation->etat==0)
-                                            <a href="{{route('ad.sante.traitement.consultation',encrypt($consultation->id))}}">
-                                                <button class="btn btn-dark btn-sm" > <i class="ri ri-user-unfollow-line"></i> </button>
-                                            </a>
-                                            @endif
-                                            @if($consultation->etat==1)
-                                            <a href="{{route('ad.sante.resultat.consultation',encrypt($consultation->id))}}">
-                                                <button class="btn btn-secondary btn-sm" > <i class="bx bx-printer"></i> </button>
-                                            </a>
-                                            @endif
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
 
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                </div><!-- End Card with header and footer -->
+                                <div class="card">
+                                    <div class="card-header">
+                                       EXAMENS
+                                    </div>
 
-                    </div><!-- End Card with header and footer -->
-                    <div class="card">
-                        <div class="card-header bg-primary text-white">
-                            ANTECEDENT PERSONNEL ET FAMILLIAUX
-                        </div>
+                                    <div class="card-body">
+                                        {{-- <h5 class="card-title">Card with header and footer</h5> --}}
+                                        <table class="table">
+                                            <thead>
+                                                <tr  class="bg-secondary text-white">
+                                                    <th scope="col">Date</th>
+                                                    <th scope="col">Prescris par</th>
+                                                    <th scope="col">Type</th>
+                                                    <th scope="col">Libelle</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
 
-                        <div class="card-body">
-                            {{-- <h5 class="card-title">Card with header and footer</h5> --}}
-                            <table class="table table-borderless datatable">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Date</th>
-                                        <th scope="col">Type</th>
-                                        <th scope="col">Libelle</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($consultations as $consultation )
-                                    <tr>
-                                        <th scope="row"><a href="#">{{$consultation->tarif->libelle_tarif}}</a></th>
-                                       <th>{{$consultation->created_at->diffForHumans()}}</th>
-                                        <th scope="row"><a href="#">{{$consultation->medecin->nom}}</a></th>
-                                        <th scope="row"><a href="#">{{$consultation->medecin->prenom}}</a></th>
-                                        {{-- <td style="text-align:right">{{ number_format($consultation->montant,2,","," ").'
-                                            '.$consultation->tarif->user->agence->devise->unite}}</td> --}}
-                                        <td>
-                                            @if($consultation->etat==0)
-                                            <span class="badge bg-danger">Instance</span>
-                                            @endif
-                                            @if($consultation->etat==1)
-                                            <span class="badge bg-success">Traité</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($consultation->etat==0)
-                                            <a href="{{route('ad.sante.traitement.consultation',encrypt($consultation->id))}}">
-                                                <button class="btn btn-dark btn-sm" > <i class="ri ri-user-unfollow-line"></i> </button>
-                                            </a>
-                                            @endif
-                                            @if($consultation->etat==1)
-                                            <a href="{{route('ad.sante.resultat.consultation',encrypt($consultation->id))}}">
-                                                <button class="btn btn-secondary btn-sm" > <i class="bx bx-printer"></i> </button>
-                                            </a>
-                                            @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
 
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                </div><!-- End Card with header and footer -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        ANTECEDENT PERSONNEL ET FAMILLIAUX
+                                    </div>
 
-                    </div><!-- End Card with header and footer -->
-                    <div class="card">
-                        <div class="card-header bg-primary text-white">
-                           ALLERGIES
-                        </div>
+                                    <div class="card-body">
+                                        {{-- <h5 class="card-title">Card with header and footer</h5> --}}
+                                        <table class="table ">
+                                            <thead>
+                                                <tr class="bg-secondary text-white">
+                                                    <th scope="col">Date</th>
+                                                    <th scope="col">Type</th>
+                                                    <th scope="col">Libelle</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
 
-                        <div class="card-body">
-                            <table class="table table-borderless datatable">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Date</th>
-                                        <th scope="col">Type</th>
-                                        <th scope="col">Libelle</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($consultations as $consultation )
-                                    <tr>
-                                        <th scope="row"><a href="#">{{$consultation->tarif->libelle_tarif}}</a></th>
-                                       <th>{{$consultation->created_at->diffForHumans()}}</th>
-                                        <th scope="row"><a href="#">{{$consultation->medecin->nom}}</a></th>
-                                        <th scope="row"><a href="#">{{$consultation->medecin->prenom}}</a></th>
-                                        {{-- <td style="text-align:right">{{ number_format($consultation->montant,2,","," ").'
-                                            '.$consultation->tarif->user->agence->devise->unite}}</td> --}}
-                                        <td>
-                                            @if($consultation->etat==0)
-                                            <span class="badge bg-danger">Instance</span>
-                                            @endif
-                                            @if($consultation->etat==1)
-                                            <span class="badge bg-success">Traité</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($consultation->etat==0)
-                                            <a href="{{route('ad.sante.traitement.consultation',encrypt($consultation->id))}}">
-                                                <button class="btn btn-dark btn-sm" > <i class="ri ri-user-unfollow-line"></i> </button>
-                                            </a>
-                                            @endif
-                                            @if($consultation->etat==1)
-                                            <a href="{{route('ad.sante.resultat.consultation',encrypt($consultation->id))}}">
-                                                <button class="btn btn-secondary btn-sm" > <i class="bx bx-printer"></i> </button>
-                                            </a>
-                                            @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
 
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                </div><!-- End Card with header and footer -->
+                                <div class="card">
+                                    <div class="card-header">
+                                       ALLERGIES
+                                    </div>
 
-                    </div><!-- End Card with header and footer -->
-                    <div class="card">
-                        <div class="card-header bg-primary text-white">
-                            VACCIN
-                        </div>
-                            <div class="card-body">
-                                <table class="table table-borderless datatable">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Date</th>
-                                            <th scope="col">Nom du vaccin</th>
-                                            <th scope="col">prevention contre</th>
-                                            <th scope="col">Rappel</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($consutlation_traiters as $consultation )
-                                        <tr>
-                                            <th scope="row"><a href="#">{{$consultation->tarif->libelle_tarif}}</a></th>
-                                           <th>{{$consultation->created_at->diffForHumans()}}</th>
-                                            <th scope="row"><a href="#">{{$consultation->medecin->nom}}</a></th>
-                                            <th scope="row"><a href="#">{{$consultation->medecin->prenom}}</a></th>
-                                            {{-- <td style="text-align:right">{{ number_format($consultation->montant,2,","," ").'
-                                                '.$consultation->tarif->user->agence->devise->unite}}</td> --}}
-                                            <td>
-                                                @if($consultation->etat==0)
-                                                <span class="badge bg-danger">Instance</span>
-                                                @endif
-                                                @if($consultation->etat==1)
-                                                <span class="badge bg-success">Traité</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if($consultation->etat==0)
-                                                <a href="{{route('ad.sante.traitement.consultation',encrypt($consultation->id))}}">
-                                                    <button class="btn btn-dark btn-sm" > <i class="ri ri-user-unfollow-line"></i> </button>
-                                                </a>
-                                                @endif
-                                                @if($consultation->etat==1)
-                                                <a href="{{route('ad.sante.resultat.consultation',encrypt($consultation->id))}}">
-                                                    <button class="btn btn-secondary btn-sm" > <i class="bx bx-printer"></i> </button>
-                                                </a>
-                                                @endif
+                                    <div class="card-body">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Date</th>
+                                                    <th scope="col">Type</th>
+                                                    <th scope="col">Libelle</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
 
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                </div><!-- End Card with header and footer -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        VACCIN
+                                    </div>
+                                        <div class="card-body">
+                                            <table class="table ">
+                                                <thead>
+                                                    <tr class="bg-secondary text-white">
+                                                        <th scope="col">Date</th>
+                                                        <th scope="col">Nom du vaccin</th>
+                                                        <th scope="col">prevention contre</th>
+                                                        <th scope="col">Rappel</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header">
+                                        SOINS
+                                    </div>
+                                        <div class="card-body">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr class="bg-secondary text-white">
+                                                        <th scope="col">Date</th>
+                                                        <th scope="col">Realiser pas</th>
+                                                        <th scope="col">Categorie</th>
+                                                        <th scope="col">libelle</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header">
+                                        PRESCRIPTION
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table">
+                                            <thead>
+                                                <tr class="bg-secondary text-white">
+                                                    <th scope="col">Date</th>
+                                                    <th scope="col">Prescrit par</th>
+                                                    <th scope="col">Libelle</th>
+                                                    <th scope="col">Posologie</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                                <!-- End Card with header and footer -->
+                                 <!-- Card with header and footer -->
+                                <div class="card">
+                                    <div class="card-header">
+                                       AFFECTION LONGUES DUREES
+                                    </div>
+                                    <div class="card-body">
+                                        {{-- <h5 class="card-title">Card with header and footer</h5> --}}
+                                        <table class="table">
+                                            <thead>
+                                                <tr  class="bg-secondary text-white">
+                                                    <th scope="col">date</th>
+                                                    <th scope="col">Type</th>
+                                                    <th scope="col">Libelle</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @foreach ($facturations as $facturation )
+                                                <tr>
+                                                </tr>
+
+                                                @endforeach
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div><!-- End Card with header and footer -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        ADDICTIONS
+                                    </div>
+                                        <div class="card-body">
+                                            <table class="table ">
+                                                <thead>
+                                                    <tr  class="bg-secondary text-white">
+                                                        <th scope="col">Date</th>
+                                                        <th scope="col">Type</th>
+                                                        <th scope="col">Libelle</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header">
+                                        ASSUREUR
+                                    </div>
+                                    <div class="card-body">
+                                        {{-- <h5 class="card-title">Card with header and footer</h5> --}}
+                                        <table class="table ">
+                                            <thead>
+                                                <tr class="bg-secondary text-white">
+                                                    <th scope="col">Nom assureur</th>
+                                                    <th scope="col">Debut validité</th>
+                                                    <th scope="col">Fin validité</th>
+                                                    <th scope="col">Prise en charge</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($prise_en_charges as $prise_en_charge )
+                                                <tr>
+                                                    <td>{{$prise_en_charge->maison_assurance->maison_assurance}}</td>
+                                                    <td>{{$prise_en_charge->contrat_assurance->date_debut}}</td>
+                                                    <td>{{$prise_en_charge->contrat_assurance->date_fin}}</td>
+                                                    <td>{{$prise_en_charge->numero_assurer}}</td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div><!-- End Card with header and footer -->
                             </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-header bg-primary text-white">
-                            SOINS
-                        </div>
-                            <div class="card-body">
-                                <table class="table table-borderless datatable">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Date</th>
-                                            <th scope="col">Realiser pas</th>
-                                            <th scope="col">Categorie</th>
-                                            <th scope="col">libelle</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($consutlation_traiters as $consultation )
-                                        <tr>
-                                            <th scope="row"><a href="#">{{$consultation->tarif->libelle_tarif}}</a></th>
-                                           <th>{{$consultation->created_at->diffForHumans()}}</th>
-                                            <th scope="row"><a href="#">{{$consultation->medecin->nom}}</a></th>
-                                            <th scope="row"><a href="#">{{$consultation->medecin->prenom}}</a></th>
-                                            {{-- <td style="text-align:right">{{ number_format($consultation->montant,2,","," ").'
-                                                '.$consultation->tarif->user->agence->devise->unite}}</td> --}}
-                                            <td>
-                                                @if($consultation->etat==0)
-                                                <span class="badge bg-danger">Instance</span>
-                                                @endif
-                                                @if($consultation->etat==1)
-                                                <span class="badge bg-success">Traité</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if($consultation->etat==0)
-                                                <a href="{{route('ad.sante.traitement.consultation',encrypt($consultation->id))}}">
-                                                    <button class="btn btn-dark btn-sm" > <i class="ri ri-user-unfollow-line"></i> </button>
-                                                </a>
-                                                @endif
-                                                @if($consultation->etat==1)
-                                                <a href="{{route('ad.sante.resultat.consultation',encrypt($consultation->id))}}">
-                                                    <button class="btn btn-secondary btn-sm" > <i class="bx bx-printer"></i> </button>
-                                                </a>
-                                                @endif
-
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                            <div class="tab-pane fade" id="rendez-vous" role="tabpanel" aria-labelledby="rendez-vous-tab">
+                               rendez-vous
+                              </div>
+                              <div class="tab-pane fade" id="consultation" role="tabpanel" aria-labelledby="consultation-tab">
+                                consultation
+                              </div>
+                              <div class="tab-pane fade" id="hospitalisation" role="tabpanel" aria-labelledby="hospitalisation-tab">
+                                Hospitalisation
                             </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header bg-primary text-white">
-                            PRESCRIPTION
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-borderless datatable">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Date</th>
-                                        <th scope="col">Prescrit par</th>
-                                        <th scope="col">Libelle</th>
-                                        <th scope="col">Posologie</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($consutlation_traiters as $consultation )
-                                    <tr>
-                                        <th scope="row"><a href="#">{{$consultation->tarif->libelle_tarif}}</a></th>
-                                       <th>{{$consultation->created_at->diffForHumans()}}</th>
-                                        <th scope="row"><a href="#">{{$consultation->medecin->nom}}</a></th>
-                                        <th scope="row"><a href="#">{{$consultation->medecin->prenom}}</a></th>
-                                        {{-- <td style="text-align:right">{{ number_format($consultation->montant,2,","," ").'
-                                            '.$consultation->tarif->user->agence->devise->unite}}</td> --}}
-                                        <td>
-                                            @if($consultation->etat==0)
-                                            <span class="badge bg-danger">Instance</span>
-                                            @endif
-                                            @if($consultation->etat==1)
-                                            <span class="badge bg-success">Traité</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($consultation->etat==0)
-                                            <a href="{{route('ad.sante.traitement.consultation',encrypt($consultation->id))}}">
-                                                <button class="btn btn-dark btn-sm" > <i class="ri ri-user-unfollow-line"></i> </button>
-                                            </a>
-                                            @endif
-                                            @if($consultation->etat==1)
-                                            <a href="{{route('ad.sante.resultat.consultation',encrypt($consultation->id))}}">
-                                                <button class="btn btn-secondary btn-sm" > <i class="bx bx-printer"></i> </button>
-                                            </a>
-                                            @endif
-
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div><!-- End Card with header and footer -->
-                    <!-- Card with header and footer -->
-                    <div class="card">
-                        <div class="card-header bg-primary text-white">
-                           AFFECTION LONGUES DUREES
-                        </div>
-                        <div class="card-body">
-                            {{-- <h5 class="card-title">Card with header and footer</h5> --}}
-                            <table class="table table-borderless datatable">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">date</th>
-                                        <th scope="col">Type</th>
-                                        <th scope="col">Libelle</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                    @foreach ($facturations as $facturation )
-                                    <tr>
-                                        <th scope="row"><a href="#">{{$facturation->tarif->libelle_tarif}}</a></th>
-                                        <th scope="row"><a href="#">{{$facturation->created_at->diffForHumans()}}</a></th>
-                                        <td style="text-align:right">{{ number_format($facturation->montant,2,","," ").'
-                                            '.$facturation->tarif->user->agence->devise->unite}}</td>
-                                        <td>
-                                            @if($facturation->etat=="instance")
-                                            <span class="badge bg-danger">{{$facturation->etat}}</span>
-                                            @endif
-                                            @if($facturation->etat!="instance")
-                                            <span class="badge bg-success">{{$facturation->etat}}</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($facturation->etat=="instance")
-                                            <a href="{{route('ad.sante.recu.consultation',encrypt($facturation->id))}}">
-                                                <button class="btn btn-success btn-sm" > <i class="ri ri-bank-card-2-line"></i> </button>
-                                            </a>
-                                            @endif
-                                            @if($facturation->etat=="payé")
-                                            <a href="{{route('ad.sante.recu.consultation',encrypt($facturation->id))}}">
-                                                <button class="btn btn-secondary btn-sm" > <i class="bx bx-printer"></i> </button>
-                                            </a>
-                                            @endif
-
-                                        </td>
-                                    </tr>
-
-                                    @endforeach
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div><!-- End Card with header and footer -->
-                    <div class="card">
-                        <div class="card-header bg-primary text-white">
-                            ADDICTIONS
-                        </div>
-                            <div class="card-body">
-                                <table class="table table-borderless datatable">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Date</th>
-                                            <th scope="col">Type</th>
-                                            <th scope="col">Libelle</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($consutlation_traiters as $consultation )
-                                        <tr>
-                                            <th scope="row"><a href="#">{{$consultation->tarif->libelle_tarif}}</a></th>
-                                           <th>{{$consultation->created_at->diffForHumans()}}</th>
-                                            <th scope="row"><a href="#">{{$consultation->medecin->nom}}</a></th>
-                                            <th scope="row"><a href="#">{{$consultation->medecin->prenom}}</a></th>
-                                            {{-- <td style="text-align:right">{{ number_format($consultation->montant,2,","," ").'
-                                                '.$consultation->tarif->user->agence->devise->unite}}</td> --}}
-                                            <td>
-                                                @if($consultation->etat==0)
-                                                <span class="badge bg-danger">Instance</span>
-                                                @endif
-                                                @if($consultation->etat==1)
-                                                <span class="badge bg-success">Traité</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if($consultation->etat==0)
-                                                <a href="{{route('ad.sante.traitement.consultation',encrypt($consultation->id))}}">
-                                                    <button class="btn btn-dark btn-sm" > <i class="ri ri-user-unfollow-line"></i> </button>
-                                                </a>
-                                                @endif
-                                                @if($consultation->etat==1)
-                                                <a href="{{route('ad.sante.resultat.consultation',encrypt($consultation->id))}}">
-                                                    <button class="btn btn-secondary btn-sm" > <i class="bx bx-printer"></i> </button>
-                                                </a>
-                                                @endif
-
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                            <div class="tab-pane fade" id="soins" role="tabpanel" aria-labelledby="soins-tab">
+                              Soins
                             </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header bg-secondary text-white">
-                            ASSUREURS
-                        </div>
-                        <div class="card-body">
-                            {{-- <h5 class="card-title">Card with header and footer</h5> --}}
-                            <table class="table table-borderless datatable">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Nom assureur</th>
-                                        <th scope="col">Debut validité</th>
-                                        <th scope="col">Fin validité</th>
-                                        <th scope="col">Prise en charge</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($consutlation_traiters as $consultation )
-                                    <tr>
-                                        <th scope="row"><a href="#">{{$consultation->tarif->libelle_tarif}}</a></th>
-                                       <th>{{$consultation->created_at->diffForHumans()}}</th>
-                                        <th scope="row"><a href="#">{{$consultation->medecin->nom}}</a></th>
-                                        <th scope="row"><a href="#">{{$consultation->medecin->prenom}}</a></th>
-                                        {{-- <td style="text-align:right">{{ number_format($consultation->montant,2,","," ").'
-                                            '.$consultation->tarif->user->agence->devise->unite}}</td> --}}
-                                        <td>
-                                            @if($consultation->etat==0)
-                                            <span class="badge bg-danger">Instance</span>
-                                            @endif
-                                            @if($consultation->etat==1)
-                                            <span class="badge bg-success">Traité</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($consultation->etat==0)
-                                            <a href="{{route('ad.sante.traitement.consultation',encrypt($consultation->id))}}">
-                                                <button class="btn btn-dark btn-sm" > <i class="ri ri-user-unfollow-line"></i> </button>
-                                            </a>
-                                            @endif
-                                            @if($consultation->etat==1)
-                                            <a href="{{route('ad.sante.resultat.consultation',encrypt($consultation->id))}}">
-                                                <button class="btn btn-secondary btn-sm" > <i class="bx bx-printer"></i> </button>
-                                            </a>
-                                            @endif
+                            <div class="tab-pane fade" id="examen" role="tabpanel" aria-labelledby="examen-tab">
+                                Examen
+                            </div>
+                            <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="document-tab">
+                                document
+                            </div>
+                            <div class="tab-pane fade" id="antecedent" role="tabpanel" aria-labelledby="antecedent-tab">
+                                antecedent
+                            </div>
+                          </div><!-- End Default Tabs -->
 
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
                         </div>
-                    </div><!-- End Card with header and footer -->
+                      </div>
                 </div>
             </div>
         </section>

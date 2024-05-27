@@ -36,6 +36,7 @@ class Consultation extends Model
     {
         return $this->belongsTo(Patient::class,'patient_id');
     }
+
     public function rendez_vous()
     {
         return $this->belongsTo(Rdv::class,'rdv_id');
@@ -48,6 +49,6 @@ class Consultation extends Model
 
     public function medecin()
     {
-        return $this->belongsTo(Medecin::class);
+        return $this->belongsTo(Medecin::class, 'medecin_id');
     }
 }

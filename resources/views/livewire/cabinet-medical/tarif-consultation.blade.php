@@ -37,7 +37,7 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
-                                            <div class="">
+                                            <div class="modal-body">
                                                 <div class="col-12">
                                                     <label for="inputState" class="form-label">Civilité <span style="color: red">*</span></label>
                                                     <select id="inputState" class="form-select" wire:model='type_consultation'>

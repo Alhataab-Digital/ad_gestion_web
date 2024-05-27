@@ -22,7 +22,7 @@ class PaiementRecu extends Model
 
     public function reglement()
     {
-        return $this->belongsTo(TypeReglement::class);
+        return $this->belongsTo(TypeReglement::class,'reglement_id');
     }
     public function facturation()
     {

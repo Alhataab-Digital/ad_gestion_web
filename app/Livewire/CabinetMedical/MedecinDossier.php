@@ -6,6 +6,7 @@ use App\Models\CabinetMedical\CategorieMedecin;
 use App\Models\CabinetMedical\Consultation;
 use App\Models\CabinetMedical\Medecin;
 use App\Models\CabinetMedical\PlanificationMedecin;
+use App\Models\CabinetMedical\Rdv;
 use App\Models\CabinetMedical\Specialite;
 use App\Models\CabinetMedical\SpecialiteMedecin;
 use App\Models\Civilite;
@@ -28,10 +29,11 @@ class MedecinDossier extends Component
     public $adresse ;
     public $mail ;
     public $matricule;
-
+    public $nbr_consultation_attente;
+    public $nbr_rdv;
     public $planifications=[];
-    public $consutlations=[];
-    public $consutlation_traiters=[];
+    public $consultations=[];
+    public $consultation_traiters=[];
 
     public function mount(Medecin $medecins, $id)
     {
@@ -42,11 +44,11 @@ class MedecinDossier extends Component
         $situation = SituationMatrimoniale::where('id', $medecins->situation_matrimoniale_id)->first();
         $categorie = CategorieMedecin::where('id', $medecins->categorie_medicale_id)->first();
         $specialite = SpecialiteMedecin::where('id', $medecins->specialite_id)->first();
-
-        $this->planifications = PlanificationMedecin::where('medecin_id',$id)->where('jour_semaine', date('Y-m-d'))->get();
-        $this->consutlations = Consultation::where('medecin_id', $id)->where('etat', '0')->get();
-        $this->consutlation_traiters = Consultation::where('medecin_id', $id)->where('etat', '1')->get();
-
+        $this->nbr_rdv=Rdv::where('medecin_id', $id)->where('etat',0)->count();
+        $this->planifications = PlanificationMedecin::where('medecin_id',$id)->where('jour_semaine','>=', date('Y-m-d'))->get();
+        $this->consultations = Consultation::where('medecin_id', $id)->where('etat', '0')->get();
+        $this->consultation_traiters = Consultation::where('medecin_id', $id)->where('etat', '1')->get();
+        $this->nbr_consultation_attente=Consultation::where('medecin_id', $id)->where('etat',0)->count();
 
         $this->medecins = $medecins->id;
         if(isset( $civilite->civilite)){

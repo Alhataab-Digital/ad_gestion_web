@@ -18,7 +18,7 @@
                     <div class="card">
                         <div class="card-header bg-secondary text-white">
                             <li class="list-group-item d-flex justify-content-between align-items-center text-white">
-                                INFORMATION GENERAL<strong>  <h2> {{$medecin->titre.' '.$medecin->prenom.' '.$medecin->nom}}</h2></strong>
+                               <h5>ESPACE DE TRAVAIL DU  <strong>  {{$medecin->titre.' '.$medecin->prenom.' '.$medecin->nom}} </strong></h5>
                                 <span class=" bg-secondary rounded-pill">
                                     <a wire:navigate href="{{route('ad.sante.index.medecin')}}">
                                         <button class="btn btn-primary "><i class="bi bi-receipt"></i></button>
@@ -152,46 +152,47 @@
                           <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
                               <button class="nav-link active" id="consultation-tab" data-bs-toggle="tab" data-bs-target="#consultation" type="button" role="tab" aria-controls="consultation" aria-selected="true">
-                                CONSULTATIONS
+                                Consultation
                             </button>
                             </li>
                             <li class="nav-item" role="hospitalisation">
                                 <button class="nav-link" id="hospitalisation-tab" data-bs-toggle="tab" data-bs-target="#hospitalisation" type="button" role="tab" aria-controls="hospitalisation" aria-selected="false">
-                                    HOSPITALISATION
+                                    Hospitalisation
                                 </button>
                               </li>
                               <li class="nav-item" role="hospitalisation">
                                 <button class="nav-link" id="soins-tab" data-bs-toggle="tab" data-bs-target="#soins" type="button" role="tab" aria-controls="soins" aria-selected="false">
-                                    SOINS
+                                    Soins
                                 </button>
                               </li>
-                              <li class="nav-item" role="caisse">
+                              <li class="nav-item" role="agenda">
                                 <button class="nav-link" id="agenda-tab" data-bs-toggle="tab" data-bs-target="#agenda" type="button" role="tab" aria-controls="agenda" aria-selected="false">
-                                    AGENDA
+                                    Agenda
                                 </button>
                               </li>
                               <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="rdv-tab" data-bs-toggle="tab" data-bs-target="#rdv" type="button" role="tab" aria-controls="rdv" aria-selected="false">
-                                  RENDEZ-VOUS
+                                Rendez-vous
+                                <span class="badge bg-danger badge-number">{{$nbr_rdv}}</span>
                               </button>
                               </li>
                               <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="attente-tab" data-bs-toggle="tab" data-bs-target="#attente" type="button" role="tab" aria-controls="attente" aria-selected="false">
-                                 SALLE D'ATTENTE
+                               Salle d'attente
+                               <span class="badge bg-danger badge-number">{{$nbr_consultation_attente}}</span>
                               </button>
                               </li>
                               <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="acte-tab" data-bs-toggle="tab" data-bs-target="#acte" type="button" role="tab" aria-controls="acte" aria-selected="false">
-                                 ACTE AUTORISE
+                                 Autorisation
                               </button>
                               </li>
                           </ul>
                           <div class="tab-content pt-2" id="myTabContent">
-                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-
+                            <div class="tab-pane fade show active" id="consultation" role="tabpanel" aria-labelledby="consultation-tab">
                                 <!-- Table with stripped rows -->
-                            <table class="table datatable">
-                                <thead class="bg-primary text-white">
+                            <table class="table">
+                                <thead class="bg-secondary text-white">
                                     <tr>
                                         <!-- <th scope="col">#</th> -->
                                         <th scope="col">Patient</th>
@@ -212,18 +213,104 @@
                                 </tbody>
                             </table>
                             <!-- End Table with stripped rows -->
-
                             </div>
+                            <div class="tab-content pt-2" id="myTabContent">
+                                <div class="tab-pane fade " id="agenda" role="tabpanel" aria-labelledby="agenda-tab">
+
+                                    <!-- Table with stripped rows -->
+                                    <table class="table datatable">
+                                        <thead class="bg-secondary text-white">
+                                            <tr>
+                                                <th scope="col">Consultation</th>
+                                                <th scope="col">Date </th>
+                                                <th scope="col">Heure debut</th>
+                                                <th scope="col">Heure de fin</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($planifications as $planification )
+                                            <tr>
+                                                <td>{{
+                                                $planification->tarif_consultation->type_consultation->type_consultation}}
+                                            </td>
+                                                <td>{{ \Carbon\Carbon::parse($planification->jour_semaine)->format('d-m-Y')}}</td>
+                                                <td>{{ \Carbon\Carbon::parse($planification->heure_debut)->format('H:s')}}</td>
+                                                <td>{{ \Carbon\Carbon::parse($planification->heure_fin)->format('H:s')}}</td>
 
 
-                              <div class="tab-pane fade" id="facturation" role="tabpanel" aria-labelledby="facturation-tab">
-                                FACTURATION
-                              </div>
-                              <div class="tab-pane fade" id="caisse" role="tabpanel" aria-labelledby="caisse-tab">
-                                REGLEMENT
-                              </div>
-                            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                                SALLE EN ATTENTE
+
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                <!-- End Table with stripped rows -->
+
+                                </div>
+
+                            <!-- End Table with stripped rows -->
+                            <div class="tab-pane fade" id="attente" role="tabpanel" aria-labelledby="attente-tab">
+                                   <!-- Table with stripped rows -->
+                          <table class="table datatable">
+                            <thead class="bg-secondary text-white">
+                                <tr>
+                                    <!-- <th scope="col">#</th> -->
+                                    <th scope="col">Patient</th>
+                                    <th scope="col">Date prevus</th>
+                                    <th scope="col">Type consultation</th>
+                                    <th scope="col">motif rendez-vous</th>
+                                    <th scope="col">Medecin</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($consultations as $consultation )
+                                <tr>
+                                    <td>{{ $consultation->patient->nom}} {{ $consultation->patient->prenom}}</td>
+                                    <td>{{ \Carbon\Carbon::parse($consultation->rendez_vous->date_rdv)->format('d-m-Y')}}</td>
+                                    <td>{{
+                                        $consultation->rendez_vous->planification->tarif_consultation->type_consultation->type_consultation}}
+                                    </td>
+
+                                    <td>{{ $consultation->rendez_vous->motif}}</td>
+                                    <td>{{ $consultation->medecin->prenom.' '.$consultation->medecin->nom}}</td>
+
+                                    <td>
+                                        @if($consultation->etat==0)
+                                        <span class="badge bg-secondary"> attente</span>
+                                        @endif
+                                        @if($consultation->etat==1)
+                                        <span class="badge bg-danger">en cours</span>
+                                        @endif
+                                        @if($consultation->etat==2)
+                                        <span class="badge bg-success">Terminer</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        {{-- <a href=""> <button type="button" class="btn btn-primary btn-sm">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                        </a> --}}
+                                        @if($consultation->etat==0)
+                                        <a wire:navigate href="{{route('ad.sante.dossier.patient',encrypt($consultation->patient->id))}}">
+                                            <button type="button" class="btn btn-secondary btn-sm"><i
+                                                    class="bx bx-folder-plus"></i></button>
+                                        </a>
+                                        @endif
+                                        @if($consultation->etat==1)
+                                        <button class="btn btn-danger btn-sm">
+                                            <i class="bx bxs-hide"></i></button>
+                                        @endif
+                                        @if($consultation->etat==2)
+                                        <button class="btn btn-secondary btn-sm">
+                                        <i class="bx bxs-hide"></i></button>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <!-- End Table with stripped rows -->
                             </div>
                           </div><!-- End Default Tabs -->
 

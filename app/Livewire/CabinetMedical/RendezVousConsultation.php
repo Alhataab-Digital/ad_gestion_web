@@ -16,7 +16,10 @@ class RendezVousConsultation extends Component
 
     public $rendez_vouss=[];
     public $facturations=[];
+    public $fac_en_cours;
     public $paiements=[];
+    public $consultations=[];
+    public $nbr_consultation_attente;
     public $contrat_assurances=[];
     public $rendez_vous;
     public $maison_assurance;
@@ -31,9 +34,12 @@ public function mount()
         $user_id = Auth::user()->id;
         $this->utilisateur=Utilisateur::where('id',$user_id)->first();
         $this->telephone=$this->utilisateur->agence->region->indicatif;
-        $this->rendez_vouss=Rdv::where('societe_id',$societe_id)->get();
+        $this->rendez_vouss=Rdv::where('societe_id',$societe_id)->where('etat','!=',3)->get();
         $this->facturations=Facturation::where('societe_id',$societe_id)->where('etat',0)->get();
+        $this->fac_en_cours=Facturation::where('societe_id',$societe_id)->where('etat',0)->count();
         $this->paiements=PaiementRecu::where('societe_id',$societe_id)->get();
+        $this->consultations=Consultation::where('user_id',$user_id)->where('societe_id',$societe_id)->get();
+        $this->nbr_consultation_attente=Consultation::where('user_id',$user_id)->where('societe_id',$societe_id)->where('etat',0)->count();
 
 }
     public function render()
@@ -87,7 +93,7 @@ public function mount()
         if(isset($rendez_vous->etat) != 0){
         $montant_assurer=round(($rendez_vous->taux_couverture/100)*$rendez_vous->montant);
         $montant_patient=round($rendez_vous->montant-(($rendez_vous->taux_couverture/100)*$rendez_vous->montant));
-       
+
         Facturation::create([
             'rdv_id'=>$rendez_vous->id,
             'patient_id'=>$rendez_vous->patient_id,

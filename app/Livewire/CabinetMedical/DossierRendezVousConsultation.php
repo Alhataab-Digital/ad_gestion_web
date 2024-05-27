@@ -12,6 +12,7 @@ use App\Models\CabinetMedical\TarifConsultation;
 use App\Models\CabinetMedical\TypeConsultation;
 use App\Models\Civilite;
 use App\Models\SituationMatrimoniale;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -139,11 +140,14 @@ class DossierRendezVousConsultation extends Component
         //si le patient à une prise en charge existant
         if (isset(PriseEnCharge::where('patient_id', $this->patients)->first()->id)) {
             $prise_en_charge = PriseEnCharge::where('patient_id', $this->patients)->first();
+            $contrat_assurance = ContratAssurance::where('maison_assurance_id', $prise_en_charge->maison_assurance_id)
+            ->where('tarif_consultation_id', $planning->tarif_consultation_id)
+            ->latest('date_fin')
+            ->where('date_fin', '>=', Carbon::parse($planning->jour_semaine))
+            ->first();
+            // dd($contrat_assurance);
             //si la date de fin de validation de la prise en charge est superieur à la date de du planing
-            if ($planning->jour_semaine < $prise_en_charge->contrat_assurance->date_fin) {
-
-                $contrat_assurance = ContratAssurance::where('maison_assurance_id', $prise_en_charge->maison_assurance_id)
-                    ->where('tarif_consultation_id', $planning->tarif_consultation_id)->first();
+            if ( $contrat_assurance) {
 
                 //si le patient à deja un rendez-vous en cours
                 if (isset(Rdv::where('patient_id', $this->patients)
@@ -155,13 +159,14 @@ class DossierRendezVousConsultation extends Component
 
                     return redirect()->route('ad.sante.rendez-vous.consultation')->with('danger', "Ce patient à un rendez-vous en cours");
                 } else {
-                    $contrat_assurance = ContratAssurance::where('maison_assurance_id', $prise_en_charge->maison_assurance_id)
-                        ->where('tarif_consultation_id', $planning->tarif_consultation_id)->first();
+
                     $taux_assurer=$contrat_assurance->taux_couverture;
+                    $contrat_id=$contrat_assurance->id;
                     Rdv::create([
                         'motif' => $validated['motif'],
                         'patient_id' => $this->patients,
                         'medecin_id' => $planning->medecin_id,
+                        'contrat_id' => $contrat_id,
                         'taux_couverture' => $taux_assurer,
                         'montant' => $planning->tarif_consultation->montant,
                         'date_rdv' => $planning->jour_semaine,

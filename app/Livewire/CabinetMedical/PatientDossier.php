@@ -5,6 +5,7 @@ namespace App\Livewire\CabinetMedical;
 use App\Models\CabinetMedical\Consultation;
 use App\Models\CabinetMedical\Facturation;
 use App\Models\CabinetMedical\Patient;
+use App\Models\CabinetMedical\PriseEnCharge;
 use App\Models\Civilite;
 use App\Models\SituationMatrimoniale;
 use Livewire\Component;
@@ -35,6 +36,7 @@ class PatientDossier extends Component
     public $consultations=[];
     public $facturations=[];
     public $consutlation_traiters=[];
+    public $prise_en_charges=[];
 
     public function mount(Patient $patients, $id)
     {
@@ -45,7 +47,7 @@ class PatientDossier extends Component
         $this->consultations = Consultation::where('patient_id', $id)->where('etat', '0')->get();
         $this->facturations = Facturation::where('patient_id', $id)->get();
         $this->consutlation_traiters = Consultation::where('patient_id', $id)->where('etat', '1')->get();
-
+        $this->prise_en_charges = PriseEnCharge::where('patient_id', $id)->get();
         $civilite = Civilite::where('id', $patients->civilite_id)->first();
         $situation = SituationMatrimoniale::where('id', $patients->situation_matrimoniale_id)->first();
 
