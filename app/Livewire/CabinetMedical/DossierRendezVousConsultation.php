@@ -3,13 +3,12 @@
 namespace App\Livewire\CabinetMedical;
 
 use App\Models\CabinetMedical\ContratAssurance;
+use App\Models\CabinetMedical\MotifConsultation;
 use App\Models\CabinetMedical\Patient;
 use App\Models\CabinetMedical\PlanificationMedecin;
 use App\Models\CabinetMedical\PriseEnCharge;
 use App\Models\CabinetMedical\Rdv;
-use App\Models\CabinetMedical\type_consultationMedecin;
 use App\Models\CabinetMedical\TarifConsultation;
-use App\Models\CabinetMedical\TypeConsultation;
 use App\Models\Civilite;
 use App\Models\SituationMatrimoniale;
 use Carbon\Carbon;
@@ -38,6 +37,7 @@ class DossierRendezVousConsultation extends Component
 
 
     public $civilites = [];
+    public $motifs = [];
     public $situations = [];
     public $planification_dates = [];
     public $planification_date = null;
@@ -54,6 +54,7 @@ class DossierRendezVousConsultation extends Component
         $patients = Patient::where('id', $id)->first();
 
         $this->civilites = Civilite::all();
+        $this->motifs = MotifConsultation::all();
         $this->situations = SituationMatrimoniale::all();
         $this->tarif_consultations = TarifConsultation::all();
         $this->patients = $patients->id;

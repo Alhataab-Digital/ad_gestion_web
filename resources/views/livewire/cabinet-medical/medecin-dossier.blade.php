@@ -188,32 +188,75 @@
                               </button>
                               </li>
                           </ul>
-                          <div class="tab-content pt-2" id="myTabContent">
-                            <div class="tab-pane fade show active" id="consultation" role="tabpanel" aria-labelledby="consultation-tab">
-                                <!-- Table with stripped rows -->
-                            <table class="table">
-                                <thead class="bg-secondary text-white">
-                                    <tr>
-                                        <!-- <th scope="col">#</th> -->
-                                        <th scope="col">Patient</th>
-                                        <th scope="col">Date prevus</th>
-                                        <th scope="col">Heure prevus</th>
-                                        <th scope="col">Type de rendez-vous</th>
-                                        <th scope="col">motif rendez-vous</th>
-                                        <th scope="col">Medecin</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                            <div class="tab-content pt-2" id="myTabContent">
+                                <div class="tab-pane fade show active" id="consultation" role="tabpanel" aria-labelledby="consultation-tab">
+                                    <!-- Table with stripped rows -->
+                                    <table class="table">
+                                        <thead class="bg-secondary text-white">
+                                            <tr>
+                                                <!-- <th scope="col">#</th> -->
+                                                <th scope="col">Patient</th>
+                                                <th scope="col">Date prevus</th>
+                                                <th scope="col">Type de rendez-vous</th>
+                                                <th scope="col">motif rendez-vous</th>
+                                                <th scope="col">Medecin</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                                    <tr>
+                                            @foreach ($consultation_en_cours as $consultation_en_cour )
+                                        <tr>
+                                            <td>{{ $consultation_en_cour->patient->nom}} {{ $consultation_en_cour->patient->prenom}}</td>
+                                            <td>{{ \Carbon\Carbon::parse($consultation_en_cour->rendez_vous->date_rdv)->format('d-m-Y')}}</td>
+                                            <td>{{
+                                                $consultation_en_cour->rendez_vous->planification->tarif_consultation->type_consultation->type_consultation}}
+                                            </td>
 
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <!-- End Table with stripped rows -->
+                                            <td>{{ $consultation_en_cour->rendez_vous->motif}}</td>
+                                            <td>{{ $consultation_en_cour->medecin->prenom.' '.$consultation_en_cour->medecin->nom}}</td>
+
+                                            <td>
+                                                @if($consultation_en_cour->etat==0)
+                                                <span class="badge bg-secondary"> attente</span>
+                                                @endif
+                                                @if($consultation_en_cour->etat==1)
+                                                <span class="badge bg-danger">en cours</span>
+                                                @endif
+                                                @if($consultation_en_cour->etat==2)
+                                                <span class="badge bg-success">Terminer</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                {{-- <a href=""> <button type="button" class="btn btn-primary btn-sm">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                </a> --}}
+                                                @if($consultation_en_cour->etat==0)
+                                                <button type="button" class="btn btn-dark btn-sm" wire:click='AppelPatient({{$consultation->id}})'><i class="ri ri-user-unfollow-line"></i></button>
+                                                @endif
+                                                @if($consultation_en_cour->etat==1)
+                                                <a wire:navigate href="{{route('ad.sante.dossier.patient',encrypt($consultation_en_cour->patient->id))}}">
+                                                    <button class="btn btn-dark btn-sm">
+                                                        <i class="ri ri-user-unfollow-line"></i>
+                                                        </button>
+                                                </a>
+
+                                                @endif
+                                                @if($consultation_en_cour->etat==2)
+                                                <button class="btn btn-success btn-sm">
+                                                <i class="bx bxs-hide"></i></button>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                    <!-- End Table with stripped rows -->
+                                </div>
                             </div>
+                            <!-- End Default Tabs -->
                             <div class="tab-content pt-2" id="myTabContent">
                                 <div class="tab-pane fade " id="agenda" role="tabpanel" aria-labelledby="agenda-tab">
 
@@ -236,83 +279,177 @@
                                                 <td>{{ \Carbon\Carbon::parse($planification->jour_semaine)->format('d-m-Y')}}</td>
                                                 <td>{{ \Carbon\Carbon::parse($planification->heure_debut)->format('H:s')}}</td>
                                                 <td>{{ \Carbon\Carbon::parse($planification->heure_fin)->format('H:s')}}</td>
-
-
-
                                             </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
-                                <!-- End Table with stripped rows -->
-
+                                    <!-- End Table with stripped rows -->
                                 </div>
-
-                            <!-- End Table with stripped rows -->
-                            <div class="tab-pane fade" id="attente" role="tabpanel" aria-labelledby="attente-tab">
-                                   <!-- Table with stripped rows -->
-                          <table class="table datatable">
-                            <thead class="bg-secondary text-white">
-                                <tr>
-                                    <!-- <th scope="col">#</th> -->
-                                    <th scope="col">Patient</th>
-                                    <th scope="col">Date prevus</th>
-                                    <th scope="col">Type consultation</th>
-                                    <th scope="col">motif rendez-vous</th>
-                                    <th scope="col">Medecin</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($consultations as $consultation )
-                                <tr>
-                                    <td>{{ $consultation->patient->nom}} {{ $consultation->patient->prenom}}</td>
-                                    <td>{{ \Carbon\Carbon::parse($consultation->rendez_vous->date_rdv)->format('d-m-Y')}}</td>
-                                    <td>{{
-                                        $consultation->rendez_vous->planification->tarif_consultation->type_consultation->type_consultation}}
-                                    </td>
-
-                                    <td>{{ $consultation->rendez_vous->motif}}</td>
-                                    <td>{{ $consultation->medecin->prenom.' '.$consultation->medecin->nom}}</td>
-
-                                    <td>
-                                        @if($consultation->etat==0)
-                                        <span class="badge bg-secondary"> attente</span>
-                                        @endif
-                                        @if($consultation->etat==1)
-                                        <span class="badge bg-danger">en cours</span>
-                                        @endif
-                                        @if($consultation->etat==2)
-                                        <span class="badge bg-success">Terminer</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        {{-- <a href=""> <button type="button" class="btn btn-primary btn-sm">
-                                                <i class="bi bi-pencil"></i>
-                                            </button>
-                                        </a> --}}
-                                        @if($consultation->etat==0)
-                                        <a wire:navigate href="{{route('ad.sante.dossier.patient',encrypt($consultation->patient->id))}}">
-                                            <button type="button" class="btn btn-secondary btn-sm"><i
-                                                    class="bx bx-folder-plus"></i></button>
-                                        </a>
-                                        @endif
-                                        @if($consultation->etat==1)
-                                        <button class="btn btn-danger btn-sm">
-                                            <i class="bx bxs-hide"></i></button>
-                                        @endif
-                                        @if($consultation->etat==2)
-                                        <button class="btn btn-secondary btn-sm">
-                                        <i class="bx bxs-hide"></i></button>
-                                        @endif
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <!-- End Table with stripped rows -->
                             </div>
-                          </div><!-- End Default Tabs -->
+                            <!-- End Default Tabs -->
+                            <div class="tab-content pt-2" id="myTabContent">
+                                <div class="tab-pane fade" id="hospitalisation" role="tabpanel" aria-labelledby="hospitalisation-tab">
+                                       <!-- Table with stripped rows -->
+                                    <table class="table datatable">
+                                        <thead class="bg-secondary text-white">
+                                            <tr>
+                                                <!-- <th scope="col">#</th> -->
+                                                <th scope="col">Patient</th>
+                                                <th scope="col">Date prevus</th>
+                                                <th scope="col">Type consultation</th>
+                                                <th scope="col">motif rendez-vous</th>
+                                                <th scope="col">Medecin</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                    <!-- End Table with stripped rows -->
+                                </div>
+                            </div>
+                            <!-- End Default Tabs -->
+                            <div class="tab-content pt-2" id="myTabContent">
+                                <div class="tab-pane fade" id="soins" role="tabpanel" aria-labelledby="soins-tab">
+                                    <!-- Table with stripped rows -->
+                                    <table class="table datatable">
+                                        <thead class="bg-secondary text-white">
+                                            <tr>
+                                                <!-- <th scope="col">#</th> -->
+                                                <th scope="col">Patient</th>
+                                                <th scope="col">Date prevus</th>
+                                                <th scope="col">Type consultation</th>
+                                                <th scope="col">motif rendez-vous</th>
+                                                <th scope="col">Medecin</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                           <tr>Soins</tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- End Table with stripped rows -->
+                                </div>
+                            </div>
+                            <!-- End Default Tabs -->
+                            <div class="tab-content pt-2" id="myTabContent">
+                                <div class="tab-pane fade" id="rdv" role="tabpanel" aria-labelledby="rdv-tab">
+                                    <!-- Table with stripped rows -->
+                                    <table class="table datatable">
+                                        <thead class="bg-secondary text-white">
+                                            <tr>
+                                                <!-- <th scope="col">#</th> -->
+                                                <th scope="col">Patient</th>
+                                                <th scope="col">Date prevus</th>
+                                                <th scope="col">Heure rendez vous</th>
+                                                <th scope="col">Type consultation</th>
+                                                <th scope="col">motif rendez-vous</th>
+                                                <th scope="col">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($rendez_vouss as $rendez_vous )
+                                            <tr>
+                                                <td>{{ $rendez_vous->patient->nom}} {{ $rendez_vous->patient->prenom}}</td>
+                                                <td>{{ \Carbon\Carbon::parse($rendez_vous->date_rdv)->format('d-m-Y')}}</td>
+                                                <td>{{
+                                                    \Carbon\Carbon::parse($rendez_vous->planification->heure_debut)->format('H:s').'
+                                                    à
+                                                    '.\Carbon\Carbon::parse($rendez_vous->planification->heure_fin)->format('H:s')}}
+                                                </td>
+                                                <td>{{
+                                                    $rendez_vous->planification->tarif_consultation->type_consultation->type_consultation}}
+                                                </td>
+                                                <td>{{ $rendez_vous->motif}}</td>
+                                                <td>
+                                                    @if($rendez_vous->etat==0)
+                                                    <span class="badge bg-info"> à venir</span>
+                                                    @endif
+                                                    @if($rendez_vous->etat==1)
+                                                    <span class="badge bg-danger">Facturé</span>
+                                                    @endif
+                                                    @if($rendez_vous->etat==2)
+                                                    <span class="badge bg-success">Payé</span>
+                                                    @endif
+                                                    @if($rendez_vous->etat==3)
+                                                    <span class="badge bg-secondary">Pris</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                    <!-- End Table with stripped rows -->
+                                </div>
+                            </div>
+                            <!-- End Default Tabs -->
+                            <div class="tab-content pt-2" id="myTabContent">
+                                <div class="tab-pane fade" id="attente" role="tabpanel" aria-labelledby="attente-tab">
+                                    <!-- Table with stripped rows -->
+                                    <table class="table datatable">
+                                        <thead class="bg-secondary text-white">
+                                            <tr>
+                                                <!-- <th scope="col">#</th> -->
+                                                <th scope="col">Patient</th>
+                                                <th scope="col">Date prevus</th>
+                                                <th scope="col">Type consultation</th>
+                                                <th scope="col">motif rendez-vous</th>
+                                                <th scope="col">Medecin</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($consultations as $consultation )
+                                            <tr>
+                                                <td>{{ $consultation->patient->nom}} {{ $consultation->patient->prenom}}</td>
+                                                <td>{{ \Carbon\Carbon::parse($consultation->rendez_vous->date_rdv)->format('d-m-Y')}}</td>
+                                                <td>{{
+                                                    $consultation->rendez_vous->planification->tarif_consultation->type_consultation->type_consultation}}
+                                                </td>
+
+                                                <td>{{ $consultation->rendez_vous->motif}}</td>
+                                                <td>{{ $consultation->medecin->prenom.' '.$consultation->medecin->nom}}</td>
+
+                                                <td>
+                                                    @if($consultation->etat==0)
+                                                    <span class="badge bg-secondary"> attente</span>
+                                                    @endif
+                                                    @if($consultation->etat==1)
+                                                    <span class="badge bg-danger">en cours</span>
+                                                    @endif
+                                                    @if($consultation->etat==2)
+                                                    <span class="badge bg-success">Terminer</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    {{-- <a href=""> <button type="button" class="btn btn-primary btn-sm">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </button>
+                                                    </a> --}}
+                                                    @if($consultation->etat==0)
+                                                    <button type="button" class="btn btn-dark btn-sm" wire:click='AppelPatient({{$consultation->id}})'><i class="ri ri-user-unfollow-line"></i></button>
+                                                    @endif
+                                                    @if($consultation->etat==1)
+                                                    <button class="btn btn-danger btn-sm">
+                                                        <i class="bx bxs-hide"></i></button>
+                                                    @endif
+                                                    @if($consultation->etat==2)
+                                                    <button class="btn btn-secondary btn-sm">
+                                                    <i class="bx bxs-hide"></i></button>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                    <!-- End Table with stripped rows -->
+                                </div>
+                            </div>
+                            <!-- End Default Tabs -->
 
                         </div>
                       </div>

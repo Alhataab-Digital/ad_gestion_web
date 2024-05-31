@@ -28,6 +28,7 @@ class Medecin extends Model
         'matricule',
         'specialite_id',
         'categorie_medicale_id',
+        'espace_id',
         'user_id',
         'societe_id',
     ];

@@ -76,11 +76,11 @@
                                 data-bs-target="#facturation" type="button" role="tab" aria-controls="facturation"
                                 aria-selected="false">FACTURE EN COURS  <span class="badge bg-danger badge-number">{{$fac_en_cours}}</span></button>
                         </li>
-                        <li class="nav-item" role="caisse">
+                        {{-- <li class="nav-item" role="caisse">
                             <button class="nav-link" id="caisse-tab" data-bs-toggle="tab" data-bs-target="#caisse"
                                 type="button" role="tab" aria-controls="caisse" aria-selected="false">REGLEMENT
                                 PERCUS</button>
-                        </li>
+                        </li> --}}
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact"
                                 type="button" role="tab" aria-controls="contact" aria-selected="false">SALLE
@@ -96,7 +96,7 @@
                             <table class="table datatable">
                                 <thead class="bg-primary text-white">
                                     <tr>
-                                        <!-- <th scope="col">#</th> -->
+                                        <th scope="col">Dossier</th>
                                         <th scope="col">Patient</th>
                                         <th scope="col">Date prevus</th>
                                         <th scope="col">Heure prevus</th>
@@ -110,6 +110,7 @@
                                 <tbody>
                                     @foreach ($rendez_vouss as $rendez_vous )
                                     <tr>
+                                        <td>{{ $rendez_vous->patient->numero_patient}}</td>
                                         <td>{{ $rendez_vous->patient->nom}} {{ $rendez_vous->patient->prenom}}</td>
                                         <td>{{ \Carbon\Carbon::parse($rendez_vous->date_rdv)->format('d-m-Y')}}</td>
                                         <td>{{
@@ -236,10 +237,8 @@
                                                 </button>
                                             </a> --}}
                                             @if($facturation->etat==0)
-                                            <a href="{{route('ad.sante.recu.consultation',encrypt($facturation->id))}}">
-                                                <button class="btn btn-danger btn-sm">
-                                                    <i class="bi bi-wallet2"></i></button>
-                                            </a>
+                                            <button class="btn btn-danger btn-sm">
+                                            <i class="bx bxs-hide"></i></button>
                                             @endif
                                             @if($facturation->etat==1)
                                             <a href="{{route('ad.sante.recu.consultation',encrypt($facturation->id))}}">
@@ -259,7 +258,7 @@
                     <table class="table datatable">
                         <thead class="bg-primary text-white">
                             <tr>
-                                <!-- <th scope="col">#</th> -->
+                                <th scope="col">Dossier</th>
                                 <th scope="col">patient</th>
                                 <th scope="col">Telephone patient</th>
                                 <th scope="col">Date operation</th>
@@ -274,6 +273,7 @@
                         <tbody>
                             @foreach ($paiements as $paiement )
                             <tr>
+                                <td>{{ $rendez_vous->patient->numero_patient}}</td>
                                 <td>{{ $paiement->facturation->patient->nom.' '.$paiement->facturation->patient->prenom}}</td>
                                 <td>{{ $paiement->facturation->patient->telephone}}</td>
                                 <td>{{ \Carbon\Carbon::parse($paiement->date_operation)->format('d-m-Y')}}</td>
@@ -309,7 +309,7 @@
                           <table class="table datatable">
                             <thead class="bg-primary text-white">
                                 <tr>
-                                    <!-- <th scope="col">#</th> -->
+                                    <th scope="col">Dossier</th>
                                     <th scope="col">Patient</th>
                                     <th scope="col">Date prevus</th>
                                     <th scope="col">Type consultation</th>
@@ -322,6 +322,7 @@
                             <tbody>
                                 @foreach ($consultations as $consultation )
                                 <tr>
+                                    <td>{{ $rendez_vous->patient->numero_patient}}</td>
                                     <td>{{ $consultation->patient->nom}} {{ $consultation->patient->prenom}}</td>
                                     <td>{{ \Carbon\Carbon::parse($consultation->rendez_vous->date_rdv)->format('d-m-Y')}}</td>
                                     <td>{{
@@ -343,15 +344,10 @@
                                         @endif
                                     </td>
                                     <td>
-                                        {{-- <a href=""> <button type="button" class="btn btn-primary btn-sm">
-                                                <i class="bi bi-pencil"></i>
-                                            </button>
-                                        </a> --}}
                                         @if($consultation->etat==0)
-                                        <a wire:navigate href="{{route('ad.sante.dossier.patient',encrypt($consultation->patient->id))}}">
-                                            <button type="button" class="btn btn-secondary btn-sm"><i
-                                                    class="bx bx-folder-plus"></i></button>
-                                        </a>
+                                        <button type="button" class="btn btn-secondary btn-sm">
+                                            <i class="bx bxs-hide"></i>
+                                        </button>
                                         @endif
                                         @if($consultation->etat==1)
                                         <button class="btn btn-danger btn-sm">

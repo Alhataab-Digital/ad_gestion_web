@@ -5,16 +5,10 @@ namespace App\Models\CabinetMedical;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Traitement extends Model
+class MotifConsultation extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'diagnostique',
-        'conclusion',
-        'consultation_id',
-        'patient_id',
-        'medecin_id',
-        'user_id',
-        'societe_id',
+        'motif',
     ];
 }

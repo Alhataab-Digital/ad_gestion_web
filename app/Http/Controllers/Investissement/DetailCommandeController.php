@@ -11,6 +11,8 @@ use App\Models\Produit;
 use App\Models\Investissement\Commande;
 use App\Models\Investissement\DetailCommande;
 use App\Models\Investissement\ActiviteInvestissement;
+use App\Models\Societe;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class DetailCommandeController extends Controller
 {
@@ -168,6 +170,34 @@ class DetailCommandeController extends Controller
                 $data['fournisseur'] = Fournisseur::where('id', $id)->get();
                 return response()->json($data);
             }
+        }
+        return redirect('/')->with('danger', "Session expirée");
+    }
+
+    public function print($id)
+    {
+        // dd('commande livrer');
+        if (Auth::check()) {
+            $id = decrypt($id);
+            $commande = Commande::find($id);
+
+
+            $agence_id = Auth::user()->agence_id;
+            $activite_investissements = ActiviteInvestissement::where("agence_id", $agence_id)->where('etat_activite', 'valider')->get();
+            $detail_commandes = DetailCommande::where('commande_id', $commande->id)->get();
+            $total_ht = DetailCommande::where('commande_id', $commande->id)->selectRaw('sum(quantite_commandee*prix_unitaire_commande) as total')->first('total');
+
+        $societe=Societe::find(Auth::user()->societe_id);
+            $path=public_path('images/logo/'.Auth::user()->societe->logo);
+
+            $type=pathinfo($path,PATHINFO_EXTENSION);
+            $data=file_get_contents($path);
+            $logo='data:image/'.$type.';base64,'.base64_encode($data);
+
+            $pdf = Pdf::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
+                ->loadView('print.investissement.commande_valider', compact('commande', 'detail_commandes', 'total_ht', 'activite_investissements','societe','logo'));
+
+            return $pdf->download('recu_reception_produit.pdf');
         }
         return redirect('/')->with('danger', "Session expirée");
     }

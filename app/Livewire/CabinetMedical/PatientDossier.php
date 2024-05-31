@@ -5,7 +5,9 @@ namespace App\Livewire\CabinetMedical;
 use App\Models\CabinetMedical\Consultation;
 use App\Models\CabinetMedical\Facturation;
 use App\Models\CabinetMedical\Patient;
+use App\Models\CabinetMedical\Prescription;
 use App\Models\CabinetMedical\PriseEnCharge;
+use App\Models\CabinetMedical\Rdv;
 use App\Models\Civilite;
 use App\Models\SituationMatrimoniale;
 use Livewire\Component;
@@ -16,27 +18,17 @@ class PatientDossier extends Component
 
     public $numero_patient;
     public $patients;
-    public $civilite ;
-    public $nom ;
-    public $prenom ;
-    public $situation;
-    public $profession;
-    public $date_naissance;
-    public $lieu_naissance;
-    public $telephone;
-    public $adresse;
-    public $complement_adresse;
-    public $taille;
-    public $poid;
-    public $temperature;
-    public $groupe_sanguin;
-    public $mail ;
-    public $personne_contact ;
-    public $icm ;
+    public $civilite ,$nom ,$prenom ,$situation,$date_naissance,$profession,$lieu_naissance,$telephone,$adresse,$complement_adresse;
+    public $taille,$poid,$temperature,$groupe_sanguin;
+    public $mail ,$personne_contact,$icm ;
+    public $nbr_rdv;
     public $consultations=[];
+    public $prescriptions=[];
     public $facturations=[];
     public $consutlation_traiters=[];
     public $prise_en_charges=[];
+
+    public $rendez_vouss=[];
 
     public function mount(Patient $patients, $id)
     {
@@ -44,12 +36,16 @@ class PatientDossier extends Component
 
         $patients = Patient::where('id', $id)->first();
 
-        $this->consultations = Consultation::where('patient_id', $id)->where('etat', '0')->get();
+        $this->rendez_vouss=Rdv::where('patient_id', $id)->get();
+        $this->consultations = Consultation::where('patient_id', $id)->get();
+        $this->prescriptions =Prescription::where('patient_id', $id)->get();
         $this->facturations = Facturation::where('patient_id', $id)->get();
-        $this->consutlation_traiters = Consultation::where('patient_id', $id)->where('etat', '1')->get();
+        $this->consutlation_traiters = Consultation::where('patient_id', $id)->where('etat',2)->get();
         $this->prise_en_charges = PriseEnCharge::where('patient_id', $id)->get();
         $civilite = Civilite::where('id', $patients->civilite_id)->first();
         $situation = SituationMatrimoniale::where('id', $patients->situation_matrimoniale_id)->first();
+
+
 
         $this->numero_patient = $patients->numero_patient;
         $this->patients = $patients->id;
@@ -67,7 +63,6 @@ class PatientDossier extends Component
         }else{
             $this->situation ='';
         }
-
         $this->profession = $patients->profession;
         $this->date_naissance = $patients->date_naissance;
         $this->lieu_naissance = $patients->lieu_naissance;
@@ -80,8 +75,9 @@ class PatientDossier extends Component
         $this->mail = $patients->mail;
         $this->groupe_sanguin = $patients->groupe_sanguin;
         $this->personne_contact = $patients->personne_contact;
-        if(isset($patients->taille)&& isset($patients->poid)){
-            $icm=round( $patients->poid/($patients->taille*$patients->taille));
+        if($patients->taille!=null && $patients->poid!=null){
+            $icm=round( ($patients->poid)/($patients->taille*$patients->taille));
+
             if($icm<16.5){
                 $this->icm=$icm.' (Maigreur extrême – dénutrition)';
             }

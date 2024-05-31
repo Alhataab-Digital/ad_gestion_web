@@ -10,6 +10,8 @@ use App\Models\Investissement\DetailDevis;
 use App\Models\Investissement\Facture;
 use App\Models\Investissement\DetailFacture;
 use App\Models\Investissement\EntrepotStock;
+use App\Models\Societe;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class FactureController extends Controller
 {
@@ -171,7 +173,28 @@ class FactureController extends Controller
         return redirect('/')->with('danger', "Session expirée");
     }
 
-    public function print()
+    public function print($id)
     {
+        // dd('commande livrer');
+        if (Auth::check()) {
+            $id = decrypt($id);
+            $agence_id = Auth::user()->agence_id;
+            $facture = Facture::find($id);
+            $detail_factures = DetailFacture::where('facture_id', $facture->id)->get();
+            $total_ht = DetailFacture::where('facture_id', $facture->id)->selectRaw('sum(quantite_vendue*prix_unitaire_vendu) as total')->first('total');
+
+            $societe=Societe::find(Auth::user()->societe_id);
+            $path=public_path('images/logo/'.Auth::user()->societe->logo);
+
+            $type=pathinfo($path,PATHINFO_EXTENSION);
+            $data=file_get_contents($path);
+            $logo='data:image/'.$type.';base64,'.base64_encode($data);
+
+            $pdf = Pdf::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
+                ->loadView('print.investissement.facture_client', compact('facture', 'detail_factures', 'total_ht','societe','logo'));
+
+            return $pdf->download('Facture_produit.pdf');
+        }
+        return redirect('/')->with('danger', "Session expirée");
     }
 }

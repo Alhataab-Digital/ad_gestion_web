@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Users\Role;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -12,7 +13,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        $roles=Role::all();
+        return view('users.role_user',compact('roles'));
     }
 
     /**
@@ -44,7 +46,9 @@ class RoleController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $id=decrypt($id);
+        $role=Role::find($id);
+        return view('users.role_user_edit',compact('role'));
     }
 
     /**
@@ -52,7 +56,26 @@ class RoleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $id = decrypt($id);
+        $role = Role::find($id);
+        /**
+         * validation des champs de saisie
+         */
+        $data = $request->validate([
+            'role' => 'required',
+        ]);
+        /**
+         * donnee a ajouté dans la table
+         */
+
+
+        /**
+         * insertion des données dans la table user
+         */
+        $role->update([
+            'role' => $data['role'],
+        ]);
+        return back()->with('success', 'role modifier avec succès');
     }
 
     /**

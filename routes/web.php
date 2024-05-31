@@ -15,9 +15,9 @@ use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\SocieteController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Agence\AgenceController;
 use App\Http\Controllers\Agence\AgenceUserController;
+use App\Http\Controllers\Auth\RoleController;
 use App\Http\Controllers\Caisse\CaisseController;
 use App\Http\Controllers\Caisse\CaisseUserController;
 use App\Http\Controllers\Banque\BanqueController;
@@ -108,6 +108,8 @@ use App\Livewire\CabinetMedical\EditTypeConcultation;
 use App\Livewire\CabinetMedical\FacturationConsultation;
 use App\Livewire\CabinetMedical\MaisonAssurance;
 use App\Livewire\CabinetMedical\MaisonAssuranceEdit;
+use App\Livewire\CabinetMedical\MedecinUser;
+use App\Livewire\CabinetMedical\Medicament;
 use App\Livewire\CabinetMedical\PlanificationMedecin;
 use App\Livewire\CabinetMedical\PriseEnCharge;
 use App\Livewire\CabinetMedical\RecuConsultation;
@@ -184,6 +186,12 @@ Route::controller(RegisterController::class)->group(function(){
 Route::middleware(['auth','initier'])->controller(HomeController::class)->group(function(){
     Route::get('/home','index')->name('home');
     Route::get('/{id}/activer','store')->name('activer.environnement');
+});
+
+Route::middleware(['auth','initier'])->controller(RoleController::class)->group(function(){
+    Route::get('/role','index')->name('role');
+    Route::get('/role/{id}/edit','edit')->name('role.edit');
+    Route::post('/role/{id}/update','update')->name('role.update');
 });
 
 Route::middleware(['auth','initier'])->controller(UserController::class)->group(function(){
@@ -851,6 +859,7 @@ Route::middleware(['auth','initier'])->controller(ReglementFactureController::cl
     Route::get('/reglement/comptoir','comptoir')->name('reglement.comptoir');
     Route::post('/reglement/client','numero_client')->name('reglement.numero_client');
     Route::get('/reglement/{id}/paiement','paiement_facture')->name('reglement.paiement');
+    Route::get('/reglement/{id}/paiement/print','print')->name('reglement.paiement.print');
 
 });
 
@@ -938,6 +947,7 @@ Route::middleware(['auth','initier'])->prefix('assurance')->controller(PrimeNetC
             Route::get('ad/sante/patient/{id}/dossier',PatientDossier::class)->name('dossier.patient');
 
             Route::get('ad/sante/medecin',Medecin::class)->name('index.medecin');
+            Route::get('ad/sante/medecin/user',MedecinUser::class)->name('medecin.user');
             Route::get('ad/sante/medecin/{id}/edit',MedecinEdit::class)->name('edit.medecin');
             Route::get('ad/sante/{id}/dossier/medecin',MedecinDossier::class)->name('dossier.medecin');
             Route::get('ad/sante/planification/medecin',PlanificationMedecin::class)->name('index.planification.medecin');
@@ -966,6 +976,7 @@ Route::middleware(['auth','initier'])->prefix('assurance')->controller(PrimeNetC
             Route::get('ad/sante/contrat/assurance/medicale',ContratAssurance::class)->name('contrat.assurance.medicale');
             Route::get('ad/sante/prise_en_charge/assurance',PriseEnCharge::class)->name('prise_en_charge.assurance.consultation');
 
+            Route::get('ad/sante/medicament',Medicament::class)->name('medicament');
 
         });
        //

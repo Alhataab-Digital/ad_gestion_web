@@ -59,17 +59,27 @@
             </a>
         </li>
         <li>
+            <a href="{{ route('ad.sante.medecin.user') }}">
+                <i class="bi bi-circle"></i><span>Association un medecin à un compte Utilisateur</span>
+            </a>
+        </li>
+        <li>
             <a href="{{ route('region') }}">
                 <i class="bi bi-circle"></i><span>Region / Pays </span>
+            </a>
+        </li>
+        <li>
+            <a href="{{route('role')}}">
+                <i class="bx bxs-institution"></i><span>Role utilisateur</span>
             </a>
         </li>
     </ul>
 </li>
 @endif
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="3"||Auth::user()->role_id =="4")
 
 <li class="nav-heading">Gestion tresorerie</li>
 
-@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="4"|| Auth::user()->role_id =="5")
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#caisse-nav" data-bs-toggle="collapse" href="#">
         <i class="bi bi-journal-text"></i><span>Gestion Caisse</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -120,7 +130,7 @@
     </ul>
 </li><!-- End Tables Nav -->
 @endif
-@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="4"|| Auth::user()->role_id =="5")
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="3"||Auth::user()->role_id =="4")
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#banque-nav" data-bs-toggle="collapse" href="#">
         <i class="ri ri-building-line"></i><span>Gestion banque</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -154,7 +164,8 @@
 
 
 <li class="nav-heading">Gestion medicale</li>
-@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="4"|| Auth::user()->role_id =="5")
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="3"||Auth::user()->role_id =="4"|| Auth::user()->role_id =="5"|| Auth::user()->role_id =="6")
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="3"|| Auth::user()->role_id =="6")
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#patient-nav" data-bs-toggle="collapse" href="#">
         <i class="bi bi-gear-wide-connected"></i><span>Gestion patient</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -167,6 +178,18 @@
         </li>
     </ul>
 </li>
+@if(Auth::user()->role_id =="6" && Auth::user()->espace_id != 0)
+
+<li class="nav-item">
+    <a class="nav-link collapsed" href="{{route('ad.sante.dossier.medecin',encrypt(Auth::user()->espace_id))}}">
+        <i class="bi bi-person-square"></i>
+        <span>Mon espace </span>
+    </a>
+</li><!-- End Contact Page Nav -->
+
+@endif
+@endif
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="3"||Auth::user()->role_id =="5")
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#rendez-vous-nav" data-bs-toggle="collapse" href="#">
         <i class="bi bi-gear-wide-connected"></i><span>Gestion rendez-vous</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -179,6 +202,9 @@
         </li>
     </ul>
 </li>
+@endif
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="3"||Auth::user()->role_id =="4")
+
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#facturation-nav" data-bs-toggle="collapse" href="#">
         <i class="bi bi-gear-wide-connected"></i><span>Gestion facturation</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -191,6 +217,8 @@
         </li>
     </ul>
 </li>
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="3")
+
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#consultation-nav" data-bs-toggle="collapse" href="#">
         <i class="bi bi-gear-wide-connected"></i><span>Gestion consultation</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -219,9 +247,10 @@
 
     </ul>
 </li>
-
 @endif
-@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"|| Auth::user()->role_id =="3"||Auth::user()->role_id =="4"|| Auth::user()->role_id =="5")
+@endif
+@endif
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"|| Auth::user()->role_id =="3")
 <!-- End Charts Nav -->
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#plannification-nav" data-bs-toggle="collapse" href="#">
@@ -252,6 +281,8 @@
     </ul>
 </li>
 @endif
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"|| Auth::user()->role_id =="3")
+
 <!-- End Charts Nav -->
 <li class="nav-heading">Configuration medicale</li>
 <li class="nav-item">
@@ -309,6 +340,12 @@
                 <i class="bx bxs-institution"></i><span>Type soins</span>
             </a>
         </li>
+        <li>
+            <a href="{{route('ad.sante.medicament')}}">
+                <i class="bx bxs-institution"></i><span>Medicaments</span>
+            </a>
+        </li>
+
     </ul>
 </li>
 <li class="nav-item">
@@ -383,6 +420,7 @@
         </li>
     </ul>
 </li>
+@endif
 <li class="nav-heading">perso</li>
 
 

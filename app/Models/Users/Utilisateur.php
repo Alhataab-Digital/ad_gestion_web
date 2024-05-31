@@ -30,6 +30,7 @@ class Utilisateur extends Model implements Authenticatable
         'societe_id',
         'agence_id',
         'gestion_id',
+        'espace_id',
 
     ];
 

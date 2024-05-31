@@ -3,15 +3,9 @@
 namespace App\Http\Controllers\Stock;
 
 use App\Http\Controllers\Controller;
+use App\Models\Investissement\EntrepotStock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
-use App\Models\Agence;
-use App\Models\Devise;
-use App\Models\Region;
-use App\Models\DeviseAgence;
-use App\Models\EntrepotStock;
 
 class EntrepotController extends Controller
 {
@@ -25,7 +19,7 @@ class EntrepotController extends Controller
             $agence_id = Auth::user()->agence_id;
 
             $entrepots = EntrepotStock::Where('agence_id', $agence_id)->get();
-            return view('e-commerce.entrepot', compact('entrepots'));
+            return view('investissement.entrepot', compact('entrepots'));
         }
         return redirect('/auth')->with('success', "Session expirée");
     }

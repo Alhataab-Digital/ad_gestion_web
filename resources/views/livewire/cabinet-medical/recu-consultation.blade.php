@@ -73,12 +73,12 @@
                                 <tr>
                                     <td colspan="2">
                                         <table class="table mb-0">
-                                            <th>Nom patient</th>
+                                            <th>N° Dossier</th>
                                         </table>
                                     </td>
                                     <td colspan="2">
                                         <table class="table mb-0">
-                                            <th>Prenom patient</th>
+                                            <th>Prenom nom patient</th>
                                         </table>
                                     </td>
                                     <td>
@@ -97,8 +97,8 @@
                                         </table>
                                     </td>
                                 </tr>
-                                <td colspan="2"> {{ $recu_consultations->patient->nom }}</td>
-                                <td colspan="2"> {{ $recu_consultations->patient->prenom }}</td>
+                                <td colspan="2"> {{ $recu_consultations->patient->numero_patient }}</td>
+                                <td colspan="2"> {{ $recu_consultations->patient->prenom.' '.$recu_consultations->patient->nom }}</td>
 
                                 <td>{{\Carbon\Carbon::parse($recu_consultations->patient->date_naissance)->age }}</td>
                                 <td>{{ $recu_consultations->patient->telephone }}</td>
@@ -250,9 +250,14 @@
                             </tbody>
                         </table>
                         <br>
-                        <div class="text-end">Caissier(e) : <strong>{{ $recu_consultations->user->prenom.'
-                                '.$recu_consultations->user->nom }}</strong></div>
+                        <div class="">Receptionniste : <strong>{{ $recu_consultations->user->prenom.'
+                            '.$recu_consultations->user->nom }}</strong></div>
+                        @if($recu_consultations->etat!=0)
+                        <div class="text-end" >Caissier(e) : <strong>{{ $paiement->user->prenom.'
+                                '.$paiement->user->nom }}</strong></div>
                         </div>
+                        @endif
+                        <br>
                         @if($recu_consultations->etat==0)
                             <form wire:submit.prevent='paiementConsultation'>
                                 @csrf

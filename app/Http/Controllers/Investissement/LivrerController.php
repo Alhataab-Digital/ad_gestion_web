@@ -15,6 +15,7 @@ use App\Models\Investissement\DetailLivrer;
 use App\Models\Investissement\EntrepotStock;
 use App\Models\Caisse\MouvementCaisse;
 use App\Models\Investissement\ActiviteInvestissement;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class LivrerController extends Controller
 {
@@ -215,7 +216,31 @@ class LivrerController extends Controller
         //
     }
 
-    public function print()
+    public function print($id)
     {
+        // dd('commande livrer');
+        if (Auth::check()) {
+            $id = decrypt($id);
+            $commande = Commande::find($id);
+
+
+            $agence_id = Auth::user()->agence_id;
+            $livraison = Livrer::find($id);
+            $detail_livraisons = DetailLivrer::where('livrer_id', $id)->get();
+            $total_ht = DetailLivrer::where('livrer_id', $id)->selectRaw('sum(quantite_livree*prix_unitaire_livre) as total')->first('total');
+
+            $societe=Societe::find(Auth::user()->societe_id);
+            $path=public_path('images/logo/'.Auth::user()->societe->logo);
+
+            $type=pathinfo($path,PATHINFO_EXTENSION);
+            $data=file_get_contents($path);
+            $logo='data:image/'.$type.';base64,'.base64_encode($data);
+
+            $pdf = Pdf::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
+                ->loadView('print.investissement.reception_produit', compact('livraison', 'detail_livraisons', 'total_ht','societe','logo'));
+
+            return $pdf->download('recu_reception_produit.pdf');
+        }
+        return redirect('/')->with('danger', "Session expirée");
     }
 }

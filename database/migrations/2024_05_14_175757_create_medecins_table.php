@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('medecins', function (Blueprint $table) {
             $table->id();
-            $table->string('civilite_id')->constrained();
+            $table->foreignId('civilite_id')->constrained();
             $table->string('nom');
             $table->string('prenom');
             $table->foreignId('situation_matrimoniale_id')->constrained();
@@ -26,8 +26,9 @@ return new class extends Migration
             $table->string('mail');
 
             $table->string('matricule');
-            $table->string('specialite_id')->constrained();
-            $table->string('categorie_medicale_id')->constrained();
+            $table->foreignId('specialite_id')->constrained();
+            $table->foreignId('categorie_medicale_id')->constrained();
+            $table->foreignId('espace_id')->nullable()->constrained();
 
             $table->foreignId('user_id')->constrained();
             $table->foreignId('societe_id')->constrained();

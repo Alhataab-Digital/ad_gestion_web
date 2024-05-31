@@ -15,6 +15,7 @@ use App\Models\Caisse\MouvementCaisse;
 use App\Models\Investissement\OperationReglementFacture;
 use App\Models\Investissement\ActiviteInvestissement;
 use App\Models\Investissement\ReglementFacture;
+use App\Models\Societe;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class ReglementFactureController extends Controller
@@ -361,5 +362,41 @@ class ReglementFactureController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function print($id)
+    {
+        if (Auth::check()) {
+            $id = decrypt($id);
+            $facture = Facture::find($id);
+            $societe_id = Auth::user()->societe_id;
+            $agence_id = Auth::user()->agence_id;
+            $client = Client::find($facture->client_id);
+            $reglements = TypeReglement::all();
+
+            if (!isset(ReglementFacture::where('facture_id', $facture->id)->first()->id)) {
+                ReglementFacture::create([
+                    'facture_id' => $id,
+                ]);
+            }
+
+            $reglement_facture = ReglementFacture::where('facture_id', $facture->id)->first();
+            $operations = OperationReglementFacture::where('facture_id', $facture->id)->get();
+            $activite_investissements = ActiviteInvestissement::where("agence_id", $agence_id)->where('etat_activite', 'valider')->get();
+            $detail_factures = DetailFacture::where('facture_id', $facture->id)->get();
+            $total_ht = DetailFacture::where('facture_id', $facture->id)->selectRaw('sum(quantite_vendue*prix_unitaire_vendu) as total')->first('total');
+
+            $societe=Societe::find(Auth::user()->societe_id);
+            $path=public_path('images/logo/'.Auth::user()->societe->logo);
+
+            $type=pathinfo($path,PATHINFO_EXTENSION);
+            $data=file_get_contents($path);
+            $logo='data:image/'.$type.';base64,'.base64_encode($data);
+
+            $pdf = Pdf::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
+                ->loadView('print.investissement.recu_reglement_facture', compact('facture', 'reglement_facture', 'reglements', 'operations', 'client', 'activite_investissements', 'detail_factures', 'total_ht','societe','logo'));
+
+            return $pdf->download('recu_reglement_facture.pdf');
+        }
     }
 }

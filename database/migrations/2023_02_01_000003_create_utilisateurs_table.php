@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('societe_id')->default(0);
             $table->integer('role_id')->default(0);
             $table->integer('agence_id')->default(0);
+            $table->integer('espace_id')->default(0);
             $table->foreignId('gestion_id')->constrained();
             $table->timestamps();
         });

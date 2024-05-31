@@ -31,9 +31,11 @@ class MedecinDossier extends Component
     public $matricule;
     public $nbr_consultation_attente;
     public $nbr_rdv;
+    public $rendez_vouss=[];
     public $planifications=[];
     public $consultations=[];
     public $consultation_traiters=[];
+    public $consultation_en_cours=[];
 
     public function mount(Medecin $medecins, $id)
     {
@@ -44,10 +46,11 @@ class MedecinDossier extends Component
         $situation = SituationMatrimoniale::where('id', $medecins->situation_matrimoniale_id)->first();
         $categorie = CategorieMedecin::where('id', $medecins->categorie_medicale_id)->first();
         $specialite = SpecialiteMedecin::where('id', $medecins->specialite_id)->first();
-        $this->nbr_rdv=Rdv::where('medecin_id', $id)->where('etat',0)->count();
+        $this->rendez_vouss=Rdv::where('medecin_id', $id)->where('etat','!=',3)->get();
+        $this->nbr_rdv=Rdv::where('medecin_id', $id)->where('etat','!=',3)->count();
         $this->planifications = PlanificationMedecin::where('medecin_id',$id)->where('jour_semaine','>=', date('Y-m-d'))->get();
-        $this->consultations = Consultation::where('medecin_id', $id)->where('etat', '0')->get();
-        $this->consultation_traiters = Consultation::where('medecin_id', $id)->where('etat', '1')->get();
+        $this->consultations = Consultation::where('medecin_id', $id)->where('etat', 0)->get();
+        $this->consultation_en_cours = Consultation::where('medecin_id', $id)->where('etat', 1)->get();
         $this->nbr_consultation_attente=Consultation::where('medecin_id', $id)->where('etat',0)->count();
 
         $this->medecins = $medecins->id;
@@ -90,5 +93,15 @@ class MedecinDossier extends Component
     {
         $medecin = Medecin::where('id',  $this->medecins)->first();
         return view('livewire.cabinet-medical.medecin-dossier',compact('medecin'));
+    }
+
+    public function AppelPatient($id)
+    {
+        $consultation=Consultation::find($id);
+
+        $consultation->update([
+            'etat'=>1
+        ]);
+        return redirect()->route('ad.sante.dossier.patient',encrypt($consultation->patient->id));
     }
 }

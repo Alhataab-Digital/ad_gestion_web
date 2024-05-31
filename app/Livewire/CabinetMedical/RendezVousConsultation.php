@@ -38,7 +38,7 @@ public function mount()
         $this->facturations=Facturation::where('societe_id',$societe_id)->where('etat',0)->get();
         $this->fac_en_cours=Facturation::where('societe_id',$societe_id)->where('etat',0)->count();
         $this->paiements=PaiementRecu::where('societe_id',$societe_id)->get();
-        $this->consultations=Consultation::where('user_id',$user_id)->where('societe_id',$societe_id)->get();
+        $this->consultations=Consultation::where('user_id',$user_id)->where('societe_id',$societe_id)->where('etat',0)->get();
         $this->nbr_consultation_attente=Consultation::where('user_id',$user_id)->where('societe_id',$societe_id)->where('etat',0)->count();
 
 }

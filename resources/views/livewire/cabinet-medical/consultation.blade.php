@@ -45,9 +45,12 @@
                                 <td>{{ $consultation->medecin->prenom.' '.$consultation->medecin->nom}}</td>
                                 <td>
                                     @if($consultation->etat==0)
-                                    <span class="badge bg-danger">en cours</span>
+                                    <span class="badge bg-danger">en attente</span>
                                     @endif
                                     @if($consultation->etat==1)
+                                    <span class="badge bg-secondary">en cours</span>
+                                    @endif
+                                    @if($consultation->etat==2)
                                     <span class="badge bg-info">Terminer</span>
                                     @endif
                                 </td>
@@ -57,15 +60,17 @@
                                     </button>
                                     </a> --}}
                                     @if($consultation->etat==0)
-                                    <button class="btn btn-warning btn-sm" wire:click='facturerRendezVous({{$consultation->id}})'>
-                                        <i class="ri ri-bank-card-2-line"></i></button>
+                                    <button class="btn btn-warning btn-sm" '>
+                                        <i class="bx bxs-hide"></i></button>
                                     @endif
                                     @if($consultation->etat==1)
-                                    <button class="btn btn-light btn-sm">
-                                        <i class="ri ri-file-earmark-text"></i></button>
-                                    @endif
-
-                                    <button class="btn btn-danger btn-sm"><i class="bx bx-trash"></i></button>
+                                        <button class="btn btn-danger btn-sm">
+                                            <i class="bx bxs-hide"></i></button>
+                                        @endif
+                                        @if($consultation->etat==2)
+                                        <button class="btn btn-secondary btn-sm">
+                                        <i class="bx bxs-hide"></i></button>
+                                        @endif
                                 </td>
                             </tr>
                             @endforeach

@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('traitements', function (Blueprint $table) {
             $table->id();
+            $table->string('diagnostique');
+            $table->string('conclusion');
+            $table->foreignId('consultation_id')->constrained();
+            $table->foreignId('patient_id')->constrained();
+            $table->foreignId('medecin_id')->constrained();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('societe_id')->constrained();
             $table->timestamps();
         });
     }

@@ -30,8 +30,9 @@ class RecuConsultation extends Component
         $id = decrypt($id);
         $societe_id = Auth::user()->societe_id;
         $user_id = Auth::user()->id;
-
+        if (isset(Caisse::where('user_id', $user_id)->first(['id'])->id)) {
         $caisse_id = Caisse::where('user_id', $user_id)->first(['id'])->id;
+
         $this->caisse = Caisse::find($caisse_id);
 
 
@@ -40,18 +41,24 @@ class RecuConsultation extends Component
         $this->reglements = TypeReglement::all();
         $this->montant = $this->recu_consultations->reste_a_payer;
         $this->recu = $this->recu_consultations->id;
+    }
 
     }
 
 
     public function render()
     {
+        $user_id = Auth::user()->id;
+        if (isset(Caisse::where('user_id', $user_id)->first(['id'])->id)) {
         return view('livewire.cabinet-medical.recu-consultation');
+        }else{
+            return view('livewire.cabinet-medical.erreur');
+        }
     }
 
     public function paiementConsultation()
     {
-      
+
         $societe_id = Auth::user()->societe_id;
         $user_id = Auth::user()->id;
         $caisse_id = Caisse::where('user_id', $user_id)->first(['id'])->id;

@@ -210,6 +210,7 @@ hello
                        </div>
                     </form>
                     @endif
+
                   </div>
                 <!-- End Browser Default Validation -->
 
@@ -229,6 +230,11 @@ hello
         <div class="col-lg-12">
 
             <div class="card">
+                <div class="card-header text-end">
+                    <a href="{{ route('reglement.paiement.print',encrypt($facture->id)) }}">
+                        <button  class="btn btn-info"><i class="bi bi-print"></i> Imprimer</button>
+                    </a>
+                </div>
             <div class="card-body">
                 <h5 class="card-title">
                     Operations

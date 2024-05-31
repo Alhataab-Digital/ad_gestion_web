@@ -30,6 +30,7 @@
                                 <label for="inputState" class="form-label">Civilité <span
                                         style="color: red">*</span></label>
                                 <select id="inputState" class="form-select" wire:model='civilite'>
+                                    <option selected></option>
                                     @foreach ($civilites as $civilite )
                                     <option value="{{$civilite->id}}"> {{$civilite->civilite}} </option>
                                     @endforeach
@@ -57,6 +58,8 @@
                             <div class="col-md-6">
                                 <label for="inputState" class="form-label">Situation</label>
                                 <select id="inputState" class="form-select" wire:model='situation'>
+
+                                    <option selected></option>
                                     @foreach ($situations as $situation )
                                     <option value="{{$situation->id}}"> {{$situation->situation_matrimoniale}} </option>
                                     @endforeach
@@ -99,10 +102,15 @@
                             </div>
                             <br>
                             <hr>
+
                             <div class="col-md-12 bg-secondary text-white">
-                                <label for="inputAddress2" class="form-label">Motif du rendez vous<span
-                                        style="color: red">*</span></label>
-                                <input type="text" class="form-control" wire:model='motif' id="inputAddress2">
+                                <label for="inputState" class="form-label">Motif du rendez vous</label>
+                                <select id="inputState" class="form-select" wire:model='motif'>
+                                    <option selected></option>
+                                    @foreach ($motifs as $motif )
+                                    <option value="{{$motif->motif}}"> {{$motif->motif}} </option>
+                                    @endforeach
+                                </select>
                                 @error('motif')
                                 <span class="text-danger">{{$message}}</span>
                                 @enderror

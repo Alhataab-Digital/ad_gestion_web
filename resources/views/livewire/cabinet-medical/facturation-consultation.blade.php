@@ -99,8 +99,8 @@
                                         </a> --}}
                                         @if($facturation->etat==0)
                                         <a href="{{route('ad.sante.recu.consultation',encrypt($facturation->id))}}">
-                                            <button class="btn btn-warning btn-sm">
-                                                <i class="ri ri-bank-card-2-line"></i></button>
+                                            <button class="btn btn-danger btn-sm">
+                                                <i class="bi bi-wallet2"></i></button>
                                         </a>
                                         @endif
                                         @if($facturation->etat==1)

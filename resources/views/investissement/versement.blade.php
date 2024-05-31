@@ -17,9 +17,11 @@
   <section class="section">
     <div class="row">
       <div class=" form-signin w-50 m-auto col-lg-6">
-        <div class=" card  bg-success text-white">
+        <div class=" card  ">
+            <div class="card-header bg-success text-white">
+                Versement compte investisseur
+            </div>
           <div class="card-body ">
-            <h5 class="card-title text-white">Versement compte investisseur</h5>
             <p>
                 @if ($message=Session::get('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -58,12 +60,15 @@
                 <label for="inputName5" class="form-label">Code investisseur</label>
                 <input type="text" name="code" class="form-control" id="telephone">
               </div>
-              <div class="text-center">
+
+
+          </div>
+          <div class="card-footer bg-success text-white ">
+            <div class="text-center">
                 <button type="submit" class="btn btn-primary">Suivant</button>
               </div>
             </form><!-- End Multi Columns Form -->
-        @endif
-
+            @endif
           </div>
         </div>
 

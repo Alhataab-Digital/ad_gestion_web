@@ -49,10 +49,10 @@
                 @csrf
                 <!-- Browser Default Validation -->
                   <div >
-                  @if($commande->activite_id==NULL) 
+                  @if($commande->activite_id==NULL)
                           <div class="col-md-4">
                           <input class="form-control"  type="hidden"  name="fournisseur_id" value="{{ $commande->fournisseur->id  }}" class="form-control">
-                           
+
                           <label for="" class="form-label">Selectionner l'activité</label>
                             <select class="form-select" id="" name="activite" required>
                               <option selected disabled value="">Choose...</option>
@@ -66,7 +66,7 @@
                     @else
                     <div class="col-md-4">
                           <input class="form-control"  type="texte"  name="fournisseur_id" value="{{ 'Activite N° '.$commande->activite->id.' : '.$commande->activite->type_activite->type_activite  }}" class="form-control">
-                          
+
                           </div>
                     @endif
 
@@ -132,22 +132,22 @@
                       </div>
                         <table  class="table table-borderless ">
                           <tr>
-                                <input class="form-control"  type="hidden" name="commande_id" value="{{ $commande->id }}"  >            
+                                <input class="form-control"  type="hidden" name="commande_id" value="{{ $commande->id }}"  >
                             <th>
                                 <label for="inputText" class="col-sm-6 col-form-label">Fournisseur</label>
-                                <input class="form-control"  type="text"  value="{{ $commande->fournisseur->nom_fournisseur }}" class="form-control">            
+                                <input class="form-control"  type="text"  value="{{ $commande->fournisseur->nom_fournisseur }}" class="form-control">
                             </th>
                             <th>
                                 <label for="inputText" class="col-sm-6 col-form-label">Telephone</label>
-                                <input class="form-control"  type="text"  value="{{ $commande->fournisseur->telephone  }}" class="form-control">            
+                                <input class="form-control"  type="text"  value="{{ $commande->fournisseur->telephone  }}" class="form-control">
                             </th>
                             <th>
                                 <label for="inputText" class="col-sm-6 col-form-label">Adresse</label>
-                                <input class="form-control"  type="text"  value="{{ $commande->fournisseur->adresse  }}" class="form-control">             
-                            </th>           
+                                <input class="form-control"  type="text"  value="{{ $commande->fournisseur->adresse  }}" class="form-control">
+                            </th>
                           </tr>
                         </table>
-                      
+
                       <div >
                         @if ($commande->etat=='en cours')
                         <button  class="btn btn-success"><i class="bi bi-check-square-fill"></i> Confirmer la commande</button>
@@ -156,11 +156,11 @@
                   </div>
                 <!-- End Browser Default Validation -->
               </form>
-              
+
               <div class="text-end" >
-              
+
                 @if ($commande->etat!='annuler')
-                <a href="{{ route('livrer.print',encrypt($commande->id)) }}">
+                <a href="{{ route('detail_commande.print',encrypt($commande->id)) }}">
                     <button  class="btn btn-info"><i class="bi bi-print"></i> Imprimer</button>
                 </a>
                 @endif

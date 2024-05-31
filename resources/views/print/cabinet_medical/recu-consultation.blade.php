@@ -66,7 +66,7 @@
 
         /* Disable the selection */
         user-select: none;
-        margin-top: -5em;
+        margin-top: -400px;
         text-align: center;
     }
     </style>
@@ -94,15 +94,15 @@
             </tbody>
             <tbody>
                 <tr class="section-title">
-                    <td colspan="2">Nom patient</td>
-                    <td colspan="2">Prenom patient</td>
+                    <td colspan="2">N° Dossier</td>
+                    <td colspan="2">Prenom nom patient</td>
                     <td>Age</td>
                     <td>Telephone</td>
                     <td>Adresse</td>
                 </tr>
                 <tr>
-                    <td colspan="2">{{ $recu_consultation->patient->nom }}</td>
-                    <td colspan="2">{{ $recu_consultation->patient->prenom }}</td>
+                    <td colspan="2">{{ $recu_consultation->patient->numero_patient }}</td>
+                    <td colspan="2">{{ $recu_consultation->patient->prenom.' '.$recu_consultation->patient->nom }}</td>
                     <td>{{ \Carbon\Carbon::parse($recu_consultation->patient->date_naissance)->age }}</td>
                     <td>{{ $recu_consultation->patient->telephone }}</td>
                     <td>{{ $recu_consultation->patient->adresse }}</td>
@@ -163,26 +163,15 @@
                 <td > {{ $paiement->reglement->reglement }}</td>
             </tbody>
         </table>
-        <div class="text-end">Caissier(e) : <strong>{{ $recu_consultation->user->prenom.' '.$recu_consultation->user->nom }}</strong></div>
-    </div>
-    <br> <br>
+        <div class="text-end">Receptionniste : <strong>{{ $recu_consultation->user->prenom.' '.$recu_consultation->user->nom }}</strong></div>
+        <div class="text-end" >Caissier(e) : <strong>{{ $paiement->user->prenom.'
+            '.$paiement->user->nom }}</strong></div></div>
+    <br>
     <hr>
-    <br> <br>
+    <br>
     <div class="container">
         <div class="header">RECU DE CONSULTATION</div>
         <table>
-            <thead>
-                <tr>
-                    <td style="width:70px;">
-                        <img class="logo" src="{{$logo}}" alt="Logo">
-                    </td>
-                    <th colspan="6" class="company-info">
-                        Societe : {{ $recu_consultation->societe->raison_sociale }}<br>
-                        Tel : {{ $recu_consultation->societe->telephone }}<br>
-                        Adresse : {{ $recu_consultation->societe->adresse }}<br>
-                    </th>
-                </tr>
-            </thead>
             <tbody>
                 <tr>
                     <td colspan="7" class="section-title">Recu n° {{ \Carbon\Carbon::parse($recu_consultation->created_at)->format('dmy') . $recu_consultation->id }}</td>
@@ -190,15 +179,15 @@
             </tbody>
             <tbody>
                 <tr class="section-title">
-                    <td colspan="2">Nom patient</td>
-                    <td colspan="2">Prenom patient</td>
+                    <td colspan="2">N° Dossier</td>
+                    <td colspan="2">Prenom nom patient</td>
                     <td>Age</td>
                     <td>Telephone</td>
                     <td>Adresse</td>
                 </tr>
                 <tr>
-                    <td colspan="2">{{ $recu_consultation->patient->nom }}</td>
-                    <td colspan="2">{{ $recu_consultation->patient->prenom }}</td>
+                    <td colspan="2">{{ $recu_consultation->patient->numero_patient }}</td>
+                    <td colspan="2">{{ $recu_consultation->patient->prenom.' '.$recu_consultation->patient->nom }}</td>
                     <td>{{ \Carbon\Carbon::parse($recu_consultation->patient->date_naissance)->age }}</td>
                     <td>{{ $recu_consultation->patient->telephone }}</td>
                     <td>{{ $recu_consultation->patient->adresse }}</td>
@@ -259,8 +248,12 @@
                 <td > {{ $paiement->reglement->reglement }}</td>
             </tbody>
         </table>
-        <div class="text-end">Caissier(e) : <strong>{{ $recu_consultation->user->prenom.' '.$recu_consultation->user->nom }}</strong></div>
+
     </div>
-    <div class="text-font">{{ $recu_consultation->societe->raison_sociale }}</div>
+        <div class="text-end">Receptionniste : <strong>{{ $recu_consultation->user->prenom.' '.$recu_consultation->user->nom }}</strong></div>
+        <div class="text-end" >Caissier(e) : <strong>{{ $paiement->user->prenom.'
+            '.$paiement->user->nom }}</strong></div>
+    </div>
+    {{-- <div class="text-font">{{ $recu_consultation->societe->raison_sociale }}</div> --}}
 </body>
 </html>
