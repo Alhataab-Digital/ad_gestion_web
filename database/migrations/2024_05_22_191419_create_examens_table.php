@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('examens', function (Blueprint $table) {
             $table->id();
+            $table->string('libelle');
+            $table->text('resultat')->nullable();
+            $table->foreignId('type_examen_id')->constrained();
+            $table->foreignId('consultation_id')->constrained();
+            $table->foreignId('patient_id')->constrained();
+            $table->foreignId('medecin_id')->constrained();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('societe_id')->constrained();
             $table->timestamps();
         });
 

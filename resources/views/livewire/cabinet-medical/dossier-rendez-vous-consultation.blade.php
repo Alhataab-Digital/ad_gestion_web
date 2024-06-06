@@ -138,7 +138,7 @@
                                     <option selected></option>
                                     @foreach ($planification_dates as $planification_date )
                                     <option value="{{$planification_date->id}}">
-                                        {{$planification_date->jour_semaine.' à '.$planification_date->heure_debut}}
+                                        {{ 'Le '.\Carbon\Carbon::parse($planification_date->jour_semaine)->format('d-m-Y').' à '.$planification_date->heure_debut}}
                                     </option>
                                     @endforeach
                                 </select>

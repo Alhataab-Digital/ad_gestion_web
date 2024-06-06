@@ -76,7 +76,7 @@
     </ul>
 </li>
 @endif
-@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="3"||Auth::user()->role_id =="4")
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="3"||Auth::user()->role_id =="4"||Auth::user()->role_id =="5")
 
 <li class="nav-heading">Gestion tresorerie</li>
 
@@ -203,16 +203,27 @@
     </ul>
 </li>
 @endif
-@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="3"||Auth::user()->role_id =="4")
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="3"||Auth::user()->role_id =="4"||Auth::user()->role_id =="5")
 
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#facturation-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-gear-wide-connected"></i><span>Gestion facturation</span><i class="bi bi-chevron-down ms-auto"></i>
+        <i class="bi bi-gear-wide-connected"></i><span>Gestion facturation & paiements</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="facturation-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
         <li>
             <a href="{{route('ad.sante.facturation.consultation')}}">
-                <i class="bi bi-circle"></i><span>Facturation et paiement</span>
+                <i class="bi bi-circle"></i><span>Reglement consultation</span>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <i class="bi bi-circle"></i><span>Facture prestation</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="">
+                <i class="bi bi-circle"></i><span>Vente produit pharmaceutique</span>
             </a>
         </li>
     </ul>
@@ -291,6 +302,11 @@
     </a>
     <ul id="config-generale-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
         <li>
+            <a href="">
+                <i class="bx bxs-institution"></i><span>Approvisionnement produit pharmaceutique</span>
+            </a>
+        </li>
+        <li>
             <a href="{{route('ad.sante.specialite.medicale')}}">
                 <i class="bx bxs-institution"></i><span>Specialite medecin</span>
             </a>
@@ -331,7 +347,7 @@
             </a>
         </li>
         <li>
-            <a href="">
+            <a href="{{route('ad.sante.type.examen')}}">
                 <i class="bx bxs-institution"></i><span>Type examen</span>
             </a>
         </li>
@@ -378,7 +394,7 @@
 
 
         <li>
-            <a href="{{route('ad.sante.index.tarif_medical')}}" wire:navigate >
+            <a href="" wire:navigate >
                 <i class="bi bi-circle"></i><span>Tarifs hospitalisation</span>
             </a>
         </li>

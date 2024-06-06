@@ -21,7 +21,7 @@ class Patient extends Model
         'conjoint',
         'date_naissance',
         'lieu_naissance',
-        
+
         'telephone',
         'adresse',
         'complement_adresse',
@@ -49,11 +49,11 @@ class Patient extends Model
 
     public function civilite()
     {
-        return $this->belongsTo(Civilite::class);
+        return $this->belongsTo(Civilite::class,'civilite_id');
     }
 
     public function situation()
     {
-        return $this->belongsTo(SituationMatrimoniale::class);
+        return $this->belongsTo(SituationMatrimoniale::class, 'situation_matrimoniale_id');
     }
 }

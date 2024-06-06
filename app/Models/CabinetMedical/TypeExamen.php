@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class TypeExamen extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'type_examen',
+        'description',
+    ];
 }

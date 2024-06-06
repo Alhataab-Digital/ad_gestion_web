@@ -46,27 +46,18 @@ class MedecinDossier extends Component
         $situation = SituationMatrimoniale::where('id', $medecins->situation_matrimoniale_id)->first();
         $categorie = CategorieMedecin::where('id', $medecins->categorie_medicale_id)->first();
         $specialite = SpecialiteMedecin::where('id', $medecins->specialite_id)->first();
-        $this->rendez_vouss=Rdv::where('medecin_id', $id)->where('etat','!=',3)->get();
+        $this->rendez_vouss=Rdv::where('medecin_id', $id)->where('etat','!=',3)->orderBy('id',"DESC")->get();
         $this->nbr_rdv=Rdv::where('medecin_id', $id)->where('etat','!=',3)->count();
-        $this->planifications = PlanificationMedecin::where('medecin_id',$id)->where('jour_semaine','>=', date('Y-m-d'))->get();
-        $this->consultations = Consultation::where('medecin_id', $id)->where('etat', 0)->get();
-        $this->consultation_en_cours = Consultation::where('medecin_id', $id)->where('etat', 1)->get();
+        $this->planifications = PlanificationMedecin::where('medecin_id',$id)->where('jour_semaine','>=', date('Y-m-d'))->orderBy('id',"DESC")->get();
+        $this->consultations = Consultation::where('medecin_id', $id)->where('etat', 0)->orderBy('id',"DESC")->get();
+        $this->consultation_en_cours = Consultation::where('medecin_id', $id)->where('etat','!=',0)->orderBy('id',"DESC")->get();
         $this->nbr_consultation_attente=Consultation::where('medecin_id', $id)->where('etat',0)->count();
 
         $this->medecins = $medecins->id;
-        if(isset( $civilite->civilite)){
-            $this->civilite =     $civilite->civilite;
-        }else{
-            $this->civilite = '';
-        }
+        $this->civilite =     $medecins->civilite->civilite;
         $this->nom = $medecins->nom;
         $this->prenom = $medecins->prenom;
-        if(isset($situation->situation_matrimoniale))
-        {
-            $this->situation =  $situation->situation_matrimoniale;
-        }else{
-            $this->situation ='';
-        }
+        $this->situation =  $medecins->situation->situation_matrimoniale;
         $this->date_naissance = $medecins->date_naissance;
         $this->lieu_naissance = $medecins->lieu_naissance;
         $this->telephone = $medecins->telephone;
@@ -74,18 +65,9 @@ class MedecinDossier extends Component
         $this->mail = $medecins->mail;
         $this->matricule = $medecins->matricule;
         $this->titre = $medecins->titre;
-        if(isset($categorie->categorie_medecin))
-        {
-            $this->categorie =  $categorie->categorie_medecin;
-        }else{
-            $this->categorie ='';
-        }
-        if(isset($specialite->specialite_medecin))
-        {
-            $this->specialite =  $specialite->specialite_medecin;
-        }else{
-            $this->specialite ='';
-        }
+        $this->categorie =$medecins->categorie->categorie_medecin;
+        $this->specialite =  $medecins->specialite->specialite_medecin;
+
 
     }
 

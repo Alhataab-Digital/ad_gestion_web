@@ -105,6 +105,7 @@ use App\Livewire\CabinetMedical\DossierRendezVousConsultation;
 use App\Livewire\CabinetMedical\EditCategorieMedicale;
 use App\Livewire\CabinetMedical\EditTarifConsultation;
 use App\Livewire\CabinetMedical\EditTypeConcultation;
+use App\Livewire\CabinetMedical\Examen;
 use App\Livewire\CabinetMedical\FacturationConsultation;
 use App\Livewire\CabinetMedical\MaisonAssurance;
 use App\Livewire\CabinetMedical\MaisonAssuranceEdit;
@@ -119,6 +120,7 @@ use App\Livewire\CabinetMedical\SpecialiteMedicale;
 use App\Livewire\CabinetMedical\TarifConsultation;
 use App\Livewire\CabinetMedical\TraitementConsultation;
 use App\Livewire\CabinetMedical\TypeConsultation;
+use App\Livewire\CabinetMedical\TypeExamen;
 
 /*
  --------------------------
@@ -939,8 +941,6 @@ Route::middleware(['auth','initier'])->prefix('assurance')->controller(PrimeNetC
             'prefixe'=>'cabinet_medical',
             'as'=>'sante.'
         ],function(){
-            Route::get('ad/sante/tarif',TarifMedical::class,)->name('index.tarif_medical');
-            Route::get('ad/sante/tarif/{id}/edit',TarifMedicalEdit::class)->name('edit.tarif_medical');
 
             Route::get('ad/sante/patient',Patient::class)->name('index.patient');
             Route::get('ad/sante/patient/{id}/edit',PatientEdit::class)->name('edit.patient');
@@ -977,6 +977,10 @@ Route::middleware(['auth','initier'])->prefix('assurance')->controller(PrimeNetC
             Route::get('ad/sante/prise_en_charge/assurance',PriseEnCharge::class)->name('prise_en_charge.assurance.consultation');
 
             Route::get('ad/sante/medicament',Medicament::class)->name('medicament');
+
+            Route::get('ad/sante/type/examen',TypeExamen::class)->name('type.examen');
+            Route::get('ad/sante/examen/medical',Examen::class)->name('examen.medical');
+
 
         });
        //

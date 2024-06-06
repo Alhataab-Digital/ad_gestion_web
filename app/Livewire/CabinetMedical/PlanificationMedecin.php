@@ -26,7 +26,7 @@ class PlanificationMedecin extends Component
         $this->medecins = Medecin::all();
         $this->specialites = SpecialiteMedecin::all();
         $this->tarif_consultations = TarifConsultation::all();
-        $this->planifications=CabinetMedicalPlanificationMedecin::where('jour_semaine', date('Y-m-d'))->get();
+        $this->planifications=CabinetMedicalPlanificationMedecin::where('jour_semaine','>=', date('Y-m-d'))->get();
     }
 
     public function updatedSpecialite($specialiteId)

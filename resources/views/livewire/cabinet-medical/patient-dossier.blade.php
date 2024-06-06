@@ -34,7 +34,7 @@
                 <div class="col-lg-4">
                     <!-- Card with header and footer -->
                     <div class="card">
-                        <div class="card-header bg-secondary text-white ">
+                        <div class="card-header ">
                             IDENTITE DU PATIENT
                         </div>
 
@@ -42,41 +42,37 @@
 
                             <!-- Multi Columns Form -->
                             <form class="row g-3">
-                                <div class="col-md-2">
-                                    <label for="inputName5" class="form-label">Civilité</label>
-                                    <input type="text" class="form-control" wire:model='civilite' id="inputName5">
-
-                                </div>
-                                <div class="col-md-5">
-                                    <label for="inputName5" class="form-label">Prenom</label>
-                                    <input type="text" class="form-control" wire:model='prenom' id="inputName5">
-
-                                </div>
-                                <div class="col-md-5">
-                                    <label for="inputName5" class="form-label">Nom du père</label>
-                                    <input type="text" class="form-control" wire:model='nom' id="inputName5">
-
+                                <div class="col-md-6 bg-secondary text-white">
+                                    Nom Prenom :
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="inputState" class="form-label">Situation</label>
-                                    <input type="text" class="form-control" wire:model='situation' id="inputName5">
-
+                                    {{$patient->civilite->civilite}} {{$patient->nom.' '.$patient->prenom}}
                                 </div>
+                                <div class="col-md-6 bg-secondary text-white">
+                                    Situation matrimoniale
+                                 </div>
                                 <div class="col-md-6">
-                                    <label for="inputState" class="form-label">Profession</label>
-                                    <input type="text" class="form-control" wire:model='profession' id="inputName5">
+                                    {{$patient->situation->situation_matrimoniale}}
 
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="inputPassword5" class="form-label">Date naissance</label>
-                                    <input type="date" class="form-control" wire:model='date_naissance' id="inputPassword5">
-
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="inputPassword5" class="form-label">Lieu naissance</label>
-                                    <input type="text" class="form-control" wire:model='lieu_naissance' id="inputPassword5">
-
-                                </div>
+                                <div class="col-md-6 bg-secondary text-white">
+                                    Date de naissance
+                                  </div>
+                                  <div class="col-md-6">
+                                      {{ \Carbon\Carbon::parse($patient->date_naissance)->format('d-m-Y')}}
+                                  </div>
+                                  <div class="col-md-6 bg-secondary text-white">
+                                    Lieu de naissance
+                                  </div>
+                                  <div class="col-md-6">
+                                      {{ $patient->lieu_naissance}}
+                                  </div>
+                                  <div class="col-md-6 bg-secondary text-white">
+                                   Profession
+                                  </div>
+                                  <div class="col-md-6">
+                                      {{ $patient->profession}}
+                                  </div>
                             </form>
                             <!-- End Multi Columns Form -->
                         </div>
@@ -86,9 +82,8 @@
                 <div class="col-lg-4">
                     <!-- Card with header and footer -->
                     <div class="card">
-                        <div class="card-header bg-secondary text-white ">
+                        <div class="card-header ">
                             COORDONNES DU PATIENT
-
                         </div>
 
                         <div class="card-body">
@@ -96,28 +91,35 @@
                             <!-- Multi Columns Form -->
                             <form class="row g-3">
 
-                                <div class="col-6">
-                                    <label for="inputAddress5" class="form-label">Telephone</label>
-                                    <input type="text" class="form-control" wire:model='telephone' id="inputAddres5s">
-
+                                <div class="col-6 bg-secondary text-white">
+                                    Telephone
                                 </div>
                                 <div class="col-6">
-                                    <label for="inputAddress2" class="form-label">Addresse</label>
-                                    <input type="text" class="form-control" wire:model='adresse' id="inputAddress2">
-
+                                   {{$patient->telephone}}
                                 </div>
-                                <div class="col-12">
-                                    <label for="inputAddress2" class="form-label">Complement</label>
-                                    <input type="text" class="form-control" wire:model='complement_adresse' id="inputAddress2">
-
+                                <div class="col-6 bg-secondary text-white">
+                                    Adresse
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="inputEmail5" class="form-label">Email</label>
-                                    <input type="email" class="form-control" wire:model='mail' id="inputEmail5">
+                                    {{$patient->adresse}}
+                                </div>
+                                <div class="col-6 bg-secondary text-white">
+                                    Complement adresse
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="inputPassword5" class="form-label">Personne à contacter</label>
-                                    <input type="text" class="form-control" id="inputPassword5" wire:model='personne_contact'>
+                                    {{$patient->complement_adresse}}
+                                </div>
+                                <div class="col-6 bg-secondary text-white">
+                                    Email
+                                </div>
+                                <div class="col-md-6">
+                                    {{$patient->mail}}
+                                </div>
+                                <div class="col-6 bg-secondary text-white">
+                                    Personne à contacter
+                                </div>
+                                <div class="col-md-6">
+                                    {{$patient->personne_contact}}
                                 </div>
                             </form><!-- End Multi Columns Form -->
                         </div>
@@ -128,7 +130,7 @@
                 <div class="col-lg-4">
                     <!-- Card with header and footer -->
                     <div class="card">
-                        <div class="card-header bg-secondary text-white ">
+                        <div class="card-header  ">
                             INFORMATION MEDICALE DU PATIENT
                         </div>
 
@@ -136,26 +138,61 @@
 
                             <!-- Multi Columns Form -->
                             <form class="row g-3">
-                                <div class="col-md-12">
-                                    <label for="inputCity" class="form-label">N° Patient</label>
-                                    <input type="text" wire:model='numero_patient' class="form-control" id="inputCity" disabled>
+                                <div class="col-md-6 bg-secondary text-white">
+                                    N° Dossier Patient
+                               </div>
+                                <div class="col-md-6 ">
+                                 {{$patient->numero_patient}}
+                                </div>
+                                <div class="col-md-6 bg-secondary text-white">
+                                 Groupe Sanguin
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="inputCity" class="form-label">Taille (m)</label>
-                                    <input type="text" wire:model='taille' class="form-control" id="inputCity">
+                                    {{$patient->groupe_sanguin}}
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="inputZip" class="form-label">Poid (kg)</label>
-                                    <input type="text" wire:model='poid' class="form-control" id="inputZip">
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="inputEmail5" class="form-label">Groupe sanguin</label>
-                                    <input type="email" class="form-control" wire:model='groupe_sanguin' id="inputEmail5">
-                                </div>
-                                <div class="col-md-8">
-                                    <label for="inputPassword5" class="form-label">ICM</label>
-                                    <input type="text" class="form-control" wire:model='icm' id="inputPassword5" disabled>
-                                </div>
+                                <div class="col-md-6 bg-secondary text-white">
+                                    poid
+                                   </div>
+                                   <div class="col-md-6">
+                                       {{$patient->poid}} kg
+                                   </div>
+                                   <div class="col-md-6 bg-secondary text-white">
+                                    taille
+                                   </div>
+                                   <div class="col-md-6">
+                                       {{$patient->taille}} m
+                                   </div>
+                                   <div class="col-md-6 bg-secondary text-white">
+                                    Icm (Kg/m²)
+                                   </div>
+                                   <div class="col-md-6">
+                                       @php
+                                       if($patient->taille!=null && $patient->poid!=null){
+                                            $icm=round( ($patient->poid)/($patient->taille*$patient->taille));
+                                                if($icm<16.5){
+                                                 echo  $icm.' (Maigreur extrême – dénutrition)';
+                                                }else
+                                                if(16.5<$icm && $icm<18.5){
+                                                    echo    $icm.' (Maigreur)';
+                                                }else
+                                                if(18.5<$icm && $icm<25){
+                                                    echo  $icm.' (Corpulence normale)';
+                                                }else
+                                                if(25<$icm && $icm<30){
+                                                    echo $icm.' (Surpoids ou pré-obésité)';
+                                                }else
+                                                if(30<$icm && $icm<35){
+                                                    echo $icm.' (Obésité modérée (classe I))';
+                                                }else
+                                                if(35<$icm && $icm<40){
+                                                    echo  $icm.' (Obésité sévère (classe II))';
+                                                }else
+                                                if(40<$icm){
+                                                    echo  $icm.' (Obésité morbide (classe III))';
+                                                }
+                                            }
+                                       @endphp
+                                   </div>
                             </form><!-- End Multi Columns Form -->
                         </div>
 
@@ -232,10 +269,10 @@
                                                 @foreach ($consultations as $consultation )
                                                 <tr>
                                                     <th>{{$consultation->created_at->diffForHumans()}}</th>
-                                                    <th scope="row"><a href="#">{{$consultation->tarif_consultation->type_consultation->type_consultation}}</a></th>
+                                                    <th scope="row"><a href="{{route('ad.sante.traitement.consultation',encrypt($consultation->id))}}">{{$consultation->tarif_consultation->type_consultation->type_consultation}}</a></th>
 
-                                                    <th scope="row"><a href="#">{{$consultation->medecin->nom.' '.$consultation->medecin->prenom}}</a></th>
-                                                    <th scope="row"><a href="#">{{$consultation->rendez_vous->motif}}</a></th>
+                                                    <th scope="row"><a href="{{route('ad.sante.traitement.consultation',encrypt($consultation->id))}}">{{$consultation->medecin->nom.' '.$consultation->medecin->prenom}}</a></th>
+                                                    <th scope="row"><a href="{{route('ad.sante.traitement.consultation',encrypt($consultation->id))}}">{{$consultation->rendez_vous->motif}}</a></th>
                                                     {{-- <td style="text-align:right">{{ number_format($consultation->montant,2,","," ").'
                                                         '.$consultation->user->agence->devise->unite}}</td> --}}
                                                     <td>
@@ -270,7 +307,16 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-
+                                                @foreach ($examens as $examen )
+                                                <tr>
+                                                    <td> {{$examen->created_at}} </td>
+                                                    <td> {{$examen->medecin->nom.'
+                                                        '.$examen->medecin->prenom}} </td>
+                                                    <td> {{$examen->type_examen->type_examen}} </td>
+                                                    <td> {{$examen->libelle}} </td>
+                                                    <td> {{$examen->resultat}} </td>
+                                                </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -352,9 +398,16 @@
                                                         <th scope="col">libelle</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-
-                                                </tbody>
+                                                @foreach ($soins as $soin )
+                                                <tr>
+                                                    <td> {{$soin->created_at}} </td>
+                                                    <td> {{$soin->medecin->nom.'
+                                                        '.$soin->medecin->prenom}} </td>
+                                                    <td> {{$soin->type_soins->type_soins}} </td>
+                                                    <td> {{$soin->libelle}} </td>
+                                                    {{-- <td> {{$soin->observation}} </td> --}}
+                                                </tr>
+                                                @endforeach
                                             </table>
                                         </div>
                                 </div>
@@ -438,26 +491,31 @@
                                 </div>
                                 <div class="card">
                                     <div class="card-header">
-                                        ASSUREUR
+                                        PRISE EN CHARGE
                                     </div>
                                     <div class="card-body">
                                         {{-- <h5 class="card-title">Card with header and footer</h5> --}}
                                         <table class="table ">
                                             <thead>
                                                 <tr class="bg-secondary text-white">
-                                                    <th scope="col">Nom assureur</th>
+                                                    <th scope="col">Maison assurance</th>
+                                                    <th scope="col">categorie prise en charge</th>
                                                     <th scope="col">Debut validité</th>
                                                     <th scope="col">Fin validité</th>
                                                     <th scope="col">Prise en charge</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($prise_en_charges as $prise_en_charge )
+                                                @foreach ($contrat_assurances as $contrat_assurance )
                                                 <tr>
-                                                    <td>{{$prise_en_charge->maison_assurance->maison_assurance}}</td>
-                                                    <td>{{$prise_en_charge->contrat_assurance->date_debut}}</td>
-                                                    <td>{{$prise_en_charge->contrat_assurance->date_fin}}</td>
-                                                    <td>{{$prise_en_charge->numero_assurer}}</td>
+                                                    <td>{{$contrat_assurance->maison_assurance->maison_assurance}}</td>
+                                                    {{-- <td>{{$contrat_assurance->id}}</td> --}}
+                                                    <td>{{$contrat_assurance->tarif_consultation->type_consultation->type_consultation}}</td>
+                                                    <td>{{$contrat_assurance->date_debut}}</td>
+                                                    <td>{{$contrat_assurance->date_fin}}</td>
+                                                    <td style="text-align:center" >{{$contrat_assurance->taux_couverture.' %'}}</td>
+                                                    {{-- <td style="text-align:right">{{ number_format($contrat_assurance->tarif_consultation->montant,2,","," ").'
+                                                        '.$contrat_assurance->user->agence->devise->unite}}</td> --}}
                                                 </tr>
                                                 @endforeach
                                             </tbody>
@@ -528,7 +586,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($consultations as $consultation )
+                                            @foreach ($consutlation_traitement as $consultation )
                                             <tr>
                                                 <th>{{$consultation->created_at->diffForHumans()}}</th>
                                                 <th scope="row"><a href="#">{{$consultation->tarif_consultation->type_consultation->type_consultation}}</a></th>
@@ -553,8 +611,21 @@
                                                     @endif
                                                     @if($consultation->etat==2)
                                                     <a href="{{route('ad.sante.resultat.consultation',encrypt($consultation->id))}}">
-                                                        <button class="btn btn-secondary btn-sm" > <i class="bx bx-printer"></i> </button>
-                                                    </a>
+                                                                <button class="btn btn-warning btn-sm" > <i class="ri ri-spam-line"></i> </button>
+                                                            </a>
+                                                    {{-- <div class="filter">
+                                                        <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                                                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                                          <li class="dropdown-header text-start">
+                                                            <h6>Filter</h6>
+                                                          </li>
+
+                                                          <li><a class="dropdown-item" href="{{route('ad.sante.resultat.consultation',encrypt($consultation->id))}}"><button class="btn btn-ligth btn-sm"> Detail</button></a></li>
+                                                            <li><button class="dropdown-item btn btn-ligth btn-sm"  wire:click='recuPrint({{$consultation->id}})'>Ordonnance</button></li>
+                                                          <li><a class="dropdown-item" href="#">Examen</a></li>
+                                                          <li><a class="dropdown-item" href="#">Soins</a></li>
+                                                        </ul>
+                                                    </div> --}}
                                                     @endif
 
                                                 </td>

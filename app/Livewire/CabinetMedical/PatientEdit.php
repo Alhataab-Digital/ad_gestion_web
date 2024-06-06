@@ -42,6 +42,7 @@ class PatientEdit extends Component
     public $personne_contact;
     public $prise_en_charges=[];
     public $maison_assurances = [];
+    public $contrat_assurances = [];
     public $maison_assurance;
     public $confirm_assurer;
     public $numero_assurer;
@@ -55,8 +56,11 @@ class PatientEdit extends Component
         $this->civilites = Civilite::all();
         $this->situations = SituationMatrimoniale::all();
         $this->maison_assurances = MaisonAssurance::all();
-        $this->prise_en_charges = PriseEnCharge::where('patient_id', $id)->get();
-
+        $prise_en_charge = PriseEnCharge::where('patient_id', $id)->first();
+        if( isset($prise_en_charge)){
+        $this->maison_assurance = MaisonAssurance::find($prise_en_charge->maison_assurance_id);
+        $this->contrat_assurances=ContratAssurance::where('maison_assurance_id', $this->maison_assurance->id)->get();
+        }
         $this->numero_patient = $patients->numero_patient;
         $this->patients = $patients->id;
         $this->civilite = $patients->civilite_id;
@@ -161,7 +165,7 @@ class PatientEdit extends Component
         ]);
 
         return redirect()->route('ad.sante.edit.patient', encrypt($patients->id))->with('success', 'Opération modifié avec succès');
-   
+
     }
 
     public function updateInfoMedicale()

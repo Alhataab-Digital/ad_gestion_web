@@ -39,9 +39,9 @@ class Medecin extends Component
 
     public function mount()
     {
-        $this->medecins=CabinetMedicalMedecin::all();
-        $this->civilites=Civilite::all();
-        $this->situations=SituationMatrimoniale::all();
+        $this->medecins=CabinetMedicalMedecin::orderBy('id',"DESC")->get();
+        $this->civilites=Civilite::orderBy('civilite',"DESC")->get();
+        $this->situations=SituationMatrimoniale::orderBy('situation_matrimoniale')->get();
         $this->categories=CategorieMedecin::all();
         $this->specialites=SpecialiteMedecin::all();
         $user_id = Auth::user()->id;
@@ -78,7 +78,7 @@ class Medecin extends Component
 
         $societe_id = Auth::user()->societe_id;
         $user_id = Auth::user()->id;
-        $matricule ='MP/'.mt_rand(1000, 9999).'/'.date('Y');
+        $matricule ='M'.mt_rand(10, 99).'-'.date('dmy');
 
         CabinetMedicalMedecin::create([
                 'matricule'=>$matricule,

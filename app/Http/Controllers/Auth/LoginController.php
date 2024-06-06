@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\AlertCodeReconnexion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\Users\Utilisateur;
 use App\Models\Users\ConnexionUser;
 use App\Models\Users\UserEnLigne;
+use Illuminate\Support\Facades\Mail;
 use Stevebauman\Location\Facades\Location;
 
 
@@ -158,6 +160,8 @@ class LoginController extends Controller
 
     public function restore_connexion(Request $request)
     {
+        // $code="Utiliser ce code pour valider la deconnexion du compte";
+        // Mail::to($request->email)->send(new AlertCodeReconnexion($code));
 
         if (isset(Utilisateur::where('email', $request->email)->first()->id)) {
             $user = Utilisateur::where('email', $request->email)->first();

@@ -33,7 +33,7 @@ class PlanificationMedecin extends Model
 
     public function tarif_consultation()
     {
-        return $this->belongsTo(TarifConsultation::class);
+        return $this->belongsTo(TarifConsultation::class,'tarif_consultation_id');
     }
 
     public function specialite()

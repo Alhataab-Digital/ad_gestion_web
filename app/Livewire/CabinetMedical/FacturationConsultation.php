@@ -22,8 +22,8 @@ class FacturationConsultation extends Component
             $user_id = Auth::user()->id;
             $this->utilisateur=Utilisateur::where('id',$user_id)->first();
             $this->telephone=$this->utilisateur->agence->region->indicatif;
-            $this->facturations=Facturation::where('societe_id',$societe_id)->get();
-            $this->paiements=PaiementRecu::where('societe_id',$societe_id)->get();
+            $this->facturations=Facturation::where('societe_id',$societe_id)->orderBy('id',"DESC")->get();
+            $this->paiements=PaiementRecu::where('societe_id',$societe_id)->orderBy('id',"DESC")->get();
 
     }
     public function render()

@@ -14,6 +14,7 @@ use App\Models\SituationMatrimoniale;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Twilio\Rest\Client;
 
 class DossierRendezVousConsultation extends Component
 {
@@ -74,6 +75,7 @@ class DossierRendezVousConsultation extends Component
         $societe_id = Auth::user()->societe_id;
             $this->planification_dates = PlanificationMedecin::where('tarif_consultation_id', $TarifConsultationId)
             ->where('jour_semaine','>=',date('Y-m-d'))
+            ->orderBy('jour_semaine',"ASC")
             ->where('societe_id', $societe_id)
                 ->get();
             $this->planification_date = null;
@@ -116,6 +118,23 @@ class DossierRendezVousConsultation extends Component
     {
         $societe_id = Auth::user()->societe_id;
         $user_id = Auth::user()->id;
+//API TWILIO
+        // $sid    = getenv("TWILIO_SID");
+        // $token  = getenv("TWILIO_TOKEN");
+        // $phone  = getenv("TWILIO_PHONE");
+        // $twilio = new Client($sid, $token);
+        //  $message = $twilio->messages
+        //   ->create($this->telephone, // to
+        //     array(
+        //       "from" => $phone,
+        //       "body" => "Vous venez de prendre rendez vous merci de vous faire confiance"
+        //     )
+        //   );
+//API TWILIO
+
+
+
+
         $validated = $this->validate(
             [
                 'tarif_montant' => 'required',
@@ -160,6 +179,25 @@ class DossierRendezVousConsultation extends Component
 
                     return redirect()->route('ad.sante.rendez-vous.consultation')->with('danger', "Ce patient à un rendez-vous en cours");
                 } else {
+                    //API VONAGE
+                        // https://dashboard.nexmo.com/
+                    //     $basic  = new \Vonage\Client\Credentials\Basic("1307cdb6", "abS75KV0VeEIIZMV");
+                    //     $client = new \Vonage\Client($basic);
+                    //     $response = $client->sms()->send(
+                    //         new \Vonage\SMS\Message\SMS($this->telephone, "AD SANTE",
+                    //         "RENDEZ VOUS PRIS POUR
+                    //         ".$planning->tarif_consultation->type_consultation->type_consultation."
+                    //         le ".Carbon::parse($planning->jour_semaine)->format('d-m-Y')." à ".Carbon::parse($planning->heure_debut)->format('H:s'))
+                    //     );
+
+                    // $message = $response->current();
+
+                    // if ($message->getStatus() == 0) {
+                    //     echo "The message was sent successfully\n";
+                    // } else {
+                    //     echo "The message failed with status: " . $message->getStatus() . "\n";
+                    // }
+
 
                     $taux_assurer=$contrat_assurance->taux_couverture;
                     $contrat_id=$contrat_assurance->id;
@@ -203,6 +241,24 @@ class DossierRendezVousConsultation extends Component
 
                     return redirect()->route('ad.sante.rendez-vous.consultation')->with('danger', "Ce patient à un rendez-vous en cours");
                 } else {
+
+                    //API VONAGE
+                        // https://dashboard.nexmo.com/
+                        // $basic  = new \Vonage\Client\Credentials\Basic("1307cdb6", "abS75KV0VeEIIZMV");
+                        // $client = new \Vonage\Client($basic);
+                        // $response = $client->sms()->send(
+                        //     new \Vonage\SMS\Message\SMS($this->telephone, "AD SANTE",
+                        //     "RENDEZ VOUS PRIS POUR
+                        //     ".$planning->tarif_consultation->type_consultation->type_consultation."
+                        //     le ".Carbon::parse($planning->jour_semaine)->format('d-m-Y')." à ".Carbon::parse($planning->heure_debut)->format('H:s'))
+                        // );
+                        // $message = $response->current();
+
+                        // if ($message->getStatus() == 0) {
+                        //     echo "The message was sent successfully\n";
+                        // } else {
+                        //     echo "The message failed with status: " . $message->getStatus() . "\n";
+                        // }
                    Rdv::create([
                         'motif' => $validated['motif'],
                         'patient_id' => $this->patients,
@@ -245,6 +301,24 @@ class DossierRendezVousConsultation extends Component
 
             return redirect()->route('ad.sante.rendez-vous.consultation')->with('danger', "Ce patient à un rendez-vous en cours");
         } else {
+            //API VONAGE
+               // https://dashboard.nexmo.com/
+            //    $basic  = new \Vonage\Client\Credentials\Basic("1307cdb6", "abS75KV0VeEIIZMV");
+            //    $client = new \Vonage\Client($basic);
+            //    $response = $client->sms()->send(
+            //        new \Vonage\SMS\Message\SMS($this->telephone, "AD SANTE",
+            //        "RENDEZ VOUS PRIS POUR
+            //        ".$planning->tarif_consultation->type_consultation->type_consultation."
+            //        le ".Carbon::parse($planning->jour_semaine)->format('d-m-Y')." à ".Carbon::parse($planning->heure_debut)->format('H:s'))
+            //    );
+
+            // $message = $response->current();
+
+            // if ($message->getStatus() == 0) {
+            //     echo "The message was sent successfully\n";
+            // } else {
+            //     echo "The message failed with status: " . $message->getStatus() . "\n";
+            // }
            Rdv::create([
                 'motif' => $validated['motif'],
                 'patient_id' => $this->patients,
@@ -270,7 +344,7 @@ class DossierRendezVousConsultation extends Component
                 'adresse' => $validated['adresse'],
             ]);
 
-            return redirect()->route('ad.sante.rendez-vous.consultation')->with('success', " Rendez-vous enregistrer avec succès");
+            return redirect()->route('ad.sante.rendez-vous.consultation')->with('success', "Rendez-vous enregistrer avec succès");
         }
         }
     }

@@ -34,11 +34,11 @@ public function mount()
         $user_id = Auth::user()->id;
         $this->utilisateur=Utilisateur::where('id',$user_id)->first();
         $this->telephone=$this->utilisateur->agence->region->indicatif;
-        $this->rendez_vouss=Rdv::where('societe_id',$societe_id)->where('etat','!=',3)->get();
-        $this->facturations=Facturation::where('societe_id',$societe_id)->where('etat',0)->get();
-        $this->fac_en_cours=Facturation::where('societe_id',$societe_id)->where('etat',0)->count();
-        $this->paiements=PaiementRecu::where('societe_id',$societe_id)->get();
-        $this->consultations=Consultation::where('user_id',$user_id)->where('societe_id',$societe_id)->where('etat',0)->get();
+        $this->rendez_vouss=Rdv::where('societe_id',$societe_id)->where('etat','!=',3)->orderBy('id',"DESC")->get();
+        $this->facturations=Facturation::where('societe_id',$societe_id)->where('etat',0)->orderBy('id',"DESC")->get();
+        $this->fac_en_cours=Facturation::where('societe_id',$societe_id)->where('etat',0)->orderBy('id',"DESC")->count();
+        $this->paiements=PaiementRecu::where('societe_id',$societe_id)->orderBy('id',"DESC")->get();
+        $this->consultations=Consultation::where('user_id',$user_id)->where('societe_id',$societe_id)->where('etat',0)->orderBy('id',"DESC")->get();
         $this->nbr_consultation_attente=Consultation::where('user_id',$user_id)->where('societe_id',$societe_id)->where('etat',0)->count();
 
 }
@@ -59,7 +59,7 @@ public function mount()
         $user_id = Auth::user()->id;
         $validated['telephone'];
         $patient=Patient::where('telephone',$validated['telephone'])->first();
-        $numero_patient = 'PAT/'.mt_rand(1000, 9999).'/'.date('dmY');
+        $numero_patient = 'P'.mt_rand(100, 999).'-'.date('dmy');
 
         if(isset($patient->telephone)){
 

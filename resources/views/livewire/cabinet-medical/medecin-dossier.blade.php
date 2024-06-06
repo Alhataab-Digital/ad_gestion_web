@@ -18,7 +18,7 @@
                     <div class="card">
                         <div class="card-header bg-secondary text-white">
                             <li class="list-group-item d-flex justify-content-between align-items-center text-white">
-                               <h5>ESPACE DE TRAVAIL DU  <strong>  {{$medecin->titre.' '.$medecin->prenom.' '.$medecin->nom}} </strong></h5>
+                               <h5>Espace de travail de  <strong>  {{$medecin->civilite->civilite.' '.$medecin->prenom.' '.$medecin->nom}} : {{$medecin->titre}} </strong></h5>
                                 <span class=" bg-secondary rounded-pill">
                                     <a wire:navigate href="{{route('ad.sante.index.medecin')}}">
                                         <button class="btn btn-primary "><i class="bi bi-receipt"></i></button>
@@ -31,49 +31,39 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="col-lg-4">
                     <!-- Card with header and footer -->
                     <div class="card">
-                        <div class="card-header bg-secondary text-white ">
+                        <div class="card-header">
                             IDENTITE
                         </div>
-
                         <div class="card-body">
 
                             <!-- Multi Columns Form -->
                             <form class="row g-3">
-                                <div class="col-md-2">
-                                    <label for="inputName5" class="form-label">Civilité</label>
-                                    <input type="text" class="form-control" wire:model='civilite' id="inputName5">
-
+                                <div class="col-md-6 bg-secondary text-white">
+                                    Nom Prénom
+                               </div>
+                                <div class="col-md-6 ">
+                                 {{$medecin->civilite->civilite.' '.$medecin->nom.' '.$medecin->prenom}}
                                 </div>
-                                <div class="col-md-5">
-                                    <label for="inputName5" class="form-label">Prenom</label>
-                                    <input type="text" class="form-control" wire:model='prenom' id="inputName5">
-
+                                <div class="col-md-6 bg-secondary text-white">
+                                    Date naissance
                                 </div>
-                                <div class="col-md-5">
-                                    <label for="inputName5" class="form-label">Nom du père</label>
-                                    <input type="text" class="form-control" wire:model='nom' id="inputName5">
-
+                                <div class="col-md-6 ">
+                                    {{ \Carbon\Carbon::parse($medecin->date_naissance)->format('d-m-Y')}}
                                 </div>
-
-
-                                <div class="col-md-6">
-                                    <label for="inputPassword5" class="form-label">Date naissance</label>
-                                    <input type="date" class="form-control" wire:model='date_naissance' id="inputPassword5">
-
+                                <div class="col-md-6 bg-secondary text-white">
+                                    Lieu de naissance
+                               </div>
+                                <div class="col-md-6 ">
+                                 {{$medecin->lieu_naissance}}
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="inputPassword5" class="form-label">Lieu naissance</label>
-                                    <input type="text" class="form-control" wire:model='lieu_naissance' id="inputPassword5">
-
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="inputState" class="form-label">Situation</label>
-                                    <input type="text" class="form-control" wire:model='situation' id="inputName5">
-
+                                <div class="col-md-6 bg-secondary text-white">
+                                    Situation matrimoniale
+                               </div>
+                                <div class="col-md-6 ">
+                                 {{$medecin->situation->situation_matrimoniale}}
                                 </div>
                             </form>
                             <!-- End Multi Columns Form -->
@@ -85,7 +75,7 @@
                 <div class="col-lg-4">
                     <!-- Card with header and footer -->
                     <div class="card">
-                        <div class="card-header bg-secondary text-white ">
+                        <div class="card-header ">
                             COORDONNES
 
                         </div>
@@ -95,17 +85,29 @@
                             <!-- Multi Columns Form -->
                             <form class="row g-3">
 
-                                <div class="col-12">
-                                    <label for="inputAddress5" class="form-label">Telephone</label>
-                                    <input type="text" class="form-control" wire:model='telephone' id="inputAddres5s">
+                                <div class="col-md-6 bg-secondary text-white">
+                                    Téléphone
+                               </div>
+                                <div class="col-md-6 ">
+                                 {{$medecin->telephone}}
                                 </div>
-                                <div class="col-12">
-                                    <label for="inputAddress2" class="form-label">Addresse</label>
-                                    <input type="text" class="form-control" wire:model='adresse' id="inputAddress2">
+                                <div class="col-md-6 bg-secondary text-white">
+                                    Adresse
+                               </div>
+                                <div class="col-md-6 ">
+                                 {{$medecin->adresse}}
                                 </div>
-                                <div class="col-md-12">
-                                    <label for="inputEmail5" class="form-label">Email</label>
-                                    <input type="email" class="form-control" wire:model='mail' id="inputEmail5">
+                                <div class="col-md-6 bg-secondary text-white">
+                                    Complement adresse
+                               </div>
+                                <div class="col-md-6 ">
+                                 {{$medecin->complement_adresse}}
+                                </div>
+                                <div class="col-md-6 bg-secondary text-white">
+                                    Email
+                               </div>
+                                <div class="col-md-6 ">
+                                 {{$medecin->mail}}
                                 </div>
                             </form><!-- End Multi Columns Form -->
                         </div>
@@ -115,29 +117,37 @@
                 <div class="col-lg-4">
                     <!-- Card with header and footer -->
                     <div class="card">
-                        <div class="card-header bg-secondary text-white ">
-                            INFORMATION MEDICALE
+                        <div class="card-header ">
+                            INFORMATION PROFESSIONNEL
                         </div>
                         <div class="card-body">
                             <!-- Multi Columns Form -->
                             <form class="row g-3">
-                                <div class="col-md-12">
-                                    <label for="inputCity" class="form-label">N° Matricule</label>
-                                    <input type="text" wire:model='matricule' class="form-control" id="inputCity" disabled>
+                                <div class="col-md-6 bg-secondary text-white">
+                                    Matricule
+                               </div>
+                                <div class="col-md-6 ">
+                                 {{$medecin->matricule}}
                                 </div>
-                                <div class="col-md-12">
-                                    <label for="inputState" class="form-label">Titre</label>
-                                    <input type="text" class="form-control" wire:model='titre' id="inputName5">
+                                <div class="col-md-6 bg-secondary text-white">
+                                    Categorie
+                               </div>
+                                <div class="col-md-6 ">
+                                 {{$medecin->categorie->categorie_medecin}}
+                                </div>
+                                <div class="col-md-6 bg-secondary text-white">
+                                    Specialité
+                               </div>
+                                <div class="col-md-6 ">
+                                 {{$medecin->specialite->specialite_medecin}}
+                                </div>
+                                <div class="col-md-6 bg-secondary text-white">
+                                    Titre
+                               </div>
+                                <div class="col-md-6 ">
+                                 {{$medecin->titre}}
+                                </div>
 
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="inputEmail5" class="form-label">Categorie</label>
-                                    <input type="email" class="form-control" wire:model='categorie' id="inputEmail5">
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="inputPassword5" class="form-label">Specialité</label>
-                                    <input type="text" class="form-control" wire:model='specialite' id="inputPassword5" disabled>
-                                </div>
                             </form><!-- End Multi Columns Form -->
                         </div>
 
@@ -234,7 +244,7 @@
                                                     </button>
                                                 </a> --}}
                                                 @if($consultation_en_cour->etat==0)
-                                                <button type="button" class="btn btn-dark btn-sm" wire:click='AppelPatient({{$consultation->id}})'><i class="ri ri-user-unfollow-line"></i></button>
+                                                <button type="button" class="btn btn-dark btn-sm" wire:click='AppelPatient({{$consultation_en_cour->id}})'><i class="ri ri-user-unfollow-line"></i></button>
                                                 @endif
                                                 @if($consultation_en_cour->etat==1)
                                                 <a wire:navigate href="{{route('ad.sante.dossier.patient',encrypt($consultation_en_cour->patient->id))}}">
@@ -245,8 +255,9 @@
 
                                                 @endif
                                                 @if($consultation_en_cour->etat==2)
-                                                <button class="btn btn-success btn-sm">
-                                                <i class="bx bxs-hide"></i></button>
+                                                <a href="{{route('ad.sante.resultat.consultation',encrypt($consultation_en_cour->id))}}">
+                                                    <button class="btn btn-secondary btn-sm" > <i class="bx bx-printer"></i> </button>
+                                                </a>
                                                 @endif
                                             </td>
                                         </tr>

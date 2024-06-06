@@ -1,282 +1,279 @@
-<div>
-    <main>
-  <h1 class="visually-hidden">Features examples</h1>
+<main id="main" class="main">
 
-  <div class="container px-4 py-5" id="featured-3">
-    <h2 class="pb-2 border-bottom">Columns with icons</h2>
-    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
-      <div class="feature col">
-        <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
-          <svg class="bi" width="1em" height="1em"><use xlink:href="#collection"/></svg>
-        </div>
-        <h3 class="fs-2 text-body-emphasis">Featured title</h3>
-        <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-        <a href="#" class="icon-link">
-          Call to action
-          <svg class="bi"><use xlink:href="#chevron-right"/></svg>
-        </a>
-      </div>
-      <div class="feature col">
-        <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
-          <svg class="bi" width="1em" height="1em"><use xlink:href="#people-circle"/></svg>
-        </div>
-        <h3 class="fs-2 text-body-emphasis">Featured title</h3>
-        <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-        <a href="#" class="icon-link">
-          Call to action
-          <svg class="bi"><use xlink:href="#chevron-right"/></svg>
-        </a>
-      </div>
-      <div class="feature col">
-        <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
-          <svg class="bi" width="1em" height="1em"><use xlink:href="#toggles2"/></svg>
-        </div>
-        <h3 class="fs-2 text-body-emphasis">Featured title</h3>
-        <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-        <a href="#" class="icon-link">
-          Call to action
-          <svg class="bi"><use xlink:href="#chevron-right"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
+    <div class="pagetitle">
+        {{-- <h1>Cards</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item">Components</li>
+                <li class="breadcrumb-item active">Cards</li>
+            </ol>
+        </nav> --}}
+    </div><!-- End Page Title -->
 
-  <div class="b-example-divider"></div>
-
-  <div class="container px-4 py-5" id="hanging-icons">
-    <h2 class="pb-2 border-bottom">Hanging icons</h2>
-    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
-      <div class="col d-flex align-items-start">
-        <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
-          <svg class="bi" width="1em" height="1em"><use xlink:href="#toggles2"/></svg>
-        </div>
-        <div>
-          <h3 class="fs-2 text-body-emphasis">Featured title</h3>
-          <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-          <a href="#" class="btn btn-primary">
-            Primary button
-          </a>
-        </div>
-      </div>
-      <div class="col d-flex align-items-start">
-        <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
-          <svg class="bi" width="1em" height="1em"><use xlink:href="#cpu-fill"/></svg>
-        </div>
-        <div>
-          <h3 class="fs-2 text-body-emphasis">Featured title</h3>
-          <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-          <a href="#" class="btn btn-primary">
-            Primary button
-          </a>
-        </div>
-      </div>
-      <div class="col d-flex align-items-start">
-        <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
-          <svg class="bi" width="1em" height="1em"><use xlink:href="#tools"/></svg>
-        </div>
-        <div>
-          <h3 class="fs-2 text-body-emphasis">Featured title</h3>
-          <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-          <a href="#" class="btn btn-primary">
-            Primary button
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="b-example-divider"></div>
-
-  <div class="container px-4 py-5" id="custom-cards">
-    <h2 class="pb-2 border-bottom">Custom cards</h2>
-
-    <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
-      <div class="col">
-        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('unsplash-photo-1.jpg');">
-          <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-            <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Short title, long jacket</h3>
-            <ul class="d-flex list-unstyled mt-auto">
-              <li class="me-auto">
-                <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
-              </li>
-              <li class="d-flex align-items-center me-3">
-                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#geo-fill"/></svg>
-                <small>Earth</small>
-              </li>
-              <li class="d-flex align-items-center">
-                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
-                <small>3d</small>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('unsplash-photo-2.jpg');">
-          <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-            <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Much longer title that wraps to multiple lines</h3>
-            <ul class="d-flex list-unstyled mt-auto">
-              <li class="me-auto">
-                <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
-              </li>
-              <li class="d-flex align-items-center me-3">
-                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#geo-fill"/></svg>
-                <small>Pakistan</small>
-              </li>
-              <li class="d-flex align-items-center">
-                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
-                <small>4d</small>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('unsplash-photo-3.jpg');">
-          <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
-            <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Another longer title belongs here</h3>
-            <ul class="d-flex list-unstyled mt-auto">
-              <li class="me-auto">
-                <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
-              </li>
-              <li class="d-flex align-items-center me-3">
-                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#geo-fill"/></svg>
-                <small>California</small>
-              </li>
-              <li class="d-flex align-items-center">
-                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
-                <small>5d</small>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="b-example-divider"></div>
-
-  <div class="container px-4 py-5" id="icon-grid">
-    <h2 class="pb-2 border-bottom">Icon grid</h2>
-
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-5">
-      <div class="col d-flex align-items-start">
-        <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#bootstrap"/></svg>
-        <div>
-          <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
-          <p>Paragraph of text beneath the heading to explain the heading.</p>
-        </div>
-      </div>
-      <div class="col d-flex align-items-start">
-        <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#cpu-fill"/></svg>
-        <div>
-          <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
-          <p>Paragraph of text beneath the heading to explain the heading.</p>
-        </div>
-      </div>
-      <div class="col d-flex align-items-start">
-        <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#calendar3"/></svg>
-        <div>
-          <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
-          <p>Paragraph of text beneath the heading to explain the heading.</p>
-        </div>
-      </div>
-      <div class="col d-flex align-items-start">
-        <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#home"/></svg>
-        <div>
-          <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
-          <p>Paragraph of text beneath the heading to explain the heading.</p>
-        </div>
-      </div>
-      <div class="col d-flex align-items-start">
-        <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#speedometer2"/></svg>
-        <div>
-          <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
-          <p>Paragraph of text beneath the heading to explain the heading.</p>
-        </div>
-      </div>
-      <div class="col d-flex align-items-start">
-        <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#toggles2"/></svg>
-        <div>
-          <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
-          <p>Paragraph of text beneath the heading to explain the heading.</p>
-        </div>
-      </div>
-      <div class="col d-flex align-items-start">
-        <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#geo-fill"/></svg>
-        <div>
-          <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
-          <p>Paragraph of text beneath the heading to explain the heading.</p>
-        </div>
-      </div>
-      <div class="col d-flex align-items-start">
-        <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#tools"/></svg>
-        <div>
-          <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
-          <p>Paragraph of text beneath the heading to explain the heading.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="b-example-divider"></div>
-
-  <div class="container px-4 py-5">
-    <h2 class="pb-2 border-bottom">Features with title</h2>
-
-    <div class="row row-cols-1 row-cols-md-2 align-items-md-center g-5 py-5">
-      <div class="col d-flex flex-column align-items-start gap-2">
-        <h2 class="fw-bold text-body-emphasis">Left-aligned title explaining these awesome features</h2>
-        <p class="text-body-secondary">Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-        <a href="#" class="btn btn-primary btn-lg">Primary button</a>
-      </div>
-
-      <div class="col">
-        <div class="row row-cols-1 row-cols-sm-2 g-4">
-          <div class="col d-flex flex-column gap-2">
-            <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
-              <svg class="bi" width="1em" height="1em">
-                <use xlink:href="#collection" />
-              </svg>
+    <section class="section">
+        <div class="row align-items-top">
+            <div class="col-lg-12">
+                <div class="card-header bg-secondary text-white">
+                    <li class="list-group-item d-flex justify-content-between align-items-center text-white">
+                        <h5>Consultation du {{$consultation->rendez_vous->date_rdv}} du patient :
+                            {{$consultation->patient->civilite->civilite.' '.$consultation->patient->prenom.'
+                            '.$consultation->patient->nom.'
+                            '.(\Carbon\Carbon::parse($consultation->patient->date_naissance)->age.' ans' )}} pour :
+                            {{$consultation->rendez_vous->motif}}</h5>
+                        <span class=" bg-secondary rounded-pill">
+                            {{-- <button class="btn btn-warning btn-sm"
+                                wire:click='terminerConsultation({{$consultation->id}})'>Terminer la
+                                consultation</button> --}}
+                            <a wire:navigate
+                                href="{{route('ad.sante.dossier.patient',encrypt($consultation->patient->id))}}">
+                                <button class="btn btn-dark btn-sm">Retour</button>
+                            </a>
+                        </span>
+                    </li>
+                </div>
             </div>
-            <h4 class="fw-semibold mb-0 text-body-emphasis">Featured title</h4>
-            <p class="text-body-secondary">Paragraph of text beneath the heading to explain the heading.</p>
-          </div>
+            <div class="col-lg-6">
 
-          <div class="col d-flex flex-column gap-2">
-            <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
-              <svg class="bi" width="1em" height="1em">
-                <use xlink:href="#gear-fill" />
-              </svg>
-            </div>
-            <h4 class="fw-semibold mb-0 text-body-emphasis">Featured title</h4>
-            <p class="text-body-secondary">Paragraph of text beneath the heading to explain the heading.</p>
-          </div>
+                <!-- Default Card -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Informations</h5>
+                        <!-- Quill Editor Bubble -->
+                        {{-- <p>Diagnostique</p> --}}
+                        <div class="quill-editor-bubble">
+                            <p> {{$consultation->rendez_vous->motif}}</p>
+                            <p> {{$traitement->diagnostique}}</p>
 
-          <div class="col d-flex flex-column gap-2">
-            <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
-              <svg class="bi" width="1em" height="1em">
-                <use xlink:href="#speedometer" />
-              </svg>
-            </div>
-            <h4 class="fw-semibold mb-0 text-body-emphasis">Featured title</h4>
-            <p class="text-body-secondary">Paragraph of text beneath the heading to explain the heading.</p>
-          </div>
+                        </div>
+                        <!-- End Quill Editor Bubble -->
+                        <hr>
+                        <!-- Quill Editor Bubble -->
+                        {{-- <p>Conclution / conseil</p> --}}
+                        <div class="quill-editor-bubble">
+                            <p> {{$traitement->conclusion}}</p>
+                        </div>
+                        <!-- End Quill Editor Bubble -->
 
-          <div class="col d-flex flex-column gap-2">
-            <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
-              <svg class="bi" width="1em" height="1em">
-                <use xlink:href="#table" />
-              </svg>
+                    </div>
+                </div><!-- End Default Card -->
+
+                <!-- Card with header and footer -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <li class="list-group-item d-flex justify-content-between align-items-center ">
+                                    Signes vitaux
+                                    <span class=" bg-secondary rounded-pill">
+                                        <button type="button" class="btn btn-secondary btn-sm">
+                                            imprimer
+                                        </button>
+                                    </span>
+                                </li>
+                            </h5>
+                            <form class="row g-3" wire:submit.prevent='saveSigne'>
+                                {{-- <div class="card-header bg-secondary text-center text-white">
+                                    Constantes Physiques
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="inputName5" class="form-label">Taille</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="inputEmail5" class="form-label">Poid</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="inputPassword5" class="form-label">IMC (Indice de Masse Corporelle) </label>
+
+                                </div>
+                                <div class="col-6">
+                                    <label for="inputAddress5" class="form-label">Circonférence abdominale</label>
+
+                                </div>
+                                <div class="col-6">
+                                    <label for="inputAddress2" class="form-label">Indice de graisse corporelle</label>
+
+                                </div>
+                                <div class="card-header bg-secondary text-center text-white">
+                                    Signe vitaux
+                                </div> --}}
+                                <div class="col-md-4">
+                                    <label for="inputName5" class="form-label">Température corporelle</label>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="inputEmail5" class="form-label">Fréquence cardiaque</label>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="inputPassword5" class="form-label">Fréquence respiratoire </label>
+
+                                </div>
+                                <div class="col-4">
+                                    <label for="inputAddress5" class="form-label">Pression artérielle</label>
+
+                                </div>
+                                <div class="col-4">
+                                    <label for="inputAddress2" class="form-label">Saturation en oxygène (SpO2)</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="inputCity" class="form-label">Douleur </label>
+                                </div>
+                                <div class="card-header bg-secondary text-white">
+FIN
+                                </div>
+
+                            </form><!-- End Multi Columns Form -->
+                        </div>
+                    </div>
+                </div><!-- End Card with header and footer -->
+
+
+
             </div>
-            <h4 class="fw-semibold mb-0 text-body-emphasis">Featured title</h4>
-            <p class="text-body-secondary">Paragraph of text beneath the heading to explain the heading.</p>
-          </div>
+
+            <div class="col-lg-6">
+                <!-- Card with an image on left -->
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        {{-- <div class="col-md-4">
+                            <img src="assets/img/card.jpg" class="img-fluid rounded-start" alt="...">
+                        </div> --}}
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <h5 class="card-title">
+
+                                    <li class="list-group-item d-flex justify-content-between align-items-center ">
+                                        Soins medicaux
+                                        <span class=" bg-secondary rounded-pill">
+                                            <button type="button" class="btn btn-secondary btn-sm">
+                                                imprimer
+                                            </button>
+                                        </span>
+                                    </li>
+                                </h5>
+                                <p class="card-text">
+                                    <!-- Small tables -->
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Date</th>
+                                            <th scope="col">prescrit par</th>
+                                            <th scope="col">Type soins </th>
+                                            <th scope="col">libelle </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                                <!-- End small tables -->
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- End Card with an image on left -->
+                <!-- Card with an image on top -->
+                <div class="card">
+                    {{-- <img src="assets/img/card.jpg" class="card-img-top" alt="..."> --}}
+                    <div class="card-body">
+                        <h5 class="card-title">
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center ">
+                                Examen prescrit
+                                <span class=" bg-secondary rounded-pill">
+                                    <button type="button" class="btn btn-secondary btn-sm"
+                                    wire:click='ExamenPrint({{$consultation->id}})'>
+                                        imprimer
+                                    </button>
+                                </span>
+                            </li>
+                        </h5>
+                        <p class="card-text">
+                            <!-- Small tables -->
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">prescrit par</th>
+                                    <th scope="col">Type examen </th>
+                                    <th scope="col">Libelle </th>
+                                    <th scope="col">Resultat </th>
+                                    {{-- <th scope="col">Action</th> --}}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($examens as $examen )
+                                <tr>
+                                    <td> {{$examen->created_at}} </td>
+                                    <td> {{$examen->medecin->nom.'
+                                        '.$examen->medecin->prenom}} </td>
+                                    <td> {{$examen->type_examen->type_examen}} </td>
+                                    <td> {{$examen->libelle}} </td>
+                                    <td> {{$examen->resultat}} </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <!-- End small tables -->
+                        </p>
+                    </div>
+                </div><!-- End Card with an image on top -->
+
+                <!-- Card with an image on bottom -->
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center ">
+                                Medicaments prescrit
+                                <span class=" bg-secondary rounded-pill">
+                                    <button type="button" class="btn btn-secondary btn-sm"
+                                        wire:click='recuPrint({{$consultation->id}})'>
+                                        imprimer
+                                    </button>
+                                </span>
+                            </li>
+                        </h5>
+                        <p class="card-text">
+                            <!-- Small tables -->
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">prescrit par</th>
+                                    <th scope="col">Denomination </th>
+                                    <th scope="col">voix </th>
+                                    <th scope="col">qte </th>
+                                    <th scope="col">posologie </th>
+                                    <th scope="col">duree </th>
+                                    {{-- <th scope="col">Action</th> --}}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($prescriptions as $prescription )
+                                <tr>
+                                    <td> {{$prescription->created_at}} </td>
+                                    <td> {{$prescription->medecin->nom.'
+                                        '.$prescription->medecin->prenom}} </td>
+                                    <td> {{$prescription->medicament->denomination}} </td>
+                                    <td> {{$prescription->medicament->voies_administrative}} </td>
+                                    <td> {{$prescription->quantite}} </td>
+                                    <td> {{$prescription->posologie}} </td>
+                                    <td> {{$prescription->duree}} </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <!-- End small tables -->
+                        </p>
+                    </div>
+                    {{-- <img src="assets/img/card.jpg" class="card-img-bottom" alt="..."> --}}
+                </div><!-- End Card with an image on bottom -->
+
+            </div>
+
         </div>
-      </div>
-    </div>
-  </div>
-</main>
-</div>
+    </section>
+
+</main><!-- End #main -->

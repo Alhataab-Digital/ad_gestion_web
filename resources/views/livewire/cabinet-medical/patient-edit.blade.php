@@ -229,15 +229,15 @@
                                     <span class="text-danger">{{$message}}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-6">
+                                {{-- <div class="col-md-6">
                                     <label for="inputEmail5" class="form-label">Temperature</label>
                                     <input type="text" class="form-control" wire:model='temperature'
                                         id="inputEmail5">
                                     @error('temperature')
                                     <span class="text-danger">{{$message}}</span>
                                     @enderror
-                                </div>
-                                <div class="col-md-6">
+                                </div> --}}
+                                <div class="col-md-12">
                                     <label for="inputEmail5" class="form-label">groupe sanguin</label>
                                     <input type="text" class="form-control" wire:model='groupe_sanguin'
                                         id="inputEmail5">
@@ -270,8 +270,11 @@
                             <li class="list-group-item d-flex justify-content-between align-items-center text-white">
                                 ASSUREURS
                                 <span class=" bg-primary rounded-pill">
+                                    @if($prise_en_charges)
+                                    @else
                                     <button type="button" class="btn btn-success" data-bs-toggle="modal"
                                     data-bs-target="#addAssurance"><i class="bi bi-plus"></i></button>
+                                    @endif
 
                                 </span>
                               </li>
@@ -352,18 +355,25 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">Nom assureur</th>
+                                        <th scope="col">N° contrat</th>
+                                        <th scope="col">Type consultation</th>
                                         <th scope="col">Debut validité</th>
                                         <th scope="col">Fin validité</th>
-                                        <th scope="col">Numero adherant</th>
+                                        <th scope="col">Recouvrement en %</th>
+                                        {{-- <th scope="col">Numero adherant</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($prise_en_charges as $prise_en_charge )
+                                    @foreach ($contrat_assurances as $contrat_assurance )
                                     <tr>
-                                        <td>{{$prise_en_charge->maison_assurance->maison_assurance}}</td>
-                                        <td>{{$prise_en_charge->contrat_assurance->date_debut}}</td>
-                                        <td>{{$prise_en_charge->contrat_assurance->date_fin}}</td>
-                                        <td>{{$prise_en_charge->numero_assurer}}</td>
+                                        <td>{{$contrat_assurance->maison_assurance->maison_assurance}}</td>
+                                        <td>{{$contrat_assurance->id}}</td>
+                                        <td>{{$contrat_assurance->tarif_consultation->type_consultation->type_consultation}}</td>
+                                        <td>{{$contrat_assurance->date_debut}}</td>
+                                        <td>{{$contrat_assurance->date_fin}}</td>
+                                        <td style="text-align:center" >{{$contrat_assurance->taux_couverture.' %'}}</td>
+                                        {{-- <td style="text-align:right">{{ number_format($contrat_assurance->tarif_consultation->montant,2,","," ").'
+                                            '.$contrat_assurance->user->agence->devise->unite}}</td> --}}
                                     </tr>
                                     @endforeach
                                 </tbody>

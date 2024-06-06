@@ -49,7 +49,7 @@ class Medecin extends Model
 
         public function situation()
         {
-            return $this->belongsTo(SituationMatrimoniale::class);
+            return $this->belongsTo(SituationMatrimoniale::class,'situation_matrimoniale_id');
         }
         public function user()
         {

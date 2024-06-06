@@ -31,7 +31,7 @@ class Patient extends Component
 
     public function mount()
     {
-        $this->patients=Patients::where('civilite_id','!=',null)->get();
+        $this->patients=Patients::where('civilite_id','!=',null)->orderBy('id',"DESC")->get();
         $this->civilites=Civilite::all();
         $this->situations=SituationMatrimoniale::all();
         $user_id = Auth::user()->id;
@@ -47,7 +47,7 @@ class Patient extends Component
 
     public function save()
     {
-        $numero_patient = mt_rand(1000, 9999);
+        $numero_patient = 'P'.mt_rand(100, 999).'-'.date('dmy');
 
         $validated = $this->validate(
             [

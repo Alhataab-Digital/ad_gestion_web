@@ -32,7 +32,7 @@ class ContratAssurance extends Model
     }
     public function maison_assurance()
     {
-        return $this->belongsTo(MaisonAssurance::class);
+        return $this->belongsTo(MaisonAssurance::class,'maison_assurance_id');
     }
 
     public function tarif_consultation()
