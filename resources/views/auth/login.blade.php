@@ -127,7 +127,7 @@
                                         </div>
                                         <div class="col-12">
                                             <p class="small mb-0">Vous n'avez pas de compte ? <a
-                                                    href="{{ route('registre') }}">Créer un compte</a></p>
+                                                    href="{{ route('espace.projet') }}">Créer un compte</a></p>
                                         </div>
                                     </form>
 

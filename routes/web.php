@@ -83,6 +83,7 @@ use App\Http\Controllers\Stock\InventaireStockController;
 
 
 use App\Http\Controllers\Detenu\DetenuController;
+use App\Http\Controllers\EspaceProjetController;
 use App\Livewire\CabinetMedical\CategorieMedicale;
 /*
  --------------------------
@@ -122,6 +123,13 @@ use App\Livewire\CabinetMedical\TraitementConsultation;
 use App\Livewire\CabinetMedical\TypeConsultation;
 use App\Livewire\CabinetMedical\TypeExamen;
 
+use Livewire\Livewire;
+
+// Enregistrer une route de mise à jour personnalisée pour Livewire
+Livewire::setUpdateRoute(function ($handle) {
+    return Route::post('/livewire/update', $handle)
+        ->middleware(['web', 'auth', 'localization']); // Ajouter des middlewares supplémentaires
+});
 /*
  --------------------------
 |Controller livewire end
@@ -182,11 +190,15 @@ Route::controller(LoginController::class)->group(function(){
 
 Route::controller(RegisterController::class)->group(function(){
 
-    Route::get('/registre','index')->name('registre');
-    Route::post('/registre','store')->name('registre.store');
+    Route::get('/registre/{id}','create')->name('registre');
+    Route::post('/registre/store/{id}','store')->name('registre.store');
 
 });
+Route::controller(EspaceProjetController::class)->group(function(){
 
+    Route::get('/espace/projet','index')->name('espace.projet');
+
+});
 Route::middleware(['auth','initier'])->controller(HomeController::class)->group(function(){
     Route::get('/home','index')->name('home');
     Route::get('/{id}/activer','store')->name('activer.environnement');

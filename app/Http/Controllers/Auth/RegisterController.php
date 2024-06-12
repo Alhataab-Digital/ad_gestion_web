@@ -15,22 +15,23 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        $gestions = TypeGestion::orderBy('gestion')->get();
-        return view('auth.registre', compact('gestions'));
+
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($id)
     {
-        //
+        $id=decrypt($id);
+        $gestion = TypeGestion::find($id);
+        return view('auth.registre', compact('gestion'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         /**
          * validation des champs de saisie
@@ -60,7 +61,7 @@ class RegisterController extends Controller
             'terms' => $data['terms'],
             'gestion_id' => $data['gestion'],
         ]);
-        return redirect('/registre')->with('success', 'Utilisateur ajouté avec succès connectez vous avec votre mail et votre mot de passe');
+        return redirect('/login')->with('success', 'Utilisateur ajouté avec succès connectez vous avec votre mail et votre mot de passe');
     }
 
     /**
