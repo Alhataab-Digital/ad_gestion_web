@@ -23,6 +23,18 @@
                 <i class="bi bi-circle"></i><span>Utilisateur</span>
             </a>
         </li>
+        @if (Auth::user()->role_id == '0' || Auth::user()->role_id == '1')
+        <li>
+            <a href="{{ route('users.online') }}">
+                <i class="bi bi-circle"></i><span> Utilisateur en ligne</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('users.filelog') }}">
+                <i class="bi bi-circle"></i><span>Ficher log Utilisateur</span>
+            </a>
+        </li>
+        @endif
         <li>
             <a href="{{ route('devise') }}">
                 <i class="bi bi-circle"></i><span>Type devise</span>
@@ -76,7 +88,8 @@
     </ul>
 </li>
 @endif
-@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="3"||Auth::user()->role_id =="4"||Auth::user()->role_id =="5")
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id
+=="3"||Auth::user()->role_id =="4"||Auth::user()->role_id =="5")
 
 <li class="nav-heading">Gestion tresorerie</li>
 
@@ -130,7 +143,8 @@
     </ul>
 </li><!-- End Tables Nav -->
 @endif
-@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="3"||Auth::user()->role_id =="4")
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id
+=="3"||Auth::user()->role_id =="4")
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#banque-nav" data-bs-toggle="collapse" href="#">
         <i class="ri ri-building-line"></i><span>Gestion banque</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -164,8 +178,10 @@
 
 
 <li class="nav-heading">Gestion medicale</li>
-@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="3"||Auth::user()->role_id =="4"|| Auth::user()->role_id =="5"|| Auth::user()->role_id =="6")
-@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="3"|| Auth::user()->role_id =="6")
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id
+=="3"||Auth::user()->role_id =="4"|| Auth::user()->role_id =="5"|| Auth::user()->role_id =="6")
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id
+=="3"|| Auth::user()->role_id =="6")
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#patient-nav" data-bs-toggle="collapse" href="#">
         <i class="bi bi-gear-wide-connected"></i><span>Gestion patient</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -189,10 +205,12 @@
 
 @endif
 @endif
-@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="3"||Auth::user()->role_id =="5")
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id
+=="3"||Auth::user()->role_id =="5")
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#rendez-vous-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-gear-wide-connected"></i><span>Gestion rendez-vous</span><i class="bi bi-chevron-down ms-auto"></i>
+        <i class="bi bi-gear-wide-connected"></i><span>Gestion rendez-vous</span><i
+            class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="rendez-vous-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
         <li>
@@ -203,11 +221,13 @@
     </ul>
 </li>
 @endif
-@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="3"||Auth::user()->role_id =="4"||Auth::user()->role_id =="5")
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id
+=="3"||Auth::user()->role_id =="4"||Auth::user()->role_id =="5")
 
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#facturation-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-gear-wide-connected"></i><span>Gestion facturation & paiements</span><i class="bi bi-chevron-down ms-auto"></i>
+        <i class="bi bi-gear-wide-connected"></i><span>Gestion facturation & paiements</span><i
+            class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="facturation-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
         <li>
@@ -228,11 +248,13 @@
         </li>
     </ul>
 </li>
-@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id =="3")
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id
+=="3")
 
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#consultation-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-gear-wide-connected"></i><span>Gestion consultation</span><i class="bi bi-chevron-down ms-auto"></i>
+        <i class="bi bi-gear-wide-connected"></i><span>Gestion consultation</span><i
+            class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="consultation-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
 
@@ -246,7 +268,8 @@
 </li>
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#hospitalisation-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-gear-wide-connected"></i><span>Gestion hospitalisation</span><i class="bi bi-chevron-down ms-auto"></i>
+        <i class="bi bi-gear-wide-connected"></i><span>Gestion hospitalisation</span><i
+            class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="hospitalisation-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
 
@@ -261,12 +284,12 @@
 @endif
 @endif
 @endif
-@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"|| Auth::user()->role_id =="3")
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"|| Auth::user()->role_id
+=="3")
 <!-- End Charts Nav -->
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#plannification-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-journal-text"></i><span>Gestion medecin </span><i
-            class="bi bi-chevron-down ms-auto"></i>
+        <i class="bi bi-journal-text"></i><span>Gestion medecin </span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="plannification-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
         <li>
@@ -292,7 +315,8 @@
     </ul>
 </li>
 @endif
-@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"|| Auth::user()->role_id =="3")
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"|| Auth::user()->role_id
+=="3")
 
 <!-- End Charts Nav -->
 <li class="nav-heading">Configuration medicale</li>
@@ -366,7 +390,8 @@
 </li>
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#config-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-gear-wide-connected"></i><span>Config consultation</span><i class="bi bi-chevron-down ms-auto"></i>
+        <i class="bi bi-gear-wide-connected"></i><span>Config consultation</span><i
+            class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="config-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
 
@@ -377,7 +402,7 @@
             </a>
         </li>
         <li>
-            <a href="{{route('ad.sante.tarif.consultation')}}" wire:navigate >
+            <a href="{{route('ad.sante.tarif.consultation')}}" wire:navigate>
                 <i class="bi bi-circle"></i><span>Tarifs consultation</span>
             </a>
         </li>
@@ -388,13 +413,14 @@
 </li>
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#config-h-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-gear-wide-connected"></i><span>Config hospitalisation</span><i class="bi bi-chevron-down ms-auto"></i>
+        <i class="bi bi-gear-wide-connected"></i><span>Config hospitalisation</span><i
+            class="bi bi-chevron-down ms-auto"></i>
     </a>
     <ul id="config-h-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
 
 
         <li>
-            <a href="" wire:navigate >
+            <a href="" wire:navigate>
                 <i class="bi bi-circle"></i><span>Tarifs hospitalisation</span>
             </a>
         </li>

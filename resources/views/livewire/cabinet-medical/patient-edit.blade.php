@@ -10,10 +10,13 @@
                             <a wire:navigate href="{{route('ad.sante.index.patient')}}">
                                 <button class="btn btn-primary "><i class="bi bi-receipt"></i></button>
                                 </a>
+                                @if (Auth::user()->id==6)
                                 <a wire:navigate href="{{route('ad.sante.dossier.patient',encrypt($patient->id))}}">
                                     <button type="button" class="btn btn-secondary"><i
                                             class="bx bx-folder-plus"></i></button>
                                 </a>
+                                @endif
+
                         </span>
                       </li>
                 </h1>

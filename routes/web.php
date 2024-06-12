@@ -175,6 +175,8 @@ Route::controller(LoginController::class)->group(function(){
     Route::get('/logout','logout')->name('logout');
     Route::get('/user_connexion','user_connexion')->name('users.user_connexion');
     Route::post('/restore_connexion','restore_connexion')->name('users.restore_connexion');
+    Route::get('/code','code')->name('users.code');
+    Route::post('/valider/code','validerCode')->name('users.valider.code');
 });
 
 

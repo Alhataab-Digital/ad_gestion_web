@@ -6,6 +6,7 @@ use App\Models\CabinetMedical\Consultation;
 use App\Models\CabinetMedical\Examen;
 use App\Models\CabinetMedical\Patient;
 use App\Models\CabinetMedical\Prescription;
+use App\Models\CabinetMedical\SigneVitaux;
 use App\Models\CabinetMedical\Traitement;
 use App\Models\CabinetMedical\TypeSoins;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -40,6 +41,7 @@ class ResultatConsultation extends Component
     public $duree;
     public $prescriptions=[];
     public $examens=[];
+    public $signe_vitaux=[];
 
     public function mount($id)
     {
@@ -49,6 +51,7 @@ class ResultatConsultation extends Component
         $traitement =Traitement::where('consultation_id', $id)->first();
         $this->prescriptions =Prescription::where('consultation_id', $id)->get();
         $this->examens =Examen::where('consultation_id', $id)->get();
+        $this->signe_vitaux =SigneVitaux::where('consultation_id', $id)->get();
         $this->civilite = $this->consultation->patient->civilite;
         $this->nom = $this->consultation->patient->nom;
         $this->prenom = $this->consultation->patient->prenom;

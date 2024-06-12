@@ -63,7 +63,7 @@ public function mount()
 
         if(isset($patient->telephone)){
 
-            return redirect()->route('ad.sante.dossier.rendez-vous.consultation',encrypt($patient->id));
+            return redirect()->to(route('ad.sante.dossier.rendez-vous.consultation',encrypt($patient->id)));
 
         }else{
 
@@ -76,7 +76,7 @@ public function mount()
 
             $patient=Patient::where('telephone',$validated['telephone'])->first();
 
-            return redirect()->route('ad.sante.dossier.rendez-vous.consultation',encrypt($patient->id));
+            return redirect()->to(route('ad.sante.dossier.rendez-vous.consultation',encrypt($patient->id)));
 
         }
 
@@ -111,8 +111,7 @@ public function mount()
         $rendez_vous->update([
             'etat'=> "1",
         ]);
-
-        return redirect()->route('ad.sante.rendez-vous.consultation');
+        return redirect()->to(route('ad.sante.rendez-vous.consultation'));
         }else{
             dd('facturer deja');
         }

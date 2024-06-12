@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Alert</title>
+    <title>{{ $subject }}</title>
 
 </head>
 <body>
-    <div class="container">
-        {{$code1}}
-    </div>
+   {{-- <h4>{{ $subject }}</h4> --}}
+   <p>{{ $mailMessage }}</p>
 
 
 </body>

@@ -14,8 +14,8 @@
     <section class="section">
         <div class="row align-items-top">
             <div class="col-lg-12">
-                <div class="card-header bg-secondary text-white">
-                    <li class="list-group-item d-flex justify-content-between align-items-center text-white">
+                <div class="text-white card-header bg-secondary">
+                    <li class="text-white list-group-item d-flex justify-content-between align-items-center">
                         <h5>Consultation du {{$consultation->rendez_vous->date_rdv}} du patient :
                             {{$consultation->patient->civilite->civilite.' '.$consultation->patient->prenom.'
                             '.$consultation->patient->nom.'
@@ -25,32 +25,40 @@
                             {{-- <button class="btn btn-warning btn-sm"
                                 wire:click='terminerConsultation({{$consultation->id}})'>Terminer la
                                 consultation</button> --}}
+                            @if(Auth::user()->id==6)
                             <a wire:navigate
                                 href="{{route('ad.sante.dossier.patient',encrypt($consultation->patient->id))}}">
-                                <button class="btn btn-dark btn-sm">Retour</button>
+                                <button class="btn btn-dark btn-sm"><i class="bx bxs-share"></i> Retour</button>
                             </a>
+                            @else
+                            <a wire:navigate
+                            href="{{route('ad.sante.index.consultation')}}">
+                            <button class="btn btn-dark btn-sm"><i class="bx bxs-share"></i> Retour</button>
+                        </a>
+                            @endif
                         </span>
                     </li>
                 </div>
             </div>
             <div class="col-lg-6">
-
                 <!-- Default Card -->
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Informations</h5>
+                        {{-- <h5 class="card-title">Informations</h5> --}}
                         <!-- Quill Editor Bubble -->
                         {{-- <p>Diagnostique</p> --}}
-                        <div class="quill-editor-bubble">
+                        <hr>
+                        <h5 class="card-title">Dignostique</h5>
+                        <div class="">
                             <p> {{$consultation->rendez_vous->motif}}</p>
                             <p> {{$traitement->diagnostique}}</p>
-
                         </div>
                         <!-- End Quill Editor Bubble -->
                         <hr>
                         <!-- Quill Editor Bubble -->
                         {{-- <p>Conclution / conseil</p> --}}
-                        <div class="quill-editor-bubble">
+                        <h5 class="card-title">Conclusion</h5>
+                        <div class="">
                             <p> {{$traitement->conclusion}}</p>
                         </div>
                         <!-- End Quill Editor Bubble -->
@@ -73,57 +81,82 @@
                                 </li>
                             </h5>
                             <form class="row g-3" wire:submit.prevent='saveSigne'>
-                                {{-- <div class="card-header bg-secondary text-center text-white">
-                                    Constantes Physiques
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="inputName5" class="form-label">Taille</label>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="inputEmail5" class="form-label">Poid</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="inputPassword5" class="form-label">IMC (Indice de Masse Corporelle) </label>
+                           @foreach ( $signe_vitaux as $signe_vitau )
 
-                                </div>
-                                <div class="col-6">
-                                    <label for="inputAddress5" class="form-label">Circonférence abdominale</label>
 
-                                </div>
-                                <div class="col-6">
-                                    <label for="inputAddress2" class="form-label">Indice de graisse corporelle</label>
 
-                                </div>
-                                <div class="card-header bg-secondary text-center text-white">
-                                    Signe vitaux
-                                </div> --}}
-                                <div class="col-md-4">
-                                    <label for="inputName5" class="form-label">Température corporelle</label>
+                           <div class="text-center text-white card-header bg-secondary">
+                            Constantes Physiques
+                        </div>
+                        <div class="col-md-3">
+                            <label for="inputName5" class="form-label"><strong> Taille</strong></label>
+                            <p>{{$signe_vitau->taille}}</p>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="inputEmail5" class="form-label"><strong>Poid</strong> </label>
+                            <p>{{$signe_vitau->poid}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputPassword5" class="form-label"><strong>IMC (Indice de Masse Corporelle) </strong> </label>
+                            <p>
+                                    @php
+                                       if($signe_vitau->taille!=null && $signe_vitau->poid!=null){
+                                            $imc=round( ($signe_vitau->poid)/($signe_vitau->taille*$signe_vitau->taille));
+                                                if($imc<16.5){
+                                                 echo  $imc." (Maigreur extrême – dénutrition)";
+                                                }else
+                                                if(16.5<$imc && $imc<18.5){
+                                                    echo    $imc.' (Maigreur)';
+                                                }else
+                                                if(18.5<$imc && $imc<25){
+                                                    echo  $imc.' (Corpulence normale)';
+                                                }else
+                                                if(25<$imc && $imc<30){
+                                                    echo $imc.' (Surpoids ou pré-obésité)';
+                                                }else
+                                                if(30<$imc && $imc<35){
+                                                    echo $imc.' (Obésité modérée (classe I))';
+                                                }else
+                                                if(35<$imc && $imc<40){
+                                                    echo  $imc.' (Obésité sévère (classe II))';
+                                                }else
+                                                if(40<$imc){
+                                                    echo  $imc.' (Obésité morbide (classe III))';
+                                                }
+                                            }
+                                       @endphp
+                            </p>
+                        </div>
 
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="inputEmail5" class="form-label">Fréquence cardiaque</label>
-
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="inputPassword5" class="form-label">Fréquence respiratoire </label>
-
-                                </div>
-                                <div class="col-4">
-                                    <label for="inputAddress5" class="form-label">Pression artérielle</label>
-
-                                </div>
-                                <div class="col-4">
-                                    <label for="inputAddress2" class="form-label">Saturation en oxygène (SpO2)</label>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="inputCity" class="form-label">Douleur </label>
-                                </div>
-                                <div class="card-header bg-secondary text-white">
-FIN
-                                </div>
-
-                            </form><!-- End Multi Columns Form -->
+                        <div class="text-center text-white card-header bg-secondary">
+                            Signe vitaux
+                        </div>
+                        <div class="col-md-4">
+                            <label for="inputName5" class="form-label"><strong>Température corporelle</strong></label>
+                            <p>{{$signe_vitau->temperature_corporelle}}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="inputEmail5" class="form-label"><strong>Fréquence cardiaque</strong></label>
+                            <p>{{$signe_vitau->frequence_cardiaque}}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="inputPassword5" class="form-label"><strong>Fréquence respiratoire</strong> </label>
+                            <p>{{$signe_vitau->frequence_respiratoire}}</p>
+                        </div>
+                        <div class="col-4">
+                            <label for="inputAddress5" class="form-label"><strong>Pression artérielle</strong></label>
+                            <p>{{$signe_vitau->pression_arterielle}}</p>
+                        </div>
+                        <div class="col-4">
+                            <label for="inputAddress2" class="form-label"><strong>Saturation en oxygène (SpO2)</strong></label>
+                            <p>{{$signe_vitau->saturation_oxygene}}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="inputCity" class="form-label"><strong>Douleur</strong> </label>
+                            <p>{{$signe_vitau->douleur}}</p>
+                        </div>
+                           @endforeach
+                        </form>
                         </div>
                     </div>
                 </div><!-- End Card with header and footer -->
@@ -134,7 +167,7 @@ FIN
 
             <div class="col-lg-6">
                 <!-- Card with an image on left -->
-                <div class="card mb-3">
+                <div class="mb-3 card">
                     <div class="row g-0">
                         {{-- <div class="col-md-4">
                             <img src="assets/img/card.jpg" class="img-fluid rounded-start" alt="...">

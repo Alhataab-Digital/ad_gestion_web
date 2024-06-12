@@ -9,7 +9,6 @@
         <title>AD GESTION</title>
         <meta content="" name="description">
         <meta content="" name="keywords">
-        @livewireStyles
         <!-- Favicons -->
         @if (isset(Auth::user()->societe->logo))
             <link href="{{ asset('/images/logo/' . Auth::user()->societe->logo) }}" rel="icon">
@@ -52,9 +51,10 @@
 
         @include('layouts.footer')
 
-        <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-                class="bi bi-arrow-up-short"></i></a>
+        {{-- <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+                class="bi bi-arrow-up-short"></i></a> --}}
         @livewireScripts
+        <script src="{{ asset('assets/js/jquery.js') }}"></script>
         <!-- Vendor JS Files -->
         <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
         <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -124,7 +124,7 @@
             <h1>404</h1>
             <h2>La page que vous recherchez n'existe pas.</h2>
             <a class="btn" href="{{route('login')}}">Connexion</a>
-            {{-- <img src="assets/img/not-found.svg" class="img-fluid py-5" alt="Page Not Found"> --}}
+            {{-- <img src="assets/img/not-found.svg" class="py-5 img-fluid" alt="Page Not Found"> --}}
             <hr>
             <br>
             <div class="credits">
@@ -147,9 +147,10 @@
 
     @include('layouts.footer')
 
-    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-            class="bi bi-arrow-up-short"></i></a>
+    {{-- <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a> --}}
     @livewireScripts
+    <script src="{{ asset('assets/js/jquery.js') }}"></script>
     <!-- Vendor JS Files -->
     <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -159,7 +160,6 @@
     <script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
     <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
-
     <!-- Template Main JS File -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
 

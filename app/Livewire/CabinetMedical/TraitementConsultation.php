@@ -7,6 +7,7 @@ use App\Models\CabinetMedical\Examen;
 use App\Models\CabinetMedical\Medicament;
 use App\Models\CabinetMedical\Patient;
 use App\Models\CabinetMedical\Prescription;
+use App\Models\CabinetMedical\SigneVitaux;
 use App\Models\CabinetMedical\Soins;
 use App\Models\CabinetMedical\Traitement;
 use App\Models\CabinetMedical\TypeExamen;
@@ -34,6 +35,7 @@ class TraitementConsultation extends Component
     public $adresse;
     public $taille;
     public $poid;
+    public $imc;
     public $consultation;
     public $medicaments=[];
     public $type_examens=[];
@@ -49,7 +51,13 @@ class TraitementConsultation extends Component
     public $libelle;
     public $observation;
     public $type_soin;
-
+    public $temperature_corporelle;
+    public $frequence_cardiaque;
+    public $frequence_respiratoire;
+    public $pression_arterielle;
+    public $saturation_oxygene;
+    public $douleur;
+    public $signe_vitaux;
 
 
     public function mount(Patient $patients, $id)
@@ -61,6 +69,7 @@ class TraitementConsultation extends Component
         $this->type_soins =TypeSoins::all();
         $this->consultation =Consultation::where('id', $id)->first();
         $traitement =Traitement::where('consultation_id', $id)->first();
+        $signe_vitaux =SigneVitaux::where('consultation_id', $id)->first();
         $this->prescriptions =Prescription::where('consultation_id', $id)->get();
         $this->examens =Examen::where('consultation_id', $id)->get();
         $this->soins =Soins::where('consultation_id', $id)->get();
@@ -72,13 +81,50 @@ class TraitementConsultation extends Component
         $this->age = $patients->age;
         $this->telephone = $patients->telephone;
         $this->adresse = $patients->adresse;
-        $this->taille = $patients->taille;
-        $this->poid = $patients->poid;
+        // $this->taille = $patients->taille;
+        // $this->poid = $patients->poid;
 
         if(isset($traitement)){
             $this->traitement=$traitement;
             $this->diagnostique = $traitement->diagnostique;
             $this->conclusion =$traitement->conclusion;
+        }
+        if(isset($signe_vitaux)){
+
+            $this->signe_vitaux=$signe_vitaux;
+            $this->taille = $signe_vitaux->taille;
+            $this->poid = $signe_vitaux->poid;
+            $this->temperature_corporelle=$signe_vitaux->temperature_corporelle;
+            $this->frequence_cardiaque=$signe_vitaux->frequence_cardiaque;
+            $this->frequence_respiratoire=$signe_vitaux->frequence_respiratoire;
+            $this->pression_arterielle=$signe_vitaux->pression_arterielle;
+            $this->saturation_oxygene=$signe_vitaux->saturation_oxygene;
+            $this->douleur=$signe_vitaux->douleur;
+            if($signe_vitaux->taille!=null && $signe_vitaux->poid!=null){
+                $imc=round( ($signe_vitaux->poid)/($signe_vitaux->taille*$signe_vitaux->taille));
+
+                if($imc<16.5){
+                    $this->imc=$imc.' (Maigreur extrême – dénutrition)';
+                }else
+                if(16.5<$imc && $imc<18.5){
+                    $this->imc=$imc.' (Maigreur)';
+                }else
+                if(18.5<$imc && $imc<25){
+                    $this->imc=$imc.' (Corpulence normale)';
+                }else
+                if(25<$imc && $imc<30){
+                    $this->imc=$imc.' (Surpoids ou pré-obésité)';
+                }else
+                if(30<$imc && $imc<35){
+                    $this->imc=$imc.' (Obésité modérée (classe I))';
+                }else
+                if(35<$imc && $imc<40){
+                    $this->imc=$imc.' (Obésité sévère (classe II))';
+                }else
+                if(40<$imc){
+                    $this->imc=$imc.' (Obésité morbide (classe III))';
+                }
+            }
         }
 
 
@@ -127,7 +173,63 @@ class TraitementConsultation extends Component
     public function saveSigne()
     {
 
-        dd('signe vitaux '.$this->consultation->id);
+        $societe_id = Auth::user()->societe_id;
+        $user_id = Auth::user()->id;
+        $consultation=Consultation::where('id',$this->consultation->id)->first();
+
+
+        $validated = $this->validate(
+            [
+                'poid' => 'required',
+                'taille' => 'required',
+                'temperature_corporelle' => '',
+                'frequence_cardiaque' => '',
+                'frequence_respiratoire' => '',
+                'pression_arterielle' => '',
+                'saturation_oxygene' => '',
+                'douleur' => '',
+            ]);
+            $signe_vitaux =SigneVitaux::where('consultation_id', $this->consultation->id)->first();
+            $patients = Patient::where('id',$this->consultation->patient_id)->first();
+            if(isset($signe_vitaux)){
+                $patients ->update([
+                    'poid'=> $validated['poid'],
+                    'taille'=> $validated['taille'],
+                ]);
+                $signe_vitaux->update([
+                    'poid'=> $validated['poid'],
+                    'taille'=> $validated['taille'],
+                    'temperature_corporelle'=> $validated['temperature_corporelle'],
+                    'frequence_cardiaque'=> $validated['frequence_cardiaque'],
+                    'frequence_respiratoire'=> $validated['frequence_respiratoire'],
+                    'pression_arterielle'=> $validated['pression_arterielle'],
+                    'saturation_oxygene'=> $validated['saturation_oxygene'],
+                    'douleur'=> $validated['douleur'],
+                ]);
+                return redirect()->route('ad.sante.traitement.consultation',encrypt($consultation->id))->with('succes');
+
+            }else{
+                $patients ->update([
+                    'poid'=> $validated['poid'],
+                    'taille'=> $validated['taille'],
+                ]);
+            SigneVitaux::create([
+                'poid'=> $validated['poid'],
+                'taille'=> $validated['taille'],
+                'temperature_corporelle'=> $validated['temperature_corporelle'],
+                'frequence_cardiaque'=> $validated['frequence_cardiaque'],
+                'frequence_respiratoire'=> $validated['frequence_respiratoire'],
+                'pression_arterielle'=> $validated['pression_arterielle'],
+                'saturation_oxygene'=> $validated['saturation_oxygene'],
+                'douleur'=> $validated['douleur'],
+                'consultation_id'=> $consultation->id,
+                'patient_id'=>$consultation->patient_id,
+                'medecin_id'=>$consultation->medecin_id,
+                'user_id'=> $user_id,
+                'societe_id'=> $societe_id,
+            ]);
+            return redirect()->route('ad.sante.traitement.consultation',encrypt($consultation->id))->with('succes');
+        }
     }
 
     public function saveSoins()

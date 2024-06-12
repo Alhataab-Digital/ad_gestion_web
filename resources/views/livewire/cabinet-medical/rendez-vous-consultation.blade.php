@@ -16,7 +16,8 @@
             <div class="form-signin w-80 m-auto col-lg-4">
 
                 <!-- Vertical Form -->
-                <form wire:submit='valider' class="row g-0">
+                <form wire:submit.prevent='valider' class="row g-0">
+                    @csrf
                     <div class="card">
                         <div class="card-header bg-dark text-white">
                             PRENDRE RENDEZ VOUS
@@ -273,7 +274,7 @@
                         <tbody>
                             @foreach ($paiements as $paiement )
                             <tr>
-                                <td>{{ $rendez_vous->patient->numero_patient}}</td>
+                                <td>{{ $paiement->facturation->patient->numero_patient}}</td>
                                 <td>{{ $paiement->facturation->patient->nom.' '.$paiement->facturation->patient->prenom}}</td>
                                 <td>{{ $paiement->facturation->patient->telephone}}</td>
                                 <td>{{ \Carbon\Carbon::parse($paiement->date_operation)->format('d-m-Y')}}</td>
@@ -322,7 +323,7 @@
                             <tbody>
                                 @foreach ($consultations as $consultation )
                                 <tr>
-                                    <td>{{ $rendez_vous->patient->numero_patient}}</td>
+                                    <td>{{ $consultation->patient->numero_patient}}</td>
                                     <td>{{ $consultation->patient->nom}} {{ $consultation->patient->prenom}}</td>
                                     <td>{{ \Carbon\Carbon::parse($consultation->rendez_vous->date_rdv)->format('d-m-Y')}}</td>
                                     <td>{{

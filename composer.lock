@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "988999e4824427d9e7cc17533adda112",
+    "content-hash": "73f106784c0e5e995682c701f6ca1146",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -1482,16 +1482,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v10.48.11",
+            "version": "v10.48.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "afdc2b03bd8d126446583da5414d659491aa4f54"
+                "reference": "590afea38e708022662629fbf5184351fa82cf08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/afdc2b03bd8d126446583da5414d659491aa4f54",
-                "reference": "afdc2b03bd8d126446583da5414d659491aa4f54",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/590afea38e708022662629fbf5184351fa82cf08",
+                "reference": "590afea38e708022662629fbf5184351fa82cf08",
                 "shasum": ""
             },
             "require": {
@@ -1685,7 +1685,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2024-05-21T17:53:51+00:00"
+            "time": "2024-05-28T15:46:19+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -3865,16 +3865,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.12.3",
+            "version": "v0.12.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "b6b6cce7d3ee8fbf31843edce5e8f5a72eff4a73"
+                "reference": "2fd717afa05341b4f8152547f142cd2f130f6818"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/b6b6cce7d3ee8fbf31843edce5e8f5a72eff4a73",
-                "reference": "b6b6cce7d3ee8fbf31843edce5e8f5a72eff4a73",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/2fd717afa05341b4f8152547f142cd2f130f6818",
+                "reference": "2fd717afa05341b4f8152547f142cd2f130f6818",
                 "shasum": ""
             },
             "require": {
@@ -3938,9 +3938,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.12.3"
+                "source": "https://github.com/bobthecow/psysh/tree/v0.12.4"
             },
-            "time": "2024-04-02T15:57:53+00:00"
+            "time": "2024-06-10T01:18:23+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -4353,16 +4353,16 @@
         },
         {
             "name": "stevebauman/location",
-            "version": "v7.2.1",
+            "version": "v7.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stevebauman/location.git",
-                "reference": "c95c397bf54a109f9cdb335377887047408dc8bc"
+                "reference": "603d75b13da2e1c181bdf75a658dcc3ddb7fc9b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stevebauman/location/zipball/c95c397bf54a109f9cdb335377887047408dc8bc",
-                "reference": "c95c397bf54a109f9cdb335377887047408dc8bc",
+                "url": "https://api.github.com/repos/stevebauman/location/zipball/603d75b13da2e1c181bdf75a658dcc3ddb7fc9b6",
+                "reference": "603d75b13da2e1c181bdf75a658dcc3ddb7fc9b6",
                 "shasum": ""
             },
             "require": {
@@ -4415,9 +4415,9 @@
             ],
             "support": {
                 "issues": "https://github.com/stevebauman/location/issues",
-                "source": "https://github.com/stevebauman/location/tree/v7.2.1"
+                "source": "https://github.com/stevebauman/location/tree/v7.2.2"
             },
-            "time": "2024-04-09T17:05:20+00:00"
+            "time": "2024-06-04T21:41:15+00:00"
         },
         {
             "name": "symfony/console",
@@ -4515,16 +4515,16 @@
         },
         {
             "name": "symfony/css-selector",
-            "version": "v7.1.0",
+            "version": "v7.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/css-selector.git",
-                "reference": "843f2f7ac5e4c5bf0ec77daef23ca6d4d8922adc"
+                "reference": "1c7cee86c6f812896af54434f8ce29c8d94f9ff4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/css-selector/zipball/843f2f7ac5e4c5bf0ec77daef23ca6d4d8922adc",
-                "reference": "843f2f7ac5e4c5bf0ec77daef23ca6d4d8922adc",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/1c7cee86c6f812896af54434f8ce29c8d94f9ff4",
+                "reference": "1c7cee86c6f812896af54434f8ce29c8d94f9ff4",
                 "shasum": ""
             },
             "require": {
@@ -4560,7 +4560,7 @@
             "description": "Converts CSS selectors to XPath expressions",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/css-selector/tree/v7.1.0"
+                "source": "https://github.com/symfony/css-selector/tree/v7.1.1"
             },
             "funding": [
                 {
@@ -4576,7 +4576,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T09:32:20+00:00"
+            "time": "2024-05-31T14:57:53+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -4722,16 +4722,16 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v7.1.0",
+            "version": "v7.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "522d2772d6c7bab843b0c52466dc7844622bacc2"
+                "reference": "9fa7f7a21beb22a39a8f3f28618b29e50d7a55a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/522d2772d6c7bab843b0c52466dc7844622bacc2",
-                "reference": "522d2772d6c7bab843b0c52466dc7844622bacc2",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/9fa7f7a21beb22a39a8f3f28618b29e50d7a55a7",
+                "reference": "9fa7f7a21beb22a39a8f3f28618b29e50d7a55a7",
                 "shasum": ""
             },
             "require": {
@@ -4782,7 +4782,7 @@
             "description": "Provides tools that allow your application components to communicate with each other by dispatching events and listening to them",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/event-dispatcher/tree/v7.1.0"
+                "source": "https://github.com/symfony/event-dispatcher/tree/v7.1.1"
             },
             "funding": [
                 {
@@ -4798,7 +4798,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T09:32:20+00:00"
+            "time": "2024-05-31T14:57:53+00:00"
         },
         {
             "name": "symfony/event-dispatcher-contracts",
@@ -6236,16 +6236,16 @@
         },
         {
             "name": "symfony/string",
-            "version": "v7.1.0",
+            "version": "v7.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "6f41b185e742737917e6f2e3eca37767fba5f17a"
+                "reference": "60bc311c74e0af215101235aa6f471bcbc032df2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/6f41b185e742737917e6f2e3eca37767fba5f17a",
-                "reference": "6f41b185e742737917e6f2e3eca37767fba5f17a",
+                "url": "https://api.github.com/repos/symfony/string/zipball/60bc311c74e0af215101235aa6f471bcbc032df2",
+                "reference": "60bc311c74e0af215101235aa6f471bcbc032df2",
                 "shasum": ""
             },
             "require": {
@@ -6303,7 +6303,7 @@
                 "utf8"
             ],
             "support": {
-                "source": "https://github.com/symfony/string/tree/v7.1.0"
+                "source": "https://github.com/symfony/string/tree/v7.1.1"
             },
             "funding": [
                 {
@@ -6319,7 +6319,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-17T10:55:18+00:00"
+            "time": "2024-06-04T06:40:14+00:00"
         },
         {
             "name": "symfony/translation",
@@ -6849,16 +6849,16 @@
         },
         {
             "name": "twilio/sdk",
-            "version": "8.1.0",
+            "version": "8.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twilio/twilio-php.git",
-                "reference": "547e6ceca9a1491a645065f344ddb592a3456298"
+                "reference": "d59f57a548e2659fb305be11690b7b0aaf40a84c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/547e6ceca9a1491a645065f344ddb592a3456298",
-                "reference": "547e6ceca9a1491a645065f344ddb592a3456298",
+                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/d59f57a548e2659fb305be11690b7b0aaf40a84c",
+                "reference": "d59f57a548e2659fb305be11690b7b0aaf40a84c",
                 "shasum": ""
             },
             "require": {
@@ -6896,9 +6896,9 @@
             ],
             "support": {
                 "issues": "https://github.com/twilio/twilio-php/issues",
-                "source": "https://github.com/twilio/twilio-php/tree/8.1.0"
+                "source": "https://github.com/twilio/twilio-php/tree/8.1.1"
             },
-            "time": "2024-05-24T11:10:19+00:00"
+            "time": "2024-06-06T11:46:47+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -9724,16 +9724,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v7.1.0",
+            "version": "v7.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "c5f718c94e3c37dd77b77484e6cf0b524b2d405e"
+                "reference": "fa34c77015aa6720469db7003567b9f772492bf2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/c5f718c94e3c37dd77b77484e6cf0b524b2d405e",
-                "reference": "c5f718c94e3c37dd77b77484e6cf0b524b2d405e",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/fa34c77015aa6720469db7003567b9f772492bf2",
+                "reference": "fa34c77015aa6720469db7003567b9f772492bf2",
                 "shasum": ""
             },
             "require": {
@@ -9775,7 +9775,7 @@
             "description": "Loads and dumps YAML files",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/yaml/tree/v7.1.0"
+                "source": "https://github.com/symfony/yaml/tree/v7.1.1"
             },
             "funding": [
                 {
@@ -9791,7 +9791,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-28T18:29:00+00:00"
+            "time": "2024-05-31T14:57:53+00:00"
         },
         {
             "name": "theseer/tokenizer",

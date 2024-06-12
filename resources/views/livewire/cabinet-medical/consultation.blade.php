@@ -13,8 +13,8 @@
 
     <section class="section">
         <div class="row">
-            <div class="form-signin w-80 m-auto col-lg-12 bg-primary">
-                    <h5 class="card-title text-white text-center">GESTION CONSULTATION </h5>
+            <div class="m-auto form-signin w-80 col-lg-12 bg-primary">
+                    <h5 class="text-center text-white card-title">GESTION CONSULTATION </h5>
             </div>
             <div class="card">
 
@@ -23,7 +23,7 @@
 
                       <!-- Table with stripped rows -->
                       <table class="table datatable">
-                        <thead class="bg-primary text-white">
+                        <thead class="text-white bg-primary">
                             <tr>
                                 <!-- <th scope="col">#</th> -->
                                 <th scope="col">Patient</th>
@@ -68,8 +68,10 @@
                                             <i class="bx bxs-hide"></i></button>
                                         @endif
                                         @if($consultation->etat==2)
+                                        <a href="{{route('ad.sante.resultat.consultation',encrypt($consultation->id))}}">
                                         <button class="btn btn-secondary btn-sm">
-                                        <i class="bx bxs-hide"></i></button>
+                                        <i class="bx bxs-show"></i></button>
+                                        </a>
                                         @endif
                                 </td>
                             </tr>

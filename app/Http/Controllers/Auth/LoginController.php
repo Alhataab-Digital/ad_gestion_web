@@ -11,9 +11,11 @@ use App\Models\Users\Utilisateur;
 use App\Models\Users\ConnexionUser;
 use App\Models\Users\UserEnLigne;
 use Illuminate\Support\Facades\Mail;
+use PhpParser\Builder\Function_;
+use PhpParser\Node\Expr\FuncCall;
 use Stevebauman\Location\Facades\Location;
 
-
+use function PHPUnit\Framework\returnSelf;
 
 class LoginController extends Controller
 {
@@ -157,29 +159,91 @@ class LoginController extends Controller
     {
         return view('auth.deconnexion_user_encour');
     }
-
-    public function restore_connexion(Request $request)
+    public function code()
     {
-        // $code="Utiliser ce code pour valider la deconnexion du compte";
-        // Mail::to($request->email)->send(new AlertCodeReconnexion($code));
-
-        if (isset(Utilisateur::where('email', $request->email)->first()->id)) {
-            $user = Utilisateur::where('email', $request->email)->first();
-            if (isset(UserEnLigne::where('utilisateur_id', $user->id)->first()->id)) {
-
+        return view('auth.code');
+    }
+    public function validerCode(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|min:7|max:7',
+        ]);
+            if (isset(UserEnLigne::where('code', $request->code)->first()->id)) {
+                $enLigne = UserEnLigne::where('code', $request->code)->first();
                 ConnexionUser::create([
-                    'utilisateur_id' => $user->id,
+                    'utilisateur_id' => $enLigne->utilisateur_id,
+                    'code' => $request->code,
                     'etat' => 'deconnexion',
                 ]);
 
-                $deconnexion = UserEnLigne::where('utilisateur_id', $user->id)->first();
-                $deconnexion->delete('utilisateur_id', $user->id);
+                $deconnexion = UserEnLigne::where('code',  $request->code)->first();
+                $deconnexion->delete('code',  $request->code);
                 Session::flush();
                 Auth::logout();
                 return redirect('/')->with('success', 'Utilisateur débloqué');
+            }else{
+                return redirect('/code')->with('danger', 'code incorrect');
             }
-            return redirect('/')->with('success', " L'utilisateur n'est pas en cours d'utilisation");
+    }
+
+    public function restore_connexion(Request $request)
+    {
+        $adressMail=$request->email;
+        $code = mt_rand(1000, 9999);
+        $code='AD-'.$code;
+        $mailMessage="Utiliser ce code $code pour valider la deconnexion du compte";
+        $subject="Code validation";
+        $connected = @fsockopen("www.google.com", 80);
+        if ($connected){
+            $is_conn = true; // Une connexion Internet est disponible
+            // fclose($connected);
+            if (isset(Utilisateur::where('email', $request->email)->first()->id)) {
+                $user = Utilisateur::where('email', $request->email)->first();
+                if (isset(UserEnLigne::where('utilisateur_id', $user->id)->first()->id)) {
+                   $enLigne = UserEnLigne::where('utilisateur_id', $user->id)->first();
+                   $enLigne->update([
+                        'utilisateur_id' => $user->id,
+                        'code' => $code,
+                    ]);
+                    Mail::to($adressMail)->send(new AlertCodeReconnexion($mailMessage,$subject));
+                    return redirect('/code')->with('success', " Consulter votre boite mail et utiliser le code pour valider ");
+                }
+                return redirect('/')->with('success', " L'utilisateur n'est pas en cours d'utilisation");
+            }
+
+         } else {
+            $is_conn = false; // Pas de connexion Internet
+            if (isset(Utilisateur::where('email', $request->email)->first()->id)) {
+                $user = Utilisateur::where('email', $request->email)->first();
+                if (isset(UserEnLigne::where('utilisateur_id', $user->id)->first()->id)) {
+                   $enLigne = UserEnLigne::where('utilisateur_id', $user->id)->first();
+                   $enLigne->update([
+                        'utilisateur_id' => $user->id,
+                        'code' => $code,
+                    ]);
+                    return redirect('/code')->with('success', " Consulter votre boite mail et utiliser le code pour valider ");
+                }
+                return redirect('/')->with('success', " L'utilisateur n'est pas en cours d'utilisation");
+            }
+            // return back()->with('danger', " Vous n'avez pas de connexion internet");
         }
-        return redirect('/')->with('danger', " L'utilisateur n'existe pas ");
+        // if (isset(Utilisateur::where('email', $request->email)->first()->id)) {
+        //     $user = Utilisateur::where('email', $request->email)->first();
+        //     if (isset(UserEnLigne::where('utilisateur_id', $user->id)->first()->id)) {
+
+        //         ConnexionUser::create([
+        //             'utilisateur_id' => $user->id,
+        //             'etat' => 'deconnexion',
+        //         ]);
+
+        //         $deconnexion = UserEnLigne::where('utilisateur_id', $user->id)->first();
+        //         $deconnexion->delete('utilisateur_id', $user->id);
+        //         Session::flush();
+        //         Auth::logout();
+        //         return redirect('/')->with('success', 'Utilisateur débloqué');
+        //     }
+        //     return redirect('/')->with('success', " L'utilisateur n'est pas en cours d'utilisation");
+        // }
+        // return redirect('/code')->with('danger', " L'utilisateur n'existe pas ");
     }
 }

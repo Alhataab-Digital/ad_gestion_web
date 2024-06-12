@@ -16,13 +16,13 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="card-header bg-secondary text-white">
-                            <li class="list-group-item d-flex justify-content-between align-items-center text-white">
-                                  <h5> INFORMATION GENERAL DU PATIENT  <strong>{{$patient->prenom.' '.$patient->nom.' '.(\Carbon\Carbon::parse($patient->date_naissance)->age.' ans' )}}</strong></h5>
+                        <div class="text-white card-header bg-secondary">
+                            <li class="text-white list-group-item d-flex justify-content-between align-items-center">
+                                  <h5> Dossier n° <strong>{{$patient->numero_patient}}</strong>  de  <strong>{{$patient->prenom.' '.$patient->nom.' '.(\Carbon\Carbon::parse($patient->date_naissance)->age.' ans' )}}</strong></h5>
                                 <span class=" bg-secondary rounded-pill">
-                                    <a wire:navigate href="{{route('ad.sante.index.patient')}}">
+                                    {{-- <a wire:navigate href="{{route('ad.sante.index.patient')}}">
                                         <button class="btn btn-primary "><i class="bi bi-receipt"></i></button>
-                                    </a>
+                                    </a> --}}
                                     <a href="{{route('ad.sante.edit.patient',encrypt($patient->id))}}">
                                     <button class="btn btn-info"><i class="bi bi-pencil"></i></button>
                                     </a>
@@ -42,32 +42,32 @@
 
                             <!-- Multi Columns Form -->
                             <form class="row g-3">
-                                <div class="col-md-6 bg-secondary text-white">
+                                <div class="text-white col-md-6 bg-secondary">
                                     Nom Prenom :
                                 </div>
                                 <div class="col-md-6">
                                     {{$patient->civilite->civilite}} {{$patient->nom.' '.$patient->prenom}}
                                 </div>
-                                <div class="col-md-6 bg-secondary text-white">
+                                <div class="text-white col-md-6 bg-secondary">
                                     Situation matrimoniale
                                  </div>
                                 <div class="col-md-6">
                                     {{$patient->situation->situation_matrimoniale}}
 
                                 </div>
-                                <div class="col-md-6 bg-secondary text-white">
+                                <div class="text-white col-md-6 bg-secondary">
                                     Date de naissance
                                   </div>
                                   <div class="col-md-6">
                                       {{ \Carbon\Carbon::parse($patient->date_naissance)->format('d-m-Y')}}
                                   </div>
-                                  <div class="col-md-6 bg-secondary text-white">
+                                  <div class="text-white col-md-6 bg-secondary">
                                     Lieu de naissance
                                   </div>
                                   <div class="col-md-6">
                                       {{ $patient->lieu_naissance}}
                                   </div>
-                                  <div class="col-md-6 bg-secondary text-white">
+                                  <div class="text-white col-md-6 bg-secondary">
                                    Profession
                                   </div>
                                   <div class="col-md-6">
@@ -91,31 +91,31 @@
                             <!-- Multi Columns Form -->
                             <form class="row g-3">
 
-                                <div class="col-6 bg-secondary text-white">
+                                <div class="text-white col-6 bg-secondary">
                                     Telephone
                                 </div>
                                 <div class="col-6">
                                    {{$patient->telephone}}
                                 </div>
-                                <div class="col-6 bg-secondary text-white">
+                                <div class="text-white col-6 bg-secondary">
                                     Adresse
                                 </div>
                                 <div class="col-md-6">
                                     {{$patient->adresse}}
                                 </div>
-                                <div class="col-6 bg-secondary text-white">
+                                <div class="text-white col-6 bg-secondary">
                                     Complement adresse
                                 </div>
                                 <div class="col-md-6">
                                     {{$patient->complement_adresse}}
                                 </div>
-                                <div class="col-6 bg-secondary text-white">
+                                <div class="text-white col-6 bg-secondary">
                                     Email
                                 </div>
                                 <div class="col-md-6">
                                     {{$patient->mail}}
                                 </div>
-                                <div class="col-6 bg-secondary text-white">
+                                <div class="text-white col-6 bg-secondary">
                                     Personne à contacter
                                 </div>
                                 <div class="col-md-6">
@@ -130,7 +130,7 @@
                 <div class="col-lg-4">
                     <!-- Card with header and footer -->
                     <div class="card">
-                        <div class="card-header  ">
+                        <div class="card-header ">
                             INFORMATION MEDICALE DU PATIENT
                         </div>
 
@@ -138,31 +138,31 @@
 
                             <!-- Multi Columns Form -->
                             <form class="row g-3">
-                                <div class="col-md-6 bg-secondary text-white">
+                                <div class="text-white col-md-6 bg-secondary">
                                     N° Dossier Patient
                                </div>
                                 <div class="col-md-6 ">
                                  {{$patient->numero_patient}}
                                 </div>
-                                <div class="col-md-6 bg-secondary text-white">
+                                <div class="text-white col-md-6 bg-secondary">
                                  Groupe Sanguin
                                 </div>
                                 <div class="col-md-6">
                                     {{$patient->groupe_sanguin}}
                                 </div>
-                                <div class="col-md-6 bg-secondary text-white">
+                                <div class="text-white col-md-6 bg-secondary">
                                     poid
                                    </div>
                                    <div class="col-md-6">
                                        {{$patient->poid}} kg
                                    </div>
-                                   <div class="col-md-6 bg-secondary text-white">
+                                   <div class="text-white col-md-6 bg-secondary">
                                     taille
                                    </div>
                                    <div class="col-md-6">
                                        {{$patient->taille}} m
                                    </div>
-                                   <div class="col-md-6 bg-secondary text-white">
+                                   <div class="text-white col-md-6 bg-secondary">
                                     Icm (Kg/m²)
                                    </div>
                                    <div class="col-md-6">
@@ -246,7 +246,7 @@
                               </button>
                               </li>
                           </ul>
-                          <div class="tab-content pt-2" id="myTabContent">
+                          <div class="pt-2 tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="synthese" role="tabpanel" aria-labelledby="synthese-tab">
                                 <div class="card">
                                     <div class="card-header">
@@ -257,7 +257,7 @@
                                         {{-- <h5 class="card-title">Card with header and footer</h5> --}}
                                         <table class="table ">
                                             <thead>
-                                                <tr  class="bg-secondary text-white">
+                                                <tr  class="text-white bg-secondary">
                                                     <th scope="col">Date</th>
                                                     <th scope="col">Type</th>
                                                     <th scope="col">Realiser par</th>
@@ -268,11 +268,10 @@
                                             <tbody>
                                                 @foreach ($consultations as $consultation )
                                                 <tr>
-                                                    <th>{{$consultation->created_at->diffForHumans()}}</th>
-                                                    <th scope="row"><a href="{{route('ad.sante.traitement.consultation',encrypt($consultation->id))}}">{{$consultation->tarif_consultation->type_consultation->type_consultation}}</a></th>
-
-                                                    <th scope="row"><a href="{{route('ad.sante.traitement.consultation',encrypt($consultation->id))}}">{{$consultation->medecin->nom.' '.$consultation->medecin->prenom}}</a></th>
-                                                    <th scope="row"><a href="{{route('ad.sante.traitement.consultation',encrypt($consultation->id))}}">{{$consultation->rendez_vous->motif}}</a></th>
+                                                    <td>{{$consultation->created_at->diffForHumans()}}</td>
+                                                    <td scope="row">{{$consultation->tarif_consultation->type_consultation->type_consultation}}</td>
+                                                    <td scope="row">{{$consultation->medecin->nom.' '.$consultation->medecin->prenom}}</td>
+                                                    <td scope="row">{{$consultation->rendez_vous->motif}}</td>
                                                     {{-- <td style="text-align:right">{{ number_format($consultation->montant,2,","," ").'
                                                         '.$consultation->user->agence->devise->unite}}</td> --}}
                                                     <td>
@@ -299,7 +298,7 @@
                                         {{-- <h5 class="card-title">Card with header and footer</h5> --}}
                                         <table class="table">
                                             <thead>
-                                                <tr  class="bg-secondary text-white">
+                                                <tr  class="text-white bg-secondary">
                                                     <th scope="col">Date</th>
                                                     <th scope="col">Prescris par</th>
                                                     <th scope="col">Type</th>
@@ -331,7 +330,7 @@
                                         {{-- <h5 class="card-title">Card with header and footer</h5> --}}
                                         <table class="table ">
                                             <thead>
-                                                <tr class="bg-secondary text-white">
+                                                <tr class="text-white bg-secondary">
                                                     <th scope="col">Date</th>
                                                     <th scope="col">Type</th>
                                                     <th scope="col">Libelle</th>
@@ -352,7 +351,7 @@
                                     <div class="card-body">
                                         <table class="table">
                                             <thead>
-                                                <tr class="bg-secondary text-white">
+                                                <tr class="text-white bg-secondary">
                                                     <th scope="col">Date</th>
                                                     <th scope="col">Type</th>
                                                     <th scope="col">Libelle</th>
@@ -371,7 +370,7 @@
                                         <div class="card-body">
                                             <table class="table ">
                                                 <thead>
-                                                    <tr class="bg-secondary text-white">
+                                                    <tr class="text-white bg-secondary">
                                                         <th scope="col">Date</th>
                                                         <th scope="col">Nom du vaccin</th>
                                                         <th scope="col">prevention contre</th>
@@ -391,7 +390,7 @@
                                         <div class="card-body">
                                             <table class="table">
                                                 <thead>
-                                                    <tr class="bg-secondary text-white">
+                                                    <tr class="text-white bg-secondary">
                                                         <th scope="col">Date</th>
                                                         <th scope="col">Realiser pas</th>
                                                         <th scope="col">Categorie</th>
@@ -418,7 +417,7 @@
                                     <div class="card-body">
                                         <table class="table">
                                             <thead>
-                                                <tr class="bg-secondary text-white">
+                                                <tr class="text-white bg-secondary">
                                                     <th scope="col">Date</th>
                                                     <th scope="col">Prescrit par</th>
                                                     <th scope="col">Libelle</th>
@@ -452,7 +451,7 @@
                                         {{-- <h5 class="card-title">Card with header and footer</h5> --}}
                                         <table class="table">
                                             <thead>
-                                                <tr  class="bg-secondary text-white">
+                                                <tr  class="text-white bg-secondary">
                                                     <th scope="col">date</th>
                                                     <th scope="col">Type</th>
                                                     <th scope="col">Libelle</th>
@@ -477,7 +476,7 @@
                                         <div class="card-body">
                                             <table class="table ">
                                                 <thead>
-                                                    <tr  class="bg-secondary text-white">
+                                                    <tr  class="text-white bg-secondary">
                                                         <th scope="col">Date</th>
                                                         <th scope="col">Type</th>
                                                         <th scope="col">Libelle</th>
@@ -497,7 +496,7 @@
                                         {{-- <h5 class="card-title">Card with header and footer</h5> --}}
                                         <table class="table ">
                                             <thead>
-                                                <tr class="bg-secondary text-white">
+                                                <tr class="text-white bg-secondary">
                                                     <th scope="col">Maison assurance</th>
                                                     <th scope="col">categorie prise en charge</th>
                                                     <th scope="col">Debut validité</th>
@@ -526,7 +525,7 @@
                             <div class="tab-pane fade" id="rendez-vous" role="tabpanel" aria-labelledby="rendez-vous-tab">
                               <!-- Table with stripped rows -->
                               <table class="table datatable">
-                                <thead class="bg-secondary text-white">
+                                <thead class="text-white bg-secondary">
                                     <tr>
                                         <!-- <th scope="col">#</th> -->
                                         {{-- <th scope="col">Patient</th> --}}
@@ -576,7 +575,7 @@
                                     {{-- <h5 class="card-title">Card with header and footer</h5> --}}
                                     <table class="table ">
                                         <thead>
-                                            <tr  class="bg-secondary text-white">
+                                            <tr  class="text-white bg-secondary">
                                                 <th scope="col">Date</th>
                                                 <th scope="col">Type</th>
                                                 <th scope="col">Realiser par</th>
@@ -588,11 +587,11 @@
                                         <tbody>
                                             @foreach ($consutlation_traitement as $consultation )
                                             <tr>
-                                                <th>{{$consultation->created_at->diffForHumans()}}</th>
-                                                <th scope="row"><a href="#">{{$consultation->tarif_consultation->type_consultation->type_consultation}}</a></th>
+                                                <td>{{$consultation->created_at->diffForHumans()}}</td>
+                                                <td scope="row">{{$consultation->tarif_consultation->type_consultation->type_consultation}}</td>
 
-                                                <th scope="row"><a href="#">{{$consultation->medecin->nom.' '.$consultation->medecin->prenom}}</a></th>
-                                                <th scope="row"><a href="#">{{$consultation->rendez_vous->motif}}</a></th>
+                                                <td scope="row">{{$consultation->medecin->nom.' '.$consultation->medecin->prenom}}</td>
+                                                <td scope="row">{{$consultation->rendez_vous->motif}}</te>
                                                 {{-- <td style="text-align:right">{{ number_format($consultation->montant,2,","," ").'
                                                     '.$consultation->user->agence->devise->unite}}</td> --}}
                                                 <td>
@@ -667,7 +666,7 @@
                                             <div class="accordion-body">
                                                     <!-- Default Table -->
                                                 <table class="table">
-                                                    <thead class="bg-primary text-white">
+                                                    <thead class="text-white bg-primary">
                                                     <tr>
                                                         <th scope="col">Date</th>
                                                         <th scope="col">Type</th>

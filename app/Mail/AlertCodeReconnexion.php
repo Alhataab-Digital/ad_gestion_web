@@ -13,20 +13,44 @@ class AlertCodeReconnexion extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $code1;
+    public $mailMessage;
+    public $subject;
     /**
      * Create a new message instance.
      */
-    public function __construct($code)
+    public function __construct($mailMessage,$subject)
     {
-        $this->code1=$code;
+        $this->mailMessage=$mailMessage;
+        $this->subject=$subject;
     }
 
-
-
-    public function build()
+    /**
+     * Get the message envelope.
+     */
+    public function envelope(): Envelope
     {
-        return $this->view('email.alert_compte')
-                    ->with('details', $this->code1);
+        return new Envelope(
+            subject: $this->subject,
+        );
+    }
+
+    /**
+     * Get the message content definition.
+     */
+    public function content(): Content
+    {
+        return new Content(
+            view: 'email.alert_compte',
+        );
+    }
+
+    /**
+     * Get the attachments for the message.
+     *
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     */
+    public function attachments(): array
+    {
+        return [];
     }
 }

@@ -11,6 +11,7 @@ class ConnexionUser extends Model
 
     protected $fillable = [
         'utilisateur_id',
+        'code',
         'etat',
     ];
 

@@ -27,7 +27,7 @@ return [
     */
 
     'view_path' => resource_path('views/livewire'),
-
+    'manifest_path' => public_path('public/livewire/manifest.json'),
     /*
     |---------------------------------------------------------------------------
     | Layout

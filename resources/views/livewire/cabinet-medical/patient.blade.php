@@ -162,10 +162,12 @@
                                     <td>{{ $patient->telephone}}</td>
 
                                     <td>
+                                        @if (Auth::user()->id==6)
                                         <a wire:navigate href="{{route('ad.sante.dossier.patient',encrypt($patient->id))}}">
                                             <button type="button" class="btn btn-secondary"><i
                                                     class="bx bx-folder-plus"></i></button>
                                         </a>
+                                        @endif
                                         <a wire:navigate href="{{route('ad.sante.edit.patient',encrypt($patient->id))}}">
                                             <button type="button" class="btn btn-info"><i
                                                     class="bi bi-pencil"></i></button>

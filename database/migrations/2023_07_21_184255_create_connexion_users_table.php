@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('connexion_users', function (Blueprint $table) {
             $table->id();
             $table->foreignId('utilisateur_id')->constrained();
+            $table->string('code')->nullable();
             $table->string('etat');
             $table->timestamps();
         });
