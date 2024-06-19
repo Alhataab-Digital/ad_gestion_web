@@ -142,6 +142,7 @@
 
     </ul>
 </li><!-- End Tables Nav -->
+
 @endif
 @if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id
 =="3"||Auth::user()->role_id =="4")
@@ -175,8 +176,33 @@
 </li>
 <!-- End Forms Nav -->
 @endif
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id
+=="3"||Auth::user()->role_id =="4"||Auth::user()->role_id =="5")
+<li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#facturation-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-gear-wide-connected"></i><span>Facturations & paiements</span><i
+            class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="facturation-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
+        <li>
+            <a href="{{route('ad.sante.facturation.consultation')}}">
+                <i class="bi bi-circle"></i><span>Reglement consultation</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{route('ad.sante.facturation.prestation')}}">
+                <i class="bi bi-circle"></i><span>Facturation prestation</span>
+            </a>
+        </li>
 
-
+        <li>
+            <a href="{{route('ad.sante.vente.medicament')}}">
+                <i class="bi bi-circle"></i><span>Vente medicament</span>
+            </a>
+        </li>
+    </ul>
+</li>
+@endif
 <li class="nav-heading">Gestion medicale</li>
 @if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id
 =="3"||Auth::user()->role_id =="4"|| Auth::user()->role_id =="5"|| Auth::user()->role_id =="6")
@@ -192,6 +218,7 @@
                 <i class="bi bi-circle"></i><span>Dossier Patient</span>
             </a>
         </li>
+
     </ul>
 </li>
 @if(Auth::user()->role_id =="6" && Auth::user()->espace_id != 0)
@@ -204,6 +231,42 @@
 </li><!-- End Contact Page Nav -->
 
 @endif
+@endif
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"|| Auth::user()->role_id
+=="3")
+<!-- End Charts Nav -->
+<li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#plannification-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-journal-text"></i><span>Gestion medecin </span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="plannification-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
+        <li>
+            <a href="{{route('ad.sante.index.medecin')}}">
+                <i class="bi bi-circle"></i><span>Dossier medecin</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{route('ad.sante.index.planification.medecin')}}">
+                <i class="bi bi-circle"></i><span>Agenda medecin</span>
+            </a>
+        </li>
+
+        {{-- <li>
+            <a href="">
+                <i class="bi bi-circle"></i><span> Rendez-vous</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="">
+                <i class="bi bi-circle"></i><span> Consultation</span>
+            </a>
+        </li> --}}
+
+
+
+    </ul>
+</li>
 @endif
 @if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id
 =="3"||Auth::user()->role_id =="5")
@@ -224,30 +287,6 @@
 @if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id
 =="3"||Auth::user()->role_id =="4"||Auth::user()->role_id =="5")
 
-<li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#facturation-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-gear-wide-connected"></i><span>Gestion facturation & paiements</span><i
-            class="bi bi-chevron-down ms-auto"></i>
-    </a>
-    <ul id="facturation-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
-        <li>
-            <a href="{{route('ad.sante.facturation.consultation')}}">
-                <i class="bi bi-circle"></i><span>Reglement consultation</span>
-            </a>
-        </li>
-        <li>
-            <a href="">
-                <i class="bi bi-circle"></i><span>Facture prestation</span>
-            </a>
-        </li>
-
-        <li>
-            <a href="">
-                <i class="bi bi-circle"></i><span>Vente produit pharmaceutique</span>
-            </a>
-        </li>
-    </ul>
-</li>
 @if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id
 =="3")
 
@@ -284,36 +323,31 @@
 @endif
 @endif
 @endif
-@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"|| Auth::user()->role_id
-=="3")
-<!-- End Charts Nav -->
+
+@if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"||Auth::user()->role_id
+=="3"||Auth::user()->role_id =="4"||Auth::user()->role_id =="5")
+
+<li class="nav-heading">Gestion d'analyse medicale</li>
+
 <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#plannification-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-journal-text"></i><span>Gestion medecin </span><i class="bi bi-chevron-down ms-auto"></i>
+    <a class="nav-link collapsed" data-bs-target="#labo-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-journal-text"></i><span>Gestion Laboratoire</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
-    <ul id="plannification-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
-        <li>
-            <a href="{{route('ad.sante.index.medecin')}}">
-                <i class="bi bi-circle"></i><span>Dossier medecin</span>
-            </a>
-        </li>
+    <ul id="labo-nav" class="nav-content collapse bg-white " data-bs-parent="#sidebar-nav">
 
-        {{-- <li>
+        <li>
             <a href="">
-                <i class="bi bi-circle"></i><span> Rendez-vous</span>
+                <i class="bi bi-circle"></i><span>Analyse medicale</span>
             </a>
         </li>
 
         <li>
             <a href="">
-                <i class="bi bi-circle"></i><span> Consultation</span>
+                <i class="bi bi-circle"></i><span>Resultat analyse medicale</span>
             </a>
-        </li> --}}
-
-
+        </li>
 
     </ul>
-</li>
 @endif
 @if(Auth::user()->role_id =="1" || Auth::user()->role_id =="0"|| Auth::user()->role_id =="2"|| Auth::user()->role_id
 =="3")
@@ -341,13 +375,8 @@
             </a>
         </li>
         <li>
-            <a href="{{route('ad.sante.index.planification.medecin')}}">
-                <i class="bi bi-circle"></i><span>Agenda medecin</span>
-            </a>
-        </li>
-        <li>
             <a href="{{route('ad.sante.maison.assurance.medicale')}}">
-                <i class="bx bxs-institution"></i><span>Assureur</span>
+                <i class="bx bxs-institution"></i><span>Collaborateur d'assurance</span>
             </a>
         </li>
         <li>
@@ -356,8 +385,23 @@
             </a>
         </li>
         <li>
-            <a href="">
-                <i class="bx bxs-institution"></i><span>Type de prestation</span>
+            <a href="{{route('ad.sante.type.prestation')}}">
+                <i class="bx bxs-institution"></i><span>Type prestation</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{route('ad.sante.tarif.prestation')}}">
+                <i class="bx bxs-institution"></i><span>Tarif prestation</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{route('ad.sante.type.consultation')}}">
+                <i class="bx bxs-institution"></i><span>Type consultation</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{route('ad.sante.tarif.consultation')}}" wire:navigate>
+                <i class="bi bi-circle"></i><span>Tarifs consultation</span>
             </a>
         </li>
         <li>
@@ -385,29 +429,6 @@
                 <i class="bx bxs-institution"></i><span>Medicaments</span>
             </a>
         </li>
-
-    </ul>
-</li>
-<li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#config-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-gear-wide-connected"></i><span>Config consultation</span><i
-            class="bi bi-chevron-down ms-auto"></i>
-    </a>
-    <ul id="config-nav" class="nav-content collapse bg-white" data-bs-parent="#sidebar-nav">
-
-
-        <li>
-            <a href="{{route('ad.sante.type.consultation')}}">
-                <i class="bx bxs-institution"></i><span>Type consultation</span>
-            </a>
-        </li>
-        <li>
-            <a href="{{route('ad.sante.tarif.consultation')}}" wire:navigate>
-                <i class="bi bi-circle"></i><span>Tarifs consultation</span>
-            </a>
-        </li>
-
-
 
     </ul>
 </li>

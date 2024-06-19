@@ -14,22 +14,27 @@ class MedecinUser extends Component
     public $utilisateurs=[];
     public $utilisateur=null ;
     public $medecin;
+    public $users;
 
     public $roles=[];
     public $role=null ;
 
     public function mount()
     {
-        $this->roles=Role::all();
-        $this->utilisateurs=Utilisateur::all();
-        $this->medecins=Medecin::all();
+        $societe_id = Auth::user()->societe_id;
+        $this->roles=Role::where('Role','Medecin')->get();
+        // $this->utilisateurs=Utilisateur::where('espace_id',0)->where('role_id','!=',0)->where('societe_id', $societe_id)->get();
+        $this->users=Utilisateur::where('espace_id','!=',0)->get();
+        $this->medecins=Medecin::where('societe_id', $societe_id)->get();
     }
 
     public function updatedRole($roleId)
     {
 
         $this->utilisateurs = Utilisateur::where('role_id', $roleId)
+        ->where('espace_id',0)
             ->get();
+            $this->utilisateur=null ;
     }
 
 
@@ -48,19 +53,25 @@ class MedecinUser extends Component
             ]
         );
 
-    if(isset(Utilisateur::where('espace_id',$validated['medecin'])->first()->id)){
-            return redirect()->route('ad.sante.medecin.user')->with('danger', 'Medecin deja associe');
-        }else{
-        $user=Utilisateur::where('id',$validated['utilisateur'])->first();
+        if(isset(Utilisateur::where('espace_id',$validated['medecin'])->first()->id)){
+                return redirect()->route('ad.sante.medecin.user')->with('danger', 'Medecin déjà associé');
+            }else{
+            $user=Utilisateur::where('id',$validated['utilisateur'])->first();
+            $user->update([
+                'espace_id'=>$validated['medecin'],
+            ]);
+            return redirect()->route('ad.sante.medecin.user')->with('success', 'Medecin associé avec succès');
+            }
+            dd('reo');
 
-        $user->update([
-            'espace_id'=>$validated['medecin'],
+    }
+    public function delete($id)
+    {
+        $utilisateur = Utilisateur::find($id);
+        $utilisateur->update([
+            'espace_id'=> 0,
         ]);
-        return redirect()->route('ad.sante.medecin.user')->with('success', 'medecin associer avec succès');
-        }
-dd('reo');
-
-
+        return redirect()->route('ad.sante.medecin.user')->with('danger', 'Medecin dissocié ');
     }
 
 }

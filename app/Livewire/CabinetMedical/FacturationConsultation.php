@@ -12,6 +12,7 @@ class FacturationConsultation extends Component
 {
 
     public $facturations=[];
+    public $facturations_non_paye=[];
     public $paiements=[];
     public $utilisateur=[];
     public $telephone='';
@@ -22,7 +23,8 @@ class FacturationConsultation extends Component
             $user_id = Auth::user()->id;
             $this->utilisateur=Utilisateur::where('id',$user_id)->first();
             $this->telephone=$this->utilisateur->agence->region->indicatif;
-            $this->facturations=Facturation::where('societe_id',$societe_id)->orderBy('id',"DESC")->get();
+            $this->facturations_non_paye=Facturation::where('societe_id',$societe_id)->where('etat',0)->orderBy('id',"DESC")->get();
+            $this->facturations=Facturation::where('societe_id',$societe_id)->where('etat','!=',0)->orderBy('id',"DESC")->get();
             $this->paiements=PaiementRecu::where('societe_id',$societe_id)->orderBy('id',"DESC")->get();
 
     }

@@ -91,8 +91,6 @@ use App\Livewire\CabinetMedical\CategorieMedicale;
 ---------------------------
 */
 
-use App\Livewire\CabinetMedical\TarifMedical;
-use App\Livewire\CabinetMedical\TarifMedicalEdit;
 use App\Livewire\CabinetMedical\Medecin;
 use App\Livewire\CabinetMedical\MedecinDossier;
 use App\Livewire\CabinetMedical\MedecinEdit;
@@ -108,6 +106,7 @@ use App\Livewire\CabinetMedical\EditTarifConsultation;
 use App\Livewire\CabinetMedical\EditTypeConcultation;
 use App\Livewire\CabinetMedical\Examen;
 use App\Livewire\CabinetMedical\FacturationConsultation;
+use App\Livewire\CabinetMedical\FacturationPrestation;
 use App\Livewire\CabinetMedical\MaisonAssurance;
 use App\Livewire\CabinetMedical\MaisonAssuranceEdit;
 use App\Livewire\CabinetMedical\MedecinUser;
@@ -119,16 +118,18 @@ use App\Livewire\CabinetMedical\RendezVousConsultation;
 use App\Livewire\CabinetMedical\ResultatConsultation;
 use App\Livewire\CabinetMedical\SpecialiteMedicale;
 use App\Livewire\CabinetMedical\TarifConsultation;
+use App\Livewire\CabinetMedical\TarifPrestation;
 use App\Livewire\CabinetMedical\TraitementConsultation;
 use App\Livewire\CabinetMedical\TypeConsultation;
 use App\Livewire\CabinetMedical\TypeExamen;
-
+use App\Livewire\CabinetMedical\TypePrestation;
+use App\Livewire\CabinetMedical\VenteMedicament;
 use Livewire\Livewire;
 
 // Enregistrer une route de mise à jour personnalisée pour Livewire
 Livewire::setUpdateRoute(function ($handle) {
     return Route::post('/livewire/update', $handle)
-        ->middleware(['web', 'auth', 'localization']); // Ajouter des middlewares supplémentaires
+        ->middleware(['web', 'auth']); // Ajouter des middlewares supplémentaires
 });
 /*
  --------------------------
@@ -975,6 +976,13 @@ Route::middleware(['auth','initier'])->prefix('assurance')->controller(PrimeNetC
             Route::get('ad/sante/type/consultation',TypeConsultation::class)->name('type.consultation');
             Route::get('ad/sante/edit/type/consultation',EditTypeConcultation::class)->name('edit.type.consultation');
             Route::get('ad/sante/consultation',Consultation::class)->name('index.consultation');
+
+            Route::get('ad/sante/tarif/prestation',TarifPrestation::class,)->name('tarif.prestation');
+            Route::get('ad/sante/type/prestation',TypePrestation::class)->name('type.prestation');
+            Route::get('ad/sante/prestation',FacturationPrestation::class)->name('facturation.prestation');
+
+            Route::get('ad/sante/vente/medicament',VenteMedicament::class)->name('vente.medicament');
+
 
             Route::get('ad/sante/consultation/rendez-vous',RendezVousConsultation::class)->name('rendez-vous.consultation');
             Route::get('ad/sante/consultation/rendez-vous/{id}/Dossier',DossierRendezVousConsultation::class)->name('dossier.rendez-vous.consultation');

@@ -19,10 +19,16 @@
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
 
                         <li class="nav-item" role="facturation">
-                            <button class="nav-link active" id="facturation-tab" data-bs-toggle="tab"
-                                data-bs-target="#facturation" type="button" role="tab" aria-controls="facturation"
+                            <button class="nav-link active" id="npaye-tab" data-bs-toggle="tab"
+                                data-bs-target="#npaye" type="button" role="tab" aria-controls="npaye"
                                 aria-selected="false">
-                                Facture consultation</button>
+                                Facture consultation non payé</button>
+                        </li>
+                        <li class="nav-item" role="facturation">
+                            <button class="nav-link " id="payer-tab" data-bs-toggle="tab"
+                                data-bs-target="#paye" type="button" role="tab" aria-controls="paye"
+                                aria-selected="false">
+                                Facture consultation payé</button>
                         </li>
                         <li class="nav-item" role="caisse">
                             <button class="nav-link" id="caisse-tab" data-bs-toggle="tab" data-bs-target="#caisse"
@@ -32,8 +38,95 @@
                     </ul>
                     <div class="tab-content pt-2" id="myTabContent">
 
+                        <div class="tab-pane fade show active" id="npaye" role="tabpanel"
+                            aria-labelledby="facturation-tab">
+                            <!-- Table with stripped rows -->
+                            <table class="table datatable">
+                                <thead class="bg-primary text-white">
+                                    <tr>
+                                        <th scope="col">N° FAC</th>
+                                        <th scope="col">Patient</th>
+                                        <th scope="col">date </th>
+                                        <th scope="col">type consultation</th>
+                                        {{-- <th scope="col">Medecin</th> --}}
+                                        <th scope="col">montant</th>
+                                        <th scope="col">part assurer</th>
+                                        <th scope="col">part patient</th>
+                                        <th scope="col">montant payé</th>
+                                        <th scope="col">reste à payer</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($facturations_non_paye as $facturation )
+                                    <tr>
+                                        <td>{{
+                                            \Carbon\Carbon::parse($facturation->created_at)->format('dmy').''.$facturation->id}}
+                                        </td>
+                                        <td>{{ $facturation->patient->nom}} {{ $facturation->patient->prenom}}</td>
+                                        <td>{{ \Carbon\Carbon::parse($facturation->created_at)->format('d-m-Y')}}</td>
+                                        <td>{{
+                                            $facturation->rendez_vous->planification->tarif_consultation->type_consultation->type_consultation}}
+                                        </td>
+                                        {{-- <td>{{ $facturation->medecin->prenom.' '.$facturation->medecin->nom}}</td>
+                                        --}}
 
-                        <div class="tab-pane fade show active" id="facturation" role="tabpanel"
+                                        <td style="text-align:right">{{
+                                            number_format($facturation->montant,2,","," ").'
+                                            '.$facturation->user->agence->devise->unite}}
+                                        </td>
+                                        <td style="text-align:right; color:green">{{
+                                            number_format($facturation->montant_assurer,2,","," ").'
+                                            '.$facturation->user->agence->devise->unite}}
+                                        </td>
+                                        <td style="text-align:right">{{
+                                            number_format($facturation->montant_patient,2,","," ").'
+                                            '.$facturation->user->agence->devise->unite}}
+                                        </td>
+
+                                        <td style="text-align:right">{{
+                                            number_format($facturation->montant_paye,2,","," ").'
+                                            '.$facturation->user->agence->devise->unite}}
+                                        </td>
+
+                                        <td style="text-align:right; color:red">{{
+                                            number_format($facturation->reste_a_payer,2,","," ").'
+                                            '.$facturation->user->agence->devise->unite}}
+                                        </td>
+                                        <td>
+                                            @if($facturation->etat==0)
+                                            <span class="badge bg-danger"> à payé</span>
+                                            @endif
+                                            @if($facturation->etat==1)
+                                            <span class="badge bg-success">payée</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            {{-- <a href=""> <button type="button" class="btn btn-primary btn-sm">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                            </a> --}}
+                                            @if($facturation->etat==0)
+                                            <a href="{{route('ad.sante.recu.consultation',encrypt($facturation->id))}}">
+                                                <button class="btn btn-danger btn-sm">
+                                                    <i class="bi bi-wallet2"></i></button>
+                                            </a>
+                                            @endif
+                                            @if($facturation->etat==1)
+                                            <a href="{{route('ad.sante.recu.consultation',encrypt($facturation->id))}}">
+                                                <button class="btn btn-secondary btn-sm">
+                                                    <i class="bx bx-printer"></i></button>
+                                            </a>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            <!-- End Table with stripped rows -->
+                        </div>
+                        <div class="tab-pane fade show " id="paye" role="tabpanel"
                             aria-labelledby="facturation-tab">
                             <!-- Table with stripped rows -->
                             <table class="table datatable">

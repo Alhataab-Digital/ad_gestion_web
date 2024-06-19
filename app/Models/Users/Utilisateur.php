@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\TypeGestion;
 use App\Models\Societe;
 use App\Models\Agences\Agence;
+use App\Models\CabinetMedical\Medecin;
 use App\Models\Caisse\Caisse;
 
 class Utilisateur extends Model implements Authenticatable
@@ -46,7 +47,7 @@ class Utilisateur extends Model implements Authenticatable
 
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class,'role_id');
     }
 
     public function caisses()
@@ -57,5 +58,9 @@ class Utilisateur extends Model implements Authenticatable
     public function agence()
     {
         return $this->belongsTo(Agence::class);
+    }
+    public function medecin()
+    {
+        return $this->belongsTo(Medecin::class,'espace_id');
     }
 }
