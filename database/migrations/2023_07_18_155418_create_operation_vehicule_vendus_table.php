@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('operation_vehicule_vendus', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
             $table->foreignId('caisse_id')->constrained();
-            $table->foreignId('activite_id')->constrained();
+            $table->foreignId('activite_id')->constrained()->references('id')->on('activite_investissements');;
             $table->foreignId('operation_vehicule_achete_id')->constrained();
             $table->foreignId('client_id')->constrained();
             $table->float('prix_vente')->nullable();

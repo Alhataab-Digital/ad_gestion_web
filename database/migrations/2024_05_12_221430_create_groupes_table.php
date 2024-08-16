@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('groupes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
             $table->foreignId('societe_id')->constrained();
             $table->string('code_groupe');
             $table->string('libelle_groupe');

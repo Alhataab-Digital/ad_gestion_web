@@ -26,11 +26,11 @@ return new class extends Migration
             $table->string('mail');
 
             $table->string('matricule');
-            $table->foreignId('specialite_id')->constrained();
-            $table->foreignId('categorie_medicale_id')->constrained();
-            $table->foreignId('espace_id')->nullable()->constrained();
+            $table->foreignId('specialite_id')->constrained()->references('id')->on('specialite_medecins');
+            $table->foreignId('categorie_medicale_id')->constrained()->references('id')->on('categorie_medecins');
+            $table->foreignId('espace_id')->nullable()->constrained()->references('id')->on('utilisateurs');
 
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
             $table->foreignId('societe_id')->constrained();
             $table->timestamps();
         });

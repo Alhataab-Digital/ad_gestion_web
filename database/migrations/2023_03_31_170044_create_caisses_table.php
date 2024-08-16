@@ -19,7 +19,7 @@ return new class extends Migration
             $table->float('compte');
             $table->date('date_comptable')->nullable();
             $table->integer('devise_id')->default(0);
-            $table->integer('user_id')->default(0);
+            $table->integer('user_id')->default(0)->references('id')->on('utilisateurs');
             $table->char('etat')->default(0);
             $table->foreignId('agence_id')->constrained();
             $table->foreignId('societe_id')->constrained();

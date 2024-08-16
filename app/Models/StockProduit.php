@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Agences\Agence;
+use App\Models\Investissement\EntrepotStock;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\EntrepotStock;
 use App\Models\Produit;
-use App\Models\Agence;
 
 class StockProduit extends Model
 {

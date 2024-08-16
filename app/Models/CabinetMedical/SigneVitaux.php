@@ -19,7 +19,7 @@ class SigneVitaux extends Model
         'pression_arterielle',
         'saturation_oxygene',
         'douleur',
-        'consultation_id',
+        'numero_ordre',
         'patient_id',
         'medecin_id',
         'user_id',

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('mouvement_caisses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('caisse_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
             $table->text('description');
             $table->integer('entree')->default(0);
             $table->integer('sortie')->default(0);

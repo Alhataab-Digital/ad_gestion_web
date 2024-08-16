@@ -16,7 +16,11 @@
                                             class="bx bx-folder-plus"></i></button>
                                 </a>
                                 @endif
-
+                                @if(($prise_en_charge))
+                                @else
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                data-bs-target="#addAssurance"><i class="bi bi-plus"></i> Ajouter une prise en charge</button>
+                                @endif
                         </span>
                       </li>
                 </h1>
@@ -218,6 +222,28 @@
                                     <span class="text-danger">{{$message}}</span>
                                     @enderror
                                 </div>
+                                @if(($prise_en_charge))
+                                <div class="col-md-6">
+                                    <label for="inputEmail5" class="form-label">Prise en charge</label>
+                                    <input type="text" class="form-control" value="Oui"
+                                        id="inputEmail5" disabled>
+                                </div>
+                                    @else
+                                    <div class="col-md-6">
+                                        <label for="inputEmail5" class="form-label">Prise en charge</label>
+                                        <input type="text" class="form-control" value="Non"
+                                            id="inputEmail5" disabled>
+                                    </div>
+                                    @endif
+
+                                <div class="col-md-6">
+                                    <label for="inputEmail5" class="form-label">groupe sanguin</label>
+                                    <input type="text" class="form-control" wire:model='groupe_sanguin'
+                                        id="inputEmail5">
+                                    @error('groupe_sanguin')
+                                    <span class="text-danger">{{$message}}</span>
+                                    @enderror
+                                </div>
                                 <div class="col-md-6">
                                     <label for="inputCity" class="form-label">Taille(m)</label>
                                     <input type="text" class="form-control" id="inputCity" wire:model='taille'>
@@ -232,22 +258,7 @@
                                     <span class="text-danger">{{$message}}</span>
                                     @enderror
                                 </div>
-                                {{-- <div class="col-md-6">
-                                    <label for="inputEmail5" class="form-label">Temperature</label>
-                                    <input type="text" class="form-control" wire:model='temperature'
-                                        id="inputEmail5">
-                                    @error('temperature')
-                                    <span class="text-danger">{{$message}}</span>
-                                    @enderror
-                                </div> --}}
-                                <div class="col-md-12">
-                                    <label for="inputEmail5" class="form-label">groupe sanguin</label>
-                                    <input type="text" class="form-control" wire:model='groupe_sanguin'
-                                        id="inputEmail5">
-                                    @error('groupe_sanguin')
-                                    <span class="text-danger">{{$message}}</span>
-                                    @enderror
-                                </div>
+
                                 <div class="col-md-12">
                                     <label for="inputPassword5" class="form-label">ICM</label>
                                     <input type="text" class="form-control" id="inputPassword5"  wire:model='icm' disabled>
@@ -267,17 +278,13 @@
                     <!-- Card with header and footer -->
 
                 </div>
-                <div class="form-signin w-90 m-auto col-lg-8">
+                <div class="form-signin w-90 m-auto col-lg-4'">
                     <div class="card">
                         <div class="card-header bg-ligth text-white">
                             <li class="list-group-item d-flex justify-content-between align-items-center text-white">
                                 ASSUREURS
                                 <span class=" bg-primary rounded-pill">
-                                    @if($prise_en_charges)
-                                    @else
-                                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                    data-bs-target="#addAssurance"><i class="bi bi-plus"></i></button>
-                                    @endif
+
 
                                 </span>
                               </li>
@@ -352,36 +359,7 @@
                             </div>
                         </div>
                         <!-- End Basic Modal-->
-                        <div class="card-body">
-                            {{-- <h5 class="card-title">Card with header and footer</h5> --}}
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Nom assureur</th>
-                                        <th scope="col">N° contrat</th>
-                                        <th scope="col">Type consultation</th>
-                                        <th scope="col">Debut validité</th>
-                                        <th scope="col">Fin validité</th>
-                                        <th scope="col">Recouvrement en %</th>
-                                        {{-- <th scope="col">Numero adherant</th> --}}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($contrat_assurances as $contrat_assurance )
-                                    <tr>
-                                        <td>{{$contrat_assurance->maison_assurance->maison_assurance}}</td>
-                                        <td>{{$contrat_assurance->id}}</td>
-                                        <td>{{$contrat_assurance->tarif_consultation->type_consultation->type_consultation}}</td>
-                                        <td>{{$contrat_assurance->date_debut}}</td>
-                                        <td>{{$contrat_assurance->date_fin}}</td>
-                                        <td style="text-align:center" >{{$contrat_assurance->taux_couverture.' %'}}</td>
-                                        {{-- <td style="text-align:right">{{ number_format($contrat_assurance->tarif_consultation->montant,2,","," ").'
-                                            '.$contrat_assurance->user->agence->devise->unite}}</td> --}}
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+
                     </div><!-- End Card with header and footer -->
                 </div>
 

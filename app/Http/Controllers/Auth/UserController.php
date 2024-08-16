@@ -52,7 +52,7 @@ class UserController extends Controller
             $id = Auth::user()->societe_id;
             $utilisateurs = Utilisateur::all();
             $filelogs = ConnexionUser::orderBy('id', 'desc')->get();
-            return view('users.filelog', compact('filelogs', 'utilisateurs'));
+            return view('users.filelog', compact('filelogs', ));
         }
         return redirect('/')->with('danger', "Session expirée");
     }

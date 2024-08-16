@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CabinetMedical\TypeHospitalisation;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,10 +15,24 @@ return new class extends Migration
         Schema::create('type_hospitalisations', function (Blueprint $table) {
             $table->id();
             $table->string('type_hospitalisation');
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('societe_id')->constrained();
+            $table->double('tarif_hospitalisation');
             $table->timestamps();
         });
+        $type_hospitalisations = [
+
+            [
+                'Urgence',
+                "0",
+            ],
+
+        ];
+
+        foreach ($type_hospitalisations as $type_hospitalisation) {
+            TypeHospitalisation::create([
+                'type_hospitalisation' => $type_hospitalisation[0],
+                'tarif_hospitalisation' => $type_hospitalisation[1],
+            ]);
+        }
     }
 
     /**

@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('facturations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('rdv_id')->constrained();
+            $table->string('numero_ordre');
+            $table->string('numero_piece');
             $table->foreignId('patient_id')->constrained();
             $table->foreignId('medecin_id')->constrained();
-            $table->foreignId('tarif_consultation_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->integer('contrat_id')->default(0);
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');
             $table->foreignId('societe_id')->constrained();
             $table->string('taux_assurer')->default(0);
             $table->string('montant');

@@ -10,6 +10,7 @@ class SpecialiteMedicale extends Component
 {
     public $specialites=[];
     public $specialite;
+    public $description;
 
     public function mount()
     {

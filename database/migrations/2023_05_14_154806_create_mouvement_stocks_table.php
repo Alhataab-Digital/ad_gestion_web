@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('mouvement_stocks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('produit_id')->constrained();
-            $table->foreignId('entrepot_id')->constrained();
+            $table->foreignId('entrepot_id')->constrained()->references('id')->on('entrepot_stocks');
             $table->integer('quantite');
             $table->float('prix_unitaire_produit');
             $table->string('type_mouvement');

@@ -14,7 +14,7 @@ class MaisonAssuranceEdit extends Component
     public $maison_assurance, $maison_assurance_id;
     public $tarif_consultations=[];
     public $contrat_assurances=[];
-    public $tarif_consultation;
+    public $numero_contrat;
     public $date_debut;
     public $date_fin;
     public $taux_couverture;
@@ -75,7 +75,7 @@ class MaisonAssuranceEdit extends Component
 
         $validated =  $this->validate(
             [
-                'tarif_consultation'=>'required',
+                'numero_contrat'=>'required',
                 'date_debut'=> 'required',
                 'date_fin'=> 'required',
                 'taux_couverture'=> 'required',
@@ -94,7 +94,7 @@ class MaisonAssuranceEdit extends Component
         ContratAssurance::create([
 
             'maison_assurance_id'=>$maison_assurance->id,
-            'tarif_consultation_id'=> $validated['tarif_consultation'],
+            'numero_contrat'=> $validated['numero_contrat'],
             'date_debut'=> $validated['date_debut'],
             'date_fin'=>$validated['date_fin'],
             'taux_couverture'=> $validated['taux_couverture'],

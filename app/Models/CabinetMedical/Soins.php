@@ -14,7 +14,7 @@ class Soins extends Model
         'libelle',
         'observation',
         'type_soins_id',
-        'consultation_id',
+        'numero_ordre',
         'patient_id',
         'medecin_id',
         'user_id',
@@ -35,11 +35,11 @@ class Soins extends Model
         }
         public function societe()
         {
-            return $this->belongsTo(Societe::class);
+            return $this->belongsTo(Societe::class,'societe_id');
         }
 
         public function user()
         {
-            return $this->belongsTo(Utilisateur::class);
+            return $this->belongsTo(Utilisateur::class,'user_id');
         }
 }

@@ -16,8 +16,8 @@ return new class extends Migration
             $table->date('date_operation');
             $table->string('montant');
             $table->foreignId('facturation_id')->constrained();
-            $table->foreignId('reglement_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('reglement_id')->constrained()->references('id')->on('type_reglements');
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
             $table->foreignId('societe_id')->constrained();
             $table->timestamps();
         });

@@ -48,10 +48,10 @@ class ResultatConsultation extends Component
         $id=decrypt($id);
 
         $this->consultation =Consultation::find($id);
-        $traitement =Traitement::where('consultation_id', $id)->first();
-        $this->prescriptions =Prescription::where('consultation_id', $id)->get();
-        $this->examens =Examen::where('consultation_id', $id)->get();
-        $this->signe_vitaux =SigneVitaux::where('consultation_id', $id)->get();
+        $traitement =Traitement::where('numero_ordre', $this->consultation->numero_ordre)->first();
+        $this->prescriptions =Prescription::where('numero_ordre', $this->consultation->numero_ordre)->get();
+        $this->examens =Examen::where('numero_ordre', $this->consultation->numero_ordre)->get();
+        $this->signe_vitaux =SigneVitaux::where('numero_ordre', $this->consultation->numero_ordre)->get();
         $this->civilite = $this->consultation->patient->civilite;
         $this->nom = $this->consultation->patient->nom;
         $this->prenom = $this->consultation->patient->prenom;

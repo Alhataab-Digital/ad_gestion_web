@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('detail_activite_investissements', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('activite_id')->constrained();
+            $table->foreignId('activite_id')->constrained()->references('id')->on('activite_investissements');
             $table->foreignId('investisseur_id')->constrained();
             $table->float('montant_investis');
             $table->float('taux')->nullable();

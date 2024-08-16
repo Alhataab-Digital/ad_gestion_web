@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('operation_depense_activites', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('activite_id')->constrained();
+            $table->foreignId('activite_id')->constrained()->references('id')->on('activite_investissements');
             $table->foreignId('secteur_depense_id')->constrained();
             $table->float('montant_depense');
             $table->timestamps();

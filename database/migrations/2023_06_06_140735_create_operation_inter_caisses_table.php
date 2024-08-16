@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('operation_inter_caisses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->integer('user_destination_id')->default(0);
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
+            $table->integer('user_destination_id')->default(0)->references('id')->on('utilisateurs');
             $table->foreignId('caisse_id')->constrained();
-            $table->foreignId('caisse_destination_id')->constrained();
+            $table->foreignId('caisse_destination_id')->constrained()->references('id')->on('caisses');
             $table->float('montant_operation');
             $table->text('commentaire');
             $table->float('taux');

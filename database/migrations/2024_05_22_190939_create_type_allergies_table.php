@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('type_allergies', function (Blueprint $table) {
             $table->id();
             $table->string('type_allergie');
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('societe_id')->constrained();
             $table->timestamps();
         });
     }

@@ -10,5 +10,6 @@ class TypePrestation extends Model
     use HasFactory;
     protected $fillable = [
         'type_prestation',
+        'tarif_prestation',
     ];
 }

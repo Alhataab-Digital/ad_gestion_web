@@ -26,7 +26,7 @@ return new class extends Migration
             $table->float('compte_societe')->default(0);
             $table->float('compte_securite')->default(0);
             $table->foreignId('region_id')->constrained();
-            $table->foreignId('admin_id')->constrained();
+            $table->foreignId('admin_id')->constrained()->references('id')->on('utilisateurs');
             $table->timestamps();
         });
     }

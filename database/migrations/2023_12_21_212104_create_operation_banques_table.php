@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('operation_banques', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
             $table->foreignId('banque_id')->constrained();
             $table->string('source');
             $table->text('description');

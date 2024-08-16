@@ -16,8 +16,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="card-header bg-secondary text-white">
-                            <li class="list-group-item d-flex justify-content-between align-items-center text-white">
+                        <div class="text-white card-header bg-secondary">
+                            <li class="text-white list-group-item d-flex justify-content-between align-items-center">
                                <h5>Espace de travail de  <strong>  {{$medecin->civilite->civilite.' '.$medecin->prenom.' '.$medecin->nom}} : {{$medecin->titre}} </strong></h5>
                                 <span class=" bg-secondary rounded-pill">
                                     <a wire:navigate href="{{route('ad.sante.index.medecin')}}">
@@ -41,25 +41,25 @@
 
                             <!-- Multi Columns Form -->
                             <form class="row g-3">
-                                <div class="col-md-6 bg-secondary text-white">
+                                <div class="text-white col-md-6 bg-secondary">
                                     Nom Prénom
                                </div>
                                 <div class="col-md-6 ">
                                  {{$medecin->civilite->civilite.' '.$medecin->nom.' '.$medecin->prenom}}
                                 </div>
-                                <div class="col-md-6 bg-secondary text-white">
+                                <div class="text-white col-md-6 bg-secondary">
                                     Date naissance
                                 </div>
                                 <div class="col-md-6 ">
                                     {{ \Carbon\Carbon::parse($medecin->date_naissance)->format('d-m-Y')}}
                                 </div>
-                                <div class="col-md-6 bg-secondary text-white">
+                                <div class="text-white col-md-6 bg-secondary">
                                     Lieu de naissance
                                </div>
                                 <div class="col-md-6 ">
                                  {{$medecin->lieu_naissance}}
                                 </div>
-                                <div class="col-md-6 bg-secondary text-white">
+                                <div class="text-white col-md-6 bg-secondary">
                                     Situation matrimoniale
                                </div>
                                 <div class="col-md-6 ">
@@ -85,25 +85,25 @@
                             <!-- Multi Columns Form -->
                             <form class="row g-3">
 
-                                <div class="col-md-6 bg-secondary text-white">
+                                <div class="text-white col-md-6 bg-secondary">
                                     Téléphone
                                </div>
                                 <div class="col-md-6 ">
                                  {{$medecin->telephone}}
                                 </div>
-                                <div class="col-md-6 bg-secondary text-white">
+                                <div class="text-white col-md-6 bg-secondary">
                                     Adresse
                                </div>
                                 <div class="col-md-6 ">
                                  {{$medecin->adresse}}
                                 </div>
-                                <div class="col-md-6 bg-secondary text-white">
+                                <div class="text-white col-md-6 bg-secondary">
                                     Complement adresse
                                </div>
                                 <div class="col-md-6 ">
                                  {{$medecin->complement_adresse}}
                                 </div>
-                                <div class="col-md-6 bg-secondary text-white">
+                                <div class="text-white col-md-6 bg-secondary">
                                     Email
                                </div>
                                 <div class="col-md-6 ">
@@ -123,25 +123,25 @@
                         <div class="card-body">
                             <!-- Multi Columns Form -->
                             <form class="row g-3">
-                                <div class="col-md-6 bg-secondary text-white">
+                                <div class="text-white col-md-6 bg-secondary">
                                     Matricule
                                </div>
                                 <div class="col-md-6 ">
                                  {{$medecin->matricule}}
                                 </div>
-                                <div class="col-md-6 bg-secondary text-white">
+                                <div class="text-white col-md-6 bg-secondary">
                                     Categorie
                                </div>
                                 <div class="col-md-6 ">
                                  {{$medecin->categorie->categorie_medecin}}
                                 </div>
-                                <div class="col-md-6 bg-secondary text-white">
+                                <div class="text-white col-md-6 bg-secondary">
                                     Specialité
                                </div>
                                 <div class="col-md-6 ">
                                  {{$medecin->specialite->specialite_medecin}}
                                 </div>
-                                <div class="col-md-6 bg-secondary text-white">
+                                <div class="text-white col-md-6 bg-secondary">
                                     Titre
                                </div>
                                 <div class="col-md-6 ">
@@ -198,11 +198,11 @@
                               </button>
                               </li>
                           </ul>
-                            <div class="tab-content pt-2" id="myTabContent">
+                            <div class="pt-2 tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" id="consultation" role="tabpanel" aria-labelledby="consultation-tab">
                                     <!-- Table with stripped rows -->
                                     <table class="table">
-                                        <thead class="bg-secondary text-white">
+                                        <thead class="text-white bg-secondary">
                                             <tr>
                                                 <!-- <th scope="col">#</th> -->
                                                 <th scope="col">Patient</th>
@@ -221,20 +221,20 @@
                                             <td>{{ $consultation_en_cour->patient->nom}} {{ $consultation_en_cour->patient->prenom}}</td>
                                             <td>{{ \Carbon\Carbon::parse($consultation_en_cour->rendez_vous->date_rdv)->format('d-m-Y')}}</td>
                                             <td>{{
-                                                $consultation_en_cour->rendez_vous->planification->tarif_consultation->type_consultation->type_consultation}}
+                                                $consultation_en_cour->rendez_vous->planification->type_consultation->type_consultation}}
                                             </td>
 
                                             <td>{{ $consultation_en_cour->rendez_vous->motif}}</td>
                                             <td>{{ $consultation_en_cour->medecin->prenom.' '.$consultation_en_cour->medecin->nom}}</td>
 
                                             <td>
-                                                @if($consultation_en_cour->etat==0)
+                                                @if($consultation_en_cour->etat==3)
                                                 <span class="badge bg-secondary"> attente</span>
                                                 @endif
-                                                @if($consultation_en_cour->etat==1)
+                                                @if($consultation_en_cour->etat==4)
                                                 <span class="badge bg-danger">en cours</span>
                                                 @endif
-                                                @if($consultation_en_cour->etat==2)
+                                                @if($consultation_en_cour->etat==5)
                                                 <span class="badge bg-success">Terminer</span>
                                                 @endif
                                             </td>
@@ -243,10 +243,10 @@
                                                         <i class="bi bi-pencil"></i>
                                                     </button>
                                                 </a> --}}
-                                                @if($consultation_en_cour->etat==0)
+                                                @if($consultation_en_cour->etat==3)
                                                 <button type="button" class="btn btn-dark btn-sm" wire:click='AppelPatient({{$consultation_en_cour->id}})'><i class="ri ri-user-unfollow-line"></i></button>
                                                 @endif
-                                                @if($consultation_en_cour->etat==1)
+                                                @if($consultation_en_cour->etat==4)
                                                 <a wire:navigate href="{{route('ad.sante.dossier.patient',encrypt($consultation_en_cour->patient->id))}}">
                                                     <button class="btn btn-dark btn-sm">
                                                         <i class="ri ri-user-unfollow-line"></i>
@@ -254,7 +254,7 @@
                                                 </a>
 
                                                 @endif
-                                                @if($consultation_en_cour->etat==2)
+                                                @if($consultation_en_cour->etat==5)
                                                 <a href="{{route('ad.sante.resultat.consultation',encrypt($consultation_en_cour->id))}}">
                                                     <button class="btn btn-secondary btn-sm" > <i class="bx bx-printer"></i> </button>
                                                 </a>
@@ -268,12 +268,12 @@
                                 </div>
                             </div>
                             <!-- End Default Tabs -->
-                            <div class="tab-content pt-2" id="myTabContent">
+                            <div class="pt-2 tab-content" id="myTabContent">
                                 <div class="tab-pane fade " id="agenda" role="tabpanel" aria-labelledby="agenda-tab">
 
                                     <!-- Table with stripped rows -->
                                     <table class="table datatable">
-                                        <thead class="bg-secondary text-white">
+                                        <thead class="text-white bg-secondary">
                                             <tr>
                                                 <th scope="col">Consultation</th>
                                                 <th scope="col">Date </th>
@@ -285,7 +285,7 @@
                                             @foreach ($planifications as $planification )
                                             <tr>
                                                 <td>{{
-                                                $planification->tarif_consultation->type_consultation->type_consultation}}
+                                                $planification->type_consultation->type_consultation}}
                                             </td>
                                                 <td>{{ \Carbon\Carbon::parse($planification->jour_semaine)->format('d-m-Y')}}</td>
                                                 <td>{{ \Carbon\Carbon::parse($planification->heure_debut)->format('H:s')}}</td>
@@ -298,11 +298,11 @@
                                 </div>
                             </div>
                             <!-- End Default Tabs -->
-                            <div class="tab-content pt-2" id="myTabContent">
+                            <div class="pt-2 tab-content" id="myTabContent">
                                 <div class="tab-pane fade" id="hospitalisation" role="tabpanel" aria-labelledby="hospitalisation-tab">
                                        <!-- Table with stripped rows -->
                                     <table class="table datatable">
-                                        <thead class="bg-secondary text-white">
+                                        <thead class="text-white bg-secondary">
                                             <tr>
                                                 <!-- <th scope="col">#</th> -->
                                                 <th scope="col">Patient</th>
@@ -322,11 +322,11 @@
                                 </div>
                             </div>
                             <!-- End Default Tabs -->
-                            <div class="tab-content pt-2" id="myTabContent">
+                            <div class="pt-2 tab-content" id="myTabContent">
                                 <div class="tab-pane fade" id="soins" role="tabpanel" aria-labelledby="soins-tab">
                                     <!-- Table with stripped rows -->
                                     <table class="table datatable">
-                                        <thead class="bg-secondary text-white">
+                                        <thead class="text-white bg-secondary">
                                             <tr>
                                                 <!-- <th scope="col">#</th> -->
                                                 <th scope="col">Patient</th>
@@ -346,11 +346,11 @@
                                 </div>
                             </div>
                             <!-- End Default Tabs -->
-                            <div class="tab-content pt-2" id="myTabContent">
+                            <div class="pt-2 tab-content" id="myTabContent">
                                 <div class="tab-pane fade" id="rdv" role="tabpanel" aria-labelledby="rdv-tab">
                                     <!-- Table with stripped rows -->
                                     <table class="table datatable">
-                                        <thead class="bg-secondary text-white">
+                                        <thead class="text-white bg-secondary">
                                             <tr>
                                                 <!-- <th scope="col">#</th> -->
                                                 <th scope="col">Patient</th>
@@ -372,7 +372,7 @@
                                                     '.\Carbon\Carbon::parse($rendez_vous->planification->heure_fin)->format('H:s')}}
                                                 </td>
                                                 <td>{{
-                                                    $rendez_vous->planification->tarif_consultation->type_consultation->type_consultation}}
+                                                    $rendez_vous->planification->type_consultation->type_consultation}}
                                                 </td>
                                                 <td>{{ $rendez_vous->motif}}</td>
                                                 <td>
@@ -397,11 +397,11 @@
                                 </div>
                             </div>
                             <!-- End Default Tabs -->
-                            <div class="tab-content pt-2" id="myTabContent">
+                            <div class="pt-2 tab-content" id="myTabContent">
                                 <div class="tab-pane fade" id="attente" role="tabpanel" aria-labelledby="attente-tab">
                                     <!-- Table with stripped rows -->
                                     <table class="table datatable">
-                                        <thead class="bg-secondary text-white">
+                                        <thead class="text-white bg-secondary">
                                             <tr>
                                                 <!-- <th scope="col">#</th> -->
                                                 <th scope="col">Patient</th>
@@ -419,21 +419,15 @@
                                                 <td>{{ $consultation->patient->nom}} {{ $consultation->patient->prenom}}</td>
                                                 <td>{{ \Carbon\Carbon::parse($consultation->rendez_vous->date_rdv)->format('d-m-Y')}}</td>
                                                 <td>{{
-                                                    $consultation->rendez_vous->planification->tarif_consultation->type_consultation->type_consultation}}
+                                                    $consultation->rendez_vous->planification->type_consultation->type_consultation}}
                                                 </td>
 
                                                 <td>{{ $consultation->rendez_vous->motif}}</td>
                                                 <td>{{ $consultation->medecin->prenom.' '.$consultation->medecin->nom}}</td>
 
                                                 <td>
-                                                    @if($consultation->etat==0)
+                                                    @if($consultation->etat==3)
                                                     <span class="badge bg-secondary"> attente</span>
-                                                    @endif
-                                                    @if($consultation->etat==1)
-                                                    <span class="badge bg-danger">en cours</span>
-                                                    @endif
-                                                    @if($consultation->etat==2)
-                                                    <span class="badge bg-success">Terminer</span>
                                                     @endif
                                                 </td>
                                                 <td>
@@ -441,16 +435,8 @@
                                                             <i class="bi bi-pencil"></i>
                                                         </button>
                                                     </a> --}}
-                                                    @if($consultation->etat==0)
+                                                    @if($consultation->etat==3)
                                                     <button type="button" class="btn btn-dark btn-sm" wire:click='AppelPatient({{$consultation->id}})'><i class="ri ri-user-unfollow-line"></i></button>
-                                                    @endif
-                                                    @if($consultation->etat==1)
-                                                    <button class="btn btn-danger btn-sm">
-                                                        <i class="bx bxs-hide"></i></button>
-                                                    @endif
-                                                    @if($consultation->etat==2)
-                                                    <button class="btn btn-secondary btn-sm">
-                                                    <i class="bx bxs-hide"></i></button>
                                                     @endif
                                                 </td>
                                             </tr>

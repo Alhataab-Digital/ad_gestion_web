@@ -15,7 +15,7 @@ class Prescription extends Model
     'quantite',
     'posologie',
     'duree',
-    'consultation_id',
+    'numero_ordre',
     'patient_id',
     'medecin_id',
     'user_id',

@@ -12,8 +12,7 @@ class TypeConsultation extends Model
     use HasFactory;
     protected $fillable = [
         'type_consultation',
-        'raison',
-        'contenu',
+        'tarif_consultation',
     ];
 
 }

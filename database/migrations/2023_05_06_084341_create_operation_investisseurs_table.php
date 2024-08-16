@@ -16,10 +16,10 @@ return new class extends Migration
             $table->float('montant_operation');
             $table->float('solde')->default(0);
             $table->string('sens_operation');
-            $table->foreignId('reglement_id')->constrained();
+            $table->foreignId('reglement_id')->constrained()->references('id')->on('type_reglements');
             $table->foreignId('caisse_id')->constrained();
             $table->foreignId('investisseur_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
             $table->string('valider')->default("non");
             $table->date('date_comptable');
             $table->timestamps();

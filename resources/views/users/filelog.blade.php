@@ -23,7 +23,7 @@
               <div class="card-body">
                 <h5 class="card-title">
               <!-- Basic Modal -->
-              
+
               </h5>
               <P>
 
@@ -73,7 +73,9 @@
                       @if($filelog->utilisateur->role_id!=0)
                       <td>{{ $filelog->utilisateur->role->role }}</td>
                       @endif
+                      @if($filelog->utilisateur->societe!=null)
                       <td>{{ $filelog->utilisateur->societe->raison_sociale}}</td>
+                      @endif
                       <td>{{ $filelog->utilisateur->gestion->gestion}}</td>
                       <td>{{ $filelog->created_at }}</td>
                       @if($filelog->etat=='connexion')

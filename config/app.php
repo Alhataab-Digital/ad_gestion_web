@@ -196,6 +196,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         Milon\Barcode\BarcodeServiceProvider::class,
         Stevebauman\Location\LocationServiceProvider::class,
+
+        Spatie\Backup\BackupServiceProvider::class,
     ],
 
     /*

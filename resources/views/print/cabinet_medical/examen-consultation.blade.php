@@ -99,7 +99,7 @@
             </tbody>
         </table>
         <div class="company-details">
-            <h1>Bulletin d'Examen Médical</h1>
+            <h1>Bulletin d'Examen Médical N° {{ $consultation->numero_ordre }}</h1>
         </div>
 
         <table>

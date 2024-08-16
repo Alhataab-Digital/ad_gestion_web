@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('allergies', function (Blueprint $table) {
             $table->id();
+            $table->string('numero_ordre');
+            $table->string('allergie');
+            $table->foreignId('type_allergie_id')->constrained();
+            $table->foreignId('patient_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
+            $table->foreignId('societe_id')->constrained();
             $table->timestamps();
         });
 

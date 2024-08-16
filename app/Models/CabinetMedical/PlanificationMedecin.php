@@ -12,7 +12,7 @@ class PlanificationMedecin extends Model
     use HasFactory;
     protected $fillable = [
         'specialite_id',
-        'tarif_consultation_id',
+        'type_consultation_id',
         'jour_semaine',
         'heure_debut',
         'heure_fin',
@@ -31,9 +31,9 @@ class PlanificationMedecin extends Model
         return $this->belongsTo(Utilisateur::class);
     }
 
-    public function tarif_consultation()
+    public function type_consultation()
     {
-        return $this->belongsTo(TarifConsultation::class,'tarif_consultation_id');
+        return $this->belongsTo(TypeConsultation::class,'type_consultation_id');
     }
 
     public function specialite()

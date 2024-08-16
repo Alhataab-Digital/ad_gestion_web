@@ -6,14 +6,15 @@ use App\Models\CabinetMedical\Medecin;
 use App\Models\CabinetMedical\PlanificationMedecin as CabinetMedicalPlanificationMedecin;
 use App\Models\CabinetMedical\SpecialiteMedecin;
 use App\Models\CabinetMedical\TarifConsultation;
+use App\Models\CabinetMedical\TypeConsultation;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class PlanificationMedecin extends Component
 {
     public $medecins;
-    public $tarif_consultations;
-    public $tarif_consultation;
+    public $type_consultations=[];
+    public $type_consultation;
     public $planifications;
     public $medecin=null, $intervention, $debut, $fin, $date;
 
@@ -25,7 +26,7 @@ class PlanificationMedecin extends Component
     {
         $this->medecins = Medecin::all();
         $this->specialites = SpecialiteMedecin::all();
-        $this->tarif_consultations = TarifConsultation::all();
+        $this->type_consultations = TypeConsultation::all();
         $this->planifications=CabinetMedicalPlanificationMedecin::where('jour_semaine','>=', date('Y-m-d'))->get();
     }
 
@@ -47,7 +48,7 @@ class PlanificationMedecin extends Component
             [
                 'specialite' => 'required',
                 'medecin' => 'required',
-                'tarif_consultation' => 'required',
+                'type_consultation' => 'required',
                 'date' => 'required',
                 'debut' => 'required',
                 'fin' => 'required',
@@ -69,7 +70,7 @@ class PlanificationMedecin extends Component
             CabinetMedicalPlanificationMedecin::create([
                 'specialite_id' => $validated['specialite'],
                 'medecin_id' => $validated['medecin'],
-                'tarif_consultation_id' => $validated['tarif_consultation'],
+                'type_consultation_id' => $validated['type_consultation'],
                 'jour_semaine' => $validated['date'],
                 'heure_debut' => $validated['debut'],
                 'heure_fin' => $validated['fin'],

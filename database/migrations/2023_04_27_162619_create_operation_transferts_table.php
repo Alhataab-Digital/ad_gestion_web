@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreignId('agence_id')->constrained();
             $table->string('code_envoi');
             $table->foreignId('devise_id')->constrained();
-            $table->foreignId('envoi_user_id')->constrained();
+            $table->foreignId('envoi_user_id')->constrained()->references('id')->on('utilisateurs');
             $table->date('date_envoi');
 
             $table->foreignId('region_id')->constrained();
@@ -31,7 +31,7 @@ return new class extends Migration
 
             $table->integer('type_piece_id')->default(0);
             $table->string('numero_piece')->nullable();
-            $table->integer('retrait_user_id')->default(0);
+            $table->integer('retrait_user_id')->default(0)->references('id')->on('utilisateurs');
             $table->date('date_retrait')->nullable();
 
             $table->string('etat')->default(0);

@@ -31,7 +31,7 @@ return new class extends Migration
             $table->string('taille')->nullable();
             $table->string('temperature')->nullable();
             $table->string('groupe_sanguin')->nullable();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
             $table->foreignId('societe_id')->constrained();
             $table->timestamps();
         });

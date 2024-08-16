@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('activite_investissements', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
             $table->foreignId('caisse_id')->constrained();
             $table->foreignId('agence_id')->constrained();
-            $table->foreignId('type_activite_id')->constrained();
+            $table->foreignId('type_activite_id')->constrained()->references('id')->on('type_activite_investissements');
             $table->float('capital_activite');
             $table->float('montant_decaisse');
             $table->float('total_depense')->default(0);

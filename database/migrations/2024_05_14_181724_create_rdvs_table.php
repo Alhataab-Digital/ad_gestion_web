@@ -13,18 +13,15 @@ return new class extends Migration
     {
         Schema::create('rdvs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
             $table->foreignId('societe_id')->constrained();
             $table->foreignId('patient_id')->nullable()->constrained();
             $table->foreignId('medecin_id')->nullable()->constrained();
-            $table->foreignId('contrat_id')->default(0)->constrained();
-            $table->foreignId('planification_id')->nullable()->constrained();
+            $table->foreignId('planification_id')->nullable()->constrained()->references('id')->on('planification_medecins');
             $table->date('date_rdv');
             $table->time('heure_rdv')->nullable();
             $table->string('etat')->default(0);
-            $table->string('motif')->nullable();
-            $table->float('taux_couverture')->default(0);
-            $table->float('montant');
+            $table->string('motif')->nullable();;
             $table->timestamps();
         });
     }

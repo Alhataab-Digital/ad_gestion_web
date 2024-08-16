@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('operation_devises', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
             $table->foreignId('caisse_id')->constrained();
-            $table->integer('reglement_id')->default(0);
+            $table->integer('reglement_id')->default(0)->references('id')->on('type_reglements');
             $table->integer('client_id')->default(0);
             $table->integer('devise_id')->default(0);
             $table->float('montant_operation');

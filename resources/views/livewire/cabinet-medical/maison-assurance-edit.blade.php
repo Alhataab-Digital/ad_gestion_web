@@ -46,7 +46,7 @@
                                     <button class="accordion-button bg-secondary text-white" type="button"
                                         data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
                                         aria-controls="collapseOne">
-                                        MAISON ASSIRANCE
+                                        STRUCTURE D'ASSURANCE
                                     </button>
                                 </h2>
                                 <div id="collapseOne" class="accordion-collapse collapse show"
@@ -135,18 +135,15 @@
                                                                 <div class="modal-body">
                                                                     <form method="post" wire:submit.prevent='saveContrat'>
                                                                         @csrf
-                                                                    <div class="col-12">
-                                                                        <label for="inputState" class="form-label">Type consultation <span style="color: red">*</span></label>
-                                                                        <select id="inputState" class="form-select" wire:model='tarif_consultation'>
-                                                                            <option selected></option>
-                                                                            @foreach ($tarif_consultations as $tarif_consultation )
-                                                                            <option value="{{$tarif_consultation->id}}"> {{$tarif_consultation->type_consultation->type_consultation}} </option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                        @error('tarif_consultation')
-                                                                        <span class="text-danger">{{$message}}</span>
-                                                                        @enderror
-                                                                    </div>
+                                                                        <div class="col-md-12">
+                                                                            <label for="inputNanme5"
+                                                                                class="form-label">N° Contrat</label>
+                                                                            <input type="text" wire:model="numero_contrat"
+                                                                                class="form-control" id="inputNanme5">
+                                                                            @error('numero_contrat')
+                                                                            <span class="text-danger">{{$message}}</span>
+                                                                            @enderror
+                                                                        </div>
                                                                     <div class="col-md-12">
                                                                         <label for="inputNanme5"
                                                                             class="form-label">Date debut validité</label>
@@ -192,25 +189,23 @@
                                                     <thead class="bg-primary text-white">
                                                         <tr>
                                                             <!-- <th scope="col">#</th> -->
-                                                            <th scope="col">Maison assurance</th>
-                                                            <th scope="col">Type consultation</th>
+                                                            <th scope="col">Structure assurance</th>
+                                                            <th scope="col">N° Contrat</th>
                                                             <th scope="col">Date debut</th>
                                                             <th scope="col">Date fin</th>
                                                             <th scope="col">taux (%)</th>
-                                                            <th scope="col">tarif</th>
+                                                            
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($contrat_assurances as $contrat_assurance)
                                                         <tr>
                                                             <td>{{$contrat_assurance->maison_assurance->maison_assurance}}</td>
-                                                            <td>{{$contrat_assurance->tarif_consultation->type_consultation->type_consultation}}</td>
+                                                            <td>{{$contrat_assurance->numero_contrat}}</td>
                                                             <td>{{$contrat_assurance->date_debut}}</td>
                                                             <td>{{$contrat_assurance->date_fin}}</td>
                                                             <td>{{$contrat_assurance->taux_couverture}}</td>
-                                                            <td style="text-align:right">{{ number_format($contrat_assurance->tarif_consultation->montant,2,","," ").'
-                                                                '.$contrat_assurance->user->agence->devise->unite}}</td>
-                                                        </tr>
+                                                         </tr>
                                                         @endforeach
 
                                                     </tbody>

@@ -1,23 +1,14 @@
 <main id="main" class="main">
 
-    <div class="pagetitle">
-        <h1>medecins</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
-                <li class="breadcrumb-item">param</li>
-                <li class="breadcrumb-item active">medecin</li>
-            </ol>
-        </nav>
-    </div><!-- End Page Title -->
-
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
-
+                <div class="card-header bg-black text-white ">
+                    Liste des medecins
+                </div>
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">
+                        <h5 class="card-title text-end">
                             <!-- Basic Modal -->
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#basicModal">

@@ -2,7 +2,7 @@
 <footer id="footer" class="footer">
     {{-- @livewire('annee-scolaire') --}}
     <div class="copyright">
-        &copy; 2023 <strong><span>AD GESTION V4.0</span></strong>.
+        &copy; 2023 - 2024 <strong><span> AD GESTION V4.0</span></strong>.
     </div>
     <div class="credits">
         <!-- All the links in the footer should remain intact. -->

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('groupe_id')->constrained();
             $table->foreignId('classe_id')->constrained();
             $table->string('montant');
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
             $table->foreignId('societe_id')->constrained();
             $table->timestamps();
         });

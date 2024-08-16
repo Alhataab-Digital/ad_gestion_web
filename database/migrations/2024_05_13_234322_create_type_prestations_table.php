@@ -15,17 +15,25 @@ return new class extends Migration
         Schema::create('type_prestations', function (Blueprint $table) {
             $table->id();
             $table->string('type_prestation');
+            $table->string('tarif_prestation');
             $table->timestamps();
         });
 
         $type_prestations =
             [
-                'Generaliste',
-                'Spécialiste',
+                [
+                    'Consultation de Médecine Générale',
+                    "5000",
+                ],
+                [
+                    'Consultation de Spécialité',
+                    "10000",
+                ],
             ];
         foreach ($type_prestations as $type_prestation) {
             TypePrestation::create([
-                'type_prestation' => $type_prestation,
+                'type_prestation' => $type_prestation[0],
+                'tarif_prestation' => $type_prestation[1],
             ]);
         }
     }

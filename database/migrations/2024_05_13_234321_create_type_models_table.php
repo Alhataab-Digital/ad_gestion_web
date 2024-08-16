@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('type_models', function (Blueprint $table) {
             $table->id();
             $table->string('type_model');
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('societe_id')->constrained();
             $table->timestamps();
         });
     }

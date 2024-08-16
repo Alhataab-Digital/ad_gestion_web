@@ -139,11 +139,18 @@
                             <!-- Multi Columns Form -->
                             <form class="row g-3">
                                 <div class="text-white col-md-6 bg-secondary">
-                                    N° Dossier Patient
+                                    Prise en charge
                                </div>
+                               @if ($prise_en_charge)
+                               <div class="col-md-6 ">
+                                Oui
+                               </div>
+                                @else
                                 <div class="col-md-6 ">
-                                 {{$patient->numero_patient}}
-                                </div>
+                                    Non
+                                   </div>
+                               @endif
+
                                 <div class="text-white col-md-6 bg-secondary">
                                  Groupe Sanguin
                                 </div>
@@ -269,18 +276,22 @@
                                                 @foreach ($consultations as $consultation )
                                                 <tr>
                                                     <td>{{$consultation->created_at->diffForHumans()}}</td>
-                                                    <td scope="row">{{$consultation->tarif_consultation->type_consultation->type_consultation}}</td>
+                                                    <td scope="row">{{$consultation->type_consultation->type_consultation}}</td>
                                                     <td scope="row">{{$consultation->medecin->nom.' '.$consultation->medecin->prenom}}</td>
                                                     <td scope="row">{{$consultation->rendez_vous->motif}}</td>
                                                     {{-- <td style="text-align:right">{{ number_format($consultation->montant,2,","," ").'
                                                         '.$consultation->user->agence->devise->unite}}</td> --}}
                                                     <td>
-                                                        @if($consultation->etat==1)
-                                                        <span class="badge bg-danger">en cours</span>
+                                                        @if($consultation->etat==3)
+                                                        <span class="badge bg-secondary">en attente</span>
                                                         @endif
-                                                        @if($consultation->etat==2)
-                                                        <span class="badge bg-success">terminer</span>
+                                                        @if($consultation->etat==4)
+                                                        <span class="badge bg-info">en cours</span>
                                                         @endif
+                                                        @if($consultation->etat==5)
+                                                        <span class="badge bg-warning">terminer</span>
+                                                        @endif
+
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -325,7 +336,6 @@
                                     <div class="card-header">
                                         ANTECEDENT PERSONNEL ET FAMILLIAUX
                                     </div>
-
                                     <div class="card-body">
                                         {{-- <h5 class="card-title">Card with header and footer</h5> --}}
                                         <table class="table ">
@@ -497,8 +507,7 @@
                                         <table class="table ">
                                             <thead>
                                                 <tr class="text-white bg-secondary">
-                                                    <th scope="col">Maison assurance</th>
-                                                    <th scope="col">categorie prise en charge</th>
+                                                    <th scope="col">Structure assurance</th>
                                                     <th scope="col">Debut validité</th>
                                                     <th scope="col">Fin validité</th>
                                                     <th scope="col">Prise en charge</th>
@@ -509,12 +518,9 @@
                                                 <tr>
                                                     <td>{{$contrat_assurance->maison_assurance->maison_assurance}}</td>
                                                     {{-- <td>{{$contrat_assurance->id}}</td> --}}
-                                                    <td>{{$contrat_assurance->tarif_consultation->type_consultation->type_consultation}}</td>
                                                     <td>{{$contrat_assurance->date_debut}}</td>
                                                     <td>{{$contrat_assurance->date_fin}}</td>
                                                     <td style="text-align:center" >{{$contrat_assurance->taux_couverture.' %'}}</td>
-                                                    {{-- <td style="text-align:right">{{ number_format($contrat_assurance->tarif_consultation->montant,2,","," ").'
-                                                        '.$contrat_assurance->user->agence->devise->unite}}</td> --}}
                                                 </tr>
                                                 @endforeach
                                             </tbody>
@@ -547,7 +553,7 @@
                                             '.\Carbon\Carbon::parse($rendez_vous->planification->heure_fin)->format('H:s')}}
                                         </td>
                                         <td>{{
-                                            $rendez_vous->planification->tarif_consultation->type_consultation->type_consultation}}
+                                            $rendez_vous->planification->type_consultation->type_consultation}}
                                         </td>
                                         <td>{{ $rendez_vous->motif}}</td>
                                         <td>
@@ -585,32 +591,40 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($consutlation_traitement as $consultation )
+                                            @foreach ($consutlation_encours as $consultation )
                                             <tr>
                                                 <td>{{$consultation->created_at->diffForHumans()}}</td>
-                                                <td scope="row">{{$consultation->tarif_consultation->type_consultation->type_consultation}}</td>
+                                                <td scope="row">{{$consultation->type_consultation->type_consultation}}</td>
 
                                                 <td scope="row">{{$consultation->medecin->nom.' '.$consultation->medecin->prenom}}</td>
                                                 <td scope="row">{{$consultation->rendez_vous->motif}}</te>
                                                 {{-- <td style="text-align:right">{{ number_format($consultation->montant,2,","," ").'
                                                     '.$consultation->user->agence->devise->unite}}</td> --}}
                                                 <td>
-                                                    @if($consultation->etat==1)
+                                                    @if($consultation->etat==3)
+                                                    <span class="badge bg-danger">en attente</span>
+                                                    @endif
+                                                    @if($consultation->etat==4)
                                                     <span class="badge bg-danger">en cours</span>
                                                     @endif
-                                                    @if($consultation->etat==2)
+                                                    @if($consultation->etat==5)
                                                     <span class="badge bg-success">terminer</span>
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($consultation->etat==1)
+                                                    @if($consultation->etat==3)
                                                     <a href="{{route('ad.sante.traitement.consultation',encrypt($consultation->id))}}">
                                                         <button class="btn btn-dark btn-sm" > <i class="ri ri-user-unfollow-line"></i> </button>
                                                     </a>
                                                     @endif
-                                                    @if($consultation->etat==2)
+                                                    @if($consultation->etat==4)
+                                                    <a href="{{route('ad.sante.traitement.consultation',encrypt($consultation->id))}}">
+                                                        <button class="btn btn-dark btn-sm" > <i class="bi bi-clipboard-plus"></i> </button>
+                                                    </a>
+                                                    @endif
+                                                    @if($consultation->etat==5)
                                                     <a href="{{route('ad.sante.resultat.consultation',encrypt($consultation->id))}}">
-                                                                <button class="btn btn-warning btn-sm" > <i class="ri ri-spam-line"></i> </button>
+                                                                <button class="btn btn-warning btn-sm" > <i class="bi bi-folder-check"></i> </button>
                                                             </a>
                                                     {{-- <div class="filter">
                                                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>

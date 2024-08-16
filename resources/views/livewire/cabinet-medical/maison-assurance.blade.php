@@ -7,7 +7,7 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
                     <li class="breadcrumb-item">param</li>
-                    <li class="breadcrumb-item active">maison assurance</li>
+                    <li class="breadcrumb-item active">Structure d'assurance</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -22,7 +22,7 @@
 
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#addmaison_assuranceModal">
-                                    Ajouter maison assurance
+                                    Ajouter une structure d'assurance
                                 </button>
                             </h5>
                             <!-- Basic Modal -->
@@ -33,13 +33,13 @@
                                         <form method="post" wire:submit.prevent='save'>
                                             @csrf
                                             <div class="modal-header" style="background-color: silver">
-                                                <h5 class="modal-title">Ajouter maison assurance</h5>
+                                                <h5 class="modal-title">Ajouter une structure d'assurance</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="col-md-12">
-                                                    <label for="inputNanme5" class="form-label">compagnie assurance </label>
+                                                    <label for="inputNanme5" class="form-label">structure assurance </label>
                                                     <input type="text" wire:model="maison_assurance" class="form-control"
                                                         id="inputNanme5">
                                                     @error('maison_assurance')
@@ -105,7 +105,7 @@
                                 <thead class="bg-primary">
                                     <tr>
                                         <!-- <th scope="col">#</th> -->
-                                        <th scope="col">maison_assurance </th>
+                                        <th scope="col">Structure </th>
                                         <th scope="col">telephone </th>
                                         <th scope="col">adresse </th>
                                         <th scope="col">email </th>
@@ -181,7 +181,7 @@
                                                             <div class="modal-body">
                                                                 <div class="alert alert-danger">
                                                                     <i class="bx bx-shield-quarter"></i> Confirmer la
-                                                                    suppression du maison_assurance : {{ $maison_assurance->libelle_maison_assurance}}
+                                                                    suppression de la structure : {{ $maison_assurance->libelle_maison_assurance}}
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer text-center">

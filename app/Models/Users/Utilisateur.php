@@ -37,12 +37,12 @@ class Utilisateur extends Model implements Authenticatable
 
     public function gestion()
     {
-        return $this->belongsTo(TypeGestion::class);
+        return $this->belongsTo(TypeGestion::class,'gestion_id');
     }
 
     public function societe()
     {
-        return $this->belongsTo(Societe::class);
+        return $this->belongsTo(Societe::class,'societe_id');
     }
 
     public function role()

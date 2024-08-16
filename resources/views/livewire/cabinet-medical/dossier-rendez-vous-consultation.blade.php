@@ -14,11 +14,11 @@
 
     <section class="section">
         <div class="row">
-            <div class="form-signin w-80 m-auto col-lg-8">
+            <div class="m-auto form-signin w-80 col-lg-8">
 
                 <!-- Card with header and footer -->
                 <div class="card">
-                    <div class="card-header bg-dark text-white ">
+                    <div class="text-white card-header bg-dark ">
                         PRISE DE RENDEZ VOUS
                     </div>
                     <div class="card-body">
@@ -103,7 +103,7 @@
                             <br>
                             <hr>
 
-                            <div class="col-md-12 bg-secondary text-white">
+                            <div class="text-white col-md-12 bg-secondary">
                                 <label for="inputState" class="form-label">Motif du rendez vous</label>
                                 <select id="inputState" class="form-select" wire:model='motif'>
                                     <option selected></option>
@@ -114,23 +114,23 @@
                                 @error('motif')
                                 <span class="text-danger">{{$message}}</span>
                                 @enderror
-                                <br class="bg-secondary text-white"><br>
+                                <br class="text-white bg-secondary"><br>
                             </div>
-                            <div class="col-md-6 bg-secondary text-white">
+                            <div class="text-white col-md-6 bg-secondary">
                                 <label for="inputState" class="form-label">type consultation <span
                                         style="color: red">*</span></label>
-                                <select id="inputState" class="form-select" name="tarif_consultation"
-                                    wire:model.live='tarif_consultation'>
+                                <select id="inputState" class="form-select" name="type_consultation"
+                                    wire:model.live='type_consultation'>
                                     <option selected></option>
-                                    @foreach ($tarif_consultations as $tarif_consultation )
-                                    <option value="{{$tarif_consultation->id}}">{{$tarif_consultation->type_consultation->type_consultation}}</option>
+                                    @foreach ($type_consultations as $type_consultation )
+                                    <option value="{{$type_consultation->id}}">{{$type_consultation->type_consultation}}</option>
                                     @endforeach
                                 </select>
-                                @error('tarif_consultation')
+                                @error('type_consultation')
                                 <span class="text-danger">{{$message}}</span>
                                 @enderror
                             </div>
-                            <div class="col-md-6 bg-secondary text-white">
+                            <div class="text-white col-md-6 bg-secondary">
                                 <label for="inputState" class="form-label">Date et heure planifier<span
                                         style="color: red">*</span></label>
                                 <select id="inputState" class="form-select" name="planification_date"
@@ -145,9 +145,9 @@
                                 @error('planification_date')
                                 <span class="text-danger">{{$message}}</span>
                                 @enderror
-                                <br class="bg-secondary text-white"><br>
+                                <br class="text-white bg-secondary"><br>
                             </div>
-                            <div class="col-md-6 bg-secondary text-white">
+                            <div class="text-white col-md-6 bg-secondary">
                                 <label for="inputState" class="form-label">Medecin planifier<span
                                         style="color: red">*</span></label>
                                 <select id="inputState" class="form-select" name="planification_medecin"
@@ -163,19 +163,19 @@
                                 @error('planification_medecin')
                                 <span class="text-danger">{{$message}}</span>
                                 @enderror
-                                <br class="bg-secondary text-white"><br>
+                                <br class="text-white bg-secondary"><br>
                             </div>
 
-                            <div class="col-6 bg-secondary text-white">
+                            <div class="text-white col-6 bg-secondary">
                                 <label for="inputAddress2" class="form-label">Tarif consultation<span
                                         style="color: red">*</span></label>
                                 <input type="text" class="form-control" wire:model.live='tarif_montant' id="inputAddress2">
                                 @error('tarif_montant')
                                 <span class="text-danger">{{$message}}</span>
                                 @enderror
-                                <br class="bg-secondary text-white"><br>
+                                <br class="text-white bg-secondary"><br>
                             </div>
-                            <div class="card-footer bg-dark text-white">
+                            <div class="text-white card-footer bg-dark">
                                 <div class="text-end">
                                     <button type="submit" class="btn btn-primary">Enregistrer</button>
                                     {{-- <button type="reset" class="btn btn-secondary">Reset</button> --}}

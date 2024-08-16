@@ -16,7 +16,7 @@
             <div class="col-lg-12">
                 <div class="text-white card-header bg-secondary">
                     <li class="text-white list-group-item d-flex justify-content-between align-items-center">
-                        <h5>Consultation du {{$consultation->rendez_vous->date_rdv}} du patient :
+                        <h5>Consultation N° {{ $consultation->id }} du {{$consultation->rendez_vous->date_rdv}} du patient :
                             {{$consultation->patient->civilite->civilite.' '.$consultation->patient->prenom.'
                             '.$consultation->patient->nom.'
                             '.(\Carbon\Carbon::parse($consultation->patient->date_naissance)->age.' ans' )}} pour :
@@ -25,7 +25,7 @@
                             {{-- <button class="btn btn-warning btn-sm"
                                 wire:click='terminerConsultation({{$consultation->id}})'>Terminer la
                                 consultation</button> --}}
-                            @if(Auth::user()->id==6)
+                            @if(Auth::user()->role->id==6)
                             <a wire:navigate
                                 href="{{route('ad.sante.dossier.patient',encrypt($consultation->patient->id))}}">
                                 <button class="btn btn-dark btn-sm"><i class="bx bxs-share"></i> Retour</button>

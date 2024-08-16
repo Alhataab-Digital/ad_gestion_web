@@ -52,4 +52,11 @@ class TarifConsultation extends Component
         $this->type_consultation ='';
         $this->montant = '';
     }
+
+    public function deleteConfirmation($id)
+    {
+        dd('err'.$id);
+        return redirect()->route('ad.sante.index.patient')->with('danger', 'Impossible de supprimer ce patient');
+
+    }
 }

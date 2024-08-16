@@ -108,7 +108,8 @@ class PatientEdit extends Component
     public function render()
     {
         $patient = Patient::where('id',  $this->patients)->first();
-        return view('livewire.cabinet-medical.patient-edit', compact('patient'));
+        $prise_en_charge = PriseEnCharge::where('patient_id', $this->patients)->first();
+        return view('livewire.cabinet-medical.patient-edit', compact('patient','prise_en_charge'));
     }
 
     public function update()

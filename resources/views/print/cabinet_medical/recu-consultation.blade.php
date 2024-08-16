@@ -147,9 +147,9 @@
                     <td>Montant payé</td>
                     <td>Mode de reglement</td>
                 </tr>
-                <td colspan="2"> {{ $recu_consultation->rendez_vous->planification->tarif_consultation->type_consultation->type_consultation }}</td></td>
+                <td colspan="2"> {{ $recu_consultation->rendez_vous->planification->type_consultation->type_consultation }}</td></td>
                 <td > {{ $recu_consultation->rendez_vous->motif }}</td></td>
-                <td>{{ number_format($recu_consultation->rendez_vous->planification->tarif_consultation->montant, 2, ',', ' ') .
+                <td>{{ number_format($recu_consultation->rendez_vous->planification->type_consultation->tarif_consultation, 2, ',', ' ') .
                     ' ' .
                     $recu_consultation->user->agence->devise->unite }}</td>
 
@@ -232,9 +232,9 @@
                     <td>Montant payé</td>
                     <td>Mode de reglement</td>
                 </tr>
-                <td colspan="2"> {{ $recu_consultation->rendez_vous->planification->tarif_consultation->type_consultation->type_consultation }}</td></td>
+                <td colspan="2"> {{ $recu_consultation->rendez_vous->planification->type_consultation->type_consultation }}</td></td>
                 <td > {{ $recu_consultation->rendez_vous->motif }}</td></td>
-                <td>{{ number_format($recu_consultation->rendez_vous->planification->tarif_consultation->montant, 2, ',', ' ') .
+                <td>{{ number_format($recu_consultation->rendez_vous->planification->type_consultation->tarif_consultation, 2, ',', ' ') .
                     ' ' .
                     $recu_consultation->user->agence->devise->unite }}</td>
 

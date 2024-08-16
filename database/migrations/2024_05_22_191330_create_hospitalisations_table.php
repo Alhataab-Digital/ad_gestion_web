@@ -13,6 +13,16 @@ return new class extends Migration
     {
         Schema::create('hospitalisations', function (Blueprint $table) {
             $table->id();
+            $table->string('numero_ordre');
+            $table->date('date_adminssion');
+            $table->foreignId('type_hospitalisation_id')->constrained();
+            $table->foreignId('patient_id')->constrained();
+            $table->foreignId('medecin_id')->constrained();
+            $table->string('motif')->nullable();
+            $table->foreignId('lit_id')->constrained();
+            $table->date('date_sortie');
+            $table->foreignId('societe_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');
             $table->timestamps();
         });
     }

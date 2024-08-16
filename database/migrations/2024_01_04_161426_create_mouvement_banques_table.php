@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('mouvement_banques', function (Blueprint $table) {
             $table->id();
             $table->foreignId('banque_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
             $table->text('description');
             $table->string('entree')->default(0);
             $table->string('sortie')->default(0);

@@ -14,17 +14,17 @@
 
     <section class="section">
         <div class="row">
-            <div class="form-signin w-80 m-auto col-lg-8">
+            <div class="m-auto form-signin w-80 col-lg-8">
 
                 <!-- Card with header and footer -->
                 <div class="card">
                     @if($recu_consultations->etat==0)
-                        <div class="card-header bg-dark text-white ">
+                        <div class="text-white card-header bg-dark ">
                             REGLEMENT CONSULTATION CLINIQUE
                         </div>
                     @endif
                     @if($recu_consultations->etat!=0)
-                        <div class="card-header bg-dark text-white ">
+                        <div class="text-white card-header bg-dark ">
                             RECU DE CONSULTATION
                             {{-- <div class="text-end"><button wire:click='recuPrint({{$recu_consultations->id}})'
                                     class="btn btn-secondary"><i class="bx bx-printer"></i></button></div> --}}
@@ -104,7 +104,7 @@
                                 <td>{{ $recu_consultations->patient->telephone }}</td>
                                 <td>{{ $recu_consultations->patient->adresse }}</td>
                             </tbody>
-                            @if ($recu_consultations->rendez_vous->contrat_id !=0)
+                            @if ($recu_consultations->contrat_id !=0)
                             <tbody>
                                 <tr>
                                     <td colspan="3">
@@ -125,13 +125,13 @@
                                     </td>
                                 </tr>
                                 <td colspan="3"> {{
-                                    $recu_consultations->rendez_vous->contrat_assurance->maison_assurance->maison_assurance
+                                    $recu_consultations->contrat_assurance->maison_assurance->maison_assurance
                                     }}</td>
                                 <td colspan="2"> {{
-                                    $recu_consultations->rendez_vous->contrat_assurance->maison_assurance->telephone }}
+                                    $recu_consultations->contrat_assurance->maison_assurance->telephone }}
                                 </td>
 
-                                <td colspan="2">{{ $recu_consultations->rendez_vous->contrat_assurance->taux_couverture
+                                <td colspan="2">{{ $recu_consultations->contrat_assurance->taux_couverture
                                     .' % ' }}</td>
                             </tbody>
                             @endif
@@ -175,17 +175,8 @@
                             </tbody>
                             <tbody>
                                 <tr>
-                                    <td colspan="2">
-                                        <table class="table mb-0">
-                                            <th>consultation</th>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table class="table mb-0">
-                                            <th>Motif </th>
-                                        </table>
-                                    </td>
-                                    <td>
+                            
+                                    <td colspan="3">
                                         <table class="table mb-0">
                                             <th>Montant total</th>
                                         </table>
@@ -216,15 +207,9 @@
                                         </table>
                                     </td>
                                     @endif
-                                </tr>
-                                <td colspan="2"> {{
-                                    $recu_consultations->rendez_vous->planification->tarif_consultation->type_consultation->type_consultation
-                                    }}</td>
-                                </td>
-                                <td colspan=> {{ $recu_consultations->rendez_vous->motif }}</td>
-                                </td>
-                                <td>{{
-                                    number_format($recu_consultations->rendez_vous->planification->tarif_consultation->montant,
+                                </tr  >
+                                <td colspan="3">{{
+                                    number_format($recu_consultations->montant,
                                     2, ',', ' ') .
                                     ' ' .
                                     $recu_consultations->user->agence->devise->unite }}</td>
@@ -289,15 +274,14 @@
                                     </div>
                                 </div>
                                 @endif
-                                <div class="card-footer bg-dark text-white">
+                                <div class="text-white card-footer bg-dark">
                                     <div class="text-end">
                                         @if($recu_consultations->etat==0)
                                             <button type="submit" class="btn btn-success">Valider</button>
                                         @endif
                                         @if($recu_consultations->etat==1)
                                             <a href="{{route('ad.sante.facturation.consultation')}}">
-                                            <button class="btn btn-secondary"><i class="ri ri-arrow-go-back-line
-                                            "></i></button>
+                                            <button class="btn btn-secondary"><i class="ri ri-arrow-go-back-line "></i></button>
                                             </a>
                                             <button wire:click='recuPrint({{$recu_consultations->id}})' class="btn btn-light"><i
                                                 class="bi bi-file-earmark-pdf"></i>

@@ -9,6 +9,7 @@ class Traitement extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'numero_ordre',
         'diagnostique',
         'conclusion',
         'consultation_id',

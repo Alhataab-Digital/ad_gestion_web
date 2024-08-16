@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('stock_produit_activites', function (Blueprint $table) {
             $table->id();
             $table->foreignId('produit_id')->constrained();
-            $table->foreignId('activite_id')->constrained();
+            $table->foreignId('activite_id')->constrained()->references('id')->on('activite_investissements');;
             $table->foreignId('agence_id')->constrained();
             $table->string('quantite_en_stock');
             $table->timestamps();

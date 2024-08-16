@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TypeAllergie extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'type_allergie',
+    ];
 }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('type_lits', function (Blueprint $table) {
             $table->id();
             $table->string('type_lit');
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
             $table->foreignId('societe_id')->constrained();
             $table->timestamps();
         });

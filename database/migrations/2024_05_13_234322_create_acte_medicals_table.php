@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('acte_medical');
             $table->string('type_acte');
             $table->string('type_consultation');
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
             $table->foreignId('societe_id')->constrained();
             $table->timestamps();
         });

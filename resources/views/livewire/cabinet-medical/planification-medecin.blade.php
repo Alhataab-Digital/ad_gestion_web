@@ -1,28 +1,21 @@
 <main id="main" class="main">
 
 
-    <div class="pagetitle">
-        <h1>Patients</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
-                <li class="breadcrumb-item">param</li>
-                <li class="breadcrumb-item active">patient</li>
-            </ol>
-        </nav>
-    </div><!-- End Page Title -->
+
 
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
-
+                <div class="text-white bg-black card-header">
+                    Planification Medecin
+                </div>
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">
+                        <h5 class="card-title text-end">
                             <!-- Basic Modal -->
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            <button type="button" class="btn btn-primary " data-bs-toggle="modal"
                                 data-bs-target="#basicModal">
-                                Planification Medecin
+                               Nouvelle Planification
                             </button>
                         </h5>
                         <div wire:ignore.self class="modal fade" id="basicModal" tabindex="-1">
@@ -66,13 +59,13 @@
                                             <div class="col-md-12">
                                                 <label for="inputState" class="form-label">Prestation <span
                                                         style="color: red">*</span></label>
-                                                <select id="inputState" class="form-select" wire:model='tarif_consultation'>
+                                                <select id="inputState" class="form-select" wire:model='type_consultation'>
                                                     <option selected></option>
-                                                    @foreach ($tarif_consultations as $tarif_consultation )
-                                                    <option value="{{$tarif_consultation->id}}"> {{$tarif_consultation->type_consultation->type_consultation}} </option>
+                                                    @foreach ($type_consultations as $type_consultation )
+                                                    <option value="{{$type_consultation->id}}"> {{$type_consultation->type_consultation}} </option>
                                                     @endforeach
                                                 </select>
-                                                @error('tarif_consultation')
+                                                @error('type_consultation')
                                                 <span class="text-danger">{{$message}}</span>
                                                 @enderror
                                             </div>
@@ -134,7 +127,7 @@
                         </P>
                         <!-- Table with stripped rows -->
                         <table class="table datatable">
-                            <thead class="bg-primary">
+                            <thead class="text-white bg-primary">
                                 <tr>
                                     <!-- <th scope="col">#</th> -->
                                     <th scope="col">Nom patient </th>
@@ -151,7 +144,7 @@
                                 <tr>
                                     <td>{{ $planification->medecin->prenom}}</td>
                                     <td>{{ $planification->medecin->nom}}</td>
-                                    <td>{{ $planification->tarif_consultation->tarif_consultation}}</td>
+                                    <td>{{ $planification->type_consultation->type_consultation}}</td>
                                     <td>{{ $planification->jour_semaine}}</td>
                                     <td>{{ $planification->heure_debut}}</td>
                                     <td>{{ $planification->heure_fin}}</td>
@@ -176,7 +169,7 @@
                                                             suppression la planification : {{ $planification->id}}
                                                         </div>
                                                     </div>
-                                                    <div class="modal-footer text-center">
+                                                    <div class="text-center modal-footer">
                                                         <button type="button" class="btn btn-secondary"
                                                             data-bs-dismiss="modal">Close</button>
                                                         <button type="submit"

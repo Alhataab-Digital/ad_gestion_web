@@ -63,16 +63,20 @@ class TraitementConsultation extends Component
     public function mount(Patient $patients, $id)
     {
         $id=decrypt($id);
-
+        $consultation = Consultation::find($id);
+        $consultation->update([
+            'etat'=>4,
+        ]);
+        
         $this->medicaments =Medicament::all();
         $this->type_examens =TypeExamen::all();
         $this->type_soins =TypeSoins::all();
         $this->consultation =Consultation::where('id', $id)->first();
-        $traitement =Traitement::where('consultation_id', $id)->first();
-        $signe_vitaux =SigneVitaux::where('consultation_id', $id)->first();
-        $this->prescriptions =Prescription::where('consultation_id', $id)->get();
-        $this->examens =Examen::where('consultation_id', $id)->get();
-        $this->soins =Soins::where('consultation_id', $id)->get();
+        $traitement =Traitement::where('numero_ordre', $this->consultation->numero_ordre)->first();
+        $signe_vitaux =SigneVitaux::where('numero_ordre', $this->consultation->numero_ordre)->first();
+        $this->prescriptions =Prescription::where('numero_ordre', $this->consultation->numero_ordre)->get();
+        $this->examens =Examen::where('numero_ordre', $this->consultation->numero_ordre)->get();
+        $this->soins =Soins::where('numero_ordre', $this->consultation->numero_ordre)->get();
         $patients = Patient::where('id',$this->consultation->patient_id)->first();
         $this->civilite = $patients->civilite;
         $this->nom = $patients->nom;
@@ -145,7 +149,7 @@ class TraitementConsultation extends Component
                 'conclusion' => 'required',
             ]);
             $consultation=Consultation::where('id',$this->consultation->id)->first();
-            $traitement =Traitement::where('consultation_id', $this->consultation->id)->first();
+            $traitement =Traitement::where('numero_ordre', $this->consultation->numero_ordre)->first();
 // dd($validated['conclusion'],$validated['diagnostique'],$consultation);
     if(isset($traitement)){
         $traitement->update([
@@ -156,7 +160,7 @@ class TraitementConsultation extends Component
         Traitement::create([
             'diagnostique'=> $validated['diagnostique'],
             'conclusion'=> $validated['conclusion'],
-            'consultation_id'=> $consultation->id,
+            'numero_ordre'=> $consultation->numero_ordre,
             'patient_id'=>$consultation->patient_id,
             'medecin_id'=>$consultation->medecin_id,
             'user_id'=> $user_id,
@@ -189,7 +193,7 @@ class TraitementConsultation extends Component
                 'saturation_oxygene' => '',
                 'douleur' => '',
             ]);
-            $signe_vitaux =SigneVitaux::where('consultation_id', $this->consultation->id)->first();
+            $signe_vitaux =SigneVitaux::where('numero_ordre', $this->consultation->numero_ordre)->first();
             $patients = Patient::where('id',$this->consultation->patient_id)->first();
             if(isset($signe_vitaux)){
                 $patients ->update([
@@ -214,6 +218,7 @@ class TraitementConsultation extends Component
                     'taille'=> $validated['taille'],
                 ]);
             SigneVitaux::create([
+                'numero_ordre'=> $consultation->numero_ordre,
                 'poid'=> $validated['poid'],
                 'taille'=> $validated['taille'],
                 'temperature_corporelle'=> $validated['temperature_corporelle'],
@@ -222,7 +227,6 @@ class TraitementConsultation extends Component
                 'pression_arterielle'=> $validated['pression_arterielle'],
                 'saturation_oxygene'=> $validated['saturation_oxygene'],
                 'douleur'=> $validated['douleur'],
-                'consultation_id'=> $consultation->id,
                 'patient_id'=>$consultation->patient_id,
                 'medecin_id'=>$consultation->medecin_id,
                 'user_id'=> $user_id,
@@ -250,7 +254,7 @@ class TraitementConsultation extends Component
                 'libelle'=> $validated['libelle'],
                 'type_soins_id'=> $validated['type_soin'],
                 'observation'=> $validated['observation'],
-                'consultation_id'=> $consultation->id,
+                'numero_ordre'=> $consultation->numero_ordre,
                 'patient_id'=>$consultation->patient_id,
                 'medecin_id'=>$consultation->medecin_id,
                 'user_id'=> $user_id,
@@ -274,7 +278,7 @@ class TraitementConsultation extends Component
             Examen::create([
                 'libelle'=> $validated['libelle'],
                 'type_examen_id'=> $validated['type_examen'],
-                'consultation_id'=> $consultation->id,
+                'numero_ordre'=> $consultation->numero_ordre,
                 'patient_id'=>$consultation->patient_id,
                 'medecin_id'=>$consultation->medecin_id,
                 'user_id'=> $user_id,
@@ -302,7 +306,7 @@ class TraitementConsultation extends Component
                 'quantite'=> $validated['quantite'],
                 'posologie'=> $validated['posologie'],
                 'duree'=> $validated['duree'],
-                'consultation_id'=> $consultation->id,
+                'numero_ordre'=> $consultation->numero_ordre,
                 'patient_id'=>$consultation->patient_id,
                 'medecin_id'=>$consultation->medecin_id,
                 'user_id'=> $user_id,
@@ -367,7 +371,7 @@ class TraitementConsultation extends Component
 
         $consultation = Consultation::find($id);
         $consultation->update([
-            'etat'=>2,
+            'etat'=>5,
         ]);
         return redirect()->route('ad.sante.dossier.patient',encrypt($consultation->patient->id));
     }

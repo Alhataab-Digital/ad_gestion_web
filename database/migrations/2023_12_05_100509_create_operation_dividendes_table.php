@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('operation_dividendes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('investisseur_id')->constrained();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('reglement_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
+            $table->foreignId('reglement_id')->constrained()->references('id')->on('type_reglements');;
             $table->foreignId('caisse_id')->constrained();
             $table->float('montant_operation');
             $table->float('solde')->default(0);

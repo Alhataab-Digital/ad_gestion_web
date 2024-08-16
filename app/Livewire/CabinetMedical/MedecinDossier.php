@@ -46,12 +46,12 @@ class MedecinDossier extends Component
         $situation = SituationMatrimoniale::where('id', $medecins->situation_matrimoniale_id)->first();
         $categorie = CategorieMedecin::where('id', $medecins->categorie_medicale_id)->first();
         $specialite = SpecialiteMedecin::where('id', $medecins->specialite_id)->first();
-        $this->rendez_vouss=Rdv::where('medecin_id', $id)->where('etat','!=',3)->orderBy('id',"DESC")->get();
-        $this->nbr_rdv=Rdv::where('medecin_id', $id)->where('etat','!=',3)->count();
+        $this->rendez_vouss=Rdv::where('medecin_id', $id)->where('etat',0)->orderBy('id',"DESC")->get();
+        $this->nbr_rdv=Rdv::where('medecin_id', $id)->where('etat',0)->count();
         $this->planifications = PlanificationMedecin::where('medecin_id',$id)->where('jour_semaine','>=', date('Y-m-d'))->orderBy('id',"DESC")->get();
-        $this->consultations = Consultation::where('medecin_id', $id)->where('etat', 0)->orderBy('id',"DESC")->get();
-        $this->consultation_en_cours = Consultation::where('medecin_id', $id)->where('etat','!=',0)->orderBy('id',"DESC")->get();
-        $this->nbr_consultation_attente=Consultation::where('medecin_id', $id)->where('etat',0)->count();
+        $this->consultations = Consultation::where('medecin_id', $id)->where('etat',3)->orderBy('id',"DESC")->get();
+        $this->consultation_en_cours = Consultation::where('medecin_id', $id)->where('etat',4)->orderBy('id',"DESC")->get();
+        $this->nbr_consultation_attente=Consultation::where('medecin_id', $id)->where('etat',3)->count();
 
         $this->medecins = $medecins->id;
         $this->civilite =     $medecins->civilite->civilite;
@@ -82,7 +82,7 @@ class MedecinDossier extends Component
         $consultation=Consultation::find($id);
 
         $consultation->update([
-            'etat'=>1
+            'etat'=>4
         ]);
         return redirect()->route('ad.sante.dossier.patient',encrypt($consultation->patient->id));
     }

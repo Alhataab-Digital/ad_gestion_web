@@ -142,15 +142,17 @@ class HomeController extends Controller
             $rdv_count = Rdv::where('societe_id', $societe_id)->count();
             $nouveau_rdv_count = Rdv::where('societe_id', $societe_id)->where('etat', 0)->count();
             $rdv_jour_count = Rdv::where('societe_id', $societe_id)->where('date_rdv',date('Y-m-d'))->count();
-            $liste_attentes=Consultation::where('etat',0)->get();
+            $liste_attentes=Consultation::where('etat',3)->get();
             $planifications=PlanificationMedecin::where('jour_semaine', date('Y-m-d'))->get();
             // $rapport_consultations=Consultation::with('tarif')->get();
-            $tarif_consultation=array();
+            $type_consultation=array();
             $count_tarif=array();
             $data=array();
-            $rapport_consultations=Consultation::groupBy('tarif_consultation_id')
-                        ->selectRaw('count(*) as total, tarif_consultation_id')
+            $rapport_consultations=Consultation::groupBy('type_consultation_id')
+                        ->selectRaw('count(*) as total, type_consultation_id')
                         ->where('etat','!=',0)
+                        ->where('etat','!=',1)
+                        ->where('etat','!=',2)
                         ->get();
                         // \Carbon\Carbon::parse($commande->created_at)->format('d/m/Y')
             $rapport_revenus=PaiementRecu::where('societe_id', $societe_id)->groupBy('date_operation')
@@ -210,7 +212,7 @@ class HomeController extends Controller
                     'liste_attentes',
                     'planifications',
                     'rapport_consultations',
-                    'tarif_consultation',
+                    'type_consultation',
                     'count_tarif',
                     'data',
                     'rapport_revenus',

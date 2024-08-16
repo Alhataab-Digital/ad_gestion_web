@@ -188,6 +188,7 @@ class LoginController extends Controller
 
     public function restore_connexion(Request $request)
     {
+        ini_set('max_execution_time', 300); // 300 seconds = 5 minutes
         $adressMail=$request->email;
         $code = mt_rand(1000, 9999);
         $code='AD-'.$code;
@@ -199,12 +200,13 @@ class LoginController extends Controller
             // fclose($connected);
             if (isset(Utilisateur::where('email', $request->email)->first()->id)) {
                 $user = Utilisateur::where('email', $request->email)->first();
-                if (isset(UserEnLigne::where('utilisateur_id', $user->id)->first()->id)) {
+                if(isset(UserEnLigne::where('utilisateur_id', $user->id)->first()->id)){
                    $enLigne = UserEnLigne::where('utilisateur_id', $user->id)->first();
                    $enLigne->update([
                         'utilisateur_id' => $user->id,
                         'code' => $code,
                     ]);
+                    
                     Mail::to($adressMail)->send(new AlertCodeReconnexion($mailMessage,$subject));
                     return redirect('/code')->with('success', " Consulter votre boite mail et utiliser le code pour valider ");
                 }

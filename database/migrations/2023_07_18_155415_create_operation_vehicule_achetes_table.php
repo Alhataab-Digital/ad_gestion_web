@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('operation_vehicule_achetes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
             $table->foreignId('fournisseur_id')->constrained();
-            $table->foreignId('activite_id')->constrained();
+            $table->foreignId('activite_id')->constrained()->references('id')->on('activite_investissements');
             $table->foreignId('caisse_id')->constrained();
             $table->string('annee');
             $table->string('marque');

@@ -30,9 +30,9 @@
                                         </div>
                                         <div class="ps-3">
                                             <h6>{{$count_caisse_agence}}</h6>
-                                            <span class="text-success small pt-1 fw-bold">{{
+                                            <span class="pt-1 text-success small fw-bold">{{
                                                 number_format($montant_total_caisse_agence->total,2,","," ")}}</span> <span
-                                                class="text-muted small pt-2 ps-1">@if (isset($agence->devise->unite))
+                                                class="pt-2 text-muted small ps-1">@if (isset($agence->devise->unite))
                                                 {{$agence->devise->unite}}
                                                 @endif</span>
                                         </div>
@@ -53,9 +53,9 @@
                                         </div>
                                         <div class="ps-3">
                                             <h6>{{$count_banque_agence}}</h6>
-                                            <span class="text-success small pt-1 fw-bold">{{
+                                            <span class="pt-1 text-success small fw-bold">{{
                                                 number_format($montant_total_banque_agence->total,2,","," ")}}</span>
-                                            <span class="text-muted small pt-2 ps-1">@if (isset($agence->devise->unite))
+                                            <span class="pt-2 text-muted small ps-1">@if (isset($agence->devise->unite))
                                                 {{$agence->devise->unite}}
                                                 @endif</span>
                                         </div>
@@ -76,9 +76,9 @@
                                         </div>
                                         <div class="ps-3">
                                             <h6>{{ $count_charge_agence }}</h6>
-                                            <span class="text-danger small pt-2 ps-1 fw-bold">{{
+                                            <span class="pt-2 text-danger small ps-1 fw-bold">{{
                                                 number_format($montant_total_charge_agence->total,2,","," ")}}</span> <span
-                                                class="text-danger small pt-2 ps-1">@if (isset($agence->devise->unite))
+                                                class="pt-2 text-danger small ps-1">@if (isset($agence->devise->unite))
                                                 {{$agence->devise->unite}}
                                                 @endif</span>
                                         </div>
@@ -100,7 +100,7 @@
                                         </div>
                                         <div class="ps-3">
                                             <h6>{{$patient_count}}</h6>
-                                            <span class="text-success small pt-2 ps-1 fw-bold"> <a
+                                            <span class="pt-2 text-success small ps-1 fw-bold"> <a
                                                     href="{{route('ad.sante.index.patient')}}"> voir plus</a></span>
                                         </div>
                                     </div>
@@ -121,7 +121,7 @@
                                         </div>
                                         <div class="ps-3">
                                             <h6>{{$medecin_count}}</h6>
-                                            <span class="text-success small pt-2 ps-1 fw-bold"> <a
+                                            <span class="pt-2 text-success small ps-1 fw-bold"> <a
                                                     href="{{route('ad.sante.index.medecin')}}"> voir plus</a></span>
                                         </div>
                                     </div>
@@ -141,7 +141,7 @@
                                         </div>
                                         <div class="ps-3">
                                             <h6>{{$consultation_count}}</h6>
-                                            <span class="text-primary small pt-1 fw-bold">voir plus</span>
+                                            <span class="pt-1 text-primary small fw-bold">voir plus</span>
                                         </div>
                                     </div>
                                 </div>
@@ -159,7 +159,7 @@
                                         </div>
                                         <div class="ps-3">
                                             <h6>{{$rdv_count}}</h6>
-                                            <span class="text-info small pt-1 fw-bold">voir plus</span>
+                                            <span class="pt-1 text-info small fw-bold">voir plus</span>
                                         </div>
                                     </div>
                                 </div>
@@ -178,7 +178,7 @@
                                         </div>
                                         <div class="ps-3">
                                             <h6>{{$nouveau_rdv_count}}</h6>
-                                            <span class="text-info small pt-1 fw-bold">voir plus</span>
+                                            <span class="pt-1 text-info small fw-bold">voir plus</span>
                                         </div>
                                     </div>
                                 </div>
@@ -197,7 +197,7 @@
                                         </div>
                                         <div class="ps-3">
                                             <h6>{{$rdv_jour_count}}</h6>
-                                            <span class="text-info small pt-1 fw-bold">voir plus</span>
+                                            <span class="pt-1 text-info small fw-bold">voir plus</span>
                                         </div>
                                     </div>
                                 </div>
@@ -316,7 +316,7 @@
                                     <div class="activity-content">
                                         {{$liste_attente->patient->nom}} <a href="#"
                                             class="fw-bold text-dark">{{$liste_attente->patient->prenom}}</a> :=>
-                                        {{$liste_attente->tarif_consultation->type_consultation->type_consultation}}
+                                        {{$liste_attente->type_consultation->type_consultation}}
                                     </div>
                                 </div><!-- End activity item-->
                                 @endif
@@ -327,7 +327,7 @@
                                     <div class="activity-content">
                                         {{$liste_attente->patient->nom}} <a href="#"
                                             class="fw-bold text-dark">{{$liste_attente->patient->prenom}}</a> :=>
-                                        {{$liste_attente->tarif_consultation->type_consultation->type_consultation}}
+                                        {{$liste_attente->type_consultation->type_consultation}}
                                     </div>
                                 </div><!-- End activity item-->
                                 @endif
@@ -338,7 +338,7 @@
                                     <div class="activity-content">
                                         {{$liste_attente->patient->nom}} <a href="#"
                                             class="fw-bold text-dark">{{$liste_attente->patient->prenom}}</a> :=>
-                                        {{$liste_attente->tarif_consultation->type_consultation->type_consultation}}
+                                        {{$liste_attente->type_consultation->type_consultation}}
                                     </div>
                                 </div><!-- End activity item-->
                                 @endif
@@ -351,12 +351,12 @@
                     <!-- News & Updates Traffic -->
                     <div class="card">
 
-                        <div class="card-body pb-0">
+                        <div class="pb-0 card-body">
                             <h5 class="card-title">Agenda des medecins du jour</h5>
 
                             <div class="news">
                                 @foreach ($planifications as $planification )
-                                <div class="post-item clearfix">
+                                <div class="clearfix post-item">
                                     <img src="assets/img/medecin.jpg" alt="">
                                     {{-- <i class="ri ri-team-line"></i> --}}
                                     <h4><a href="#">
@@ -376,7 +376,7 @@
                                     <span>
                                     <strong>Coût prestation :</strong>
                                     {{
-                                                number_format($planification->tarif_consultation->montant,2,","," ").'
+                                                number_format($planification->type_consultation->tarif_consultation,2,","," ").'
                                                 '.$planification->user->agence->devise->unite}}
                                     </span>
                                     </p>
@@ -391,7 +391,7 @@
                     <!-- Website Traffic -->
                     <div class="card">
 
-                        <div class="card-body pb-0">
+                        <div class="pb-0 card-body">
                             <h5 class="card-title">Statistique des consultations</h5>
 
                             <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
@@ -399,7 +399,7 @@
                             @php
                             $data[]=[
                                         'value' => json_encode($rapport_consultation->total, JSON_UNESCAPED_UNICODE),
-                                        'name' => json_encode($rapport_consultation->tarif_consultation->type_consultation->type_consultation, JSON_UNESCAPED_UNICODE)
+                                        'name' => json_encode($rapport_consultation->type_consultation->type_consultation, JSON_UNESCAPED_UNICODE)
                                     ];
                             @endphp
                             @endforeach

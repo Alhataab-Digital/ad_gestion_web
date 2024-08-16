@@ -84,7 +84,6 @@ use App\Http\Controllers\Stock\InventaireStockController;
 
 use App\Http\Controllers\Detenu\DetenuController;
 use App\Http\Controllers\EspaceProjetController;
-use App\Livewire\CabinetMedical\CategorieMedicale;
 /*
  --------------------------
 |Controller livewire
@@ -116,14 +115,37 @@ use App\Livewire\CabinetMedical\PriseEnCharge;
 use App\Livewire\CabinetMedical\RecuConsultation;
 use App\Livewire\CabinetMedical\RendezVousConsultation;
 use App\Livewire\CabinetMedical\ResultatConsultation;
+use App\Livewire\CabinetMedical\ResultatExamen;
 use App\Livewire\CabinetMedical\SpecialiteMedicale;
 use App\Livewire\CabinetMedical\TarifConsultation;
 use App\Livewire\CabinetMedical\TarifPrestation;
 use App\Livewire\CabinetMedical\TraitementConsultation;
 use App\Livewire\CabinetMedical\TypeConsultation;
 use App\Livewire\CabinetMedical\TypeExamen;
+use App\Livewire\CabinetMedical\AnalyseExamen;
+use App\Livewire\CabinetMedical\BulletinExamen;
+use App\Livewire\CabinetMedical\CategorieMedicale;
+use App\Livewire\CabinetMedical\DossierHospitalisation;
+use App\Livewire\CabinetMedical\EditTypeAddiction;
+use App\Livewire\CabinetMedical\EditTypeAffection;
+use App\Livewire\CabinetMedical\EditTypeAllergie;
+use App\Livewire\CabinetMedical\EditTypeExamen;
+use App\Livewire\CabinetMedical\EditTypeHospitalisation;
+use App\Livewire\CabinetMedical\EditTypePrestation;
+use App\Livewire\CabinetMedical\EditTypeSoins;
+use App\Livewire\CabinetMedical\EditTypeVaccin;
+use App\Livewire\CabinetMedical\FacturationHospitalisation;
 use App\Livewire\CabinetMedical\TypePrestation;
 use App\Livewire\CabinetMedical\VenteMedicament;
+use App\Livewire\CabinetMedical\Hospitalisation;
+use App\Livewire\CabinetMedical\TestExamaneDemande;
+use App\Livewire\CabinetMedical\TestExamaneDemandeEdit;
+use App\Livewire\CabinetMedical\TypeAddiction;
+use App\Livewire\CabinetMedical\TypeAffection;
+use App\Livewire\CabinetMedical\TypeAllergie;
+use App\Livewire\CabinetMedical\TypeHospitalisation;
+use App\Livewire\CabinetMedical\TypeSoins;
+use App\Livewire\CabinetMedical\TypeVaccin;
 use Livewire\Livewire;
 
 // Enregistrer une route de mise à jour personnalisée pour Livewire
@@ -971,17 +993,23 @@ Route::middleware(['auth','initier'])->prefix('assurance')->controller(PrimeNetC
             Route::get('ad/sante/categorie/medicale',CategorieMedicale::class)->name('categorie.medicale');
             Route::get('ad/sante/categorie/{id}/edit/medicale',EditCategorieMedicale::class)->name('edit.categorie.medicale');
 
-            Route::get('ad/sante/tarif/consultation',TarifConsultation::class,)->name('tarif.consultation');
-            Route::get('ad/sante/edit/tarif/consultation/{id}/',EditTarifConsultation::class)->name('edit.tarif.consultation');
             Route::get('ad/sante/type/consultation',TypeConsultation::class)->name('type.consultation');
-            Route::get('ad/sante/edit/type/consultation',EditTypeConcultation::class)->name('edit.type.consultation');
+            Route::get('ad/sante/edit/type/consultation/{id}',EditTypeConcultation::class)->name('edit.type.consultation');
             Route::get('ad/sante/consultation',Consultation::class)->name('index.consultation');
 
-            Route::get('ad/sante/tarif/prestation',TarifPrestation::class,)->name('tarif.prestation');
+            Route::get('ad/sante/hospitalisation/medical',Hospitalisation::class)->name('hospitalisation');
+            Route::get('ad/sante/edit/type/hospitalisation/{id}',EditTypeHospitalisation::class)->name('edit.type.hospitalisation');
+            Route::get('ad/sante:/dossier/hospitalisation/medical/{id}',DossierHospitalisation::class)->name('dossier.hospitalisation');
+            Route::get('ad/sante/hospitalisation/facturation',FacturationHospitalisation::class)->name('facturation.hospitalisation');
+            Route::get('ad/sante/type/hospitalisation',TypeHospitalisation::class)->name('type.hospitalisation');
+
+
+            Route::get('ad/sante/edit/type/prestation/{id}',EditTypePrestation::class,)->name('edit.type.prestation');
             Route::get('ad/sante/type/prestation',TypePrestation::class)->name('type.prestation');
             Route::get('ad/sante/prestation',FacturationPrestation::class)->name('facturation.prestation');
 
             Route::get('ad/sante/vente/medicament',VenteMedicament::class)->name('vente.medicament');
+            Route::get('ad/sante/medicament',Medicament::class)->name('medicament');
 
 
             Route::get('ad/sante/consultation/rendez-vous',RendezVousConsultation::class)->name('rendez-vous.consultation');
@@ -994,14 +1022,33 @@ Route::middleware(['auth','initier'])->prefix('assurance')->controller(PrimeNetC
 
             Route::get('ad/sante/maison/assurance/medicale',MaisonAssurance::class)->name('maison.assurance.medicale');
             Route::get('ad/sante/maison/assurance/{id}/edit',MaisonAssuranceEdit::class)->name('maison.assurance.edit');
-
             Route::get('ad/sante/contrat/assurance/medicale',ContratAssurance::class)->name('contrat.assurance.medicale');
             Route::get('ad/sante/prise_en_charge/assurance',PriseEnCharge::class)->name('prise_en_charge.assurance.consultation');
 
-            Route::get('ad/sante/medicament',Medicament::class)->name('medicament');
+            Route::get('ad/sante/edit/type/vaccin/{id}',EditTypeVaccin::class,)->name('edit.type.vaccin');
+            Route::get('ad/sante/type/vaccin',TypeVaccin::class)->name('type.vaccin');
+
+            Route::get('ad/sante/edit/type/addiction/{id}',EditTypeAddiction::class,)->name('edit.type.addiction');
+            Route::get('ad/sante/type/addiction',TypeAddiction::class)->name('type.addiction');
+
+            Route::get('ad/sante/edit/type/allergie/{id}',EditTypeAllergie::class,)->name('edit.type.allergie');
+            Route::get('ad/sante/type/allergie',TypeAllergie::class)->name('type.allergie');
+
+            Route::get('ad/sante/edit/type/soins/{id}',EditTypeSoins::class,)->name('edit.type.soins');
+            Route::get('ad/sante/type/soins',TypeSoins::class)->name('type.soins');
+
 
             Route::get('ad/sante/type/examen',TypeExamen::class)->name('type.examen');
+            Route::get('ad/sante/edit/type/examen/{id}',EditTypeExamen::class,)->name('edit.type.examen');
+            Route::get('ad/sante/test/examen/demande',TestExamaneDemande::class)->name('test.examen.demande');
+            Route::get('ad/sante/edit/test/examen/demande/{id}',TestExamaneDemandeEdit::class,)->name('edit.test.examen.demande');
             Route::get('ad/sante/examen/medical',Examen::class)->name('examen.medical');
+            Route::get('ad/sante/analyse/examen/medical/{id}',AnalyseExamen::class)->name('analyse.examen.medical');
+            Route::get('ad/sante/bulletin/examen/medical',BulletinExamen::class)->name('bulletin.examen.medical');
+            Route::get('ad/sante/resultat/examen/medical',ResultatExamen::class)->name('resultat.examen.medical');
+
+
+
 
 
         });

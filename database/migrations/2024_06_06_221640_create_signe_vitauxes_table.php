@@ -15,16 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('poid');
             $table->string('taille');
+            $table->string('numero_ordre');
             $table->string('temperature_corporelle')->nullable();
             $table->string('frequence_cardiaque')->nullable();
             $table->string('frequence_respiratoire')->nullable();
             $table->string('pression_arterielle')->nullable();
             $table->string('saturation_oxygene')->nullable();
             $table->string('douleur')->nullable();
-            $table->foreignId('consultation_id')->constrained();
             $table->foreignId('patient_id')->constrained();
             $table->foreignId('medecin_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
             $table->foreignId('societe_id')->constrained();
             $table->timestamps();
         });

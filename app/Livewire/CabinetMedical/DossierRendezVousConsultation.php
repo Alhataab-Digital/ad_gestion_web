@@ -2,19 +2,20 @@
 
 namespace App\Livewire\CabinetMedical;
 
+use Carbon\Carbon;
+use Livewire\Component;
+use App\Models\Civilite;
+use App\Models\CabinetMedical\Rdv;
+use Illuminate\Support\Facades\Auth;
+use App\Models\SituationMatrimoniale;
+use App\Models\CabinetMedical\Patient;
+use App\Models\CabinetMedical\PriseEnCharge;
 use App\Models\CabinetMedical\ContratAssurance;
 use App\Models\CabinetMedical\MotifConsultation;
-use App\Models\CabinetMedical\Patient;
-use App\Models\CabinetMedical\PlanificationMedecin;
-use App\Models\CabinetMedical\PriseEnCharge;
-use App\Models\CabinetMedical\Rdv;
 use App\Models\CabinetMedical\TarifConsultation;
-use App\Models\Civilite;
-use App\Models\SituationMatrimoniale;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Livewire\Component;
-use Twilio\Rest\Client;
+
+use App\Models\CabinetMedical\PlanificationMedecin;
+use App\Models\CabinetMedical\TypeConsultation;
 
 class DossierRendezVousConsultation extends Component
 {
@@ -44,8 +45,8 @@ class DossierRendezVousConsultation extends Component
     public $planification_date = null;
     public $planification_medecins = [];
     public $planification_medecin = null;
-    public $tarif_consultations = [];
-    public $tarif_consultation = null;
+    public $type_consultations = [];
+    public $type_consultation = null;
 
 
     public function mount(Rdv $rendez_vous, $id)
@@ -57,7 +58,7 @@ class DossierRendezVousConsultation extends Component
         $this->civilites = Civilite::all();
         $this->motifs = MotifConsultation::all();
         $this->situations = SituationMatrimoniale::all();
-        $this->tarif_consultations = TarifConsultation::all();
+        $this->type_consultations = TypeConsultation::all();
         $this->patients = $patients->id;
         $this->civilite = $patients->civilite_id;
         $this->nom      = $patients->nom;
@@ -69,11 +70,11 @@ class DossierRendezVousConsultation extends Component
         $this->telephone = $patients->telephone;
         $this->adresse = $patients->adresse;
     }
-    public function updatedTarifConsultation($TarifConsultationId)
+    public function updatedTypeConsultation($TypeConsultationId)
     {
 
         $societe_id = Auth::user()->societe_id;
-            $this->planification_dates = PlanificationMedecin::where('tarif_consultation_id', $TarifConsultationId)
+            $this->planification_dates = PlanificationMedecin::where('type_consultation_id', $TypeConsultationId)
             ->where('jour_semaine','>=',date('Y-m-d'))
             ->orderBy('jour_semaine',"ASC")
             ->where('societe_id', $societe_id)
@@ -96,7 +97,7 @@ class DossierRendezVousConsultation extends Component
         $societe_id = Auth::user()->societe_id;
 
         $this->tarif_montants = PlanificationMedecin::find($PlanificationMedecinId);
-        $this->tarif_montant = $this->tarif_montants->tarif_consultation->montant;
+        $this->tarif_montant = $this->tarif_montants->type_consultation->tarif_consultation;
     }
     // public function updatedPlanification($heureId)
     // {
@@ -116,31 +117,17 @@ class DossierRendezVousConsultation extends Component
 
     public function enregistrer()
     {
+
+        // dd('ok');
         $societe_id = Auth::user()->societe_id;
         $user_id = Auth::user()->id;
-//API TWILIO
-        // $sid    = getenv("TWILIO_SID");
-        // $token  = getenv("TWILIO_TOKEN");
-        // $phone  = getenv("TWILIO_PHONE");
-        // $twilio = new Client($sid, $token);
-        //  $message = $twilio->messages
-        //   ->create($this->telephone, // to
-        //     array(
-        //       "from" => $phone,
-        //       "body" => "Vous venez de prendre rendez vous merci de vous faire confiance"
-        //     )
-        //   );
-//API TWILIO
-
-
-
 
         $validated = $this->validate(
             [
                 'tarif_montant' => 'required',
                 'planification_date' => 'required',
                 'planification_medecin' => 'required',
-                'tarif_consultation' => 'required',
+                'type_consultation' => 'required',
                 'motif' => 'required',
                 'civilite' => 'required',
                 'nom' => 'required',
@@ -149,65 +136,17 @@ class DossierRendezVousConsultation extends Component
                 'profession' => 'required',
                 'date_naissance' => 'required',
                 'lieu_naissance' => 'required',
-                'telephone' => '',
-                'adresse' => '',
+                'telephone' => 'required',
+                'adresse' => 'required',
             ]
         );
-
-
         $planning = PlanificationMedecin::find($validated['planification_medecin']);
         $patients = Patient::where('id', $this->patients)->first();
-        //si le patient à une prise en charge existant
-        if (isset(PriseEnCharge::where('patient_id', $this->patients)->first()->id)) {
-            $prise_en_charge = PriseEnCharge::where('patient_id', $this->patients)->first();
-            $contrat_assurance = ContratAssurance::where('maison_assurance_id', $prise_en_charge->maison_assurance_id)
-            ->where('tarif_consultation_id', $planning->tarif_consultation_id)
-            ->latest('date_fin')
-            ->where('date_fin', '>=', Carbon::parse($planning->jour_semaine))
-            ->first();
-            // dd($contrat_assurance);
-            //si la date de fin de validation de la prise en charge est superieur à la date de du planing
-            if ( $contrat_assurance) {
 
-                //si le patient à deja un rendez-vous en cours
-                if (isset(Rdv::where('patient_id', $this->patients)
-                    ->where('medecin_id', $planning->medecin_id)
-                    ->where('date_rdv', $planning->jour_semaine,)
-                    ->where('heure_rdv', $planning->heure_debut,)
-                    ->where('planification_id', $planning->id)
-                    ->where('etat', 0)->latest()->first()->id)) {
-
-                    return redirect()->route('ad.sante.rendez-vous.consultation')->with('danger', "Ce patient à un rendez-vous en cours");
-                } else {
-                    //API VONAGE
-                        // https://dashboard.nexmo.com/
-                    //     $basic  = new \Vonage\Client\Credentials\Basic("1307cdb6", "abS75KV0VeEIIZMV");
-                    //     $client = new \Vonage\Client($basic);
-                    //     $response = $client->sms()->send(
-                    //         new \Vonage\SMS\Message\SMS($this->telephone, "AD SANTE",
-                    //         "RENDEZ VOUS PRIS POUR
-                    //         ".$planning->tarif_consultation->type_consultation->type_consultation."
-                    //         le ".Carbon::parse($planning->jour_semaine)->format('d-m-Y')." à ".Carbon::parse($planning->heure_debut)->format('H:s'))
-                    //     );
-
-                    // $message = $response->current();
-
-                    // if ($message->getStatus() == 0) {
-                    //     echo "The message was sent successfully\n";
-                    // } else {
-                    //     echo "The message failed with status: " . $message->getStatus() . "\n";
-                    // }
-
-
-                    $taux_assurer=$contrat_assurance->taux_couverture;
-                    $contrat_id=$contrat_assurance->id;
                     Rdv::create([
                         'motif' => $validated['motif'],
                         'patient_id' => $this->patients,
                         'medecin_id' => $planning->medecin_id,
-                        'contrat_id' => $contrat_id,
-                        'taux_couverture' => $taux_assurer,
-                        'montant' => $planning->tarif_consultation->montant,
                         'date_rdv' => $planning->jour_semaine,
                         'heure_rdv' => $planning->heure_debut,
                         'planification_id' => $planning->id,
@@ -228,124 +167,5 @@ class DossierRendezVousConsultation extends Component
                     ]);
 
                     return redirect()->route('ad.sante.rendez-vous.consultation')->with('success', " Rendez-vous enregistrer avec succès");
-                }
-            } else {
-                // dd('si le le contrat de prise en charge est expire'.$planning->jour_semaine,$prise_en_charge->contrat_assurance->date_fin);
-                //si le patient à deja un rendez-vous en cours
-                if (isset(Rdv::where('patient_id', $this->patients)
-                    ->where('medecin_id', $planning->medecin_id)
-                    ->where('date_rdv', $planning->jour_semaine,)
-                    ->where('heure_rdv', $planning->heure_debut,)
-                    ->where('planification_id', $planning->id)
-                    ->where('etat', 0)->latest()->first()->id)) {
-
-                    return redirect()->route('ad.sante.rendez-vous.consultation')->with('danger', "Ce patient à un rendez-vous en cours");
-                } else {
-
-                    //API VONAGE
-                        // https://dashboard.nexmo.com/
-                        // $basic  = new \Vonage\Client\Credentials\Basic("1307cdb6", "abS75KV0VeEIIZMV");
-                        // $client = new \Vonage\Client($basic);
-                        // $response = $client->sms()->send(
-                        //     new \Vonage\SMS\Message\SMS($this->telephone, "AD SANTE",
-                        //     "RENDEZ VOUS PRIS POUR
-                        //     ".$planning->tarif_consultation->type_consultation->type_consultation."
-                        //     le ".Carbon::parse($planning->jour_semaine)->format('d-m-Y')." à ".Carbon::parse($planning->heure_debut)->format('H:s'))
-                        // );
-                        // $message = $response->current();
-
-                        // if ($message->getStatus() == 0) {
-                        //     echo "The message was sent successfully\n";
-                        // } else {
-                        //     echo "The message failed with status: " . $message->getStatus() . "\n";
-                        // }
-                   Rdv::create([
-                        'motif' => $validated['motif'],
-                        'patient_id' => $this->patients,
-                        'medecin_id' => $planning->medecin_id,
-                        'taux_couverture' => 0,
-                        'montant' => $planning->tarif_consultation->montant,
-                        'date_rdv' => $planning->jour_semaine,
-                        'heure_rdv' => $planning->heure_debut,
-                        'planification_id' => $planning->id,
-                        'user_id' => $user_id,
-                        'societe_id' => $societe_id,
-                    ]);
-
-                    $patients->update([
-                        'civilite_id' => $validated['civilite'],
-                        'nom' => $validated['nom'],
-                        'prenom' => $validated['prenom'],
-                        'situation_matrimoniale_id' => $validated['situation'],
-                        'profession' => $validated['profession'],
-                        'date_naissance' => $validated['date_naissance'],
-                        'lieu_naissance' => $validated['lieu_naissance'],
-                        'telephone' => $validated['telephone'],
-                        'adresse' => $validated['adresse'],
-                    ]);
-
-                    return redirect()->route('ad.sante.rendez-vous.consultation')->with('success', " Rendez-vous enregistrer avec succès");
-                }
-            }
-        } else {
-
-            // dd('ce patient ne dispose pas de prise ne charge');
-            //si le patient à deja un rendez-vous en cours
-            //si le patient à deja un rendez-vous en cours
-            if (isset(Rdv::where('patient_id', $this->patients)
-            ->where('medecin_id', $planning->medecin_id)
-            ->where('date_rdv', $planning->jour_semaine,)
-            ->where('heure_rdv', $planning->heure_debut,)
-            ->where('planification_id', $planning->id)
-            ->where('etat', 0)->latest()->first()->id)) {
-
-            return redirect()->route('ad.sante.rendez-vous.consultation')->with('danger', "Ce patient à un rendez-vous en cours");
-        } else {
-            //API VONAGE
-               // https://dashboard.nexmo.com/
-            //    $basic  = new \Vonage\Client\Credentials\Basic("1307cdb6", "abS75KV0VeEIIZMV");
-            //    $client = new \Vonage\Client($basic);
-            //    $response = $client->sms()->send(
-            //        new \Vonage\SMS\Message\SMS($this->telephone, "AD SANTE",
-            //        "RENDEZ VOUS PRIS POUR
-            //        ".$planning->tarif_consultation->type_consultation->type_consultation."
-            //        le ".Carbon::parse($planning->jour_semaine)->format('d-m-Y')." à ".Carbon::parse($planning->heure_debut)->format('H:s'))
-            //    );
-
-            // $message = $response->current();
-
-            // if ($message->getStatus() == 0) {
-            //     echo "The message was sent successfully\n";
-            // } else {
-            //     echo "The message failed with status: " . $message->getStatus() . "\n";
-            // }
-           Rdv::create([
-                'motif' => $validated['motif'],
-                'patient_id' => $this->patients,
-                'medecin_id' => $planning->medecin_id,
-                'taux_couverture' => 0,
-                'montant' => $planning->tarif_consultation->montant,
-                'date_rdv' => $planning->jour_semaine,
-                'heure_rdv' => $planning->heure_debut,
-                'planification_id' => $planning->id,
-                'user_id' => $user_id,
-                'societe_id' => $societe_id,
-            ]);
-
-            $patients->update([
-                'civilite_id' => $validated['civilite'],
-                'nom' => $validated['nom'],
-                'prenom' => $validated['prenom'],
-                'situation_matrimoniale_id' => $validated['situation'],
-                'profession' => $validated['profession'],
-                'date_naissance' => $validated['date_naissance'],
-                'lieu_naissance' => $validated['lieu_naissance'],
-                'telephone' => $validated['telephone'],
-                'adresse' => $validated['adresse'],
-            ]);
-
-            return redirect()->route('ad.sante.rendez-vous.consultation')->with('success', "Rendez-vous enregistrer avec succès");
-        }
-        }
     }
 }

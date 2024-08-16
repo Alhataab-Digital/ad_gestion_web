@@ -17,6 +17,6 @@ class ConnexionUser extends Model
 
     public function utilisateur()
     {
-        return $this->belongsTo(Utilisateur::class);
+        return $this->belongsTo(Utilisateur::class, 'utilisateur_id');
     }
 }

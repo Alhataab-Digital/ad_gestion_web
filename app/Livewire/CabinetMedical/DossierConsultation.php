@@ -35,7 +35,6 @@ class DossierConsultation extends Component
 
         $societe_id = Auth::user()->societe_id;
         $user_id = Auth::user()->id;
-        $this->tarifs = TarifConsultation::where('societe_id', $societe_id)->get();
         $patients = Patient::where('id', $id)->first();
 
         $this->patients = $patients->id;
@@ -79,8 +78,7 @@ class DossierConsultation extends Component
             ]
         );
         // dd($validated['consultation']);
-        $this->tarifs=TarifConsultation::where("id",$validated['consultation'])->first();
-        $societe_id = Auth::user()->societe_id;
+       $societe_id = Auth::user()->societe_id;
         $user_id = Auth::user()->id;
 
         $patients->update([

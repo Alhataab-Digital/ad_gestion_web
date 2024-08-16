@@ -13,7 +13,7 @@ class ContratAssurance extends Model
 
     protected $fillable = [
         'maison_assurance_id',
-        'tarif_consultation_id',
+        'numero_contrat',
         'date_debut',
         'date_fin',
         'taux_couverture',

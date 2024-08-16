@@ -1,23 +1,14 @@
 <main id="main" class="main">
 
-    <div class="pagetitle">
-        <h1>Patients</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
-                <li class="breadcrumb-item">param</li>
-                <li class="breadcrumb-item active">patient</li>
-            </ol>
-        </nav>
-    </div><!-- End Page Title -->
-
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
-
+                <div class="card-header bg-black text-white">
+                    Liste des patiens
+                </div>
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">
+                        <h5 class="card-title text-end">
                             <!-- Basic Modal -->
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#basicModal">
@@ -137,7 +128,7 @@
                         </P>
                         <!-- Table with stripped rows -->
                         <table class="table datatable">
-                            <thead class="bg-primary">
+                            <thead class="bg-primary text-white">
                                 <tr>
                                     <th scope="col">N° Dossier</th>
                                     <th scope="col">Nom patient </th>
@@ -162,7 +153,7 @@
                                     <td>{{ $patient->telephone}}</td>
 
                                     <td>
-                                        @if (Auth::user()->id==6)
+                                        @if(Auth::user()->role->id==1 || Auth::user()->role->id==6)
                                         <a wire:navigate href="{{route('ad.sante.dossier.patient',encrypt($patient->id))}}">
                                             <button type="button" class="btn btn-secondary"><i
                                                     class="bx bx-folder-plus"></i></button>

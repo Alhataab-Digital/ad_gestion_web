@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('prestation_medecins', function (Blueprint $table) {
+        Schema::create('contrat_assurances', function (Blueprint $table) {
             $table->id();
-            $table->string('type_acte_id');
-            $table->foreignId('medecin_id')->constrained();
-            $table->foreignId('type_consultation_id')->constrained();
-            $table->foreignId('type_prestation_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->string('numero_contrat');
+            $table->date('date_debut');
+            $table->date('date_fin');
+            $table->string('taux_couverture');
+            $table->foreignId('maison_assurance_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
             $table->foreignId('societe_id')->constrained();
             $table->timestamps();
         });
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('prestation_medecins');
+        Schema::dropIfExists('contrat_assurances');
     }
 };

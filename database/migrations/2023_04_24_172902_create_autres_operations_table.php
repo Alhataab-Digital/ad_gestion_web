@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->float('montant_operation');
             $table->string('sens_operation');
-            $table->foreignId('reglement_id')->constrained();
+            $table->foreignId('reglement_id')->constrained()->references('id')->on('type_reglements');
             $table->foreignId('caisse_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
             $table->timestamps();
         });
     }

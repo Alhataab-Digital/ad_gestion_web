@@ -13,8 +13,6 @@ class CategorieMedecin extends Model
 
     protected $fillable = [
         'categorie_medecin',
-        'user_id',
-        'societe_id',
     ];
 
     public function societe()

@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Vaccin extends Model
 {
     use HasFactory;
+    
 }

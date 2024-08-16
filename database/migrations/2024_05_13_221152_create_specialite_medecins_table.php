@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('specialite_medecins', function (Blueprint $table) {
             $table->id();
             $table->string('specialite_medecin');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
 
@@ -40,7 +40,7 @@ return new class extends Migration
 
         ];
         foreach ($specialite_medecins as $specialite_medecin) {
-          
+
             SpecialiteMedecin::create([
                 'specialite_medecin' => $specialite_medecin[0],
                 'description' => $specialite_medecin[1],

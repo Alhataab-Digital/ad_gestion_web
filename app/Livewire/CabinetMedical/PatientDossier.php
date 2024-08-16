@@ -31,7 +31,8 @@ class PatientDossier extends Component
     public $prescriptions=[];
     public $facturations=[];
     public $consutlation_traitement=[];
-    public $nbr_consutlation_encours=[];
+    public $consutlation_encours=[];
+    public $nbr_consutlation_encours;
     public $prise_en_charges=[];
     public $maison_assurance;
     public $contrat_assurances = [];
@@ -54,11 +55,12 @@ class PatientDossier extends Component
         $this->contrat_assurances=ContratAssurance::where('maison_assurance_id', $this->maison_assurance->id)->get();
         }
         $this->rendez_vouss=Rdv::where('patient_id', $id)->orderBy('id',"DESC")->get();
-        $this->consultations = Consultation::where('patient_id', $id)->where('etat',1)->orderBy('id',"DESC")->get();
         $this->prescriptions =Prescription::where('patient_id', $id)->orderBy('id',"DESC")->get();
         $this->facturations = Facturation::where('patient_id', $id)->orderBy('id',"DESC")->get();
-        $this->nbr_consutlation_encours = Consultation::where('patient_id', $id)->where('etat',1)->orderBy('id',"DESC")->count();
-        $this->consutlation_traitement = Consultation::where('patient_id', $id)->where('etat','!=',0)->orderBy('id',"DESC")->get();
+        $this->consultations = Consultation::where('patient_id', $id)->where('etat',3)->orWhere('etat',4)->orWhere('etat',5)->orderBy('id',"DESC")->get();
+        $this->consutlation_encours = Consultation::where('patient_id', $id)->where('etat',3)->orWhere('etat',4)->orWhere('etat',5)->orderBy('id',"DESC")->get();
+        $this->nbr_consutlation_encours = Consultation::where('patient_id', $id)->where('etat',3)->orderBy('id',"DESC")->count();
+        $this->consutlation_traitement = Consultation::where('patient_id', $id)->where('etat',5)->orderBy('id',"DESC")->get();
         $this->prise_en_charges = PriseEnCharge::where('patient_id', $id)->orderBy('id',"DESC")->get();
         $civilite = Civilite::where('id', $patients->civilite_id)->first();
         $situation = SituationMatrimoniale::where('id', $patients->situation_matrimoniale_id)->first();
@@ -114,7 +116,8 @@ class PatientDossier extends Component
     public function render()
     {
         $patient = Patient::where('id',  $this->patients)->first();
-        return view('livewire.cabinet-medical.patient-dossier',compact('patient'));
+        $prise_en_charge = PriseEnCharge::where('patient_id', $this->patients)->first();
+        return view('livewire.cabinet-medical.patient-dossier',compact('patient','prise_en_charge'));
     }
 
     public function recuPrint($id)

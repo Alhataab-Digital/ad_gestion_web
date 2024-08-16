@@ -75,7 +75,7 @@ class Patient extends Component
                 'lieu_naissance'=> $validated['lieu_naissance'],
                 'telephone'=> $validated['telephone'],
                 'adresse'=> $validated['adresse'],
-                'numero_patient'=> 'PAT/'.$numero_patient.'/'.date('dmY'),
+                'numero_patient'=> $numero_patient,
                 'user_id'=> $user_id,
                 'societe_id' => $societe_id,
         ]);
@@ -90,5 +90,11 @@ class Patient extends Component
         $this->adresse ='';
 
         return redirect()->route('ad.sante.index.patient')->with('success', 'Patient crée avec succès');
+    }
+    public function deleteConfirmation($id)
+    {
+        // dd($id);
+        return redirect()->route('ad.sante.index.patient')->with('danger', 'Impossible de supprimer ce patient');
+
     }
 }

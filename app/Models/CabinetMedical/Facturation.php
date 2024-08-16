@@ -12,10 +12,11 @@ class Facturation extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'rdv_id',
+        'numero_ordre',
+        'numero_piece',
         'patient_id',
         'medecin_id',
-        'tarif_consultation_id',
+        'contrat_id',
         'taux_assurer',
         'montant',
         'montant_assurer',
@@ -41,9 +42,9 @@ class Facturation extends Model
     {
         return $this->belongsTo(TarifConsultation::class);
     }
-    public function rendez_vous()
+    public function contrat_assurance()
     {
-        return $this->belongsTo(Rdv::class,'rdv_id');
+        return $this->belongsTo(ContratAssurance::class,'contrat_id');
     }
 
     public function patient()

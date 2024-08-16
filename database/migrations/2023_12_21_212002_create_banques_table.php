@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('agence_id')->constrained();
             $table->foreignId('societe_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->references('id')->on('utilisateurs');;
             $table->string('libelle');
             $table->string('numero_compte_banque');
             $table->float('compte')->default(0);
